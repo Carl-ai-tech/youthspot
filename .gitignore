@@ -1,0 +1,25 @@
+# Python 暫存編譯檔 —— 跨電腦沒有用，不要帶著走
+__pycache__/
+*.py[cod]
+
+# 虛擬環境（目前用不到，先擋著）
+.venv/
+venv/
+
+# 編輯器
+.vscode/
+.idea/
+
+# 作業系統
+Thumbs.db
+.DS_Store
+
+# ETL 產出的中間檔
+*.log
+
+# 政府原始檔快取（約 38MB，跑一次 build_reference.py 就會重建）
+# 注意：data/reference_ntpc.json 要進版控 —— 它只有 8KB，
+# 而且有了它，換電腦不用連網就能跑 demo。
+data/_cache/
+
+preview.html

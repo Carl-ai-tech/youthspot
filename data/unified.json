@@ -1,0 +1,6516 @@
+{
+ "_generated": "2026-09-08",
+ "_schema": "YouthLens unified v1（Spec §7.3）",
+ "meta": {
+  "region": "新北市",
+  "year": 2026,
+  "period_label": "民國 115 年 7 月",
+  "areas": 30,
+  "age_groups": [
+   "18-24",
+   "25-29",
+   "30-35",
+   "18-35"
+  ],
+  "metrics": [
+   "人口數",
+   "勞動力人數",
+   "勞動力參與率"
+  ],
+  "reference_data": "reference_ntpc.json",
+  "sources": [
+   {
+    "agency": "內政部戶政司",
+    "dataset": "內政部戶政司 ODRP014 村里戶數、單一年齡人口",
+    "url": "https://data.gov.tw/dataset/32973"
+   },
+   {
+    "agency": "行政院主計總處",
+    "dataset": "行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率",
+    "url": "https://ws.dgbas.gov.tw/001/Upload/461/relfile/11525/236096/mp04020.xml"
+   }
+  ]
+ },
+ "records": [
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 256105.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 131014.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.511563,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5116,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.511563,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 244695.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 226857.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.9271,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9271,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.9271,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 331414.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 305996.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923304,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923304,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 832214.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 663867.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.797711,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7977,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.797711,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 8219.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 4186.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.509326,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三峽區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5093,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.509326,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三峽區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 7759.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 7191.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926835,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三峽區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9268,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926835,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三峽區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 9699.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 8955.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923255,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三峽區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923255,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三峽區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 25677.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 20332.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.791842,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三峽區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三峽區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7918,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.791842,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三峽區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1368.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 720.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.526599,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三芝區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5266,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.526599,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三芝區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1411.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1307.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926322,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三芝區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9263,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926322,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三芝區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1786.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1649.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.92313,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三芝區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9231,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.92313,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三芝區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 4565.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 3676.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.805288,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三芝區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三芝區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8053,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.805288,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三芝區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 23517.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 12127.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.51565,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三重區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5157,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.51565,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三重區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 22890.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 21222.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927146,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三重區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9271,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927146,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三重區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 31867.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 29424.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923335,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三重區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923335,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三重區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 78274.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 62773.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.801963,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三重區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市三重區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.802,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.801963,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市三重區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 24513.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 12580.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.513215,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市中和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5132,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.513215,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市中和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 23027.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 21349.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927141,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市中和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9271,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927141,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市中和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 30888.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 28519.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.92329,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市中和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.92329,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市中和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 78428.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 62448.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.79625,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市中和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市中和區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7963,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.79625,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市中和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 6374.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 3286.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.515476,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市五股區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5155,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.515476,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市五股區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 6821.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 6327.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927614,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市五股區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9276,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927614,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市五股區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 9428.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 8705.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.92331,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市五股區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.92331,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市五股區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 22623.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 18318.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.809701,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市五股區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市五股區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8097,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.809701,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市五股區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 2959.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1567.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.529689,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市八里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5297,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.529689,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市八里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 3052.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 2829.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927002,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市八里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.927,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927002,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市八里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 3937.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 3635.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923214,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市八里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9232,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923214,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市八里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 9948.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 8031.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.807323,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市八里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市八里區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8073,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.807323,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市八里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 14691.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 7496.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.510244,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市土城區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5102,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.510244,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市土城區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 15684.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 14543.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927278,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市土城區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9273,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927278,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市土城區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 22296.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 20586.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923305,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市土城區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923305,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市土城區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 52671.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 42625.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.809277,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市土城區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市土城區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8093,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.809277,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市土城區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 331.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 180.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.544999,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市坪林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.545,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.544999,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市坪林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 364.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 337.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926929,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市坪林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9269,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926929,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市坪林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 382.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 353.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923221,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市坪林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9232,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923221,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市坪林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1077.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 870.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.808233,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市坪林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市坪林區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8082,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.808233,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市坪林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 194.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 103.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.530549,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市平溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5305,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.530549,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市平溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 157.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 145.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.924048,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市平溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.924,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.924048,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市平溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 195.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 180.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923276,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市平溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923276,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市平溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 546.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 428.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.783958,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市平溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市平溪區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.784,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.783958,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市平溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 18021.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 9256.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.513649,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新店區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5136,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.513649,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新店區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 17819.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 16530.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927683,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新店區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9277,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927683,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新店區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 24317.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 22451.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923274,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新店區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923274,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新店區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 60157.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 48238.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.80187,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新店區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新店區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8019,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.80187,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新店區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 27928.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 14193.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.508212,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新莊區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5082,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.508212,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新莊區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 25675.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 23798.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926884,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新莊區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9269,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926884,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新莊區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 35706.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 32969.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923332,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新莊區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923332,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新莊區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 89309.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 70960.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.79454,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新莊區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市新莊區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7945,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.79454,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市新莊區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 34099.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 17256.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.506058,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市板橋區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5061,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.506058,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市板橋區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 30466.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 28236.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926812,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市板橋區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9268,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926812,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市板橋區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 41908.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 38696.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923358,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市板橋區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9234,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923358,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市板橋區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 106473.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 84188.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.790702,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市板橋區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市板橋區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7907,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.790702,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市板橋區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 8686.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 4317.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.496969,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市林口區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.497,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.496969,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市林口區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 7632.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 7079.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.92757,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市林口區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9276,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.92757,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市林口區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 11097.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 10246.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923339,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市林口區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923339,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市林口區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 27415.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 21642.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.789429,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市林口區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市林口區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7894,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.789429,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市林口區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 12438.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 6324.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.508465,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市樹林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5085,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.508465,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市樹林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 11494.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 10654.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926923,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市樹林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9269,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926923,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市樹林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 14783.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 13649.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923295,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市樹林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923295,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市樹林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 38715.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 30627.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.791099,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市樹林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市樹林區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7911,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.791099,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市樹林區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 12207.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 6176.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.505945,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市永和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5059,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.505945,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市永和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 11203.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 10386.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927045,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市永和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.927,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927045,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市永和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 14569.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 13451.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923286,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市永和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923286,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市永和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 37979.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 30013.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.790255,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市永和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市永和區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7903,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.790255,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市永和區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 13215.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 6852.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.518479,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市汐止區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5185,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.518479,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市汐止區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 13795.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 12793.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927344,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市汐止區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9273,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927344,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市汐止區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 18102.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 16713.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923295,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市汐止區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923295,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市汐止區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 45112.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 36358.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.805948,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市汐止區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市汐止區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8059,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.805948,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市汐止區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 5737.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 2865.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.499462,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市泰山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.4995,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.499462,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市泰山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 4841.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 4486.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926726,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市泰山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9267,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926726,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市泰山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 6625.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 6117.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923294,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市泰山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923294,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市泰山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 17203.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 13469.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.782917,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市泰山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市泰山區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7829,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.782917,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市泰山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 12736.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 6576.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.516344,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市淡水區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5163,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.516344,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市淡水區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 12492.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 11584.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927304,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市淡水區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9273,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927304,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市淡水區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 17480.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 16138.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923254,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市淡水區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923254,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市淡水區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 42708.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 34299.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.803093,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市淡水區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市淡水區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8031,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.803093,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市淡水區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1580.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 844.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.534053,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市深坑區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5341,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.534053,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市深坑區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1645.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1525.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927332,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市深坑區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9273,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927332,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市深坑區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 2072.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1913.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923201,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市深坑區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9232,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923201,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市深坑區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 5297.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 4282.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.808408,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市深坑區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市深坑區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8084,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.808408,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市深坑區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 452.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 229.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.50753,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市烏來區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5075,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.50753,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市烏來區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 421.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 391.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.928708,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市烏來區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9287,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.928708,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市烏來區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 561.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 518.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923157,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市烏來區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9232,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923157,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市烏來區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1434.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1138.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.79378,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市烏來區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市烏來區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7938,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.79378,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市烏來區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 2162.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1154.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.533755,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市瑞芳區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5338,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.533755,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市瑞芳區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 2135.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1976.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.925455,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市瑞芳區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9255,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.925455,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市瑞芳區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 2821.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 2605.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923291,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市瑞芳區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923291,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市瑞芳區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 7118.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 5734.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.805623,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市瑞芳區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市瑞芳區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8056,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.805623,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市瑞芳區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 463.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 250.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.539664,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石碇區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5397,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.539664,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石碇區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 442.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 410.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.928214,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石碇區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9282,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.928214,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石碇區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 436.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 403.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923271,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石碇區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923271,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石碇區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1341.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1063.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.792454,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石碇區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石碇區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7925,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.792454,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石碇區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 681.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 368.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.539838,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石門區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5398,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.539838,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石門區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 659.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 610.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.925899,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石門區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9259,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.925899,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石門區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 794.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 733.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923234,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石門區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9232,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923234,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石門區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 2134.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1711.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.801708,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石門區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市石門區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8017,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.801708,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市石門區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1265.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 666.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.526715,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市萬里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5267,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.526715,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市萬里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1130.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1048.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.92761,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市萬里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9276,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.92761,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市萬里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1502.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1387.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923308,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市萬里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923308,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市萬里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 3897.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 3101.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.795818,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市萬里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市萬里區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7958,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.795818,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市萬里區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 13867.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 7104.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.512321,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市蘆洲區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5123,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.512321,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市蘆洲區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 13424.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 12444.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927023,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市蘆洲區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.927,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927023,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市蘆洲區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 17405.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 16070.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923295,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市蘆洲區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923295,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市蘆洲區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 44696.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 35619.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.796909,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市蘆洲區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市蘆洲區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7969,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.796909,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市蘆洲區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 509.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 276.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.541608,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市貢寮區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5416,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.541608,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市貢寮區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 530.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 492.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927772,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市貢寮區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9278,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.927772,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市貢寮區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 652.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 602.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923083,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市貢寮區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9231,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923083,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市貢寮區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1691.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1369.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.809727,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市貢寮區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市貢寮區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8097,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.809727,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市貢寮區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1260.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 665.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.528075,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市金山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5281,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.528075,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市金山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1300.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1207.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.928082,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市金山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9281,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.928082,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市金山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1610.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 1486.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923222,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市金山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9232,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923222,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市金山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 4170.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 3358.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.80534,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市金山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市金山區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.8053,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.80534,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市金山區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 404.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 211.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.521328,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市雙溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5213,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.521328,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市雙溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 337.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 312.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926547,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市雙溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9265,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926547,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市雙溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 474.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 438.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.9232,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市雙溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9232,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.9232,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市雙溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 1215.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 960.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.790502,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市雙溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市雙溪區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7905,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.790502,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市雙溪區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 6229.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-24",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 3185.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.511315,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市鶯歌區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.5113,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-24",
+    "method": "formula_b_t2",
+    "weight": 0.511315,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市鶯歌區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 6090.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 5642.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926497,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市鶯歌區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9265,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "25-29",
+    "method": "formula_b_t2",
+    "weight": 0.926497,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市鶯歌區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 8022.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "30-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 7407.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923295,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市鶯歌區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.9233,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "30-35",
+    "method": "formula_b_t2",
+    "weight": 0.923295,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市鶯歌區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "人口數",
+   "value": 20341.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司",
+    "source_dataset": "村里戶數、單一年齡人口（民國 115 年 7 月）",
+    "source_age_group": "18-35",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源資料本身就是單一年齡，直接加總，未經任何插補"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力人數",
+   "value": 16234.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.798093,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市鶯歌區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市鶯歌區",
+   "year": 2026,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "勞動力參與率",
+   "value": 0.7981,
+   "unit": "%",
+   "provenance": {
+    "source_agency": "內政部戶政司 / 行政院主計總處",
+    "source_dataset": "單一年齡人口（民國 115 年 7 月） × 分齡勞動力參與率",
+    "source_age_group": "18-35",
+    "method": "formula_b_t2",
+    "weight": 0.798093,
+    "confidence": "medium",
+    "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市鶯歌區會有偏差，故標記為 medium"
+   }
+  }
+ ]
+}

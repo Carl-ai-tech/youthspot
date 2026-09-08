@@ -13,9 +13,12 @@
    "18-35"
   ],
   "metrics": [
+   "中位數年薪",
    "人口數",
    "勞動力人數",
-   "勞動力參與率"
+   "勞動力參與率",
+   "就業者人數",
+   "平均年薪"
   ],
   "reference_data": "reference_ntpc.json",
   "sources": [
@@ -28,6 +31,16 @@
     "agency": "行政院主計總處",
     "dataset": "行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率",
     "url": "https://ws.dgbas.gov.tw/001/Upload/461/relfile/11525/236096/mp04020.xml"
+   },
+   {
+    "agency": "行政院主計總處",
+    "dataset": "人力資源調查 表32 就業者之教育程度與年齡",
+    "url": "https://www.stat.gov.tw/News_Content.aspx?n=4001&s=236078"
+   },
+   {
+    "agency": "行政院主計總處",
+    "dataset": "工業及服務業全年總薪資統計 表6",
+    "url": "https://www.stat.gov.tw/News_Content.aspx?n=4580&s=232642"
    }
   ]
  },
@@ -6510,6 +6523,222 @@
     "weight": 0.798093,
     "confidence": "medium",
     "note": "人口為戶政司單一年齡實數；勞參率借用行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國），並已拆成單一年齡（組間加總等於官方公布值）。全國曲線套用於新北市鶯歌區會有偏差，故標記為 medium"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2025,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "就業者人數",
+   "value": 120914.14,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 人力資源調查－表32 就業者之教育程度與年齡",
+    "source_age_group": "15-24",
+    "method": "formula_b_t2",
+    "weight": 0.983042,
+    "confidence": "medium",
+    "note": "15-24×0.9830（有效母體加權 131,014.0/133,274.1（基底：labor_force_participation）；發生率來源：行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國）；切割點 18 位於結構轉折，但 labor_force_participation 曲線已反映該轉折，不額外降級）"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2025,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "就業者人數",
+   "value": 215000.0,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 人力資源調查－表32 就業者之教育程度與年齡",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "25-29×1.0000（分組邊界完全吻合）"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2025,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "就業者人數",
+   "value": 302188.58,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 人力資源調查－表32 就業者之教育程度與年齡",
+    "source_age_group": "30-34 + 35-39",
+    "method": "formula_b_t2",
+    "weight": 0.601163,
+    "confidence": "medium",
+    "note": "30-34×1.0000（來源分組 30-34 完全落在目標 30-35 內，整筆納入，未插補）；35-39×0.2023（有效母體加權 52,509.0/259,526.4（基底：labor_force_participation）；發生率來源：行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國））"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2025,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "就業者人數",
+   "value": 638102.72,
+   "unit": "人",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 人力資源調查－表32 就業者之教育程度與年齡",
+    "source_age_group": "15-24 + 25-29 + 30-34 + 35-39",
+    "method": "formula_b_t2",
+    "weight": 0.796342,
+    "confidence": "medium",
+    "note": "15-24×0.9830（有效母體加權 131,014.0/133,274.1（基底：labor_force_participation）；發生率來源：行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國）；切割點 18 位於結構轉折，但 labor_force_participation 曲線已反映該轉折，不額外降級）；25-29×1.0000（來源分組 25-29 完全落在目標 18-35 內，整筆納入，未插補）；30-34×1.0000（來源分組 30-34 完全落在目標 18-35 內，整筆納入，未插補）；35-39×0.2023（有效母體加權 52,509.0/259,526.4（基底：labor_force_participation）；發生率來源：行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率（2025 年平均，全國））"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2024,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "平均年薪",
+   "value": 48.36,
+   "unit": "萬元/年",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 工業及服務業全年總薪資統計－表6 按縣市別及年齡別分",
+    "source_age_group": "0-24",
+    "method": "formula_c",
+    "weight": 1.0012,
+    "confidence": "medium",
+    "note": "來源分組 0-24 涵蓋目標但較寬。薪資為比率型，不能乘權重。改以受僱人數（人口×勞參率）為權重，把官方組值拆成單一年齡後重新聚合。薪資隨年齡單調上升（無局部極值），屬 backtest.py 驗證為可靠的情況"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2024,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "平均年薪",
+   "value": 59.9,
+   "unit": "萬元/年",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 工業及服務業全年總薪資統計－表6 按縣市別及年齡別分",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源分組 25-29 與目標完全吻合，原值照抄，未經插補"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2024,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "平均年薪",
+   "value": 66.76,
+   "unit": "萬元/年",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 工業及服務業全年總薪資統計－表6 按縣市別及年齡別分",
+    "source_age_group": "30-39",
+    "method": "formula_c",
+    "weight": 0.9675,
+    "confidence": "medium",
+    "note": "來源分組 30-39 涵蓋目標但較寬。薪資為比率型，不能乘權重。改以受僱人數（人口×勞參率）為權重，把官方組值拆成單一年齡後重新聚合。薪資隨年齡單調上升（無局部極值），屬 backtest.py 驗證為可靠的情況"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2024,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "平均年薪",
+   "value": 60.78,
+   "unit": "萬元/年",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 工業及服務業全年總薪資統計－表6 按縣市別及年齡別分",
+    "source_age_group": "多組",
+    "method": "formula_c",
+    "weight": 1.0,
+    "confidence": "medium",
+    "note": "目標區間橫跨多個官方分組。薪資為比率型，不能乘權重。改以受僱人數（人口×勞參率）為權重，把官方組值拆成單一年齡後重新聚合。薪資隨年齡單調上升（無局部極值），屬 backtest.py 驗證為可靠的情況"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2024,
+   "age_group": "18-24",
+   "gender": "total",
+   "metric": "中位數年薪",
+   "value": 45.14,
+   "unit": "萬元/年",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 工業及服務業全年總薪資統計－表6 按縣市別及年齡別分",
+    "source_age_group": "0-24",
+    "method": "formula_c",
+    "weight": 1.0008,
+    "confidence": "medium",
+    "note": "來源分組 0-24 涵蓋目標但較寬。薪資為比率型，不能乘權重。改以受僱人數（人口×勞參率）為權重，把官方組值拆成單一年齡後重新聚合。薪資隨年齡單調上升（無局部極值），屬 backtest.py 驗證為可靠的情況"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2024,
+   "age_group": "25-29",
+   "gender": "total",
+   "metric": "中位數年薪",
+   "value": 52.4,
+   "unit": "萬元/年",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 工業及服務業全年總薪資統計－表6 按縣市別及年齡別分",
+    "source_age_group": "25-29",
+    "method": "exact_match",
+    "weight": 1.0,
+    "confidence": "high",
+    "note": "來源分組 25-29 與目標完全吻合，原值照抄，未經插補"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2024,
+   "age_group": "30-35",
+   "gender": "total",
+   "metric": "中位數年薪",
+   "value": 56.4,
+   "unit": "萬元/年",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 工業及服務業全年總薪資統計－表6 按縣市別及年齡別分",
+    "source_age_group": "30-39",
+    "method": "formula_c",
+    "weight": 0.9843,
+    "confidence": "medium",
+    "note": "來源分組 30-39 涵蓋目標但較寬。薪資為比率型，不能乘權重。改以受僱人數（人口×勞參率）為權重，把官方組值拆成單一年齡後重新聚合。薪資隨年齡單調上升（無局部極值），屬 backtest.py 驗證為可靠的情況"
+   }
+  },
+  {
+   "region": "新北市",
+   "year": 2024,
+   "age_group": "18-35",
+   "gender": "total",
+   "metric": "中位數年薪",
+   "value": 52.81,
+   "unit": "萬元/年",
+   "provenance": {
+    "source_agency": "行政院主計總處",
+    "source_dataset": "行政院主計總處 工業及服務業全年總薪資統計－表6 按縣市別及年齡別分",
+    "source_age_group": "多組",
+    "method": "formula_c",
+    "weight": 1.0,
+    "confidence": "medium",
+    "note": "目標區間橫跨多個官方分組。薪資為比率型，不能乘權重。改以受僱人數（人口×勞參率）為權重，把官方組值拆成單一年齡後重新聚合。薪資隨年齡單調上升（無局部極值），屬 backtest.py 驗證為可靠的情況"
    }
   }
  ]

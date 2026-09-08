@@ -109,6 +109,8 @@ td.num { font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:
 .prov dd { margin:0; color:var(--ink-2); }
 .prov dd.mono { font-family:var(--mono); font-variant-numeric:tabular-nums; }
 .empty { color:var(--ink-3); font-size:.88rem; padding:.5rem 0; }
+.scopenote { font-size:.8rem; color:var(--ink-3); margin:-1.3rem 0 2rem; }
+.scopenote[hidden] { display:none; }
 
 .foot { margin-top:2.5rem; padding-top:1.1rem; border-top:1px solid var(--rule); font-size:.78rem; color:var(--ink-3); }
 .foot code { font-family:var(--mono); background:var(--sunk); padding:.08em .35em; border-radius:2px; }
@@ -137,6 +139,7 @@ td.num { font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:
 </div>
 
 <div class="tiles" id="tiles"></div>
+<p class="scopenote" id="scopenote"></p>
 
 <section>
   <h2 id="ranktitle">各行政區排行</h2>
@@ -318,6 +321,14 @@ td.num { font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:
       c.setAttribute('aria-pressed', c.dataset.band === state.band ? 'true' : 'false');
     });
     renderTiles(); renderRanks(); renderRows();
+
+    var missing = METRICS.filter(function (m) { return !find(state.area, state.band, m); });
+    var note = $('scopenote');
+    note.hidden = missing.length === 0;
+    note.textContent = missing.length
+      ? '就業與薪資只有縣市層級的官方統計，沒有行政區細分，所以這一區看不到：'
+        + missing.join('、') + '。切到「' + M.region + '（全市合計）」就看得到。'
+      : '';
     var keep = state.selected;
     select(keep && find(state.area, keep.age_group, keep.metric) || find(state.area, state.band, METRICS[0]));
   }

@@ -26,9 +26,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from data import sources  # noqa: E402
+from data.fetch_employment import fetch_employment  # noqa: E402
 from data.fetch_population import fetch_population_by_district  # noqa: E402
+from data.fetch_salary import fetch_salary  # noqa: E402
+from data.ungroup import ungroup  # noqa: E402
 from engine import (  # noqa: E402
+    MetricKind,
+    SourceRecord,
     TARGET_BANDS,
+    align_extensive,
     YOUTH_BAND,
     AgeBand,
     Confidence,
@@ -92,6 +98,82 @@ def _labour_records(ref, region, year, band, counts, period_label) -> list[Align
     ]
 
 
+def _employment_records(ref, region, refresh) -> list[AlignedRecord]:
+    """就業者人數：來源是五歲組，交給引擎對齊。25-29 會完全對上 → high。"""
+    emp = fetch_employment(region, refresh=refresh)
+    pool = [
+        SourceRecord(
+            region=region, year=emp["year"], age_band=AgeBand(lo, hi),
+            metric="就業者人數", value=v * 1000, unit="人",
+            kind=MetricKind.EXTENSIVE,
+            source_agency="行政院主計總處", source_dataset=emp["dataset"],
+            rate_key=LFPR,
+        )
+        for (lo, hi), v in emp["by_age"].items() if v
+    ]
+    out = []
+    for band in BANDS:
+        rec = align_extensive(ref, pool, band)
+        if rec is not None:
+            out.append(rec)
+    return out
+
+
+def _salary_records(ref, region, refresh) -> list[AlignedRecord]:
+    """年薪：比率型，不能乘權重。
+
+    來源分組 未滿25 / 25-29 / 30-39 / 40-49 / 50-64。
+      25-29  完全對上 → 直接抄，high
+      其他   用受僱人數當權重把組值拆成單一年齡再重新聚合
+
+    可以這樣拆是因為**薪資隨年齡單調上升**（48.3 → 59.9 → 69.0 → 77.2），
+    沒有失業率那種局部高峰。這正是 backtest.py 驗證過「拆得準」的情況。
+    """
+    sal = fetch_salary(region, refresh=refresh)
+    ages = range(15, 65)
+    employed = {a: ref.population(a) * ref.rate(LFPR, a) for a in ages}
+
+    out = []
+    for kind, curve in (("平均年薪", sal["mean"]), ("中位數年薪", sal["median"])):
+        single = ungroup(curve, employed, cap=10_000.0)
+        for band in BANDS:
+            src = next((b for b in curve if b[0] <= band.start and band.end <= b[1]), None)
+            exact = src is not None and src == (band.start, band.end)
+
+            if exact:
+                value, conf, method = curve[src], Confidence.HIGH, Method.EXACT_MATCH
+                note = f"來源分組 {src[0]}-{src[1]} 與目標完全吻合，原值照抄，未經插補"
+            else:
+                w = sum(employed[a] for a in band.ages() if a in employed)
+                if w <= 0:
+                    continue
+                value = sum(employed[a] * single[a] for a in band.ages() if a in single) / w
+                conf, method = Confidence.MEDIUM, Method.FORMULA_C
+                note = (
+                    f"薪資為比率型，不能乘權重。改以受僱人數（人口×勞參率）為權重，"
+                    f"把官方組值拆成單一年齡後重新聚合。"
+                    f"薪資隨年齡單調上升（無局部極值），屬 backtest.py 驗證為可靠的情況"
+                )
+                if src:
+                    note = f"來源分組 {src[0]}-{src[1]} 涵蓋目標但較寬。" + note
+                else:
+                    note = "目標區間橫跨多個官方分組。" + note
+
+            out.append(AlignedRecord(
+                region=region, year=sal["year"], age_group=band.label, gender="total",
+                metric=kind, value=round(value, 2), unit=sal["unit"],
+                provenance=Provenance(
+                    source_agency="行政院主計總處",
+                    source_dataset=sal["dataset"],
+                    source_age_group=f"{src[0]}-{src[1]}" if src else "多組",
+                    method=method,
+                    weight=1.0 if exact or src is None else round(value / curve[src], 4),
+                    confidence=conf, note=note,
+                ),
+            ))
+    return out
+
+
 def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     ref = ReferenceData.load()
     by_district, meta = fetch_population_by_district(region, refresh=refresh)
@@ -113,6 +195,10 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
             records.append(_population_record(area, year, band, pop, label))
             records.extend(_labour_records(ref, area, year, band, counts, label))
 
+    # 就業與薪資只有縣市層級，沒有行政區細分 —— 只掛在全市那一層
+    records.extend(_employment_records(ref, region, refresh))
+    records.extend(_salary_records(ref, region, refresh))
+
     return {
         "_generated": date.today().isoformat(),
         "_schema": "YouthLens unified v1（Spec §7.3）",
@@ -129,6 +215,10 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
                  "url": sources.POPULATION_LANDING},
                 {"agency": "行政院主計總處", "dataset": sources.LFPR_DATASET,
                  "url": sources.LFPR_XML},
+                {"agency": "行政院主計總處", "dataset": "人力資源調查 表32 就業者之教育程度與年齡",
+                 "url": "https://www.stat.gov.tw/News_Content.aspx?n=4001&s=236078"},
+                {"agency": "行政院主計總處", "dataset": "工業及服務業全年總薪資統計 表6",
+                 "url": "https://www.stat.gov.tw/News_Content.aspx?n=4580&s=232642"},
             ],
         },
         "records": [r.to_dict() for r in records],

@@ -26,6 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from data import sources  # noqa: E402
+from data.fetch_benchmark import fetch_benchmark  # noqa: E402
 from data.fetch_employment import fetch_employment  # noqa: E402
 from data.fetch_population import fetch_population_by_district  # noqa: E402
 from data.fetch_labour import latest, unemployment  # noqa: E402
@@ -644,6 +645,42 @@ def _policy_notes(records: list[AlignedRecord], region: str) -> list[dict]:
     return notes
 
 
+def _benchmark_note(bench: dict, region: str) -> dict | None:
+    """六都排名裡最值得講的一件事。
+
+    只挑「同一群人在不同指標上排名落差最大」的組合 —— 那才是政策問題。
+    單看一個排名高低只是描述現況，兩個排名的落差才指向原因。
+    """
+    metrics = bench.get("metrics", {})
+    ranks = {m: blk["rank"].get(region) for m, blk in metrics.items()
+             if blk["rank"].get(region)}
+    if len(ranks) < 2:
+        return None
+    best = min(ranks, key=lambda m: ranks[m])
+    worst = max(ranks, key=lambda m: ranks[m])
+    if ranks[worst] - ranks[best] < 2:
+        return None
+
+    def show(m: str) -> str:
+        blk = metrics[m]
+        v = blk["values"][region]
+        return f"{v:.1%}" if blk["unit"] == "%" else f"{v:.1f} {blk['unit']}"
+
+    n = len(bench.get("cities", []))
+    return {
+        "title": f"{region}青年「投入多、回報少」的落差要正視",
+        "body": f"同樣是 {bench['band']} 歲這一群人，"
+                f"{region}的{best}在六都排第 {ranks[best]}（{show(best)}），"
+                f"{worst}卻排第 {ranks[worst]}（{show(worst)}）。"
+                "願意投入勞動市場的比例最高，得到的待遇卻在後段 —— "
+                "這比較像產業結構與通勤外流的問題，不是青年不努力。",
+        "detail": [f"{m}　六都第 {r} / {n}　{show(m)}"
+                   for m, r in sorted(ranks.items(), key=lambda kv: kv[1])],
+        "confidence": "high",
+        "basis": f"六都 {bench['band']} 歲官方公布值，分組完全吻合，未經任何插補",
+    }
+
+
 def _trends(region: str, refresh) -> dict:
     """時間序列。—— 命題：「有助於整合出青年動態」
 
@@ -718,6 +755,12 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     records.extend(_unemployment_records(ref, region, refresh))
     records.extend(_vacancy_records(refresh))
 
+    bench = fetch_benchmark(refresh=refresh)
+    notes = _policy_notes(records, region)
+    bench_note = _benchmark_note(bench, region)
+    if bench_note:
+        notes.insert(0, bench_note)
+
     educations = sorted({r.education for r in records
                          if r.education and r.region != "全國"})
     industries = sorted({r.education for r in records if r.region == "全國" and r.education})
@@ -753,8 +796,9 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
                  "url": NTPC_LANDING},
             ],
         },
+        "benchmark": bench,
         "trends": _trends(region, refresh),
-        "policy_notes": _policy_notes(records, region),
+        "policy_notes": notes,
         "curves": _curves(ref, areas, region, refresh),
         "records": [r.to_dict() for r in records],
     }

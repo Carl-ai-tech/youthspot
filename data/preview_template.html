@@ -167,6 +167,20 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 .trend svg { display:block; width:100%; height:auto; }
 .xcheck { font-size:.9rem; background:var(--accent-soft); border-radius:3px; padding:.7rem .9rem; margin-top:.3rem; }
 
+
+.bench { display:flex; flex-direction:column; gap:1.1rem; }
+.bmetric .t { display:flex; align-items:baseline; gap:.6rem; margin-bottom:.35rem; }
+.bmetric .t b { font-size:.9rem; }
+.bmetric .t span { font-family:var(--mono); font-size:.7rem; color:var(--ink-3); }
+.brow { display:grid; grid-template-columns:1.4rem 4.2rem 1fr auto; align-items:center; gap:.5rem; padding:.15rem 0; }
+.brow .n { font-family:var(--mono); font-size:.75rem; color:var(--ink-3); text-align:right; }
+.brow .c { font-size:.85rem; color:var(--ink-2); }
+.brow .track { height:14px; background:var(--sunk); border-radius:2px; overflow:hidden; }
+.brow .track i { display:block; height:100%; background:var(--drop, var(--ink-3)); opacity:.45; border-radius:2px; }
+.brow .v { font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:.8rem; }
+.brow.me .c { color:var(--ink); font-weight:700; }
+.brow.me .track i { background:var(--accent); opacity:1; }
+
 .sources { border-top:1px solid var(--rule); margin-top:2rem; padding-top:1.2rem; }
 .sources h2 { font-size:.9rem; margin:0 0 .7rem; }
 .sources ul { list-style:none; margin:0; padding:0; display:grid; gap:.35rem; }
@@ -276,6 +290,12 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
           <span><i class="sw" style="background:var(--accent)"></i>趨勢統計顯著</span>
           <span><i class="sw" style="background:var(--second)"></i>看不出明確方向</span>
         </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>六都比較</h2><span class="aspect">標竿</span></div>
+        <p class="note" id="benchNote"></p>
+        <div class="bench" id="benchBox"></div>
       </section>
 
       <section class="panel">
@@ -624,6 +644,46 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     return out + '</svg>';
   }
 
+
+  // ── 六都比較 ────────────────────────────────────────────────
+  // 「我們在六都排第幾」是首長最常問的問題，而同一批表格裡本來就有
+  // 全部 22 個縣市 —— 先前只是被我們篩掉了。
+  function renderBench() {
+    var host = $('benchBox');
+    if (!host) return;
+    host.innerHTML = '';
+    var B = DATA.benchmark;
+    if (!B || !B.metrics) return;
+    $('benchNote').textContent = B.note + '。';
+
+    Object.keys(B.metrics).forEach(function (name) {
+      var blk = B.metrics[name];
+      var cities = B.cities.slice().sort(function (a, b) {
+        return blk.rank[a] - blk.rank[b];
+      });
+      var max = 0;
+      cities.forEach(function (c) { if (blk.values[c] > max) max = blk.values[c]; });
+
+      var wrap = document.createElement('div');
+      wrap.className = 'bmetric';
+      var html = '<div class="t"><b>' + name + '</b><span>'
+        + (blk.higher_is_better ? '高者佳' : '低者佳') + '</span></div>';
+      cities.forEach(function (c) {
+        var v = blk.values[c];
+        var txt = blk.unit === '%' ? (v * 100).toFixed(1) + '%'
+                                   : v.toFixed(1) + ' ' + blk.unit;
+        html += '<div class="brow' + (c === M.region ? ' me' : '') + '">'
+          + '<span class="n">' + blk.rank[c] + '.</span>'
+          + '<span class="c">' + c + '</span>'
+          + '<span class="track"><i style="width:'
+          + (max > 0 ? (v / max * 100).toFixed(1) : 0) + '%"></i></span>'
+          + '<span class="v">' + txt + '</span></div>';
+      });
+      wrap.innerHTML = html;
+      host.appendChild(wrap);
+    });
+  }
+
   function renderTrends() {
     var host = $('trendBox');
     if (!host) return;
@@ -739,7 +799,7 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     document.querySelectorAll('.chip').forEach(function (c) {
       c.setAttribute('aria-pressed', c.dataset.band === state.band ? 'true' : 'false');
     });
-    renderHero(); renderPolicy(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderTrends(); renderRank();
+    renderHero(); renderPolicy(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderBench(); renderTrends(); renderRank();
     var keep = state.sel;
     select((keep && find(state.area, keep.age_group, keep.metric, keep.education))
       || find(state.area, state.band, '人口數'));

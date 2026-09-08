@@ -152,6 +152,13 @@ checkCompare('全市失業率答得出來', '新北市 18-24 歲的失業率',
 checkCompare('排名也要有圖表和結論', '哪一區的青年最多？',
   (t, v, bars) => bars > 0 && v.indexOf('第一名') >= 0);
 
+// 六都比較：首長最常問「我們排第幾」
+const benchCount = el('benchBox').children.length;
+const benchOk = benchCount >= 4;
+if (!benchOk) fail++;
+console.log(`${benchOk ? '✅' : '❌'}　六都比較產出 ${benchCount} 個指標`);
+console.log();
+
 // 時間趨勢：命題的「整合出青年動態」
 const trendCount = el('trendBox').children.length;
 const trendOk = trendCount >= 3;   // 兩張圖 + 交叉驗證
@@ -166,5 +173,5 @@ if (!policyOk) fail++;
 console.log(`${policyOk ? '✅' : '❌'}　施政建議產出 ${policyCount} 條`);
 console.log();
 
-console.log(fail === 0 ? '全部 19 項通過' : `❌ ${fail} 項失敗`);
+console.log(fail === 0 ? '全部 20 項通過' : `❌ ${fail} 項失敗`);
 process.exit(fail === 0 ? 0 : 1);

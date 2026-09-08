@@ -1,6 +1,6 @@
 {
   "_status": "OFFICIAL",
-  "_note": "由 data/build_reference.py 於 2026-09-08 產生。人口為月底數、勞動統計為年平均，兩者時點不同。",
+  "_note": "由 data/build_reference.py 於 2026-09-09 產生。人口為月底數、勞動統計為年平均，兩者時點不同。",
   "region": "新北市",
   "year": 2026,
   "population": {
@@ -9,7 +9,7 @@
     "api_url": "https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP014/11507",
     "unit": "人",
     "villages_aggregated": 1039,
-    "retrieved": "2026-09-08",
+    "retrieved": "2026-09-09",
     "by_age": {
       "15": 31293,
       "16": 31099,
@@ -80,7 +80,7 @@
         "55-59": 0.642,
         "60-64": 0.394
       },
-      "retrieved": "2026-09-08",
+      "retrieved": "2026-09-09",
       "by_age": {
         "15": 0.0,
         "16": 0.0,
@@ -150,7 +150,7 @@
         "55-59": 0.020099999999999996,
         "60-64": 0.018000000000000002
       },
-      "retrieved": "2026-09-08",
+      "retrieved": "2026-09-09",
       "by_age": {
         "15": 0.0921,
         "16": 0.0921,

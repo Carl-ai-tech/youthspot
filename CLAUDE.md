@@ -39,6 +39,7 @@ $py="$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 & $py demo_scan.py                       # 掃描檔判讀 demo
 & $py -m llm.backend                     # 列出可用的 Bedrock 模型（9/12 早上第一件事）
 & $py check_scan_accuracy.py --self-test # 驗證評分程式本身
+node tests/verify_dashboard.mjs          # 驗證儀表板問答（改前端後一定要跑）
 & $py check_scan_accuracy.py <圖片>       # 9/12 接上 Bedrock 後測真實準確率
 ```
 
@@ -142,6 +143,18 @@ tests/          41 個測試
 
 `data/_cache/` 有 38MB 原始檔，不進版控，跑一次 `build_reference.py` 就重建。
 `reference_ntpc.json` 與 `unified.json` **有**進版控 —— 比賽現場可離線 demo。
+
+## 改前端之後一定要跑 `node tests/verify_dashboard.mjs`
+
+儀表板的問答是純前端，Python 測試涵蓋不到。這支會把 `preview.html`
+裡**整段**腳本原封不動在假 DOM 上跑一次。
+
+**關鍵是「什麼都不餵」**：不注入 M、R、BANDS、METRICS 等變數，
+讓腳本自己宣告。先前的版本把這些當參數餵進去，等於幫程式補上了
+其實沒宣告的變數，結果 `METRICS is not defined` 在測試裡永遠不會出現，
+卻在真實瀏覽器裡直接讓按鈕失效。**驗證環境比真實環境寬鬆，等於沒驗證。**
+
+`runAsk` 另外包了 try/catch，出錯會把訊息印在答案區而不是靜靜消失。
 
 ## 三處刻意偏離 Spec（都已驗證，不要改回去）
 

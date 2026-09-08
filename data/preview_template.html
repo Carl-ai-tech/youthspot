@@ -273,6 +273,7 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     if (!seenA[r.region]) { seenA[r.region] = 1; areas.push(r.region); }
   });
   var BANDS = M.age_groups;
+  var METRICS = M.metrics;
   var EDUS = M.educations || [];
   var state = { area: M.region, band: '18-35', sel: null };
 

@@ -38,6 +38,7 @@ AGE_COLUMNS = {
     (60, 64): 22,
 }
 EDUCATION_COLUMNS = {"國中及以下": 3, "高級中等": 6, "大專及以上": 7}
+EDUCATION_DETAIL = {"國小及以下": 4, "國中": 5, "專科": 8, "大學": 9, "研究所": 10}
 COL_TOTAL, COL_25_44, COL_45_64, COL_65UP = 2, 13, 18, 23
 
 
@@ -81,6 +82,7 @@ def fetch_employment(region: str = "新北市", *, refresh: bool = False) -> dic
             "total": to_float(row[COL_TOTAL]),
             "by_age": {b: to_float(row[i]) for b, i in AGE_COLUMNS.items()},
             "by_education": {k: to_float(row[i]) for k, i in EDUCATION_COLUMNS.items()},
+            "by_education_detail": {k: to_float(row[i]) for k, i in EDUCATION_DETAIL.items()},
         }
     raise RuntimeError(f"表32 裡找不到 {region}")
 

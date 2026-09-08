@@ -182,11 +182,11 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 
       <section class="panel">
         <div class="panel-head"><h2>教育程度 × 薪資水準</h2><span class="aspect">教育 × 就業</span></div>
-        <p class="note">命題點名的跨領域交叉。人數是新北市的實際統計，薪資只有全國值 —— 官方沒有縣市 × 教育程度的薪資統計，所以薪資那一側標記為低信心度。</p>
+        <p class="note">命題點名的跨領域交叉。人數是新北市實際統計；官方沒有縣市 × 教育程度的薪資，所以借全國的學歷差距形狀，再用表6 量出的地區係數校準到新北市水準 —— 係數隨薪資水準變動（低薪族群 0.995、高薪族群 0.908）。點開任一條可以看完整推導。<br><b>官方沒有教育程度 × 年齡的交叉表，所以這一區是全年齡，不能只看 18–35 歲。</b></p>
         <div class="bars" id="eduBars"></div>
         <div class="legend">
           <span><i class="sw" style="background:var(--accent)"></i>新北市就業者人數</span>
-          <span><i class="sw" style="background:var(--second)"></i>全國平均年薪</span>
+          <span><i class="sw" style="background:var(--second)"></i>新北市平均年薪（校準後）</span>
         </div>
       </section>
 
@@ -366,18 +366,19 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
   }
 
   function renderEdu() {
+    // 教育程度區塊的兩條長條單位不同（人 vs 萬元），刻意不共用同一個尺度
     var host = $('eduBars'); host.innerHTML = '';
     if (!EDUS.length) return;
     var maxN = 0, maxS = 0;
     EDUS.forEach(function (e) {
       var n = find(M.region, '15-64', '就業者人數', e);
-      var s = find(M.region, '15-64', '平均年薪（全國）', e);
+      var s = find(M.region, '15-64', '平均年薪', e);
       if (n && n.value > maxN) maxN = n.value;
       if (s && s.value > maxS) maxS = s.value;
     });
     EDUS.forEach(function (e) {
       barRow(host, e, find(M.region, '15-64', '就業者人數', e), maxN);
-      barRow(host, '　↳ 年薪', find(M.region, '15-64', '平均年薪（全國）', e), maxS, { alt: true });
+      barRow(host, '　↳ 年薪', find(M.region, '15-64', '平均年薪', e), maxS, { alt: true });
     });
   }
 

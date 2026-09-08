@@ -175,20 +175,74 @@ def _salary_records(ref, region, refresh) -> list[AlignedRecord]:
     return out
 
 
-# 表32 的教育程度只分三級，表1 分四級。交集的三級直接對應，
-# 「大專及以上」在薪資表對應「專科及大學」（研究所另計，見 note）。
-EDU_SALARY_KEY = {"國中及以下": "國中及以下", "高級中等": "高級中等", "大專及以上": "專科及大學"}
+def _regional_factor(sal_local: dict, sal_national: dict):
+    """從表6 量出「新北市薪資相對全國的折扣」，而且它隨薪資水準變動。
+
+    表6 同時有全國與新北市、同一個統計口徑，所以逐年齡組相除就得到地區係數：
+        未滿25  1.000　　25-29  0.939　　30-39  0.914　　40-49  0.906　　50-64  0.878
+    低薪族群幾乎沒差，高薪族群差到 12% —— 用單一係數會把兩端都算錯。
+
+    回傳一個函式：給定「全國薪資水準」，回傳該水準的地區係數（線性內插，兩端夾住）。
+    這是把公式 D 的「借形狀、錨水準」換到地區維度上用。
+    """
+    pts = sorted(
+        (sal_national["mean"][b], sal_local["mean"][b] / sal_national["mean"][b])
+        for b in sal_local["mean"] if sal_national["mean"].get(b)
+    )
+    if not pts:
+        return (lambda x: 1.0), pts
+
+    def factor(level: float) -> float:
+        if level <= pts[0][0]:
+            return pts[0][1]
+        if level >= pts[-1][0]:
+            return pts[-1][1]
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+            if x0 <= level <= x1:
+                return y0 + (y1 - y0) * (level - x0) / (x1 - x0)
+        return pts[-1][1]
+
+    return factor, pts
 
 
 def _education_records(region, refresh) -> list[AlignedRecord]:
     """命題點名的「教育程度 × 薪資水準」交叉。
 
-    就業者人數是**新北市**的（表32），薪資是**全國**的（表1）——
-    官方沒有縣市 × 教育程度的薪資統計。所以薪資的 metric 名稱直接寫「全國」，
-    不必等到有人點開 provenance 才發現。
+    官方沒有縣市 × 教育程度的薪資統計，只有全國值。但直接把全國數字掛上
+    「新北市」再標 low，等於放一個自己都不信的數字 —— 沒有參考價值。
+
+    改成校準：用表6 量出的地區係數（隨薪資水準變動）把全國值調整到新北市水準。
+    形狀（學歷之間的差距）借全國，水準錨定在新北市自己的資料上 —— 公式 D 的邏輯。
+
+    ⚠️ 仍然無法做到的事：官方**沒有任何**教育程度 × 年齡的交叉表
+    （表28／表32／data.gov.tw 都只有邊際統計），所以這一組是全年齡，
+    不能只看 18-35 歲。用兩個邊際去推交叉需要假設兩者獨立，
+    但年輕人學歷明顯較高，那個假設是錯的，會產生一個很有自信的錯數字。
     """
     emp = fetch_employment(region, refresh=refresh)
-    sal = fetch_salary_by_education(refresh=refresh)
+    sal_edu = fetch_salary_by_education(refresh=refresh)
+    sal_local = fetch_salary(region, refresh=refresh)
+    sal_nat = fetch_salary("總計", refresh=refresh)
+    factor, pts = _regional_factor(sal_local, sal_nat)
+
+    # 表32 的「大專及以上」在薪資表分成專科及大學、研究所兩級。
+    # 用新北市自己的專科／大學／研究所人數加權合併，而不是隨便挑一個。
+    detail = emp.get("by_education_detail", {})
+    tertiary = (detail.get("專科", 0) or 0) + (detail.get("大學", 0) or 0)
+    graduate = detail.get("研究所", 0) or 0
+    if tertiary + graduate > 0:
+        national_tertiary = (
+            sal_edu["mean"]["專科及大學"] * tertiary + sal_edu["mean"]["研究所"] * graduate
+        ) / (tertiary + graduate)
+    else:
+        national_tertiary = sal_edu["mean"]["專科及大學"]
+
+    NATIONAL = {
+        "國中及以下": sal_edu["mean"]["國中及以下"],
+        "高級中等": sal_edu["mean"]["高級中等"],
+        "大專及以上": national_tertiary,
+    }
+    span = f"{pts[0][1]:.3f}–{pts[-1][1]:.3f}" if pts else "n/a"
     out = []
 
     for level, headcount in emp["by_education"].items():
@@ -204,20 +258,36 @@ def _education_records(region, refresh) -> list[AlignedRecord]:
             ),
         ))
 
-    for level, key in EDU_SALARY_KEY.items():
+    for level, national in NATIONAL.items():
+        k = factor(national)
         extra = ""
         if level == "大專及以上":
-            extra = (f"「大專及以上」在薪資表對應「專科及大學」；"
-                     f"研究所另為 {sal['mean']['研究所']} {sal['unit']}，本列未併入")
+            extra = (f"「大專及以上」由專科及大學（{sal_edu['mean']['專科及大學']} 萬）與"
+                     f"研究所（{sal_edu['mean']['研究所']} 萬）依{region}實際人數"
+                     f"{tertiary:.0f}：{graduate:.0f} 千人加權合併為 {national:.1f} 萬。")
         out.append(AlignedRecord(
-            region=region, year=sal["year"], age_group="15-64", gender="total",
-            metric="平均年薪（全國）", value=sal["mean"][key], unit=sal["unit"], education=level,
+            region=region, year=sal_edu["year"], age_group="15-64", gender="total",
+            metric="平均年薪", value=round(national * k, 1), unit=sal_edu["unit"],
+            education=level,
             provenance=Provenance(
-                source_agency="行政院主計總處", source_dataset=sal["dataset"],
-                source_age_group="15-64", method=Method.EXACT_MATCH, weight=1.0,
-                confidence=Confidence.LOW,
-                note=f"⚠️ 這是**全國**平均，官方沒有縣市 × 教育程度的薪資統計，"
-                     f"不能當成{region}的實際薪資。人數是{region}的，薪資是全國的。{extra}",
+                source_agency="行政院主計總處",
+                source_dataset=f"{sal_edu['dataset']} ＋ 表6（地區校準）",
+                source_age_group="15-64",
+                method=Method.FORMULA_D_T3, weight=round(k, 4),
+                confidence=Confidence.MEDIUM,
+                note=(
+                    f"{extra}"
+                    f"官方無縣市 × 教育程度薪資，故借全國的學歷差距形狀，"
+                    f"再用表6 量出的地區係數校準到{region}水準："
+                    f"全國 {national:.1f} 萬 × {k:.3f} = {national * k:.1f} 萬。"
+                    f"係數不是固定值，而是隨薪資水準變動（觀測範圍 {span}）—— "
+                    f"表6 顯示{region}在低薪族群幾乎與全國持平、高薪族群落後約 12%。"
+                    f"兩個假設：①地區差距只取決於薪資水準，與學歷本身無關；"
+                    f"②表1（各業受僱員工，含部分工時）與表6（本國籍全時受僱員工）"
+                    f"統計口徑不同，這裡只借用表6 的「比值」而非「水準」，"
+                    f"跨口徑套用比值比套用金額安全，但仍是假設。"
+                    f"⚠️ 此列為全年齡（15-64），官方無教育程度 × 年齡交叉表，無法只取 18-35 歲"
+                ),
             ),
         ))
     return out

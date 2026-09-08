@@ -60,6 +60,24 @@ def fetch_salary_by_education(*, refresh: bool = False) -> dict:
     raise RuntimeError("表1 裡找不到「全體」那一列")
 
 
+def fetch_salary_by_industry(*, refresh: bool = False) -> dict[str, float]:
+    """表1 的每一列是一個行業，回傳 {行業: 平均年薪（萬元）}。
+
+    行業分類與職缺調查（mp05005）用的是同一套標準行業分類，可以直接對照 ——
+    這讓「哪些領域缺工」能再加一句「而且薪水如何」。
+    """
+    rows = download_ods(TABLE1, cache_name="dgbas_table1_salary_edu.ods", refresh=refresh)
+    out: dict[str, float] = {}
+    for row in rows:
+        if len(row) < 8 or not row[0]:
+            continue
+        name = clean(row[0])
+        v = to_float(row[COL_ALL])
+        if name and v and name not in ("全體",):
+            out[name] = v
+    return out
+
+
 if __name__ == "__main__":
     d = fetch_salary_by_education()
     print(f"{d['scope']} {d['year']} 年受僱員工年薪　全體平均 {d['all_mean']} {d['unit']}")

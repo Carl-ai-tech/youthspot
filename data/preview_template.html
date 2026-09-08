@@ -191,6 +191,16 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
       </section>
 
       <section class="panel">
+        <div class="panel-head"><h2>哪些領域在缺工</h2><span class="aspect">趨勢預測</span></div>
+        <p class="note" id="vacNote"></p>
+        <div class="bars" id="vacBars"></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--accent)"></i>趨勢統計顯著</span>
+          <span><i class="sw" style="background:var(--second)"></i>看不出明確方向</span>
+        </div>
+      </section>
+
+      <section class="panel">
         <div class="panel-head"><h2 id="rankTitle">各行政區比較</h2><span class="aspect">人口</span></div>
         <p class="note" id="rankNote"></p>
         <div class="bars" id="rankBars"></div>
@@ -224,7 +234,10 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
   var $ = function (id) { return document.getElementById(id); };
 
   var areas = [], seenA = {};
-  R.forEach(function (r) { if (!seenA[r.region]) { seenA[r.region] = 1; areas.push(r.region); } });
+  R.forEach(function (r) {
+    if (r.region === '全國') return;
+    if (!seenA[r.region]) { seenA[r.region] = 1; areas.push(r.region); }
+  });
   var BANDS = M.age_groups;
   var EDUS = M.educations || [];
   var state = { area: M.region, band: '18-35', sel: null };
@@ -264,6 +277,13 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     var c = r.provenance.confidence;
     $('pvConf').innerHTML = '<span class="pill ' + c + '">' + c + '</span>';
     var dl = $('pvList'); dl.innerHTML = '';
+    if (r.extras && r.extras._low !== undefined) {
+      var dt0 = document.createElement('dt');
+      dt0.textContent = '95% 預測區間';
+      var dd0 = document.createElement('dd'); dd0.className = 'mono';
+      dd0.textContent = num(r.extras._low) + ' – ' + num(r.extras._high) + ' 個';
+      dl.appendChild(dt0); dl.appendChild(dd0);
+    }
     Object.keys(LABELS).forEach(function (k) {
       var v = r.provenance[k];
       if (v === undefined || v === null || v === '') return;
@@ -382,6 +402,54 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     });
   }
 
+  function renderVac() {
+    var host = $("vacBars"); host.innerHTML = "";
+    var inds = M.industries || [];
+    if (!inds.length) return;
+
+    var rows = [];
+    inds.forEach(function (ind) {
+      var now = find("全國", "全體", "職缺數", ind);
+      var fc = find("全國", "全體", "職缺數預估", ind);
+      var pay = find("全國", "全體", "行業平均年薪", ind);
+      if (now && fc) rows.push({ ind: ind, now: now, fc: fc, pay: pay,
+        pct: fc.extras ? fc.extras._annual_pct : 0,
+        dir: fc.extras ? fc.extras._direction : "flat" });
+    });
+    rows.sort(function (a, b) { return b.pct - a.pct; });
+    if (!rows.length) return;
+
+    var max = rows.reduce(function (m, r) { return Math.max(m, r.now.value); }, 0);
+    var ARROW = { up: "↑", down: "↓", flat: "—" };
+
+    rows.forEach(function (r) {
+      var live = r.dir !== "flat";
+      var b = document.createElement("button");
+      b.className = "bar"; b.type = "button";
+      b.innerHTML =
+        '<span class="bar-k">' + r.ind + '</span>' +
+        '<span class="bar-track"><span class="bar-fill' + (live ? '' : ' alt') +
+          '" style="width:' + (r.now.value / max * 100).toFixed(1) + '%' +
+          (live ? '' : ';opacity:.55') + '"></span></span>' +
+        '<span class="bar-v">' + num(r.now.value) + ' <small>個</small>' +
+          '<b style="font-weight:600;color:' + (live ? 'var(--accent)' : 'var(--ink-3)') + '">' +
+            ARROW[r.dir] + ' ' + (r.pct * 100).toFixed(1) + '%/年</b>' +
+          (r.pay ? ' <small>' + r.pay.value.toFixed(0) + ' 萬</small>' : '') +
+        '</span>';
+      b.addEventListener("click", function () { select(r.fc); });
+      host.appendChild(b);
+    });
+
+    var up = rows.filter(function (r) { return r.dir === "up"; }).length;
+    $("vacNote").innerHTML =
+      '「職缺」是缺工的官方定義 —— 廠商已開缺、正在找人、還沒找到人的職位數。'
+      + '長條是 ' + rows[0].now.year + ' 年的實際職缺數，右邊是年變化率與該行業平均年薪。'
+      + '<br><b>' + up + ' 個行業的成長趨勢在統計上顯著</b>（深色）；'
+      + '其餘看不出明確方向（淺色）—— 點開任一條可以看 '
+      + (M.forecast_year || '') + ' 年預估值與 95% 區間。'
+      + '<br>刻意<b>不用機器學習</b>：資料點只有十個，訓練出來的模型不可信也無法解釋。';
+  }
+
   function renderRank() {
     var host = $('rankBars'); host.innerHTML = '';
     var list = R.filter(function (r) {
@@ -431,7 +499,7 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     document.querySelectorAll('.chip').forEach(function (c) {
       c.setAttribute('aria-pressed', c.dataset.band === state.band ? 'true' : 'false');
     });
-    renderHero(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderRank();
+    renderHero(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderRank();
     var keep = state.sel;
     select((keep && find(state.area, keep.age_group, keep.metric, keep.education))
       || find(state.area, state.band, '人口數'));

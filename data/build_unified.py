@@ -29,7 +29,13 @@ from data import sources  # noqa: E402
 from data.fetch_employment import fetch_employment  # noqa: E402
 from data.fetch_population import fetch_population_by_district  # noqa: E402
 from data.fetch_salary import fetch_salary  # noqa: E402
-from data.fetch_salary_education import fetch_salary_by_education  # noqa: E402
+from data.fetch_salary_education import (  # noqa: E402
+    fetch_salary_by_education,
+    fetch_salary_by_industry,
+)
+from data.fetch_vacancy import AGGREGATES, DATASET as VACANCY_DATASET  # noqa: E402
+from data.fetch_vacancy import LANDING as VACANCY_LANDING, fetch_vacancies  # noqa: E402
+from data.forecast import annual_means, fit  # noqa: E402
 from data.ungroup import ungroup  # noqa: E402
 from engine import (  # noqa: E402
     MetricKind,
@@ -293,6 +299,97 @@ def _education_records(region, refresh) -> list[AlignedRecord]:
     return out
 
 
+FORECAST_FROM = 2015     # 2019 年以前的行業涵蓋範圍不同，只取近十年
+FORECAST_TO = 2027
+
+
+def _vacancy_records(refresh) -> list[AlignedRecord]:
+    """命題的預期成果：預測哪些領域缺工。
+
+    「職缺數」是缺工的官方定義 —— 廠商已開缺、正在找人、還沒找到人的職位數。
+
+    刻意不用機器學習：年度資料點只有十個，訓練出來的模型不可信也無法解釋。
+    改用線性外推，並且每一筆都附 95% 預測區間。
+
+    方向判定用**斜率顯著性**（小樣本 t 檢定），不是「預測區間有沒有跨過現值」——
+    後者包含了每年的隨機波動，會把明顯在成長的行業也判成看不出來。
+
+    再跟表1 的行業別薪資交叉，讓「哪些領域缺工」後面能接一句「而且薪水如何」。
+    """
+    vac = fetch_vacancies(refresh=refresh)
+    industry_pay = fetch_salary_by_industry(refresh=refresh)
+    out: list[AlignedRecord] = []
+
+    for industry, series in vac.items():
+        if industry in AGGREGATES:
+            continue
+        points = sorted((y, v) for y, v in annual_means(series).items() if y >= FORECAST_FROM)
+        trend = fit(points)
+        if trend is None or trend.last_y <= 0:
+            continue
+        latest_year = int(trend.last_x)
+        yhat, margin = trend.predict(FORECAST_TO)
+        arrow = {"up": "成長", "down": "萎縮", "flat": "無明顯趨勢"}[trend.direction()]
+
+        out.append(AlignedRecord(
+            region="全國", year=latest_year, age_group="全體", gender="total",
+            metric="職缺數", value=round(trend.last_y), unit="個", education=industry,
+            provenance=Provenance(
+                source_agency="行政院主計總處", source_dataset=VACANCY_DATASET,
+                source_age_group="全體", method=Method.EXACT_MATCH, weight=1.0,
+                confidence=Confidence.HIGH,
+                note=f"{latest_year} 年四次調查的平均值，官方實測，未經推估。"
+                     f"職缺＝廠商已開缺、正在找人、尚未找到人的職位數",
+            ),
+        ))
+
+        out.append(AlignedRecord(
+            region="全國", year=FORECAST_TO, age_group="全體", gender="total",
+            metric="職缺數預估", value=round(max(yhat, 0)), unit="個", education=industry,
+            provenance=Provenance(
+                source_agency="行政院主計總處（本專案外推）",
+                source_dataset=f"{VACANCY_DATASET}（{FORECAST_FROM}–{latest_year} 年平均）",
+                source_age_group="全體",
+                method=Method.FORMULA_D_T3,
+                weight=round(trend.annual_change_pct, 4),
+                confidence=Confidence.MEDIUM if trend.confidence == "medium" else Confidence.LOW,
+                note=(
+                    f"線性外推，非機器學習模型（資料點僅 {trend.n} 個，訓練模型不可信）。"
+                    f"{FORECAST_TO} 年預估 {max(yhat, 0):,.0f} 個，"
+                    f"95% 區間 {max(yhat - margin, 0):,.0f}–{yhat + margin:,.0f} 個。"
+                    f"年變化 {trend.annual_change_pct:+.1%}，判定為「{arrow}」"
+                    f"（斜率 t={trend.t_stat:.2f}，R²={trend.r2:.2f}）。"
+                    + ("趨勢在統計上顯著。" if trend.significant
+                       else "⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。")
+                ),
+            ),
+            extras={
+                "_low": round(max(yhat - margin, 0)),
+                "_high": round(yhat + margin),
+                "_r2": round(trend.r2, 4),
+                "_t": round(trend.t_stat, 3),
+                "_direction": trend.direction(),
+                "_annual_pct": round(trend.annual_change_pct, 5),
+            },
+        ))
+
+        pay = industry_pay.get(industry)
+        if pay:
+            out.append(AlignedRecord(
+                region="全國", year=2024, age_group="全體", gender="total",
+                metric="行業平均年薪", value=pay, unit="萬元/年", education=industry,
+                provenance=Provenance(
+                    source_agency="行政院主計總處",
+                    source_dataset="工業及服務業全年總薪資統計－表1 各業受僱員工",
+                    source_age_group="全體", method=Method.EXACT_MATCH, weight=1.0,
+                    confidence=Confidence.HIGH,
+                    note="全國各業受僱員工平均年薪，官方統計值。"
+                         "行業分類與職缺調查同為標準行業分類，可直接對照",
+                ),
+            ))
+    return out
+
+
 def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     ref = ReferenceData.load()
     by_district, meta = fetch_population_by_district(region, refresh=refresh)
@@ -318,8 +415,11 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     records.extend(_employment_records(ref, region, refresh))
     records.extend(_salary_records(ref, region, refresh))
     records.extend(_education_records(region, refresh))
+    records.extend(_vacancy_records(refresh))
 
-    educations = sorted({r.education for r in records if r.education})
+    educations = sorted({r.education for r in records
+                         if r.education and r.region != "全國"})
+    industries = sorted({r.education for r in records if r.region == "全國" and r.education})
     return {
         "_generated": date.today().isoformat(),
         "_schema": "YouthLens unified v1（Spec §7.3）",
@@ -331,6 +431,8 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
             "age_groups": [b.label for b in BANDS],
             "metrics": sorted({r.metric for r in records}),
             "educations": educations,
+            "industries": industries,
+            "forecast_year": FORECAST_TO,
             "reference_data": str(ref.path.name) if ref.path else "",
             "sources": [
                 {"agency": "內政部戶政司", "dataset": sources.POPULATION_DATASET,
@@ -339,8 +441,10 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
                  "url": sources.LFPR_XML},
                 {"agency": "行政院主計總處", "dataset": "人力資源調查 表32 就業者之教育程度與年齡",
                  "url": "https://www.stat.gov.tw/News_Content.aspx?n=4001&s=236078"},
-                {"agency": "行政院主計總處", "dataset": "工業及服務業全年總薪資統計 表6",
+                {"agency": "行政院主計總處", "dataset": "工業及服務業全年總薪資統計 表6／表1",
                  "url": "https://www.stat.gov.tw/News_Content.aspx?n=4580&s=232642"},
+                {"agency": "行政院主計總處", "dataset": VACANCY_DATASET,
+                 "url": VACANCY_LANDING},
             ],
         },
         "records": [r.to_dict() for r in records],

@@ -6,13 +6,19 @@
 題目：青年族群公開統計資料之連結整合與視覺化。
 
 完整規劃在上層資料夾的 `YouthLens_Spec_2.md`，命題原文是同資料夾的 PDF。
-專案分三層，**這個資料夾只做第一層**（第二三層由隊友負責前端）：
+
+⚠️ **Spec §9.1 寫的 A／B 兩人分工已經作廢 —— 三層全部由同一個人做。**
+所以第二三層不是「別人的事」，是還沒做的事。
 
 ```
-第三層  AI 中文問答        隊友
-第二層  視覺化儀表板       隊友
-第一層  資料對齊引擎  ★    ← 這裡
+第三層  AI 中文問答        ⬜ 未做
+第二層  視覺化儀表板       🟡 preview.html 是雛形，要長成這個
+第一層  資料對齊引擎  ★    ✅ 完成
 ```
+
+**因此 `preview.html` 不是拋棄式的檢查工具，它是儀表板的種子。**
+它已經會讀 `unified.json`、有篩選器、有信心度標記、點得開資料履歷 ——
+不要另外從零開始寫前端，在它上面長。
 
 核心問題：政府各機關的年齡分組都不一樣（15-24 / 未滿25 / 五歲一組），
 沒有一個切在《青年基本法》的 18–35 歲。引擎負責把它們對齊，
@@ -71,8 +77,8 @@ data/
   backtest.py          量測 ungroup 的實際誤差 ← 信心度規則的依據
   build_reference.py   組合三者 → reference_ntpc.json
   build_unified.py     跑引擎 → unified.json（交付給前端）
-  preview_template.html / make_preview.py  → preview.html
-demo_align.py   現場 demo，畫面上沒有任何寫死的數字
+  preview_template.html / make_preview.py  → preview.html ← 儀表板就長在這
+demo_align.py   終端機版 demo（技術細節用），上台主要看 preview.html
 tests/          41 個測試
 ```
 

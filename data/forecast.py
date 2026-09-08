@@ -50,7 +50,14 @@ class Trend:
 
     @property
     def t_stat(self) -> float:
-        return self.slope / self.slope_se if self.slope_se else 0.0
+        """殘差為零時（完美直線）標準誤是 0 —— 那是最顯著的情況，不是最不顯著。
+
+        直接寫 `slope / slope_se if slope_se else 0` 會把它判成不顯著，
+        剛好顛倒。真實資料不會有這種情形，但邊界條件不能靠運氣。
+        """
+        if self.slope_se == 0:
+            return float("inf") if self.slope != 0 else 0.0
+        return self.slope / self.slope_se
 
     @property
     def significant(self) -> bool:

@@ -1,0 +1,51 @@
+{
+  "source": "主計總處 人力資源調查 表32（由 data/fetch_employment.py 解析，已通過三道加總檢查）",
+  "metric": "就業者人數",
+  "unit": "千人",
+  "region": "新北市",
+  "year": 2025,
+  "kind": "count",
+  "rows": [
+    {
+      "age_label": "15-24",
+      "value": 123.0
+    },
+    {
+      "age_label": "25-29",
+      "value": 215.0
+    },
+    {
+      "age_label": "30-34",
+      "value": 251.0
+    },
+    {
+      "age_label": "35-39",
+      "value": 253.0
+    },
+    {
+      "age_label": "40-44",
+      "value": 304.0
+    },
+    {
+      "age_label": "45-49",
+      "value": 305.0
+    },
+    {
+      "age_label": "50-54",
+      "value": 246.0
+    },
+    {
+      "age_label": "55-59",
+      "value": 195.0
+    },
+    {
+      "age_label": "60-64",
+      "value": 121.0
+    },
+    {
+      "age_label": "65歲以上",
+      "value": 63.0
+    }
+  ],
+  "printed_total": 2076.0
+}

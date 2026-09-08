@@ -81,6 +81,9 @@ def fetch_employment(region: str = "新北市", *, refresh: bool = False) -> dic
             "dataset": DATASET,
             "total": to_float(row[COL_TOTAL]),
             "by_age": {b: to_float(row[i]) for b, i in AGE_COLUMNS.items()},
+            # 65 歲以上超出引擎的 15-64 涵蓋範圍，不進 by_age，
+            # 但掃描檔測驗卷需要它才湊得出表上的合計。
+            "age_65up": to_float(row[COL_65UP]),
             "by_education": {k: to_float(row[i]) for k, i in EDUCATION_COLUMNS.items()},
             "by_education_detail": {k: to_float(row[i]) for k, i in EDUCATION_DETAIL.items()},
         }

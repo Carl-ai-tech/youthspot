@@ -38,6 +38,8 @@ $py="$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 & $py data/make_preview.py               # 產出 preview.html（雙擊即可開）
 & $py demo_scan.py                       # 掃描檔判讀 demo
 & $py -m llm.backend                     # 列出可用的 Bedrock 模型（9/12 早上第一件事）
+& $py check_scan_accuracy.py --self-test # 驗證評分程式本身
+& $py check_scan_accuracy.py <圖片>       # 9/12 接上 Bedrock 後測真實準確率
 ```
 
 ## 環境陷阱（每次換電腦都會中）
@@ -172,6 +174,11 @@ $env:YOUTHLENS_LLM_BACKEND = "bedrock"
 $env:YOUTHLENS_AWS_REGION  = "us-east-1"        # 當天確認實際區域
 $env:YOUTHLENS_BEDROCK_MODEL = "anthropic.claude-opus-5"   # 當天確認實際可用模型
 ```
+
+**掃描檔準確率怎麼驗證：** `tests/fixtures/` 裡有一張測驗卷與標準答案。
+標準答案來自 `data/fetch_employment.py` 解析的官方 ODS（已通過三道加總檢查），
+測驗卷是同一份數值排版成統計表的 HTML。把它截圖存成 PNG，
+用 `check_scan_accuracy.py <圖片>` 就能得到逐格準確率 —— 這是「怎麼知道 AI 讀對了」的答案。
 
 **第一件事先跑 `python -m llm.backend`** —— 它會列出這個帳號實際可用的模型。
 Workshop 帳號有哪些模型、開在哪一區，賽前無法得知，一跑就知道，不要猜。

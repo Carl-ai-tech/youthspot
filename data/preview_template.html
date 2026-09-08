@@ -742,7 +742,19 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     $('askTips').appendChild(b);
   });
   $('askGo').addEventListener('click', function () { runAsk(); });
-  $('askInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') runAsk(); });
+  // 中文輸入法：打字時第一下 Enter 是「確認選字」，不是「送出」。
+  // 那一下 keydown 也會帶 key='Enter'，但輸入框的 value 還是空的 ——
+  // 不擋掉的話，使用者打完中文按 Enter 會什麼都沒發生。
+  // isComposing 是標準做法；keyCode 229 是舊版瀏覽器的同義判斷。
+  $('askInput').addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    if (e.isComposing || e.keyCode === 229) return;
+    runAsk();
+  });
+  // 有些輸入法不送 keydown，改聽 change 當保險
+  $('askInput').addEventListener('change', function () {
+    if ($('askInput').value.trim()) runAsk();
+  });
 
   render();
 })();

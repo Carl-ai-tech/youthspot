@@ -54,6 +54,7 @@ from engine.schema import AlignedRecord  # noqa: E402
 OUTPUT = sources.DATA_DIR / "unified.json"
 LFPR = "labor_force_participation"
 BANDS = list(TARGET_BANDS) + [YOUTH_BAND]
+AGE_MIN, AGE_MAX = 15, 64          # 參考資料的涵蓋範圍
 
 
 def _population_record(region, year, band, count, period_label) -> AlignedRecord:
@@ -390,6 +391,64 @@ def _vacancy_records(refresh) -> list[AlignedRecord]:
     return out
 
 
+def _curves(ref, areas: dict, region: str, refresh) -> dict:
+    """單一年齡的曲線，讓前端可以自己算任意年齡區間。
+
+    預先算好四個標準分組不夠用 —— 使用者想看 26-28 歲是很合理的需求，
+    而引擎本來就算得出來。把底層曲線送到前端，任何區間都能當場組出來。
+
+    每條曲線都標明可信度的來源：
+      人口      戶政司給的就是單一年齡，任何區間都是精確值 → high
+      勞參率    官方只有五歲組，已拆成單一年齡（組間加總仍等於官方值）→ medium
+      就業者    五歲組按有效母體分攤到單一年齡 → medium
+      薪資      官方分組更粗，同樣拆過 → medium
+    """
+    ages = list(range(AGE_MIN, AGE_MAX + 1))
+    lfpr = {a: ref.rate(LFPR, a) for a in ages}
+
+    # 就業者：把每個官方五歲組按「有效母體」分攤到單一年齡
+    emp = fetch_employment(region, refresh=refresh)
+    employed: dict[int, float] = {}
+    for (lo, hi), thousands in emp["by_age"].items():
+        band_ages = [a for a in range(lo, hi + 1) if a in lfpr]
+        weight = {a: ref.population(a) * lfpr[a] for a in band_ages}
+        total = sum(weight.values())
+        for a in band_ages:
+            employed[a] = (thousands or 0) * 1000 * (weight[a] / total if total else 0)
+
+    sal = fetch_salary(region, refresh=refresh)
+    mean_curve = ungroup(sal["mean"], employed, cap=10_000.0)
+    median_curve = ungroup(sal["median"], employed, cap=10_000.0)
+
+    return {
+        "ages": ages,
+        "population": {
+            area: {str(a): counts.get(a, 0) for a in ages}
+            for area, counts in areas.items()
+        },
+        "lfpr": {str(a): round(lfpr[a], 6) for a in ages},
+        "employed": {str(a): round(employed.get(a, 0.0), 1) for a in ages},
+        "salary_mean": {str(a): round(mean_curve.get(a, 0.0), 3) for a in ages},
+        "salary_median": {str(a): round(median_curve.get(a, 0.0), 3) for a in ages},
+        "confidence": {
+            "人口數": "high",
+            "勞動力人數": "medium",
+            "勞動力參與率": "medium",
+            "就業者人數": "medium",
+            "平均年薪": "medium",
+            "中位數年薪": "medium",
+        },
+        "city_only": ["就業者人數", "平均年薪", "中位數年薪"],
+        "note": (
+            "單一年齡曲線，供前端組出任意年齡區間。"
+            "人口為戶政司單一年齡實數，任何區間都是精確加總；"
+            "其餘曲線由官方五歲（或更粗）分組拆出，組間加總仍等於官方公布值，"
+            "組內分布為推估，故標記為 medium。"
+            "就業與薪資只有縣市層級，沒有行政區細分。"
+        ),
+    }
+
+
 def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     ref = ReferenceData.load()
     by_district, meta = fetch_population_by_district(region, refresh=refresh)
@@ -447,6 +506,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
                  "url": VACANCY_LANDING},
             ],
         },
+        "curves": _curves(ref, areas, region, refresh),
         "records": [r.to_dict() for r in records],
     }
 

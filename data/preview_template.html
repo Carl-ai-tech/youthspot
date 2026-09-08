@@ -181,7 +181,7 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
       <section class="askbox">
         <p class="eyebrow">用中文問</p>
         <div class="askrow">
-          <input id="askInput" type="text" placeholder="例如：新北市 25-29 歲的平均年薪是多少？"
+          <input id="askInput" type="text" placeholder="任何年齡區間都可以，例如：新北市 26-28 歲有多少人？"
                  aria-label="用中文問一個關於青年統計的問題">
           <button id="askGo" type="button">問</button>
         </div>
@@ -660,6 +660,77 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     return num(r.value) + ' ' + r.unit;
   }
 
+
+  // ── 任意年齡區間 ────────────────────────────────────────────
+  // 預先算好的四段不夠用：想看 26-28 歲是很合理的需求，而引擎本來就算得出來。
+  // unified.json 附了單一年齡的曲線，所以這裡可以當場組出任何區間。
+  //
+  // 這段的算法跟 Python 引擎完全一樣：
+  //   人口     直接加總（戶政司給的就是單一年齡，所以是精確值）
+  //   勞動力   加總 人口 × 勞參率
+  //   勞參率   勞動力 ÷ 人口
+  //   薪資     以就業人數為權重的加權平均（薪資是比率型，不能直接相加）
+  function computeRange(region, lo, hi, metric) {
+    var C = DATA.curves;
+    if (!C) return null;
+    var cityOnly = (C.city_only || []).indexOf(metric) >= 0;
+    var reg = cityOnly ? M.region : region;
+    var pop = C.population[reg];
+    if (!pop) return null;
+
+    var sumP = 0, sumL = 0, sumE = 0, salMean = 0, salMed = 0, n = 0;
+    for (var a = lo; a <= hi; a++) {
+      var k = String(a);
+      if (pop[k] === undefined) continue;
+      n++;
+      var p = pop[k], r = C.lfpr[k] || 0, e = C.employed[k] || 0;
+      sumP += p;
+      sumL += p * r;
+      sumE += e;
+      salMean += e * (C.salary_mean[k] || 0);
+      salMed += e * (C.salary_median[k] || 0);
+    }
+    if (!n) return null;
+
+    var value, unit;
+    if (metric === '人口數') { value = sumP; unit = '人'; }
+    else if (metric === '勞動力人數') { value = sumL; unit = '人'; }
+    else if (metric === '勞動力參與率') { value = sumP ? sumL / sumP : 0; unit = '%'; }
+    else if (metric === '就業者人數') { value = sumE; unit = '人'; }
+    else if (metric === '平均年薪') { value = sumE ? salMean / sumE : 0; unit = '萬元/年'; }
+    else if (metric === '中位數年薪') { value = sumE ? salMed / sumE : 0; unit = '萬元/年'; }
+    else return null;
+
+    var conf = (C.confidence || {})[metric] || 'medium';
+    var exact = metric === '人口數';
+    var NL3 = String.fromCharCode(10);
+    return {
+      region: reg,
+      year: M.year,
+      age_group: lo + '-' + hi,
+      metric: metric,
+      value: value,
+      unit: unit,
+      education: null,
+      computed: true,
+      provenance: {
+        source_agency: exact ? '內政部戶政司' : '內政部戶政司 / 行政院主計總處',
+        source_dataset: '單一年齡曲線（unified.json 的 curves）',
+        source_age_group: exact ? (lo + '-' + hi) : '官方五歲組拆解後重組',
+        method: exact ? 'exact_match' : 'formula_b_t2',
+        weight: 1,
+        confidence: conf,
+        note: (exact
+          ? '戶政司提供的就是單一年齡人口，' + lo + ' 到 ' + hi + ' 歲直接加總，未經任何插補。'
+          : '官方只公布到五歲（或更粗）分組，已拆成單一年齡後重新組出 '
+            + lo + '-' + hi + ' 歲。組間加總仍等於官方公布值，組內分布為推估。')
+          + (cityOnly && reg !== region
+            ? NL3 + '註：這個指標只有縣市層級的官方統計，顯示的是' + M.region + '全市值。'
+            : '')
+      }
+    };
+  }
+
   function resolve(it) {
     if (!it.metric) {
       var NL = String.fromCharCode(10);
@@ -688,27 +759,23 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     }
     if (it.askedAge) {
       var lo = it.askedAge[0], hi = it.askedAge[1];
-      // 挑最窄的涵蓋範圍。18-35 什麼都涵蓋，但拿它回答「26-28」沒有意義。
-      var covers = BANDS.filter(function (b) {
-        var pp = b.split('-');
-        return parseInt(pp[0], 10) <= lo && hi <= parseInt(pp[1], 10);
-      }).sort(function (a, b) {
-        var wa = a.split('-'), wb = b.split('-');
-        return (wa[1] - wa[0]) - (wb[1] - wb[0]);
-      });
-      var asked = lo === hi ? (lo + ' 歲') : (lo + '-' + hi + ' 歲');
-      var NL2 = String.fromCharCode(10);
-      return { ok: false, text: '我們的資料沒有「' + asked + '」這一段。' + NL2
-        + '只分成這四段：' + BANDS.join('、') + '（歲）。' + NL2
-        + (covers.length
-            ? ((function () {
-                var w = covers[0].split('-');
-                var wide = (w[1] - w[0]) > (hi - lo) + 3;
-                return wide
-                  ? '最接近的是 ' + covers[0] + ' 歲，但它比你問的範圍寬很多。'
-                  : '你要找的可能是 ' + covers[0] + ' 歲？';
-              })())
-            : '你問的範圍跨過我們的分組邊界（例如 22-27 橫跨 18-24 和 25-29），沒辦法直接回答。') };
+      var custom = computeRange(it.region || M.region, lo, hi, it.metric);
+      if (custom) {
+        var extra = '';
+        if ((DATA.curves.city_only || []).indexOf(it.metric) >= 0
+            && it.region && it.region !== M.region) {
+          extra = '（這個指標只有全市資料）';
+        }
+        return { ok: true, recs: [custom], custom: true,
+          text: custom.region + '　' + lo + '-' + hi + ' 歲的' + it.metric
+            + '是 ' + fmtRec(custom) + extra
+            + (custom.provenance.confidence === 'high'
+              ? '，這個數字沒有經過推估' : '，這個數字經過推估')
+            + '。' };
+      }
+      var NL4 = String.fromCharCode(10);
+      return { ok: false, text: '「' + it.metric + '」沒辦法算任意年齡區間。' + NL4
+        + '可以任意區間的有：人口數、勞動力人數、勞動力參與率、就業者人數、平均年薪、中位數年薪。' };
     }
     var hits = R.filter(function (r) {
       if (r.metric !== it.metric) return false;
@@ -785,6 +852,7 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
   }
 
   ['新北市 25-29 歲的平均年薪是多少？',
+   '新北市 26-28 歲有多少人？',
    '哪一區的青年最多？',
    '板橋區 18-24 歲有幾個人？',
    '哪些行業最缺工？',

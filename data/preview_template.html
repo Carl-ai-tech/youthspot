@@ -1,172 +1,219 @@
-<title>YouthLens 資料預覽</title>
+<title>YouthLens 青年數據透鏡</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
 <style>
 :root {
-  --paper:#F5F6F8; --card:#FFFFFF; --sunk:#ECEEF2;
-  --ink:#171C24; --ink-2:#454F5E; --ink-3:#6E7887;
-  --rule:#DCE0E7; --rule-soft:#E7EAEF;
-  --accent:#2E63AE; --accent-soft:rgba(46,99,174,.10);
-  --high:#2E63AE; --med:#C07A12; --low:#A93627; --none:#8A93A1;
-  --on-accent:#FFFFFF;
+  --paper:#F4F6F8; --card:#FFFFFF; --sunk:#E9ECF1; --deep:#1A2230;
+  --ink:#141A23; --ink-2:#48525F; --ink-3:#727C8A;
+  --rule:#DBE0E6; --rule-soft:#E8EBEF;
+  --accent:#2E63AE; --accent-soft:rgba(46,99,174,.09); --accent-line:rgba(46,99,174,.22);
+  --second:#C07A12; --second-soft:rgba(192,122,18,.13);
+  --high:#2E63AE; --medium:#C07A12; --low:#A93627; --inferred:#8A93A1;
+  --on-accent:#FFFFFF; --on-deep:#F2F5F8;
   --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
   --mono:"IBM Plex Mono",Consolas,monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper:#12161D; --card:#182029; --sunk:#1E2733;
-    --ink:#E5E9EF; --ink-2:#AEB8C6; --ink-3:#808B9B;
+    --paper:#10151C; --card:#182029; --sunk:#1F2833; --deep:#0B0F15;
+    --ink:#E6EAF0; --ink-2:#AFB9C6; --ink-3:#818C9B;
     --rule:#2A3441; --rule-soft:#222B36;
-    --accent:#4E8CDE; --accent-soft:rgba(78,140,222,.15);
-    --high:#4E8CDE; --med:#BB8624; --low:#E07A6B; --none:#6B7686;
-    --on-accent:#0E1219;
+    --accent:#4E8CDE; --accent-soft:rgba(78,140,222,.14); --accent-line:rgba(78,140,222,.3);
+    --second:#BB8624; --second-soft:rgba(187,134,36,.16);
+    --high:#4E8CDE; --medium:#BB8624; --low:#E07A6B; --inferred:#6B7686;
+    --on-accent:#0B0F15; --on-deep:#E6EAF0;
   }
 }
 :root[data-theme="dark"] {
-  --paper:#12161D; --card:#182029; --sunk:#1E2733;
-  --ink:#E5E9EF; --ink-2:#AEB8C6; --ink-3:#808B9B;
+  --paper:#10151C; --card:#182029; --sunk:#1F2833; --deep:#0B0F15;
+  --ink:#E6EAF0; --ink-2:#AFB9C6; --ink-3:#818C9B;
   --rule:#2A3441; --rule-soft:#222B36;
-  --accent:#4E8CDE; --accent-soft:rgba(78,140,222,.15);
-  --high:#4E8CDE; --med:#BB8624; --low:#E07A6B; --none:#6B7686;
-  --on-accent:#0E1219;
+  --accent:#4E8CDE; --accent-soft:rgba(78,140,222,.14); --accent-line:rgba(78,140,222,.3);
+  --second:#BB8624; --second-soft:rgba(187,134,36,.16);
+  --high:#4E8CDE; --medium:#BB8624; --low:#E07A6B; --inferred:#6B7686;
+  --on-accent:#0B0F15; --on-deep:#E6EAF0;
 }
 
 * { box-sizing:border-box; }
-body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.7; }
-.wrap { max-width:70rem; margin:0 auto; padding:0 1.25rem 5rem; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+.wrap { max-width:76rem; margin:0 auto; padding:0 1.25rem 5rem; }
 
-/* ── 頁首 */
-header { border-bottom:1px solid var(--rule); padding:2.2rem 0 1.2rem; margin-bottom:1.5rem; }
-.kicker { font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); margin:0 0 .5rem; }
-h1 { font-size:1.55rem; font-weight:700; margin:0 0 .45rem; letter-spacing:-.01em; }
-.sub { color:var(--ink-2); font-size:.92rem; margin:0; max-width:44rem; }
-.srcline { font-family:var(--mono); font-size:.73rem; color:var(--ink-3); margin:.7rem 0 0; }
-.srcline a { color:var(--accent); }
+/* ─── 頁首 */
+.masthead { background:var(--deep); color:var(--on-deep); margin-bottom:0; }
+.masthead-in { max-width:76rem; margin:0 auto; padding:1.9rem 1.25rem 1.7rem; }
+.brand { display:flex; align-items:baseline; gap:.7rem; flex-wrap:wrap; margin-bottom:1.3rem; }
+.brand strong { font-size:1.12rem; font-weight:900; letter-spacing:.02em; }
+.brand span { font-family:var(--mono); font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; opacity:.62; }
+.hero { display:flex; flex-wrap:wrap; align-items:flex-end; gap:.5rem 2.6rem; }
+.hero-main .hero-label { font-size:.82rem; opacity:.72; margin:0 0 .1rem; }
+.hero-main .hero-value { font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:clamp(2.4rem,7vw,3.5rem); font-weight:600; line-height:1; margin:0; }
+.hero-main .hero-value em { font-style:normal; font-size:.9rem; font-weight:400; opacity:.7; margin-left:.4rem; }
+.hero-side { display:flex; gap:2rem; flex-wrap:wrap; padding-bottom:.35rem; }
+.hero-side div p { margin:0; }
+.hero-side .k { font-size:.75rem; opacity:.66; }
+.hero-side .v { font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:1.22rem; font-weight:600; }
 
-/* ── 篩選 */
-.filters { display:flex; flex-wrap:wrap; gap:1.1rem 1.6rem; align-items:flex-end; margin-bottom:1.6rem; }
-.field { display:flex; flex-direction:column; gap:.35rem; }
-.field > label { font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); }
-select {
-  font-family:var(--sans); font-size:.95rem; color:var(--ink); background:var(--card);
-  border:1px solid var(--rule); border-radius:3px; padding:.45rem .6rem; min-width:11rem;
-}
+/* ─── 控制列 */
+.controls { position:sticky; top:0; z-index:9; background:var(--paper); border-bottom:1px solid var(--rule); }
+.controls-in { max-width:76rem; margin:0 auto; padding:.75rem 1.25rem; display:flex; flex-wrap:wrap; gap:.75rem 1.5rem; align-items:center; }
+.ctl { display:flex; align-items:center; gap:.5rem; }
+.ctl > label { font-family:var(--mono); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); }
+select { font-family:var(--sans); font-size:.9rem; color:var(--ink); background:var(--card); border:1px solid var(--rule); border-radius:3px; padding:.35rem .5rem; }
 select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
-.chips { display:flex; gap:.35rem; flex-wrap:wrap; }
-.chip {
-  font-family:var(--mono); font-size:.82rem; padding:.42rem .75rem; cursor:pointer;
-  background:var(--card); color:var(--ink-2); border:1px solid var(--rule); border-radius:3px;
-}
+.chips { display:flex; gap:.3rem; flex-wrap:wrap; }
+.chip { font-family:var(--mono); font-size:.78rem; padding:.32rem .62rem; cursor:pointer; background:var(--card); color:var(--ink-2); border:1px solid var(--rule); border-radius:3px; }
 .chip[aria-pressed="true"] { background:var(--accent); color:var(--on-accent); border-color:var(--accent); font-weight:600; }
 .chip:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 
-/* ── 數字卡 */
-.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:3px; margin-bottom:2rem; }
-.tile { background:var(--card); padding:1.05rem 1.15rem; cursor:pointer; text-align:left; border:0; font:inherit; color:inherit; }
-.tile:hover, .tile:focus-visible { background:var(--accent-soft); outline:none; }
-.tile-label { font-size:.8rem; color:var(--ink-3); display:flex; align-items:center; gap:.5rem; margin-bottom:.15rem; }
-.tile-value { font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:1.85rem; font-weight:600; line-height:1.2; }
-.tile-unit { font-size:.85rem; color:var(--ink-3); font-weight:400; margin-left:.25rem; }
-.tile-hint { font-size:.72rem; color:var(--ink-3); margin-top:.3rem; }
+/* ─── 版面 */
+.grid { display:grid; grid-template-columns:1fr; gap:1.5rem; margin-top:1.8rem; }
+@media (min-width:60rem) { .grid { grid-template-columns:1fr 20rem; align-items:start; } }
+.panel { background:var(--card); border:1px solid var(--rule); border-radius:4px; padding:1.15rem 1.25rem 1.3rem; margin-bottom:1.5rem; }
+.panel-head { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:.15rem; }
+.panel h2 { font-size:1rem; font-weight:700; margin:0; }
+.panel .aspect { font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+.panel .note { font-size:.79rem; color:var(--ink-3); margin:.15rem 0 1.05rem; }
 
-/* ── 信心度標記 */
-.pill { display:inline-flex; align-items:center; gap:.3rem; font-family:var(--mono); font-size:.66rem; letter-spacing:.04em; padding:.05rem .42rem; border-radius:9px; border:1px solid currentColor; white-space:nowrap; }
+/* ─── 長條 */
+.bars { display:flex; flex-direction:column; gap:.3rem; }
+.bar { display:grid; grid-template-columns:5.6rem 1fr auto; align-items:center; gap:.65rem; background:none; border:0; font:inherit; color:inherit; cursor:pointer; padding:.24rem .3rem; border-radius:3px; text-align:left; width:100%; }
+.bar:hover, .bar:focus-visible { background:var(--accent-soft); outline:none; }
+.bar-k { font-size:.84rem; color:var(--ink-2); white-space:nowrap; }
+.bar-track { height:18px; background:var(--sunk); border-radius:2px; position:relative; overflow:hidden; }
+.bar-fill { height:100%; background:var(--accent); border-radius:2px; }
+.bar-fill.alt { background:var(--second); }
+.bar-v { font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:.83rem; color:var(--ink); display:flex; align-items:center; gap:.45rem; white-space:nowrap; }
+.bar-v small { color:var(--ink-3); font-size:.76em; }
+
+/* 雙軌（平均 vs 中位數） */
+.bar.dual { grid-template-columns:5.6rem 1fr auto; }
+.bar.dual .bar-track { height:26px; display:flex; flex-direction:column; gap:2px; background:none; }
+.bar.dual .bar-track span { height:12px; background:var(--sunk); border-radius:2px; overflow:hidden; display:block; }
+.bar.dual .bar-track i { display:block; height:100%; border-radius:2px; }
+
+.legend { display:flex; gap:1.1rem; flex-wrap:wrap; font-family:var(--mono); font-size:.72rem; color:var(--ink-2); margin-top:.85rem; }
+.legend span { display:inline-flex; align-items:center; gap:.4rem; }
+.sw { width:14px; height:3px; border-radius:2px; }
+
+/* ─── 信心度 */
+.pill { display:inline-flex; align-items:center; gap:.28rem; font-family:var(--mono); font-size:.63rem; letter-spacing:.03em; padding:.02rem .38rem; border-radius:9px; border:1px solid currentColor; white-space:nowrap; }
 .pill::before { content:""; width:5px; height:5px; border-radius:50%; background:currentColor; }
-.pill.high{color:var(--high)} .pill.medium{color:var(--med)} .pill.low{color:var(--low)} .pill.inferred{color:var(--none)}
+.pill.high{color:var(--high)} .pill.medium{color:var(--medium)} .pill.low{color:var(--low)} .pill.inferred{color:var(--inferred)}
 
-/* ── 排行 */
-section h2 { font-size:1.02rem; font-weight:700; margin:0 0 .2rem; }
-section .hint { font-size:.82rem; color:var(--ink-3); margin:0 0 1rem; }
-.ranks { display:flex; flex-direction:column; gap:2px; margin-bottom:2.2rem; }
-.rank { display:grid; grid-template-columns:6.5rem 1fr 6rem; align-items:center; gap:.7rem; background:none; border:0; font:inherit; color:inherit; cursor:pointer; padding:.2rem .25rem; border-radius:2px; text-align:left; }
-.rank:hover, .rank:focus-visible { background:var(--sunk); outline:none; }
-.rank-name { font-size:.85rem; color:var(--ink-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.rank-bar { height:16px; background:var(--sunk); border-radius:2px; overflow:hidden; }
-.rank-fill { height:100%; background:var(--accent); border-radius:2px; }
-.rank[data-current="1"] .rank-fill { background:var(--med); }
-.rank[data-current="1"] .rank-name { color:var(--ink); font-weight:700; }
-.rank-val { font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:.82rem; text-align:right; color:var(--ink-2); }
-
-/* ── 表 */
-.tablewrap { overflow-x:auto; border:1px solid var(--rule); border-radius:3px; background:var(--card); margin-bottom:2.2rem; }
-table { border-collapse:collapse; width:100%; font-size:.87rem; min-width:34rem; }
-th { font-family:var(--mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:400; text-align:left; padding:.6rem .85rem; border-bottom:1px solid var(--rule); white-space:nowrap; }
-td { padding:.55rem .85rem; border-bottom:1px solid var(--rule-soft); }
-tbody tr:last-child td { border-bottom:0; }
-tbody tr { cursor:pointer; }
-tbody tr:hover { background:var(--accent-soft); }
-td.num { font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right; }
-
-/* ── 履歷面板 */
-.prov { border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:3px; background:var(--card); padding:1.1rem 1.25rem; }
-.prov[hidden] { display:none; }
-.prov h3 { font-size:.95rem; margin:0 0 .15rem; }
-.prov .headline { font-family:var(--mono); font-size:1.15rem; font-weight:600; margin:0 0 .9rem; color:var(--accent); }
-.prov dl { display:grid; grid-template-columns:auto 1fr; gap:.4rem 1.1rem; margin:0; font-size:.86rem; }
-.prov dt { font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; color:var(--ink-3); padding-top:.2rem; white-space:nowrap; }
-.prov dd { margin:0; color:var(--ink-2); }
+/* ─── 側欄：履歷 */
+.side { position:sticky; top:4.2rem; }
+.prov { background:var(--card); border:1px solid var(--rule); border-top:3px solid var(--accent); border-radius:4px; padding:1.05rem 1.15rem 1.2rem; }
+.prov .eyebrow { font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin:0 0 .5rem; }
+.prov h3 { font-size:.88rem; font-weight:500; color:var(--ink-2); margin:0 0 .1rem; }
+.prov .big { font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:1.6rem; font-weight:600; color:var(--accent); margin:0 0 .2rem; line-height:1.2; }
+.prov .big small { font-size:.55em; font-weight:400; color:var(--ink-3); margin-left:.3rem; }
+.prov .conf-row { margin:0 0 .9rem; }
+.prov dl { display:grid; grid-template-columns:1fr; gap:.55rem; margin:0; padding-top:.9rem; border-top:1px solid var(--rule-soft); }
+.prov dt { font-family:var(--mono); font-size:.63rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+.prov dd { margin:.1rem 0 0; font-size:.83rem; color:var(--ink-2); line-height:1.6; }
 .prov dd.mono { font-family:var(--mono); font-variant-numeric:tabular-nums; }
-.empty { color:var(--ink-3); font-size:.88rem; padding:.5rem 0; }
-.scopenote { font-size:.8rem; color:var(--ink-3); margin:-1.3rem 0 2rem; }
-.scopenote[hidden] { display:none; }
 
-.foot { margin-top:2.5rem; padding-top:1.1rem; border-top:1px solid var(--rule); font-size:.78rem; color:var(--ink-3); }
-.foot code { font-family:var(--mono); background:var(--sunk); padding:.08em .35em; border-radius:2px; }
+/* ─── 頁尾 */
+.sources { border-top:1px solid var(--rule); margin-top:2rem; padding-top:1.2rem; }
+.sources h2 { font-size:.9rem; margin:0 0 .7rem; }
+.sources ul { list-style:none; margin:0; padding:0; display:grid; gap:.35rem; }
+.sources li { font-size:.79rem; color:var(--ink-3); }
+.sources b { color:var(--ink-2); font-weight:500; }
+.gap { margin-top:1.1rem; font-size:.79rem; color:var(--ink-3); }
+.gap b { color:var(--low); }
 </style>
 
-<div class="wrap">
-<header>
-  <p class="kicker">YouthLens · 資料層預覽</p>
-  <h1 id="title">新北市青年統計</h1>
-  <p class="sub">
-    這是 <code style="font-family:var(--mono)">unified.json</code> 的內容，也就是資料層要交給前端的東西。
-    每個數字都可以點開看它從哪來、怎麼算的。
-  </p>
-  <p class="srcline" id="srcline"></p>
+<header class="masthead">
+  <div class="masthead-in">
+    <div class="brand">
+      <strong>YouthLens 青年數據透鏡</strong>
+      <span id="brandsub">新北市 · 統一至 18–35 歲口徑</span>
+    </div>
+    <div class="hero">
+      <div class="hero-main">
+        <p class="hero-label" id="heroLabel">18–35 歲青年人口</p>
+        <p class="hero-value"><span id="heroValue">—</span><em id="heroUnit"></em></p>
+      </div>
+      <div class="hero-side" id="heroSide"></div>
+    </div>
+  </div>
 </header>
 
-<div class="filters">
-  <div class="field">
-    <label for="area">地區</label>
-    <select id="area"></select>
-  </div>
-  <div class="field">
-    <label id="bandlabel">年齡層</label>
-    <div class="chips" id="bands" role="group" aria-labelledby="bandlabel"></div>
+<div class="controls">
+  <div class="controls-in">
+    <div class="ctl">
+      <label for="area">地區</label>
+      <select id="area"></select>
+    </div>
+    <div class="ctl">
+      <label id="bandlabel">年齡層</label>
+      <div class="chips" id="bands" role="group" aria-labelledby="bandlabel"></div>
+    </div>
   </div>
 </div>
 
-<div class="tiles" id="tiles"></div>
-<p class="scopenote" id="scopenote"></p>
+<div class="wrap">
+  <div class="grid">
+    <main>
 
-<section>
-  <h2 id="ranktitle">各行政區排行</h2>
-  <p class="hint" id="rankhint"></p>
-  <div class="ranks" id="ranks"></div>
-</section>
+      <section class="panel">
+        <div class="panel-head"><h2>青年人口結構</h2><span class="aspect">人口</span></div>
+        <p class="note" id="popNote"></p>
+        <div class="bars" id="popBars"></div>
+      </section>
 
-<section>
-  <h2>這個地區的全部數字</h2>
-  <p class="hint">點任一列，下面會顯示那個數字的來源與算法。</p>
-  <div class="tablewrap">
-    <table>
-      <thead><tr><th>年齡層</th><th>指標</th><th class="num">數值</th><th>單位</th><th>可靠程度</th></tr></thead>
-      <tbody id="rows"></tbody>
-    </table>
+      <section class="panel">
+        <div class="panel-head"><h2>就業與勞動參與</h2><span class="aspect">就業</span></div>
+        <p class="note" id="empNote"></p>
+        <div class="bars" id="empBars"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>年薪：平均數與中位數</h2><span class="aspect">就業</span></div>
+        <p class="note">中位數低於平均數，代表薪資分布右偏 —— 少數高薪把平均拉高。看中位數比較貼近多數人的實際狀況。</p>
+        <div class="bars" id="salBars"></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--accent)"></i>平均數</span>
+          <span><i class="sw" style="background:var(--second)"></i>中位數</span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>教育程度 × 薪資水準</h2><span class="aspect">教育 × 就業</span></div>
+        <p class="note">命題點名的跨領域交叉。人數是新北市的實際統計，薪資只有全國值 —— 官方沒有縣市 × 教育程度的薪資統計，所以薪資那一側標記為低信心度。</p>
+        <div class="bars" id="eduBars"></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--accent)"></i>新北市就業者人數</span>
+          <span><i class="sw" style="background:var(--second)"></i>全國平均年薪</span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2 id="rankTitle">各行政區比較</h2><span class="aspect">人口</span></div>
+        <p class="note" id="rankNote"></p>
+        <div class="bars" id="rankBars"></div>
+      </section>
+
+      <div class="sources">
+        <h2>資料來源</h2>
+        <ul id="srcList"></ul>
+        <p class="gap" id="gapNote"></p>
+      </div>
+
+    </main>
+
+    <aside class="side">
+      <div class="prov">
+        <p class="eyebrow">資料履歷</p>
+        <h3 id="pvTitle">點畫面上任何一個數字</h3>
+        <p class="big"><span id="pvValue">—</span><small id="pvUnit"></small></p>
+        <p class="conf-row" id="pvConf"></p>
+        <dl id="pvList"></dl>
+      </div>
+    </aside>
   </div>
-</section>
-
-<section>
-  <div class="prov" id="prov">
-    <h3 id="provtitle">資料履歷</h3>
-    <p class="headline" id="provvalue"></p>
-    <dl id="provlist"></dl>
-  </div>
-</section>
-
-<p class="foot" id="foot"></p>
 </div>
 
 <script id="payload" type="application/json">/*__DATA__*/</script>
@@ -174,174 +221,248 @@ td.num { font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:
 (function () {
   var DATA = JSON.parse(document.getElementById('payload').textContent);
   var R = DATA.records, M = DATA.meta;
-
-  var areas = [], seen = {};
-  R.forEach(function (r) { if (!seen[r.region]) { seen[r.region] = 1; areas.push(r.region); } });
-  var bands = M.age_groups;
-  var METRICS = M.metrics;
-
-  var state = { area: areas[0], band: bands[bands.length - 1], selected: null };
-
   var $ = function (id) { return document.getElementById(id); };
 
-  function fmt(rec) {
-    if (rec.unit === '%') return (rec.value * 100).toFixed(1) + '%';
-    return Math.round(rec.value).toLocaleString('en-US');
-  }
-  function unitOf(rec) { return rec.unit === '%' ? '' : rec.unit; }
+  var areas = [], seenA = {};
+  R.forEach(function (r) { if (!seenA[r.region]) { seenA[r.region] = 1; areas.push(r.region); } });
+  var BANDS = M.age_groups;
+  var EDUS = M.educations || [];
+  var state = { area: M.region, band: '18-35', sel: null };
 
-  function find(area, band, metric) {
+  function find(area, band, metric, edu) {
     for (var i = 0; i < R.length; i++) {
       var r = R[i];
-      if (r.region === area && r.age_group === band && r.metric === metric) return r;
+      if (r.region === area && r.age_group === band && r.metric === metric
+          && (edu === undefined || r.education === edu)) return r;
     }
     return null;
   }
-
-  // ── 篩選器
-  var sel = $('area');
-  areas.forEach(function (a) {
-    var o = document.createElement('option');
-    o.value = a; o.textContent = a === M.region ? a + '（全市合計）' : a.replace(M.region, '');
-    sel.appendChild(o);
-  });
-  sel.value = state.area;
-  sel.addEventListener('change', function () { state.area = sel.value; render(); });
-
-  bands.forEach(function (b) {
-    var btn = document.createElement('button');
-    btn.className = 'chip'; btn.type = 'button'; btn.textContent = b + ' 歲';
-    btn.addEventListener('click', function () { state.band = b; render(); });
-    btn.dataset.band = b;
-    $('bands').appendChild(btn);
-  });
-
-  // ── 卡片
-  function renderTiles() {
-    var host = $('tiles'); host.innerHTML = '';
-    METRICS.forEach(function (m) {
-      var rec = find(state.area, state.band, m);
-      if (!rec) return;
-      var b = document.createElement('button');
-      b.className = 'tile'; b.type = 'button';
-      b.innerHTML =
-        '<span class="tile-label">' + m +
-        '<span class="pill ' + rec.provenance.confidence + '">' + rec.provenance.confidence + '</span></span>' +
-        '<span class="tile-value">' + fmt(rec) +
-        '<span class="tile-unit">' + unitOf(rec) + '</span></span>' +
-        '<span class="tile-hint">點一下看這個數字怎麼來的</span>';
-      b.addEventListener('click', function () { select(rec); });
-      host.appendChild(b);
-    });
+  function num(v) { return Math.round(v).toLocaleString('en-US'); }
+  function show(r) {
+    if (!r) return '—';
+    if (r.unit === '%') return (r.value * 100).toFixed(1) + '%';
+    if (r.unit.indexOf('萬') === 0) return r.value.toFixed(1);
+    return num(r.value);
   }
+  function unit(r) { return (!r || r.unit === '%') ? '' : r.unit; }
 
-  // ── 排行
-  function renderRanks() {
-    var metric = '人口數';
-    var list = R.filter(function (r) {
-      return r.age_group === state.band && r.metric === metric && r.region !== M.region;
-    }).sort(function (a, b) { return b.value - a.value; });
-
-    $('ranktitle').textContent = '各行政區排行 · ' + state.band + ' 歲' + metric;
-    $('rankhint').textContent = '共 ' + list.length + ' 個行政區，依' + metric +
-      '排序。點一下切換到該區。目前選的是「' + state.area.replace(M.region, '') + '」。';
-
-    var max = list.length ? list[0].value : 1;
-    var host = $('ranks'); host.innerHTML = '';
-    list.forEach(function (r) {
-      var b = document.createElement('button');
-      b.className = 'rank'; b.type = 'button';
-      if (r.region === state.area) b.dataset.current = '1';
-      b.innerHTML =
-        '<span class="rank-name">' + r.region.replace(M.region, '') + '</span>' +
-        '<span class="rank-bar"><span class="rank-fill" style="width:' +
-        (r.value / max * 100).toFixed(1) + '%"></span></span>' +
-        '<span class="rank-val">' + fmt(r) + '</span>';
-      b.addEventListener('click', function () {
-        state.area = r.region; sel.value = r.region; render();
-      });
-      host.appendChild(b);
-    });
-  }
-
-  // ── 表
-  function renderRows() {
-    var host = $('rows'); host.innerHTML = '';
-    bands.forEach(function (bd) {
-      METRICS.forEach(function (m) {
-        var rec = find(state.area, bd, m);
-        if (!rec) return;
-        var tr = document.createElement('tr');
-        tr.innerHTML =
-          '<td>' + bd + ' 歲</td><td>' + m + '</td>' +
-          '<td class="num">' + fmt(rec) + '</td><td>' + rec.unit + '</td>' +
-          '<td><span class="pill ' + rec.provenance.confidence + '">' +
-          rec.provenance.confidence + '</span></td>';
-        tr.addEventListener('click', function () { select(rec); });
-        host.appendChild(tr);
-      });
-    });
-  }
-
-  // ── 履歷
-  var LABELS = {
-    source_agency: '來源機關', source_dataset: '來源資料集', source_age_group: '原始分組',
-    method: '使用方法', weight: '權重', confidence: '可靠程度', note: '計算說明'
+  // ── 履歷面板
+  var LABELS = { source_agency:'來源機關', source_dataset:'來源資料集', source_age_group:'原始分組',
+                 method:'使用方法', weight:'權重', note:'計算說明' };
+  var METHODS = {
+    exact_match:'分組直接對上，未插補', formula_a_t1:'按人頭切',
+    formula_b_t2:'按實際在勞動市場的人切', formula_c:'分子分母分開切',
+    formula_d_t3:'借全國形狀校準', llm_inferred:'AI 判讀年齡描述'
   };
-  var METHOD_ZH = {
-    exact_match: 'exact_match（分組直接對上，未插補）',
-    formula_a_t1: 'formula_a_t1（按人頭切）',
-    formula_b_t2: 'formula_b_t2（按真的在勞動市場的人切）',
-    formula_c: 'formula_c（分子分母分開切）',
-    formula_d_t3: 'formula_d_t3（借全國形狀校準）',
-    llm_inferred: 'llm_inferred（AI 判讀年齡描述）'
-  };
-
-  function select(rec) {
-    state.selected = rec;
-    $('provtitle').textContent = rec.region + '　' + rec.age_group + ' 歲　' + rec.metric;
-    $('provvalue').textContent = fmt(rec) + ' ' + unitOf(rec);
-    var dl = $('provlist'); dl.innerHTML = '';
+  function select(r) {
+    if (!r) return;
+    state.sel = r;
+    $('pvTitle').textContent = r.region + '　' + (r.education ? r.education + '　' : '')
+      + r.age_group + ' 歲　' + r.metric;
+    $('pvValue').textContent = show(r);
+    $('pvUnit').textContent = unit(r);
+    var c = r.provenance.confidence;
+    $('pvConf').innerHTML = '<span class="pill ' + c + '">' + c + '</span>';
+    var dl = $('pvList'); dl.innerHTML = '';
     Object.keys(LABELS).forEach(function (k) {
-      var v = rec.provenance[k];
+      var v = r.provenance[k];
       if (v === undefined || v === null || v === '') return;
-      if (k === 'method') v = METHOD_ZH[v] || v;
+      if (k === 'method') v = (METHODS[v] || v) + '（' + r.provenance[k] + '）';
       var dt = document.createElement('dt'); dt.textContent = LABELS[k];
       var dd = document.createElement('dd'); dd.textContent = v;
       if (k === 'weight') dd.className = 'mono';
       dl.appendChild(dt); dl.appendChild(dd);
     });
-    document.querySelectorAll('#rows tr').forEach(function (tr) { tr.style.background = ''; });
+  }
+
+  // ── 長條列
+  function barRow(host, key, rec, max, opts) {
+    opts = opts || {};
+    var b = document.createElement('button');
+    b.className = 'bar'; b.type = 'button';
+    var pct = (max > 0 && rec) ? Math.max(rec.value / max * 100, 0.6) : 0;
+    b.innerHTML =
+      '<span class="bar-k">' + key + '</span>' +
+      '<span class="bar-track"><span class="bar-fill' + (opts.alt ? ' alt' : '') +
+        '" style="width:' + pct.toFixed(1) + '%"></span></span>' +
+      '<span class="bar-v">' + show(rec) + (unit(rec) ? ' <small>' + unit(rec) + '</small>' : '') +
+        (rec ? '<span class="pill ' + rec.provenance.confidence + '">' +
+          rec.provenance.confidence + '</span>' : '') + '</span>';
+    if (rec) b.addEventListener('click', function () { select(rec); });
+    host.appendChild(b);
+  }
+
+  function dualRow(host, key, a, bRec, maxA, maxB) {
+    var b = document.createElement('button');
+    b.className = 'bar dual'; b.type = 'button';
+    var pa = maxA > 0 && a ? a.value / maxA * 100 : 0;
+    var pb = maxB > 0 && bRec ? bRec.value / maxB * 100 : 0;
+    b.innerHTML =
+      '<span class="bar-k">' + key + '</span>' +
+      '<span class="bar-track">' +
+        '<span><i style="width:' + pa.toFixed(1) + '%;background:var(--accent)"></i></span>' +
+        '<span><i style="width:' + pb.toFixed(1) + '%;background:var(--second)"></i></span>' +
+      '</span>' +
+      '<span class="bar-v">' + show(a) + ' / ' + show(bRec) + ' <small>萬</small>' +
+        (a ? '<span class="pill ' + a.provenance.confidence + '">' + a.provenance.confidence + '</span>' : '') +
+      '</span>';
+    if (a) b.addEventListener('click', function () { select(a); });
+    host.appendChild(b);
+  }
+
+  function maxOf(metric, area, edu) {
+    var m = 0;
+    R.forEach(function (r) {
+      if (r.metric === metric && r.region === area && (edu === undefined || r.education === edu)
+          && r.age_group !== '18-35' && r.value > m) m = r.value;
+    });
+    return m;
+  }
+
+  // ── 各區塊
+  function renderPop() {
+    var host = $('popBars'); host.innerHTML = '';
+    var max = maxOf('人口數', state.area);
+    BANDS.forEach(function (b) {
+      if (b === '18-35') return;
+      barRow(host, b + ' 歲', find(state.area, b, '人口數'), max);
+    });
+    var whole = find(state.area, '18-35', '人口數');
+    barRow(host, '18-35 合計', whole, whole ? whole.value : 0);
+    $('popNote').textContent = '三個標準分組由《青年基本法》18–35 歲細分而來，加總必定等於整段 ——'
+      + ' 這是加總型指標的基本自洽性，引擎有測試守著。';
+  }
+
+  function renderEmp() {
+    var host = $('empBars'); host.innerHTML = '';
+    var hasEmp = !!find(state.area, '18-35', '就業者人數');
+    var maxE = maxOf('就業者人數', state.area);
+    var maxL = maxOf('勞動力人數', state.area);
+    BANDS.forEach(function (b) {
+      if (b === '18-35') return;
+      if (hasEmp) barRow(host, b + ' 就業', find(state.area, b, '就業者人數'), maxE);
+      barRow(host, b + ' 勞動力', find(state.area, b, '勞動力人數'), maxL, { alt: !hasEmp });
+    });
+    BANDS.forEach(function (b) {
+      if (b !== '18-35') return;
+      barRow(host, '18-35 勞參率', find(state.area, b, '勞動力參與率'), 1);
+    });
+    $('empNote').textContent = hasEmp
+      ? '「就業者」是主計總處的實際調查值；「勞動力」是人口 × 分齡勞參率推估的。兩者定義不同，不要相減。'
+      : '就業者人數只有縣市層級的官方統計，行政區只能看勞動力推估值。';
+  }
+
+  function renderSal() {
+    var host = $('salBars'); host.innerHTML = '';
+    var maxA = maxOf('平均年薪', state.area), maxB = maxOf('中位數年薪', state.area);
+    var any = false;
+    BANDS.forEach(function (b) {
+      var a = find(state.area, b, '平均年薪'), m = find(state.area, b, '中位數年薪');
+      if (!a && !m) return;
+      any = true;
+      dualRow(host, b + ' 歲', a, m, maxA, maxB);
+    });
+    if (!any) host.innerHTML = '<p class="note">薪資只有縣市層級的官方統計，這一區沒有。</p>';
+  }
+
+  function renderEdu() {
+    var host = $('eduBars'); host.innerHTML = '';
+    if (!EDUS.length) return;
+    var maxN = 0, maxS = 0;
+    EDUS.forEach(function (e) {
+      var n = find(M.region, '15-64', '就業者人數', e);
+      var s = find(M.region, '15-64', '平均年薪（全國）', e);
+      if (n && n.value > maxN) maxN = n.value;
+      if (s && s.value > maxS) maxS = s.value;
+    });
+    EDUS.forEach(function (e) {
+      barRow(host, e, find(M.region, '15-64', '就業者人數', e), maxN);
+      barRow(host, '　↳ 年薪', find(M.region, '15-64', '平均年薪（全國）', e), maxS, { alt: true });
+    });
+  }
+
+  function renderRank() {
+    var host = $('rankBars'); host.innerHTML = '';
+    var list = R.filter(function (r) {
+      return r.age_group === state.band && r.metric === '人口數' && r.region !== M.region;
+    }).sort(function (a, b) { return b.value - a.value; });
+    $('rankTitle').textContent = '各行政區比較 · ' + state.band + ' 歲人口';
+    $('rankNote').textContent = list.length + ' 個行政區。點一下切換到該區，上面所有數字會跟著換。';
+    var max = list.length ? list[0].value : 1;
+    list.forEach(function (r) {
+      var b = document.createElement('button');
+      b.className = 'bar'; b.type = 'button';
+      if (r.region === state.area) b.style.background = 'var(--accent-soft)';
+      b.innerHTML =
+        '<span class="bar-k">' + r.region.replace(M.region, '') + '</span>' +
+        '<span class="bar-track"><span class="bar-fill' +
+          (r.region === state.area ? ' alt' : '') + '" style="width:' +
+          (r.value / max * 100).toFixed(1) + '%"></span></span>' +
+        '<span class="bar-v">' + num(r.value) + '</span>';
+      b.addEventListener('click', function () {
+        state.area = r.region; $('area').value = r.region; render();
+      });
+      host.appendChild(b);
+    });
+  }
+
+  function renderHero() {
+    var pop = find(state.area, state.band, '人口數');
+    $('heroLabel').textContent = state.band + ' 歲青年人口';
+    $('heroValue').textContent = pop ? num(pop.value) : '—';
+    $('heroUnit').textContent = pop ? '人' : '';
+    $('brandsub').textContent = state.area + ' · 統一至 18–35 歲口徑';
+
+    var side = $('heroSide'); side.innerHTML = '';
+    [['勞動力參與率', '勞動力參與率'], ['就業者人數', '就業者'], ['中位數年薪', '年薪中位數']]
+      .forEach(function (pair) {
+        var r = find(state.area, state.band, pair[0]);
+        if (!r) return;
+        var d = document.createElement('div');
+        d.innerHTML = '<p class="k">' + pair[1] + '</p><p class="v">' + show(r)
+          + (r.unit && r.unit !== '%' ? ' <span style="font-size:.6em;opacity:.7">'
+            + (r.unit === '人' ? '人' : '萬') + '</span>' : '') + '</p>';
+        side.appendChild(d);
+      });
   }
 
   function render() {
-    $('title').textContent = state.area === M.region
-      ? M.region + '青年統計' : state.area + '　青年統計';
     document.querySelectorAll('.chip').forEach(function (c) {
       c.setAttribute('aria-pressed', c.dataset.band === state.band ? 'true' : 'false');
     });
-    renderTiles(); renderRanks(); renderRows();
-
-    var missing = METRICS.filter(function (m) { return !find(state.area, state.band, m); });
-    var note = $('scopenote');
-    note.hidden = missing.length === 0;
-    note.textContent = missing.length
-      ? '就業與薪資只有縣市層級的官方統計，沒有行政區細分，所以這一區看不到：'
-        + missing.join('、') + '。切到「' + M.region + '（全市合計）」就看得到。'
-      : '';
-    var keep = state.selected;
-    select(keep && find(state.area, keep.age_group, keep.metric) || find(state.area, state.band, METRICS[0]));
+    renderHero(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderRank();
+    var keep = state.sel;
+    select((keep && find(state.area, keep.age_group, keep.metric, keep.education))
+      || find(state.area, state.band, '人口數'));
   }
 
-  $('srcline').innerHTML = M.sources.map(function (s) {
-    return s.agency + '「' + s.dataset + '」';
-  }).join('　·　') + '　·　' + M.period_label;
+  // ── 控制項
+  var sel = $('area');
+  areas.forEach(function (a) {
+    var o = document.createElement('option');
+    o.value = a;
+    o.textContent = a === M.region ? a + '（全市合計）' : a.replace(M.region, '');
+    sel.appendChild(o);
+  });
+  sel.value = state.area;
+  sel.addEventListener('change', function () { state.area = sel.value; render(); });
 
-  $('foot').innerHTML =
-    '共 ' + R.length.toLocaleString('en-US') + ' 筆記錄，' + M.areas + ' 個地區 × ' +
-    M.age_groups.length + ' 個年齡層 × ' + METRICS.length + ' 個指標。' +
-    '產生於 ' + DATA._generated + '，格式為 ' + DATA._schema + '。' +
-    ' 這頁是資料層的預覽，不是最終儀表板 —— 最終介面由前端負責。';
+  BANDS.forEach(function (b) {
+    var btn = document.createElement('button');
+    btn.className = 'chip'; btn.type = 'button'; btn.textContent = b + ' 歲';
+    btn.dataset.band = b;
+    btn.addEventListener('click', function () { state.band = b; render(); });
+    $('bands').appendChild(btn);
+  });
+
+  $('srcList').innerHTML = M.sources.map(function (s) {
+    return '<li><b>' + s.agency + '</b>　' + s.dataset + '</li>';
+  }).join('');
+  $('gapNote').innerHTML =
+    '共 ' + R.length.toLocaleString('en-US') + ' 筆對齊後記錄，'
+    + M.areas + ' 個地區 × ' + M.age_groups.length + ' 個年齡層 × '
+    + M.metrics.length + ' 個指標，產生於 ' + DATA._generated + '。'
+    + ' <b>四大面向裡「居住」還沒有資料源</b>，這一格目前是空的。';
 
   render();
 })();

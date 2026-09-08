@@ -29,6 +29,7 @@ from data import sources  # noqa: E402
 from data.fetch_employment import fetch_employment  # noqa: E402
 from data.fetch_population import fetch_population_by_district  # noqa: E402
 from data.fetch_salary import fetch_salary  # noqa: E402
+from data.fetch_salary_education import fetch_salary_by_education  # noqa: E402
 from data.ungroup import ungroup  # noqa: E402
 from engine import (  # noqa: E402
     MetricKind,
@@ -174,6 +175,54 @@ def _salary_records(ref, region, refresh) -> list[AlignedRecord]:
     return out
 
 
+# 表32 的教育程度只分三級，表1 分四級。交集的三級直接對應，
+# 「大專及以上」在薪資表對應「專科及大學」（研究所另計，見 note）。
+EDU_SALARY_KEY = {"國中及以下": "國中及以下", "高級中等": "高級中等", "大專及以上": "專科及大學"}
+
+
+def _education_records(region, refresh) -> list[AlignedRecord]:
+    """命題點名的「教育程度 × 薪資水準」交叉。
+
+    就業者人數是**新北市**的（表32），薪資是**全國**的（表1）——
+    官方沒有縣市 × 教育程度的薪資統計。所以薪資的 metric 名稱直接寫「全國」，
+    不必等到有人點開 provenance 才發現。
+    """
+    emp = fetch_employment(region, refresh=refresh)
+    sal = fetch_salary_by_education(refresh=refresh)
+    out = []
+
+    for level, headcount in emp["by_education"].items():
+        out.append(AlignedRecord(
+            region=region, year=emp["year"], age_group="15-64", gender="total",
+            metric="就業者人數", value=headcount * 1000, unit="人", education=level,
+            provenance=Provenance(
+                source_agency="行政院主計總處", source_dataset=emp["dataset"],
+                source_age_group="15-64", method=Method.EXACT_MATCH, weight=1.0,
+                confidence=Confidence.HIGH,
+                note=f"{region}就業者按最高學歷分，原始統計值，未經插補。"
+                     f"⚠️ 這是全年齡就業者，不限 18-35 歲 —— 官方未提供教育程度 × 年齡的交叉表",
+            ),
+        ))
+
+    for level, key in EDU_SALARY_KEY.items():
+        extra = ""
+        if level == "大專及以上":
+            extra = (f"「大專及以上」在薪資表對應「專科及大學」；"
+                     f"研究所另為 {sal['mean']['研究所']} {sal['unit']}，本列未併入")
+        out.append(AlignedRecord(
+            region=region, year=sal["year"], age_group="15-64", gender="total",
+            metric="平均年薪（全國）", value=sal["mean"][key], unit=sal["unit"], education=level,
+            provenance=Provenance(
+                source_agency="行政院主計總處", source_dataset=sal["dataset"],
+                source_age_group="15-64", method=Method.EXACT_MATCH, weight=1.0,
+                confidence=Confidence.LOW,
+                note=f"⚠️ 這是**全國**平均，官方沒有縣市 × 教育程度的薪資統計，"
+                     f"不能當成{region}的實際薪資。人數是{region}的，薪資是全國的。{extra}",
+            ),
+        ))
+    return out
+
+
 def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     ref = ReferenceData.load()
     by_district, meta = fetch_population_by_district(region, refresh=refresh)
@@ -198,7 +247,9 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     # 就業與薪資只有縣市層級，沒有行政區細分 —— 只掛在全市那一層
     records.extend(_employment_records(ref, region, refresh))
     records.extend(_salary_records(ref, region, refresh))
+    records.extend(_education_records(region, refresh))
 
+    educations = sorted({r.education for r in records if r.education})
     return {
         "_generated": date.today().isoformat(),
         "_schema": "YouthLens unified v1（Spec §7.3）",
@@ -209,6 +260,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
             "areas": len(areas),
             "age_groups": [b.label for b in BANDS],
             "metrics": sorted({r.metric for r in records}),
+            "educations": educations,
             "reference_data": str(ref.path.name) if ref.path else "",
             "sources": [
                 {"agency": "內政部戶政司", "dataset": sources.POPULATION_DATASET,

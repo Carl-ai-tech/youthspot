@@ -30,6 +30,7 @@ from data.fetch_labour import (  # noqa: E402
     latest,
     unemployment,
 )
+from data.fetch_lfpr_local import fetch_local_lfpr  # noqa: E402
 from data.fetch_population import fetch_population  # noqa: E402
 from data.ungroup import ungroup  # noqa: E402
 
@@ -56,7 +57,33 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
                 if b[0] >= AGE_RANGE[0] and b[1] <= AGE_RANGE[1]}
 
     pop_w = {a: float(pop[a]) for a in ages}
-    lfpr = ungroup(usable(lfpr_bands), pop_w)
+
+    # 縣市自己的分齡勞參率優先。官方縣市表沒有細分 15-19 / 20-24，
+    # 那兩組借全國的形狀但校準到本地的 15-24 合計 ——
+    # 這樣既保住 18 歲那道坎，又不會整條曲線都是別人的水準。
+    local = fetch_local_lfpr(region, refresh=refresh)
+    bands = dict(usable(lfpr_bands))
+    local_note = f"全國曲線（{lfpr_year} 年平均）"
+    target = local["by_band"].get((15, 24))
+    borrowed = [b for b in bands if b not in local["by_band"]]
+    if target and borrowed:
+        w = sum(pop_w[a] for b in borrowed for a in range(b[0], b[1] + 1) if a in pop_w)
+        got = sum(pop_w[a] * bands[b] for b in borrowed
+                  for a in range(b[0], b[1] + 1) if a in pop_w)
+        if got > 0:
+            k = target * w / got
+            for b in borrowed:
+                bands[b] = bands[b] * k
+    for b, v in local["by_band"].items():
+        if b in bands:
+            bands[b] = v
+    if target:
+        local_note = (
+            f"{region}自有分齡值（主計總處表29，{local['year']}）；"
+            f"15-19／20-24 官方未細分，借全國形狀並校準至本地 15-24 合計 {target:.1%}"
+        )
+
+    lfpr = ungroup(bands, pop_w)
 
     # 失業率的權重是勞動力 = 人口 × 勞參率
     labour_w = {a: pop_w[a] * lfpr[a] for a in ages}
@@ -82,10 +109,10 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
         },
         "rates": {
             "labor_force_participation": {
-                "source": f"{sources.LFPR_DATASET}（{lfpr_year} 年平均，全國）",
+                "source": f"主計總處 表29 {region}分齡勞參率 ＋ {sources.LFPR_DATASET}",
                 "source_url": sources.LFPR_XML,
-                "note": f"全國口徑，{region}無分齡資料，借用全國形狀。{_UNGROUP_NOTE}",
-                "official_bands": {f"{lo}-{hi}": v for (lo, hi), v in sorted(usable(lfpr_bands).items())},
+                "note": f"{local_note}。{_UNGROUP_NOTE}",
+                "official_bands": {f"{lo}-{hi}": round(v, 12) for (lo, hi), v in sorted(bands.items())},
                 "retrieved": retrieved,
                 "by_age": {str(a): round(lfpr[a], 12) for a in ages},
             },

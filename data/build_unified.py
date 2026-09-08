@@ -28,7 +28,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from data import sources  # noqa: E402
 from data.fetch_employment import fetch_employment  # noqa: E402
 from data.fetch_population import fetch_population_by_district  # noqa: E402
+from data.fetch_labour import latest, unemployment  # noqa: E402
 from data.fetch_salary import fetch_salary  # noqa: E402
+from data.fetch_unemployment_local import fetch_local_unemployment  # noqa: E402
 from data.fetch_salary_education import (  # noqa: E402
     fetch_salary_by_education,
     fetch_salary_by_industry,
@@ -391,6 +393,74 @@ def _vacancy_records(refresh) -> list[AlignedRecord]:
     return out
 
 
+def _unemployment_curve(ref, region: str, refresh) -> tuple[dict[int, float], dict]:
+    """新北市的單一年齡失業率曲線。
+
+    縣市表只到「15-24」，比勞參率還粗。所以 15-19／20-24 借全國的形狀，
+    校準到新北市自己的 15-24 合計；25 歲以上用新北市自有值。做法與勞參率相同。
+
+    ⚠️ backtest.py 已證實失業率曲線**拆不準**（比不拆更差），因為它在
+       20-24 歲有高峰，合併後那個峰就消失了。所以任意區間的失業率一律標 low。
+    """
+    ages = range(AGE_MIN, AGE_MAX + 1)
+    lfpr = {a: ref.rate(LFPR, a) for a in ages}
+    labour = {a: ref.population(a) * lfpr[a] for a in ages}
+
+    local = fetch_local_unemployment(region, refresh=refresh)
+    _, nat_bands = latest(unemployment(refresh=refresh))
+    bands = {b: v for b, v in nat_bands.items() if AGE_MIN <= b[0] and b[1] <= AGE_MAX}
+
+    target = local["by_band"].get((15, 24))
+    borrowed = [b for b in bands if b not in local["by_band"]]
+    if target and borrowed:
+        w = sum(labour[a] for b in borrowed for a in range(b[0], b[1] + 1) if a in labour)
+        got = sum(labour[a] * bands[b] for b in borrowed
+                  for a in range(b[0], b[1] + 1) if a in labour)
+        if got > 0:
+            k = target * w / got
+            for b in borrowed:
+                bands[b] = bands[b] * k
+    for b, v in local["by_band"].items():
+        if b in bands:
+            bands[b] = v
+
+    return ungroup(bands, labour), local
+
+
+def _unemployment_records(ref, region: str, refresh) -> list[AlignedRecord]:
+    """失業率：比率型，以勞動力為權重重新聚合到我們的四個標準分組。"""
+    curve, local = _unemployment_curve(ref, region, refresh)
+    lfpr = {a: ref.rate(LFPR, a) for a in range(AGE_MIN, AGE_MAX + 1)}
+    labour = {a: ref.population(a) * lfpr[a] for a in lfpr}
+
+    out = []
+    for band in BANDS:
+        ages = [a for a in band.ages() if a in curve and labour.get(a, 0) > 0]
+        w = sum(labour[a] for a in ages)
+        if not w:
+            continue
+        value = sum(labour[a] * curve[a] for a in ages) / w
+        exact = (band.start, band.end) in local["by_band"]
+        out.append(AlignedRecord(
+            region=region, year=local["year"], age_group=band.label, gender="total",
+            metric="失業率", value=round(value, 4), unit="%",
+            provenance=Provenance(
+                source_agency="行政院主計總處",
+                source_dataset=local["dataset"],
+                source_age_group=f"{band.start}-{band.end}" if exact else "官方分組拆解後重組",
+                method=Method.EXACT_MATCH if exact else Method.FORMULA_D_T3,
+                weight=1.0,
+                confidence=Confidence.HIGH if exact else Confidence.LOW,
+                note=(f"{region}官方公布值，分組完全吻合，未經插補"
+                      if exact else
+                      f"縣市表只公布到 15-24／25-29 等分組，本區間需拆組重算。"
+                      f"⚠️ data/backtest.py 已證實失業率曲線拆不準"
+                      f"（在 20-24 歲有高峰，合併後看不見），故標記為 low，僅供參考"),
+            ),
+        ))
+    return out
+
+
 def _curves(ref, areas: dict, region: str, refresh) -> dict:
     """單一年齡的曲線，讓前端可以自己算任意年齡區間。
 
@@ -419,6 +489,7 @@ def _curves(ref, areas: dict, region: str, refresh) -> dict:
     sal = fetch_salary(region, refresh=refresh)
     mean_curve = ungroup(sal["mean"], employed, cap=10_000.0)
     median_curve = ungroup(sal["median"], employed, cap=10_000.0)
+    unemp_curve, _ = _unemployment_curve(ref, region, refresh)
 
     return {
         "ages": ages,
@@ -430,6 +501,7 @@ def _curves(ref, areas: dict, region: str, refresh) -> dict:
         "employed": {str(a): round(employed.get(a, 0.0), 1) for a in ages},
         "salary_mean": {str(a): round(mean_curve.get(a, 0.0), 3) for a in ages},
         "salary_median": {str(a): round(median_curve.get(a, 0.0), 3) for a in ages},
+        "unemployment": {str(a): round(unemp_curve.get(a, 0.0), 6) for a in ages},
         "confidence": {
             "人口數": "high",
             "勞動力人數": "medium",
@@ -437,8 +509,13 @@ def _curves(ref, areas: dict, region: str, refresh) -> dict:
             "就業者人數": "medium",
             "平均年薪": "medium",
             "中位數年薪": "medium",
+            "失業率": "low",
         },
-        "city_only": ["就業者人數", "平均年薪", "中位數年薪"],
+        "city_only": ["就業者人數", "平均年薪", "中位數年薪", "失業率"],
+        "low_reason": {
+            "失業率": "失業率在 20-24 歲有高峰，官方分組合併後看不見，"
+                      "backtest.py 已證實拆組會失準，任意區間僅供參考",
+        },
         "note": (
             "單一年齡曲線，供前端組出任意年齡區間。"
             "人口為戶政司單一年齡實數，任何區間都是精確加總；"
@@ -474,6 +551,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     records.extend(_employment_records(ref, region, refresh))
     records.extend(_salary_records(ref, region, refresh))
     records.extend(_education_records(region, refresh))
+    records.extend(_unemployment_records(ref, region, refresh))
     records.extend(_vacancy_records(refresh))
 
     educations = sorted({r.education for r in records
@@ -504,6 +582,9 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
                  "url": "https://www.stat.gov.tw/News_Content.aspx?n=4580&s=232642"},
                 {"agency": "行政院主計總處", "dataset": VACANCY_DATASET,
                  "url": VACANCY_LANDING},
+                {"agency": "行政院主計總處",
+                 "dataset": "人力資源調查 表29／表37 縣市別分齡勞參率與失業率",
+                 "url": "https://www.stat.gov.tw/News_Content.aspx?n=4001&s=236078"},
             ],
         },
         "curves": _curves(ref, areas, region, refresh),

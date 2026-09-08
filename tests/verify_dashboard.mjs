@@ -23,7 +23,10 @@ const registry = {};
 function makeNode(id) {
   const node = {
     id: id || '',
-    textContent: '', innerHTML: '', value: '', className: '', type: '',
+    textContent: '', value: '', className: '', type: '',
+    _html: '',
+    get innerHTML() { return this._html; },
+    set innerHTML(v) { this._html = v; if (v === '') this.children = []; },
     hidden: false,
     style: {},
     dataset: {},
@@ -95,8 +98,13 @@ console.log('把 preview.html 的整段腳本跑一次，檢查問答\n');
 
 check('空白時按「問」', undefined, (t) => t.indexOf('先在上面') >= 0);
 check('查一個數字', '新北市 25-29 歲的平均年薪是多少？', (t) => t.indexOf('59.9') >= 0);
-check('地區排名', '哪一區的青年最多？', (t) => t.indexOf('板橋') >= 0);
-check('行業排名', '哪些行業最缺工？', (t) => t.indexOf('製造業') >= 0);
+// 排名的名次現在畫成圖表，文字只留標題，勝出者寫在結論裡
+check('地區排名', '哪一區的青年最多？',
+  (t) => t.indexOf('人口數前') >= 0 && el('askVerdict').textContent.indexOf('板橋') >= 0
+    && el('askChart').children.length > 0);
+check('行業排名', '哪些行業最缺工？',
+  (t) => t.indexOf('職缺數前') >= 0 && el('askVerdict').textContent.indexOf('製造業') >= 0
+    && el('askChart').children.length > 0);
 check('行政區查詢', '板橋區 18-24 歲有幾個人？', (t) => t.indexOf('34,099') >= 0);
 check('教育程度交叉', '大專及以上的薪水多少？', (t) => t.indexOf('75.3') >= 0);
 check('沒資料時誠實說沒有', '新北市青年的居住情況？',
@@ -118,5 +126,31 @@ check('行政區的任意區間人口', '板橋區26-28歲有多少人',
 check('沒講年齡時給整段並標明', '新北市的平均年薪',
   (t) => t.indexOf('18-35') >= 0);
 
-console.log(fail === 0 ? '全部 13 項通過' : `❌ ${fail} 項失敗`);
+// 比較兩個地區：要有圖表和一句結論，不能只給一句話
+function checkCompare(label, question, expect) {
+  el('askInput').value = '';
+  runAsk(question);
+  const text = el('askText').textContent;
+  const verdict = el('askVerdict').textContent;
+  const bars = el('askChart').children.length;
+  const errored = text.indexOf('程式出錯了') >= 0;
+  const ok = !errored && expect(text, verdict, bars, el('askAnswer').className);
+  if (!ok) fail++;
+  console.log(`${ok ? '✅' : '❌'}　${label}`);
+  console.log(`   ${text}`);
+  if (verdict) console.log(`   結論：${verdict}`);
+  console.log(`   圖表：${bars ? '有' : '無'}`);
+  console.log();
+}
+
+checkCompare('比較兩個行政區的人口', '比較汐止區和林口區22-25歲青年人口',
+  (t, v, bars) => t.indexOf('22-25') >= 0 && v.length > 0 && bars > 0);
+checkCompare('失業率沒有行政區資料要說清楚', '比較汐止區和林口區22-25歲青年失業率',
+  (t, v, bars, cls) => t.indexOf('只有縣市層級') >= 0 && cls.indexOf('no') >= 0);
+checkCompare('全市失業率答得出來', '新北市 18-24 歲的失業率',
+  (t) => t.indexOf('失業率') >= 0 && t.indexOf('%') >= 0);
+checkCompare('排名也要有圖表和結論', '哪一區的青年最多？',
+  (t, v, bars) => bars > 0 && v.indexOf('第一名') >= 0);
+
+console.log(fail === 0 ? '全部 17 項通過' : `❌ ${fail} 項失敗`);
 process.exit(fail === 0 ? 0 : 1);

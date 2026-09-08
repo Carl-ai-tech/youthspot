@@ -135,6 +135,16 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 .answer .cite { margin-top:.6rem; }
 .answer .cite button { font-family:var(--sans); font-size:.8rem; color:var(--accent); background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; }
 
+
+.ansbars { display:flex; flex-direction:column; gap:.35rem; margin:.8rem 0 .2rem; }
+.ansbar { display:grid; grid-template-columns:7rem 1fr auto; align-items:center; gap:.6rem; }
+.ansbar .k { font-size:.85rem; color:var(--ink-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ansbar .track { height:16px; background:var(--sunk); border-radius:2px; overflow:hidden; }
+.ansbar .track i { display:block; height:100%; background:var(--accent); border-radius:2px; }
+.ansbar.top .track i { background:var(--second); }
+.ansbar .v { font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:.83rem; white-space:nowrap; }
+.verdict { font-size:.95rem; color:var(--ink); background:var(--second-soft); border-radius:3px; padding:.55rem .8rem; margin:.7rem 0 0; }
+
 .sources { border-top:1px solid var(--rule); margin-top:2rem; padding-top:1.2rem; }
 .sources h2 { font-size:.9rem; margin:0 0 .7rem; }
 .sources ul { list-style:none; margin:0; padding:0; display:grid; gap:.35rem; }
@@ -189,6 +199,8 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
         <div class="answer" id="askAnswer">
           <p class="txt" id="askText"></p>
           <p class="meta" id="askMeta"></p>
+          <div id="askChart"></div>
+          <p class="verdict" id="askVerdict" style="display:none"></p>
           <div class="cite" id="askCite"></div>
         </div>
       </section>
@@ -610,19 +622,23 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 
   function parseQuestion(raw) {
     var q = normQ(raw);
-    var it = { kind: 'lookup', region: null, age_group: null, metric: null,
-               education: null, askedAge: null };
+    var it = { kind: 'lookup', region: null, regions: [], age_group: null,
+               metric: null, education: null, askedAge: null };
 
     // 地區：取最長的相符名稱，避免「三重」誤中「三峽」之類
-    var best = null;
+    // 一句話裡可能提到好幾個地區（「比較汐止區和林口區」）
     areas.forEach(function (a) {
       var shortName = a.replace(M.region, '');
-      if (shortName && q.indexOf(shortName) >= 0) {
-        if (!best || shortName.length > best.n.length) best = { a: a, n: shortName };
-      }
+      if (shortName && q.indexOf(shortName) >= 0) it.regions.push(a);
     });
-    if (best) it.region = best.a;
-    else if (q.indexOf(M.region) >= 0) it.region = M.region;
+    if (it.regions.length >= 2) {
+      it.kind = 'compare';
+      it.region = it.regions[0];
+    } else if (it.regions.length === 1) {
+      it.region = it.regions[0];
+    } else if (q.indexOf(M.region) >= 0) {
+      it.region = M.region;
+    }
 
     BANDS.forEach(function (b) { if (q.indexOf(b) >= 0) it.age_group = b; });
     if (!it.age_group) {
@@ -648,8 +664,10 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     if (!it.metric && COUNT_CUE.test(q) && METRICS.indexOf('人口數') >= 0) {
       it.metric = '人口數';
     }
-    for (var j = 0; j < RANK_WORDS.length; j++) {
-      if (q.indexOf(RANK_WORDS[j]) >= 0) { it.kind = 'rank'; break; }
+    if (it.kind !== 'compare') {
+      for (var j = 0; j < RANK_WORDS.length; j++) {
+        if (q.indexOf(RANK_WORDS[j]) >= 0) { it.kind = 'rank'; break; }
+      }
     }
     return it;
   }
@@ -731,6 +749,52 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     };
   }
 
+
+  // ── 比較兩個以上的地區 ─────────────────────────────────────
+  // 「比較汐止區和林口區」是很自然的問法，而且答案應該是圖表加一句結論，
+  // 不是一串文字。單一數字看不出誰高誰低。
+  function pickValue(region, it) {
+    if (it.askedAge) {
+      return computeRange(region, it.askedAge[0], it.askedAge[1], it.metric);
+    }
+    var band = it.age_group || RANK_DEFAULT_BAND;
+    for (var i = 0; i < R.length; i++) {
+      var r = R[i];
+      if (r.region === region && r.age_group === band
+          && r.metric === it.metric && !r.education) return r;
+    }
+    return null;
+  }
+
+  function drawBars(host, items, labelOf) {
+    var max = 0;
+    items.forEach(function (r) { if (r.value > max) max = r.value; });
+    var wrap = document.createElement('div');
+    wrap.className = 'ansbars';
+    items.forEach(function (r, i) {
+      var row = document.createElement('div');
+      row.className = 'ansbar' + (i === 0 ? ' top' : '');
+      row.innerHTML =
+        '<span class="k">' + labelOf(r) + '</span>'
+        + '<span class="track"><i style="width:'
+        + (max > 0 ? Math.max(r.value / max * 100, 1).toFixed(1) : 0) + '%"></i></span>'
+        + '<span class="v">' + fmtRec(r) + '</span>';
+      wrap.appendChild(row);
+    });
+    host.appendChild(wrap);
+  }
+
+  function gapText(hi, lo) {
+    if (!lo.value) return '';
+    if (hi.unit === '%') {
+      return '相差 ' + ((hi.value - lo.value) * 100).toFixed(1) + ' 個百分點';
+    }
+    var times = hi.value / lo.value;
+    return times >= 1.15
+      ? '是 ' + times.toFixed(1) + ' 倍'
+      : '高 ' + ((times - 1) * 100).toFixed(1) + '%';
+  }
+
   function resolve(it) {
     if (!it.metric) {
       var NL = String.fromCharCode(10);
@@ -738,6 +802,34 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
         + '我有的是：' + METRICS.join('、') + '。' + NL
         + '（居住、健康這些面向目前沒有資料源，我不會猜一個給你。）' };
     }
+
+    if (it.kind === 'compare') {
+      var cityOnly = (DATA.curves && DATA.curves.city_only || []).indexOf(it.metric) >= 0;
+      if (cityOnly) {
+        var NL5 = String.fromCharCode(10);
+        return { ok: false, text: '「' + it.metric + '」只有縣市層級的官方統計，'
+          + '沒有行政區別的數字，所以沒辦法比較各區。' + NL5
+          + '可以比較各區的有：人口數、勞動力人數、勞動力參與率。' };
+      }
+      var picked = [];
+      for (var ci = 0; ci < it.regions.length; ci++) {
+        var got = pickValue(it.regions[ci], it);
+        if (got) picked.push(got);
+      }
+      if (picked.length < 2) {
+        return { ok: false, text: '這幾個地區的「' + it.metric + '」資料不齊，沒辦法比較。' };
+      }
+      picked.sort(function (a, b) { return b.value - a.value; });
+      var band2 = it.askedAge
+        ? it.askedAge[0] + '-' + it.askedAge[1]
+        : (it.age_group || RANK_DEFAULT_BAND);
+      return { ok: true, recs: picked, chart: picked,
+        chartLabel: function (r) { return r.region.replace(M.region, ''); },
+        verdict: picked[0].region.replace(M.region, '') + '的' + it.metric + '比'
+          + picked[picked.length - 1].region.replace(M.region, '') + gapText(picked[0], picked[picked.length - 1]) + '。',
+        text: band2 + ' 歲的' + it.metric + '比較：' };
+    }
+
     if (it.kind === 'rank') {
       var band = it.age_group
         || (BANDS.indexOf(RANK_DEFAULT_BAND) >= 0 ? RANK_DEFAULT_BAND : null);
@@ -751,11 +843,13 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
       }
       if (!pool.length) return { ok: false, text: '沒有可以拿來比較的資料。' };
       pool = pool.slice().sort(function (a, b) { return b.value - a.value; }).slice(0, 5);
-      var lines = pool.map(function (r, i) {
-        return (i + 1) + '. ' + (r.education || r.region.replace(M.region, '')) + '　' + fmtRec(r);
-      });
-      return { ok: true, text: (it.age_group || (pool[0] && pool[0].region !== '全國' && pool[0].age_group !== '全體' ? band : '') ? (it.age_group || band) + ' 歲' : '') + it.metric
-        + '前 ' + pool.length + ' 名：\n' + lines.join('\n'), recs: pool };
+      var bandLabel = (pool[0] && pool[0].age_group === '全體') ? '' : (band + ' 歲');
+      return { ok: true, recs: pool, chart: pool,
+        chartLabel: function (r) { return r.education || r.region.replace(M.region, ''); },
+        verdict: '第一名是 ' + (pool[0].education || pool[0].region.replace(M.region, ''))
+          + '，' + gapText(pool[0], pool[pool.length - 1])
+          + '於第 ' + pool.length + ' 名。',
+        text: bandLabel + it.metric + '前 ' + pool.length + ' 名：' };
     }
     if (it.askedAge) {
       var lo = it.askedAge[0], hi = it.askedAge[1];
@@ -811,6 +905,9 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     $('askText').textContent = text;
     $('askMeta').textContent = meta || '';
     $('askCite').innerHTML = '';
+    $('askChart').innerHTML = '';
+    $('askVerdict').textContent = '';
+    $('askVerdict').style.display = 'none';
     return box;
   }
 
@@ -841,6 +938,13 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
         .map(function (p) { return p[0] + '=' + p[1]; }).join('、')
       + (res.ok ? '' : '　（沒有的資料我會直接說沒有）');
     showAnswer(res.ok ? '' : 'no', res.text, meta);
+    if (res.chart && res.chart.length) {
+      drawBars($('askChart'), res.chart, res.chartLabel || function (r) { return r.region; });
+    }
+    if (res.verdict) {
+      $('askVerdict').textContent = res.verdict;
+      $('askVerdict').style.display = 'block';
+    }
     var cite = $('askCite');
     (res.recs || []).forEach(function (r) {
       var b = document.createElement('button');
@@ -856,6 +960,8 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
    '哪一區的青年最多？',
    '板橋區 18-24 歲有幾個人？',
    '哪些行業最缺工？',
+   '比較汐止區和林口區 22-25 歲的人口',
+   '新北市 18-24 歲的失業率',
    '新北市青年的居住情況？'].forEach(function (q) {
     var b = document.createElement('button');
     b.type = 'button'; b.textContent = q;

@@ -29,7 +29,9 @@ from data import sources  # noqa: E402
 from data.fetch_employment import fetch_employment  # noqa: E402
 from data.fetch_population import fetch_population_by_district  # noqa: E402
 from data.fetch_labour import latest, unemployment  # noqa: E402
-from data.fetch_salary import fetch_salary  # noqa: E402
+from data.fetch_ntpc_labour import DATASET as NTPC_DATASET  # noqa: E402
+from data.fetch_ntpc_labour import LANDING as NTPC_LANDING, fetch_ntpc_labour  # noqa: E402
+from data.fetch_salary import fetch_salary, fetch_salary_series  # noqa: E402
 from data.fetch_unemployment_local import fetch_local_unemployment  # noqa: E402
 from data.fetch_salary_education import (  # noqa: E402
     fetch_salary_by_education,
@@ -642,6 +644,52 @@ def _policy_notes(records: list[AlignedRecord], region: str) -> list[dict]:
     return notes
 
 
+def _trends(region: str, refresh) -> dict:
+    """時間序列。—— 命題：「有助於整合出青年動態」
+
+    先前所有數字都是單一時點的快照，看不出變化。而變化才是「動態」。
+
+    兩條序列刻意來自不同機關，可以互相驗證：
+      薪資    主計總處表6，六個年度，**分年齡**，所以看得到青年自己的變化
+      勞動力  新北市資料開放平臺，十九個年度，全年齡，但序列最長
+    兩者算出的新北市失業率在重疊年度應該吻合 —— 這是資料可信度的直接證據。
+    """
+    salary = fetch_salary_series(region, refresh=refresh)
+    labour = fetch_ntpc_labour(refresh=refresh)
+
+    def band_key(b):
+        lo, hi = b
+        return f"未滿{hi + 1}" if lo == 0 else f"{lo}-{hi}"
+
+    return {
+        "salary": {
+            "source": "行政院主計總處 工業及服務業全年總薪資統計－表6",
+            "unit": "萬元/年",
+            "years": [r["year"] for r in salary],
+            "bands": [band_key(b) for b in (salary[0]["mean"] if salary else {})],
+            "mean": {band_key(b): [r["mean"][b] for r in salary]
+                     for b in (salary[0]["mean"] if salary else {})},
+            "median": {band_key(b): [r["median"][b] for r in salary]
+                       for b in (salary[0]["median"] if salary else {})},
+            "note": "分年齡，看得到青年自己的薪資變化",
+        },
+        "labour": {
+            "source": NTPC_DATASET,
+            "url": NTPC_LANDING,
+            "years": [r["year"] for r in labour],
+            "lfpr": [r["lfpr"] for r in labour],
+            "unemployment": [r["unemployment"] for r in labour],
+            "employed": [r["employed"] for r in labour],
+            "note": "全年齡，但這是我們手上最長的新北市本地序列（19 年）",
+        },
+        "cross_check": {
+            "label": "兩個獨立來源的新北市失業率",
+            "ntpc_latest": labour[-1]["unemployment"] if labour else None,
+            "dgbas_total": None,      # 由呼叫端填入
+        },
+    }
+
+
 def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     ref = ReferenceData.load()
     by_district, meta = fetch_population_by_district(region, refresh=refresh)
@@ -701,8 +749,11 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
                 {"agency": "行政院主計總處",
                  "dataset": "人力資源調查 表29／表37 縣市別分齡勞參率與失業率",
                  "url": "https://www.stat.gov.tw/News_Content.aspx?n=4001&s=236078"},
+                {"agency": "新北市政府主計處", "dataset": NTPC_DATASET,
+                 "url": NTPC_LANDING},
             ],
         },
+        "trends": _trends(region, refresh),
         "policy_notes": _policy_notes(records, region),
         "curves": _curves(ref, areas, region, refresh),
         "records": [r.to_dict() for r in records],

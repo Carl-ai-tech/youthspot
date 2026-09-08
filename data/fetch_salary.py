@@ -79,6 +79,31 @@ def fetch_salary(region: str = "新北市", *, refresh: bool = False) -> dict:
     raise RuntimeError(f"表6 裡找不到 {region}")
 
 
+def fetch_salary_series(region: str = "新北市", *, refresh: bool = False) -> list[dict]:
+    """回傳該縣市**每一個年度**的分齡薪資，依年份排序。
+
+    表6 的檔案裡放了六個年度，每一段各有一次全部縣市。
+    先前只取最新一年，其他五年白白丟掉 —— 那正是「青年動態」需要的東西。
+    """
+    rows = download_ods(TABLE6, cache_name="dgbas_table6_salary.ods", refresh=refresh)
+    out, year = [], None
+    for row in rows:
+        for cell in row:
+            m = re.fullmatch(r"(\d{3})年", clean(cell))
+            if m:
+                year = 1911 + int(m.group(1))
+        if not row or clean(row[0]) != region or len(row) < 17:
+            continue
+        _verify(row, region)
+        out.append({
+            "year": year,
+            "total_mean": to_float(row[COL_MEAN_TOTAL]),
+            "mean": {b: to_float(row[c]) for b, c in BANDS.items()},
+            "median": {b: to_float(row[c + MEDIAN_OFFSET]) for b, c in BANDS.items()},
+        })
+    return sorted(out, key=lambda r: r["year"] or 0)
+
+
 if __name__ == "__main__":
     d = fetch_salary()
     print(f"{d['region']}　{d['year']} 年全時受僱員工年薪　總計平均 {d['total_mean']} {d['unit']}")

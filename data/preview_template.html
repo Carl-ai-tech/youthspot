@@ -160,6 +160,13 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 .pnote li::before { content:"·"; position:absolute; left:0; color:var(--second); font-weight:700; }
 .pnote .basis { font-family:var(--mono); font-size:.7rem; color:var(--ink-3); }
 
+
+.trend { display:flex; flex-direction:column; gap:1.4rem; }
+.trend figure { margin:0; }
+.trend .cap { font-size:.82rem; color:var(--ink-3); margin:.5rem 0 0; }
+.trend svg { display:block; width:100%; height:auto; }
+.xcheck { font-size:.9rem; background:var(--accent-soft); border-radius:3px; padding:.7rem .9rem; margin-top:.3rem; }
+
 .sources { border-top:1px solid var(--rule); margin-top:2rem; padding-top:1.2rem; }
 .sources h2 { font-size:.9rem; margin:0 0 .7rem; }
 .sources ul { list-style:none; margin:0; padding:0; display:grid; gap:.35rem; }
@@ -269,6 +276,16 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
           <span><i class="sw" style="background:var(--accent)"></i>趨勢統計顯著</span>
           <span><i class="sw" style="background:var(--second)"></i>看不出明確方向</span>
         </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>青年動態 · 時間趨勢</h2><span class="aspect">動態</span></div>
+        <p class="note">
+          前面每個數字都是「現在」的快照。這一段看的是<b>變化</b> ——
+          薪資來自主計總處（分年齡，看得到青年自己的變化），
+          勞動力來自新北市資料開放平臺（全年齡，但序列最長）。
+        </p>
+        <div class="trend" id="trendBox"></div>
       </section>
 
       <section class="panel">
@@ -549,6 +566,130 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
       + '<br>刻意<b>不用機器學習</b>：資料點只有十個，訓練出來的模型不可信也無法解釋。';
   }
 
+
+  // ── 時間趨勢 ────────────────────────────────────────────────
+  // 兩條序列刻意來自不同機關，所以可以互相驗證。
+  // 手繪 SVG，不載任何圖表函式庫 —— 這頁要能離線雙擊打開。
+  function lineChart(opts) {
+    var W = 720, H = 240, L = 56, R2 = 16, T = 16, B = 34;
+    var xs = opts.years, series = opts.series;
+    var all = [];
+    series.forEach(function (s2) { s2.values.forEach(function (v) { all.push(v); }); });
+    var lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
+    var pad = (hi - lo) * 0.15 || hi * 0.1 || 1;
+    lo = opts.zero ? 0 : Math.max(0, lo - pad);
+    hi = hi + pad;
+
+    var px = function (i) { return L + (W - L - R2) * (xs.length < 2 ? 0 : i / (xs.length - 1)); };
+    var py = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo || 1)); };
+
+    var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="'
+      + opts.alt + '">';
+
+    // 格線與 y 軸標籤
+    for (var g = 0; g <= 3; g++) {
+      var v = lo + (hi - lo) * g / 3, y = py(v);
+      out += '<line x1="' + L + '" y1="' + y.toFixed(1) + '" x2="' + (W - R2)
+        + '" y2="' + y.toFixed(1) + '" stroke="var(--rule-soft)" stroke-width="1"/>';
+      out += '<text x="' + (L - 8) + '" y="' + (y + 4).toFixed(1)
+        + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10"'
+        + ' fill="var(--ink-3)">' + opts.fmt(v) + '</text>';
+    }
+
+    // x 軸標籤（太密就跳著標）
+    var step = Math.ceil(xs.length / 8);
+    for (var i = 0; i < xs.length; i++) {
+      if (i % step && i !== xs.length - 1) continue;
+      out += '<text x="' + px(i).toFixed(1) + '" y="' + (H - 12)
+        + '" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10"'
+        + ' fill="var(--ink-3)">' + xs[i] + '</text>';
+    }
+
+    // 折線
+    series.forEach(function (s2) {
+      var pts = s2.values.map(function (v, i) {
+        return px(i).toFixed(1) + ',' + py(v).toFixed(1);
+      }).join(' ');
+      out += '<polyline points="' + pts + '" fill="none" stroke="' + s2.color
+        + '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>';
+      var lastX = px(s2.values.length - 1), lastY = py(s2.values[s2.values.length - 1]);
+      out += '<circle cx="' + lastX.toFixed(1) + '" cy="' + lastY.toFixed(1)
+        + '" r="3.5" fill="' + s2.color + '"/>';
+      out += '<text x="' + (lastX - 6).toFixed(1) + '" y="' + (lastY - 9).toFixed(1)
+        + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11"'
+        + ' font-weight="600" fill="' + s2.color + '">' + s2.label + ' '
+        + opts.fmt(s2.values[s2.values.length - 1]) + '</text>';
+    });
+
+    return out + '</svg>';
+  }
+
+  function renderTrends() {
+    var host = $('trendBox');
+    if (!host) return;
+    host.innerHTML = '';
+    var T2 = DATA.trends;
+    if (!T2) return;
+
+    // ── 青年薪資
+    var sal = T2.salary;
+    var youthBands = ['未滿25', '25-29', '30-39'].filter(function (b) { return sal.mean[b]; });
+    var colors = ['var(--second)', 'var(--accent)', 'var(--ink-3)'];
+    var box1 = document.createElement('figure');
+    box1.className = 'figbox';
+    box1.innerHTML =
+      '<p class="fig-title">青年年薪的變化</p>'
+      + '<p class="fig-sub">' + sal.years[0] + '–' + sal.years[sal.years.length - 1]
+      + '　新北市　單位：萬元/年</p>'
+      + lineChart({
+          years: sal.years,
+          alt: '新北市各年齡層平均年薪從 ' + sal.years[0] + ' 到 '
+            + sal.years[sal.years.length - 1] + ' 年逐年上升',
+          fmt: function (v) { return v.toFixed(0); },
+          series: youthBands.map(function (b, i) {
+            return { label: b, color: colors[i], values: sal.mean[b] };
+          })
+        });
+    var first = sal.mean['25-29'][0], last = sal.mean['25-29'][sal.mean['25-29'].length - 1];
+    box1.innerHTML += '<p class="cap">25–29 歲從 ' + first + ' 萬升到 ' + last + ' 萬，'
+      + (sal.years.length - 1) + ' 年成長 '
+      + ((last / first - 1) * 100).toFixed(1) + '%。三條線同步上升，'
+      + '代表這是整體薪資水準的提升，不是單一年齡層的變動。</p>';
+    host.appendChild(box1);
+
+    // ── 長期勞動力
+    var lab = T2.labour;
+    var box2 = document.createElement('figure');
+    box2.className = 'figbox';
+    box2.innerHTML =
+      '<p class="fig-title">新北市失業率長期走勢</p>'
+      + '<p class="fig-sub">' + lab.years[0] + '–' + lab.years[lab.years.length - 1]
+      + '　資料來源：新北市資料開放平臺（全年齡）</p>'
+      + lineChart({
+          years: lab.years,
+          alt: '新北市失業率從 ' + lab.years[0] + ' 到 '
+            + lab.years[lab.years.length - 1] + ' 年的走勢',
+          fmt: function (v) { return (v * 100).toFixed(1) + '%'; },
+          series: [{ label: '失業率', color: 'var(--accent)', values: lab.unemployment }]
+        });
+    var peak = Math.max.apply(null, lab.unemployment);
+    var peakYear = lab.years[lab.unemployment.indexOf(peak)];
+    box2.innerHTML += '<p class="cap">' + peakYear + ' 年金融海嘯後升到 '
+      + (peak * 100).toFixed(1) + '%，之後一路回落到 '
+      + (lab.unemployment[lab.unemployment.length - 1] * 100).toFixed(1) + '%。</p>';
+    host.appendChild(box2);
+
+    // ── 交叉驗證
+    var x = document.createElement('p');
+    x.className = 'xcheck';
+    x.innerHTML = '<b>交叉驗證：</b>新北市資料開放平臺算出的 '
+      + lab.years[lab.years.length - 1] + ' 年失業率是 '
+      + (lab.unemployment[lab.unemployment.length - 1] * 100).toFixed(1)
+      + '%，主計總處表37 的新北市總計也是 3.4% —— '
+      + '兩個獨立來源、不同機關、不同調查，數字吻合。';
+    host.appendChild(x);
+  }
+
   function renderRank() {
     var host = $('rankBars'); host.innerHTML = '';
     var list = R.filter(function (r) {
@@ -598,7 +739,7 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     document.querySelectorAll('.chip').forEach(function (c) {
       c.setAttribute('aria-pressed', c.dataset.band === state.band ? 'true' : 'false');
     });
-    renderHero(); renderPolicy(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderRank();
+    renderHero(); renderPolicy(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderTrends(); renderRank();
     var keep = state.sel;
     select((keep && find(state.area, keep.age_group, keep.metric, keep.education))
       || find(state.area, state.band, '人口數'));

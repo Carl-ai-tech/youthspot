@@ -48,6 +48,8 @@ const makeNode = () => ({
   children: [],
   appendChild(c) { this.children.push(c); },
   addEventListener(_, fn) { this.onclick = fn; },
+  removeAttribute(name) { if (name === 'hidden') this.hidden = false; },
+  setAttribute(name, v) { this[name] = v; },
   focus() {},
 });
 const document = {
@@ -62,7 +64,9 @@ const built = new Function('M', 'R', 'areas', 'BANDS', 'METRICS', 'num', 'docume
    ${grab('parseQuestion')}
    ${grab('fmtRec')}
    ${grab('resolve')}
+   ${grab('showAnswer')}
    ${grab('runAsk')}
+   ${grab('runAskInner')}
    return { parseQuestion, resolve, runAsk };`
 )(M, R, areas, BANDS, METRICS, num, document, () => {});
 
@@ -104,25 +108,33 @@ console.log('── 畫面實際更新檢查 ──');
 const el = (id) => document.getElementById(id);
 el('askInput').value = '';
 built.runAsk();
-const emptyOk = el('askAnswer').hidden === false && el('askText').textContent.length > 0;
+const emptyOk = el('askAnswer').className.indexOf('show') >= 0 && el('askText').textContent.length > 0;
 console.log(`${emptyOk ? '✅' : '❌'}　輸入框空白時按「問」　→　${el('askText').textContent || '（完全沒反應）'}`);
 if (!emptyOk) fail++;
 
 built.runAsk('新北市 25-29 歲的平均年薪是多少？');
-const typedOk = el('askAnswer').hidden === false
+const typedOk = el('askAnswer').className.indexOf('show') >= 0
   && el('askText').textContent.indexOf('59.9') >= 0
   && el('askMeta').textContent.indexOf('平均年薪') >= 0;
 console.log(`${typedOk ? '✅' : '❌'}　問一個有答案的問題　→　${el('askText').textContent}`);
 if (!typedOk) fail++;
 
+// 排名這條路徑之前沒走過 DOM，補上
+built.runAsk('哪些行業最缺工？');
+const rankOk = el('askAnswer').className.indexOf('show') >= 0
+  && el('askText').textContent.indexOf('製造業') >= 0;
+console.log(`${rankOk ? '✅' : '❌'}　問一個排名問題　→　${el('askText').textContent.split(String.fromCharCode(10))[0]}`);
+if (!rankOk) fail++;
+
 built.runAsk('新北市青年的居住情況？');
 const refusedOk = el('askAnswer').className.indexOf('no') >= 0
+  && el('askAnswer').className.indexOf('show') >= 0
   && el('askText').textContent.indexOf('答不出來') >= 0;
 console.log(`${refusedOk ? '✅' : '❌'}　問一個沒資料的問題　→　${el('askText').textContent.split('\n')[0]}`);
 if (!refusedOk) fail++;
 
 console.log();
 console.log(fail === 0
-  ? `全部通過（${cases.length} 題判讀 ＋ 3 項畫面更新）`
+  ? `全部通過（${cases.length} 題判讀 ＋ 4 項畫面更新）`
   : `❌ ${fail} 項不如預期`);
 process.exit(fail === 0 ? 0 : 1);

@@ -127,8 +127,8 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 .asktips { display:flex; flex-wrap:wrap; gap:.3rem; margin-top:.6rem; }
 .asktips button { font-family:var(--sans); font-size:.78rem; color:var(--ink-2); background:var(--sunk); border:0; border-radius:12px; padding:.25rem .65rem; cursor:pointer; }
 .asktips button:hover { background:var(--second-soft); color:var(--ink); }
-.answer { margin-top:.9rem; padding-top:.9rem; border-top:1px solid var(--rule-soft); }
-.answer[hidden] { display:none; }
+.answer { display:none; margin-top:.9rem; padding-top:.9rem; border-top:1px solid var(--rule-soft); }
+.answer.show { display:block; }
 .answer .txt { font-size:1.02rem; line-height:1.75; margin:0 0 .5rem; white-space:pre-line; }
 .answer .meta { font-family:var(--mono); font-size:.72rem; color:var(--ink-3); }
 .answer.no .txt { color:var(--ink-2); }
@@ -186,7 +186,7 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
           <button id="askGo" type="button">問</button>
         </div>
         <div class="asktips" id="askTips"></div>
-        <div class="answer" id="askAnswer" hidden>
+        <div class="answer" id="askAnswer">
           <p class="txt" id="askText"></p>
           <p class="meta" id="askMeta"></p>
           <div class="cite" id="askCite"></div>
@@ -695,33 +695,44 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
         + '是 ' + fmtRec(rec) + tail + '。' };
   }
 
+  function showAnswer(cls, text, meta) {
+    var box = $('askAnswer');
+    box.removeAttribute('hidden');
+    box.className = 'answer show' + (cls ? ' ' + cls : '');
+    $('askText').textContent = text;
+    $('askMeta').textContent = meta || '';
+    $('askCite').innerHTML = '';
+    return box;
+  }
+
   function runAsk(raw) {
+    try {
+      runAskInner(raw);
+    } catch (err) {
+      // 靜靜失敗是最難查的錯。寧可把它印在畫面上。
+      showAnswer('no', '程式出錯了：' + (err && err.message ? err.message : err),
+                 '請把這行訊息回報給我');
+    }
+  }
+
+  function runAskInner(raw) {
     var q = (raw || $('askInput').value || '').trim();
     if (!q) {
-      // 空白時什麼都不做，看起來就像按鈕壞掉。一定要給回應。
-      var empty = $('askAnswer');
-      empty.hidden = false;
-      empty.className = 'answer no';
-      $('askText').textContent = '先在上面打一句話，或點下面的例句試試看。';
-      $('askMeta').textContent = '';
-      $('askCite').innerHTML = '';
+      showAnswer('no', '先在上面打一句話，或點下面的例句試試看。');
       $('askInput').focus();
       return;
     }
     $('askInput').value = q;
     var it = parseQuestion(q);
     var res = resolve(it);
-    var box = $('askAnswer');
-    box.hidden = false;
-    box.className = 'answer' + (res.ok ? '' : ' no');
-    $('askText').textContent = res.text;
-    $('askMeta').textContent = '→ 讀成：'
+    var meta = '→ 讀成：'
       + [['地區', it.region], ['年齡層', it.age_group],
          ['指標', it.metric], ['分類', it.education]]
         .filter(function (p) { return p[1]; })
         .map(function (p) { return p[0] + '=' + p[1]; }).join('、')
       + (res.ok ? '' : '　（沒有的資料我會直接說沒有）');
-    var cite = $('askCite'); cite.innerHTML = '';
+    showAnswer(res.ok ? '' : 'no', res.text, meta);
+    var cite = $('askCite');
     (res.recs || []).forEach(function (r) {
       var b = document.createElement('button');
       b.type = 'button';

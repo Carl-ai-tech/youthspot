@@ -526,6 +526,122 @@ def _curves(ref, areas: dict, region: str, refresh) -> dict:
     }
 
 
+def _policy_notes(records: list[AlignedRecord], region: str) -> list[dict]:
+    """把數字變成施政建議。—— 命題：「適時提供政策輔助」
+
+    **建議是用規則從資料推出來的，不是讓 AI 編的。**
+    每一條都附上它依據的數字，點得開、查得到。讓模型寫政策建議看起來很厲害，
+    但它會寫出資料不支持的東西，而且沒有人查得出來。
+
+    規則很簡單，簡單才守得住：
+      1. 職缺顯著成長 ＋ 薪資高於全體平均 → 優先投入職訓與媒合
+      2. 職缺顯著萎縮                     → 及早準備轉職輔導
+      3. 青年失業率明顯高於中壯年         → 初次尋職支援
+      4. 青年人口最集中的行政區           → 服務據點配置
+      5. 學歷之間薪資落差大               → 在職進修補助
+    """
+    by = {}
+    for r in records:
+        by.setdefault(r.metric, []).append(r)
+
+    def find(metric, **kw):
+        for r in by.get(metric, []):
+            if all(getattr(r, k, None) == v for k, v in kw.items()):
+                return r
+        return None
+
+    notes: list[dict] = []
+
+    # ── 1／2 行業趨勢
+    pay_all = {r.education: r.value for r in by.get("行業平均年薪", [])}
+    avg_pay = (sum(pay_all.values()) / len(pay_all)) if pay_all else 0
+    grow, shrink = [], []
+    for r in by.get("職缺數預估", []):
+        d = r.extras.get("_direction")
+        if d == "up":
+            grow.append(r)
+        elif d == "down":
+            shrink.append(r)
+    grow.sort(key=lambda r: -(r.extras.get("_annual_pct") or 0))
+
+    worth = [r for r in grow if pay_all.get(r.education, 0) >= avg_pay][:3]
+    if worth:
+        lines = [f"{r.education}（每年 {r.extras['_annual_pct']:+.1%}，"
+                 f"{FORECAST_TO} 年預估 {r.value:,.0f} 個職缺，"
+                 f"平均年薪 {pay_all[r.education]:.1f} 萬）" for r in worth]
+        notes.append({
+            "title": "優先投入這幾個領域的青年職訓與媒合",
+            "body": "這些行業的職缺成長趨勢在統計上顯著，而且平均薪資高於全體行業平均"
+                    f"（{avg_pay:.1f} 萬）—— 缺人又待遇好，是投入資源最划算的地方。",
+            "detail": lines,
+            "confidence": "medium",
+            "basis": "職缺數趨勢（線性外推，斜率顯著）× 行業別平均年薪",
+        })
+
+    if shrink:
+        lines = [f"{r.education}（每年 {r.extras['_annual_pct']:+.1%}）" for r in shrink[:3]]
+        notes.append({
+            "title": "及早為這些領域的青年準備轉職輔導",
+            "body": "職缺數呈現統計上顯著的下降趨勢。等到縮減發生才反應，青年會先受衝擊。",
+            "detail": lines,
+            "confidence": "medium",
+            "basis": "職缺數趨勢（線性外推，斜率顯著）",
+        })
+
+    # ── 3 青年失業落差
+    young = find("失業率", age_group="18-24")
+    mid = find("失業率", age_group="30-35")
+    if young and mid and young.value > mid.value:
+        gap = (young.value - mid.value) * 100
+        notes.append({
+            "title": "初次尋職的支援缺口最大",
+            "body": f"{region} 18–24 歲失業率 {young.value:.1%}，"
+                    f"30–35 歲只有 {mid.value:.1%}，相差 {gap:.1f} 個百分點。"
+                    "這個落差主要來自初次尋職 —— 沒有經歷、不熟悉求職流程，"
+                    "而不是產業缺工。",
+            "detail": ["對應措施偏向就業媒合與職涯諮詢，而非增加職缺"],
+            "confidence": "low",
+            "basis": "縣市別分齡失業率（本區間需拆組，backtest 顯示失業率拆不準，僅供參考）",
+        })
+
+    # ── 4 人口集中的行政區
+    pop = sorted([r for r in by.get("人口數", [])
+                  if r.age_group == "18-35" and r.region != region],
+                 key=lambda r: -r.value)[:3]
+    if pop:
+        total = sum(r.value for r in by.get("人口數", [])
+                    if r.age_group == "18-35" and r.region == region) or 1
+        share = sum(r.value for r in pop) / total
+        notes.append({
+            "title": "青年服務據點優先配置在這三個行政區",
+            "body": f"這三區合計佔全市 18–35 歲青年的 {share:.0%}。"
+                    "服務據點與活動資源若平均分配到 29 個區，等於把多數青年放在低密度的服務網裡。",
+            "detail": [f"{r.region.replace(region, '')}　{r.value:,.0f} 人" for r in pop],
+            "confidence": "high",
+            "basis": "戶政司單一年齡人口，精確加總，未經插補",
+        })
+
+    # ── 5 學歷薪資落差
+    edu = {r.education: r.value for r in by.get("平均年薪", []) if r.education}
+    if len(edu) >= 2:
+        hi_k = max(edu, key=lambda k: edu[k])
+        lo_k = min(edu, key=lambda k: edu[k])
+        ratio = edu[hi_k] / edu[lo_k] if edu[lo_k] else 0
+        if ratio >= 1.2:
+            notes.append({
+                "title": "在職進修補助的報酬率很明確",
+                "body": f"{hi_k}的平均年薪是{lo_k}的 {ratio:.2f} 倍"
+                        f"（{edu[hi_k]:.1f} 萬 vs {edu[lo_k]:.1f} 萬）。"
+                        "學歷提升對薪資的影響在數字上很清楚，補助進修是可量化的投資。",
+                "detail": [f"{k}　{v:.1f} 萬/年" for k, v in
+                           sorted(edu.items(), key=lambda kv: -kv[1])],
+                "confidence": "medium",
+                "basis": "全國學歷別薪資 × 表6 量出的地區係數校準",
+            })
+
+    return notes
+
+
 def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     ref = ReferenceData.load()
     by_district, meta = fetch_population_by_district(region, refresh=refresh)
@@ -587,6 +703,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
                  "url": "https://www.stat.gov.tw/News_Content.aspx?n=4001&s=236078"},
             ],
         },
+        "policy_notes": _policy_notes(records, region),
         "curves": _curves(ref, areas, region, refresh),
         "records": [r.to_dict() for r in records],
     }

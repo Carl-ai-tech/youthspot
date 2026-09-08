@@ -33,6 +33,7 @@ $py="$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 & $py -m unittest discover -s tests -v   # 41 個測試，改任何東西都要跑
 & $py demo_align.py                      # 四幕現場 demo
 & $py data/backtest.py                   # 拆組方法的實測誤差
+& $py run_pipeline.py                    # 一鍵跑完整條流程（現場 demo 按這個）
 & $py data/build_reference.py            # 重抓政府資料（加 --refresh 強制更新）
 & $py data/build_unified.py              # 產出 unified.json（交給前端的檔）
 & $py data/make_preview.py               # 產出 preview.html（雙擊即可開）

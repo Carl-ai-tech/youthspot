@@ -145,6 +145,21 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 .ansbar .v { font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:.83rem; white-space:nowrap; }
 .verdict { font-size:.95rem; color:var(--ink); background:var(--second-soft); border-radius:3px; padding:.55rem .8rem; margin:.7rem 0 0; }
 
+
+.policy { background:var(--card); border:1px solid var(--rule); border-radius:4px; padding:1.15rem 1.25rem 1.3rem; margin-bottom:1.5rem; }
+.policy > .head { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+.policy h2 { font-size:1rem; font-weight:700; margin:0; }
+.policy .aspect { font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--second); }
+.policy > .note { font-size:.79rem; color:var(--ink-3); margin:.15rem 0 1rem; }
+.pnote { border-top:1px solid var(--rule-soft); padding:.9rem 0; }
+.pnote:last-child { padding-bottom:0; }
+.pnote h3 { font-size:.95rem; font-weight:700; margin:0 0 .3rem; display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
+.pnote p { font-size:.92rem; color:var(--ink-2); margin:0 0 .5rem; }
+.pnote ul { list-style:none; margin:0 0 .5rem; padding:0; display:flex; flex-direction:column; gap:.2rem; }
+.pnote li { font-size:.88rem; color:var(--ink); padding-left:.9rem; position:relative; }
+.pnote li::before { content:"·"; position:absolute; left:0; color:var(--second); font-weight:700; }
+.pnote .basis { font-family:var(--mono); font-size:.7rem; color:var(--ink-3); }
+
 .sources { border-top:1px solid var(--rule); margin-top:2rem; padding-top:1.2rem; }
 .sources h2 { font-size:.9rem; margin:0 0 .7rem; }
 .sources ul { list-style:none; margin:0; padding:0; display:grid; gap:.35rem; }
@@ -204,6 +219,16 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
           <div class="cite" id="askCite"></div>
         </div>
       </section>
+      <section class="policy">
+        <div class="head"><h2>施政建議</h2><span class="aspect">政策輔助</span></div>
+        <p class="note">
+          從上面的資料用固定規則推出來的，<b>不是讓 AI 寫的</b> ——
+          每一條都附上它依據哪些數字、以及那些數字有多可靠。
+          AI 會寫出資料不支持的建議，而且沒有人查得出來。
+        </p>
+        <div id="policyList"></div>
+      </section>
+
       <section class="panel">
         <div class="panel-head"><h2>青年人口結構</h2><span class="aspect">人口</span></div>
         <p class="note" id="popNote"></p>
@@ -387,6 +412,33 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
   }
 
   // ── 各區塊
+
+  // ── 施政建議 ────────────────────────────────────────────────
+  // 建議本身在 build_unified.py 用規則產生，這裡只負責顯示。
+  // 規則寫在 Python 裡的好處是：它跟數字在同一個地方，改資料就會跟著更新。
+  function renderPolicy() {
+    var host = $('policyList');
+    if (!host) return;
+    host.innerHTML = '';
+    var notes = DATA.policy_notes || [];
+    if (!notes.length) {
+      host.innerHTML = '<p class="note">目前的資料還推不出建議。</p>';
+      return;
+    }
+    notes.forEach(function (n) {
+      var box = document.createElement('div');
+      box.className = 'pnote';
+      var items = (n.detail || []).map(function (d) { return '<li>' + d + '</li>'; }).join('');
+      box.innerHTML =
+        '<h3>' + n.title
+        + '<span class="pill ' + n.confidence + '">' + n.confidence + '</span></h3>'
+        + '<p>' + n.body + '</p>'
+        + (items ? '<ul>' + items + '</ul>' : '')
+        + '<p class="basis">依據：' + n.basis + '</p>';
+      host.appendChild(box);
+    });
+  }
+
   function renderPop() {
     var host = $('popBars'); host.innerHTML = '';
     var max = maxOf('人口數', state.area);
@@ -546,7 +598,7 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
     document.querySelectorAll('.chip').forEach(function (c) {
       c.setAttribute('aria-pressed', c.dataset.band === state.band ? 'true' : 'false');
     });
-    renderHero(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderRank();
+    renderHero(); renderPolicy(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderRank();
     var keep = state.sel;
     select((keep && find(state.area, keep.age_group, keep.metric, keep.education))
       || find(state.area, state.band, '人口數'));

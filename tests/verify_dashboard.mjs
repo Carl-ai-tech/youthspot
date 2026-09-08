@@ -152,5 +152,12 @@ checkCompare('全市失業率答得出來', '新北市 18-24 歲的失業率',
 checkCompare('排名也要有圖表和結論', '哪一區的青年最多？',
   (t, v, bars) => bars > 0 && v.indexOf('第一名') >= 0);
 
-console.log(fail === 0 ? '全部 17 項通過' : `❌ ${fail} 項失敗`);
+// 施政建議：命題的「提供施政協助」，整段腳本跑完後應該有內容
+const policyCount = el('policyList').children.length;
+const policyOk = policyCount >= 3;
+if (!policyOk) fail++;
+console.log(`${policyOk ? '✅' : '❌'}　施政建議產出 ${policyCount} 條`);
+console.log();
+
+console.log(fail === 0 ? '全部 18 項通過' : `❌ ${fail} 項失敗`);
 process.exit(fail === 0 ? 0 : 1);

@@ -23,3 +23,15 @@ Thumbs.db
 data/_cache/
 
 preview.html
+
+# ── 憑證與機密：絕對不能進公開 repo ──
+# 主辦單位特別提醒過不要把 AWS Access Keys 推上 GitHub
+.env
+.env.*
+*.pem
+*.key
+credentials
+config.local.*
+.aws/
+aws-config.json
+secrets.json

@@ -36,6 +36,8 @@ $py="$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 & $py data/build_reference.py            # 重抓政府資料（加 --refresh 強制更新）
 & $py data/build_unified.py              # 產出 unified.json（交給前端的檔）
 & $py data/make_preview.py               # 產出 preview.html（雙擊即可開）
+& $py demo_scan.py                       # 掃描檔判讀 demo
+& $py -m llm.backend                     # 列出可用的 Bedrock 模型（9/12 早上第一件事）
 ```
 
 ## 環境陷阱（每次換電腦都會中）
@@ -47,10 +49,16 @@ $py="$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 ## 架構的硬性規則
 
 **`engine/` 是純函式層。** 不碰網路、不讀檔（除了 reference.py 載入那一個 JSON）、
-不呼叫 LLM。所有 I/O 都在 `data/`。這條界線不要打破。
+不呼叫 LLM。所有 I/O 都在 `data/` 與 `llm/`。這條界線不要打破。
 
-**零第三方套件。** 只用標準函式庫。不要 `pip install` 任何東西 ——
-換電腦只要有 Python 就能跑，這是刻意的設計。
+**AI 只做「看懂」，不做「計算」。** `llm/` 負責看懂掃描檔、看懂中文問題，
+回傳的一律是**結構**（年齡區間、意圖），不是數值。算數字一律走 `engine/`。
+這是整個專案的架構主張，也是被評審追問時的答案 —— AI 碰不到數字，
+所以它不可能算錯或編造。不要為了方便讓模型直接回傳計算結果。
+
+**零第三方套件，只有 `llm/` 例外。** `engine/` 與 `data/` 只用標準函式庫。
+`llm/` 接 Bedrock 需要 `pip install anthropic`（比賽規定只能用 Bedrock／SageMaker
+的模型，不能直接呼叫 Anthropic API）。**沒裝也不影響其他部分執行。**
 
 **比率型指標絕對不能乘權重。** 失業率 × 0.98 在統計上無意義。
 `align_extensive()` 收到 `MetricKind.INTENSIVE` 會丟 `ValueError`，
@@ -78,7 +86,11 @@ data/
   build_reference.py   組合三者 → reference_ntpc.json
   build_unified.py     跑引擎 → unified.json（交付給前端）
   preview_template.html / make_preview.py  → preview.html ← 儀表板就長在這
+llm/            唯一呼叫語言模型的地方，可抽換後端
+  backend.py       StubBackend（賽前測試用）／ BedrockBackend（比賽當天）
+  scan_table.py    掃描檔 → 結構化表格 ＋ 三道查核
 demo_align.py   終端機版 demo（技術細節用），上台主要看 preview.html
+demo_scan.py    掃描檔 demo，第二幕演「AI 讀錯時我們抓得到」
 tests/          41 個測試
 ```
 
@@ -150,6 +162,20 @@ tests/          41 個測試
 自動降為 low，見 `SHAPE_EXTREMUM_TOLERANCE`。**這兩個結論都鎖成測試了**，
 如果哪天測試失敗，代表結論變了，要重新檢視降級規則。
 
+## 比賽當天（9/12）切換到 Bedrock
+
+AWS 環境**只在 9/12 08:00 – 9/13 13:00 開放**，賽前碰不到。
+所有邏輯已用 `StubBackend` 測完（66 個測試），當天只要換設定：
+
+```powershell
+$env:YOUTHLENS_LLM_BACKEND = "bedrock"
+$env:YOUTHLENS_AWS_REGION  = "us-east-1"        # 當天確認實際區域
+$env:YOUTHLENS_BEDROCK_MODEL = "anthropic.claude-opus-5"   # 當天確認實際可用模型
+```
+
+**第一件事先跑 `python -m llm.backend`** —— 它會列出這個帳號實際可用的模型。
+Workshop 帳號有哪些模型、開在哪一區，賽前無法得知，一跑就知道，不要猜。
+
 ## 現在的狀態
 
 ✅ 對齊引擎（四種切法 + 三道信心度檢查）
@@ -157,10 +183,12 @@ tests/          41 個測試
 ✅ 回測驗證，結論鎖進測試
 ✅ `unified.json` 372 筆：30 個地區 × 4 個年齡層 × 6 個指標
 ✅ `preview.html` 可雙擊開啟的預覽頁
-✅ 41 個測試
+✅ 掃描檔判讀（AI 讀圖 ＋ 三道查核，含合計比對抓錯字）
+✅ 66 個測試
 
 ⬜ 教育程度 × 薪資交叉（Spec P1-1，表32 已有教育程度欄位，就差組合）
 ⬜ 缺工趨勢預測（命題明列的預期成果，48 年序列已備妥）
 ⬜ 表29 縣市別分齡勞參率（可提升信心度，但表頭要小心）
-⬜ LLM 語意判讀（Spec §5.6）
+⬜ 中文問答（AI 聽懂問題，數字仍由引擎查）
+⬜ LLM 語意判讀（Spec §5.6，「社會新鮮人」→ 年齡區間）
 ⬜ 一鍵 ETL：把 build_reference + build_unified + make_preview 串成一支

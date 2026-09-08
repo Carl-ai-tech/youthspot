@@ -40,14 +40,36 @@ const areas = [...new Set(R.map(r => r.region))].filter(r => r !== '全國');
 const BANDS = M.age_groups, METRICS = M.metrics;
 const num = (v) => Math.round(v).toLocaleString('en-US');
 
-const run = new Function('M', 'R', 'areas', 'BANDS', 'METRICS', 'num',
+// 最小的 DOM 替身。這樣不只能測邏輯，連 runAsk 有沒有真的把答案寫進畫面
+// 都測得到 —— 之前就是因為只測邏輯，漏掉了「按鈕按下去沒反應」。
+const nodes = {};
+const makeNode = () => ({
+  textContent: '', innerHTML: '', value: '', hidden: true, className: '', type: '',
+  children: [],
+  appendChild(c) { this.children.push(c); },
+  addEventListener(_, fn) { this.onclick = fn; },
+  focus() {},
+});
+const document = {
+  getElementById: (id) => (nodes[id] = nodes[id] || makeNode()),
+  createElement: () => makeNode(),
+};
+
+const built = new Function('M', 'R', 'areas', 'BANDS', 'METRICS', 'num', 'document', 'select',
   `${consts}
+   const $ = (id) => document.getElementById(id);
    ${grab('normQ')}
    ${grab('parseQuestion')}
    ${grab('fmtRec')}
    ${grab('resolve')}
-   return (q) => { const it = parseQuestion(q); return { it, res: resolve(it) }; };`
-)(M, R, areas, BANDS, METRICS, num);
+   ${grab('runAsk')}
+   return { parseQuestion, resolve, runAsk };`
+)(M, R, areas, BANDS, METRICS, num, document, () => {});
+
+const run = (q) => {
+  const it = built.parseQuestion(q);
+  return { it, res: built.resolve(it) };
+};
 
 // 每一題都寫明期望：答得出來，還是該誠實說沒有。
 // 後面那組（false）比前面重要 —— 一個會硬掰的問答比沒有問答更危險。
@@ -76,7 +98,31 @@ for (const [q, shouldAnswer] of cases) {
   console.log();
 }
 
+// ── 走完整條路徑：runAsk 有沒有真的把答案寫進畫面
+console.log('── 畫面實際更新檢查 ──');
+
+const el = (id) => document.getElementById(id);
+el('askInput').value = '';
+built.runAsk();
+const emptyOk = el('askAnswer').hidden === false && el('askText').textContent.length > 0;
+console.log(`${emptyOk ? '✅' : '❌'}　輸入框空白時按「問」　→　${el('askText').textContent || '（完全沒反應）'}`);
+if (!emptyOk) fail++;
+
+built.runAsk('新北市 25-29 歲的平均年薪是多少？');
+const typedOk = el('askAnswer').hidden === false
+  && el('askText').textContent.indexOf('59.9') >= 0
+  && el('askMeta').textContent.indexOf('平均年薪') >= 0;
+console.log(`${typedOk ? '✅' : '❌'}　問一個有答案的問題　→　${el('askText').textContent}`);
+if (!typedOk) fail++;
+
+built.runAsk('新北市青年的居住情況？');
+const refusedOk = el('askAnswer').className.indexOf('no') >= 0
+  && el('askText').textContent.indexOf('答不出來') >= 0;
+console.log(`${refusedOk ? '✅' : '❌'}　問一個沒資料的問題　→　${el('askText').textContent.split('\n')[0]}`);
+if (!refusedOk) fail++;
+
+console.log();
 console.log(fail === 0
-  ? `全部 ${cases.length} 題行為符合預期`
-  : `❌ ${fail} 題不如預期`);
+  ? `全部通過（${cases.length} 題判讀 ＋ 3 項畫面更新）`
+  : `❌ ${fail} 項不如預期`);
 process.exit(fail === 0 ? 0 : 1);

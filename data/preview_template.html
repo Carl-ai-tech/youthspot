@@ -697,7 +697,17 @@ select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 
   function runAsk(raw) {
     var q = (raw || $('askInput').value || '').trim();
-    if (!q) return;
+    if (!q) {
+      // 空白時什麼都不做，看起來就像按鈕壞掉。一定要給回應。
+      var empty = $('askAnswer');
+      empty.hidden = false;
+      empty.className = 'answer no';
+      $('askText').textContent = '先在上面打一句話，或點下面的例句試試看。';
+      $('askMeta').textContent = '';
+      $('askCite').innerHTML = '';
+      $('askInput').focus();
+      return;
+    }
     $('askInput').value = q;
     var it = parseQuestion(q);
     var res = resolve(it);

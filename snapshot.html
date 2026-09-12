@@ -755,6 +755,18 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 .cities a[aria-current="page"]{background:var(--deep);color:#fff;}
 @media (max-width:40rem){.cities{order:4;flex-basis:100%;justify-content:space-between;margin:.4rem 0 0;}}
 @media print{.cities{display:none;}}
+
+/* 引用標記與來源清單 */
+.citeref{font:inherit;font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--accent);
+  background:var(--sunk);border:1px solid var(--rule-soft);border-radius:6px;padding:0 .3rem;margin:0 .1rem;
+  cursor:pointer;vertical-align:baseline;line-height:1.4;}
+.citeref:hover{background:var(--deep);color:#fff;border-color:var(--deep);}
+.src-t{margin:.8rem 0 .3rem;font-size:.78rem;font-weight:600;color:var(--ink-2);}
+.srcs{list-style:none;margin:0;padding:0;display:grid;gap:.3rem;}
+.srcs li{font-size:.8rem;color:var(--ink-2);line-height:1.6;padding-left:.7rem;border-left:3px solid var(--rule);}
+.srcs li b{color:var(--ink);}
+.answer.collapsed .cite{display:block;}
+.citeref.wide{display:block;text-align:left;margin:.25rem 0;padding:.25rem .6rem;font-family:var(--sans);font-weight:500;font-size:.8rem;}
 </style>
 
 <style>* { print-color-adjust: exact; }

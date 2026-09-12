@@ -30,7 +30,19 @@ from .synthesize import Grounded, _fmt, retrieve, verify
 RECORD_LIMIT = 32
 
 
+from engine.jurisdiction import JURISDICTION, YOUTH_BUREAU_MANDATE, lookup as _jur_lookup  # noqa: E402
+
 SIMILAR_CUE = ("下一個", "潛力", "候選", "相似", "類似", "像", "條件")
+CLAIM_CUE = ("應該", "該", "是不是", "真的嗎", "嚴重", "權責", "責任", "負責", "需要", "要求")
+
+
+def _jurisdiction_lines(question: str) -> list[str]:
+    """問題碰到的議題 → 主責局處與青年局角色。答辯模式的第三段「是不是青年局的權責」靠這個。"""
+    hits = _jur_lookup(question)
+    lines = [f"青年局主責的只有三件事：{'、'.join(YOUTH_BUREAU_MANDATE)}（新北市政府局處名；其他城市對應局處名稱不同）"]
+    for j in (hits or JURISDICTION[:4]):
+        lines.append(f"  - {j['topic']}：主責 {j['lead']}；青年局角色＝{j['role']}")
+    return lines
 
 
 def _drivers_lines(payload: dict, region: str, question: str) -> list[str]:
@@ -97,9 +109,24 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
     # 條件最像的區：問題點到的區優先（本市先），否則問到「下一個／潛力／像」時用淡水當參考
     q = question.replace("台", "臺")
     ref = None
-    for d in sorted(D["districts"], key=lambda d: d["city"] != region):
-        if d.get("z") and d["short"] and d["short"] in q:
-            ref = d; break
+    subject = None
+    def _mentioned_in(text):
+        out = []
+        for d in sorted(D["districts"], key=lambda d: d["city"] != region):
+            if not d.get("z") or not d["short"]:
+                continue
+            stem = d["short"][:-1] if d["short"].endswith("區") else d["short"]
+            if d["short"] in text or (len(stem) >= 2 and stem in text):
+                out.append(d)
+        return out
+    mentioned = _mentioned_in(q)
+    # 「X 條件像 Y」：Y（「像」後面那個）是參考區、X 是主角；只點一個區就把它當參考
+    if "像" in q and len(mentioned) >= 2:
+        after = q.split("像", 1)[1]
+        ref = next((d for d in _mentioned_in(after) if d in mentioned), None)
+        subject = next((d for d in mentioned if d is not ref), None) if ref else None
+    if ref is None and mentioned:
+        ref = mentioned[0]
     if ref is None and any(k in q for k in SIMILAR_CUE):
         ref = next((d for d in D["districts"] if d["area"] == "新北市淡水區" and d.get("z")), None)
     if ref:
@@ -127,7 +154,13 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
             lines += [_line(dist, d) for dist, d in local]
         lines.append(f"六都內條件最像 {ref['area']} 的區：")
         lines += [_line(dist, d) for dist, d in cands[:6]]
-        if any(k in q for k in SIMILAR_CUE):
+        if subject is not None:
+            plans = [n for n in (payload.get("policy_notes") or []) if "三年準備清單" in n.get("title", "") and subject["short"] in n.get("title", "")]
+            hint = (f"這題的主角是 {subject['short']}（參考區是 {ref['short']}）：回答 {subject['short']} 要看什麼、誰做什麼，"
+                    + (f"直接用施政建議卡「{plans[0]['title']}」的三年清單與細項，" if plans else "用權責表分清楚青年局主責（職涯、創業、公共參與）與要轉請的局處，")
+                    + f"不要改談別的區，也不要把 {ref['short']} 當成答案。"
+                    + f" {subject['short']} 近三年淨遷入 {subject['y']:+.1f}%、租 {subject['rent']} 元/坪、密度 {subject['jobs_density']}、所得 {subject['income']} 萬。")
+        elif any(k in q for k in SIMILAR_CUE):
             nxt = [d["short"] for _, d in local if -1 < d["y"] <= 0.5] or [d["short"] for _, d in local if d["y"] <= 0.5]
             already = [d["short"] for _, d in local if d["y"] > 0.5]
             hint = (f"這題問的是「下一個」：答案要從「{region}內條件最像 {ref['short']}」清單裡挑"
@@ -178,6 +211,8 @@ def build_prompt(payload: dict, records: list[dict], question: str,
                       + "\n".join(rows) + "\n")
 
     drv, drv_hint = _drivers_block(payload, region, question)
+    jur = _jurisdiction_lines(question)
+    jur_text = "\n**權責表（回答「該不該做／是不是青年局的事」時用）**\n" + "\n".join(jur) + "\n"
     drv_hint = f"\n**這題怎麼答**\n{drv_hint}\n" if drv_hint else ""
     drivers_text = ("\n**六都驅動模型與條件比對（程式算好的迴歸結果，可直接引用）**\n" + "\n".join(drv) + "\n") if drv else ""
 
@@ -224,13 +259,20 @@ def build_prompt(payload: dict, records: list[dict], question: str,
 **可用的數字（{region}．{band} 歲為主{"；問題點名的其他城市／行政區排在最前面" if payload.get("_cross_city") else ""}）**
 {("⚠ 這是跨城市的問題：問到的地區是 " + "、".join(payload["_cross_city"]) + "，請用它們各自的數字比較，不要拿" + region + "當替身。") if payload.get("_cross_city") else ""}
 {chr(10).join(lines)}
-{bench_text}{drivers_text}{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
+{bench_text}{drivers_text}{jur_text}{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
 {block("**通過統計檢定的變化（已附依據，可直接引用）**", insights, ("title", "body"))}
+**主張型問題**（「青年局應該…」「X 很嚴重」「是不是青年局的事」）固定四段：①真的嗎（數字＋來源）②多嚴重（六都排名、全國、五年前三把尺）
+③是不是青年局權責（用權責表：主責／協作／非權責，非權責就寫「轉請 X 局、青年局可協作」）④能做什麼（引用施政建議卡與三年準備清單）。
+
 問「下一個淡水」「哪區有潛力」「哪區條件像 X」時，**答案是「條件最像」清單裡標「條件像但移入還沒起來」的區**，
 不是現在移入最多的區（那是「現在的淡水」，不是「下一個」）。先講本市內的候選，再補六都的對照；
 「已經在移入」的區用來驗證這組條件有效。每個區附它的條件數字與近三年淨遷入率；
 迴歸係數說「相關」不說「因為」；提醒淡水本身的移入有 3.5 個百分點是條件解釋不了的（新市鎮住宅供給、輕軌），
 所以「條件像」只是必要條件，還要看住宅供給與交通建設。
+
+施政建議卡裡的「三年準備清單」是固定樣板：引用時照卡片的年份與項目寫（第 1 年看什麼／誰做什麼、第 2 年…），可以精簡，
+**不要改寫成自己的三個項目**，也不要把協作局處的事寫成青年局主責。
+名詞定義不要自己發明：工作機會密度＝區內從業員工 ÷ 區內 15–64 歲人口（不是除以面積）；淨遷入率是世代追蹤（今年 a 歲 − 去年 a−1 歲）。
 
 **怎麼回答**
 - **第一行只寫一句結論**（40 字內，不要標題、不要「以下是」），畫面上只先顯示這一句；
@@ -310,5 +352,33 @@ def advise(question: str, payload: dict, backend: Backend, *,
     records = _mentioned_records(payload, question, records) + records
     raw = backend.complete(build_prompt(payload, records, question, region, band))
     text = raw.strip()
-    ok, bad = verify(text, records, payload, extra=_drivers_lines(payload, region, question))
-    return Grounded(text=text, records=records, verified=ok, unverified=bad, raw=raw)
+    extra = _drivers_lines(payload, region, question)
+    ok, bad = verify(text, records, payload, extra=extra)
+    steps = _steps(question, payload, records, region, extra, ok, bad)
+    return Grounded(text=text, records=records, verified=ok, unverified=bad, raw=raw, steps=steps)
+
+
+def _steps(question: str, payload: dict, records: list[dict], region: str, extra: list[str], ok: list, bad: list) -> list[dict]:
+    """「agent 做了哪幾步」—— 每一步都是程式，只有寫作那一步是模型。攤開給人看，也給評審看。"""
+    q = question.replace("台", "臺")
+    kind = ("下一個候選（條件比對）" if any(k in q for k in SIMILAR_CUE)
+            else "主張答辯（真的嗎→多嚴重→權責→能做什麼）" if any(k in q for k in CLAIM_CUE)
+            else "政策問答")
+    named = [d for d in (payload.get("meta") or {}).get("six_districts", {}).get(region, []) if d in q] if isinstance((payload.get("meta") or {}).get("six_districts"), dict) else []
+    mine = [r for r in records if str(r.get("region", "")).startswith(region)]
+    mig = ((payload.get("trends") or {}).get("migration") or {}).get("areas") or {}
+    signals = {k: v.get("signal") for k, v in mig.items() if k != region and v.get("signal")}
+    jur = _jur_lookup(question)
+    notes = payload.get("policy_notes") or []
+    plans = [n for n in notes if "三年準備清單" in n.get("title", "")]
+    steps = [
+        {"n": 1, "name": "聽懂問題", "who": "程式", "what": f"類型：{kind}" + (f"；點名 {'、'.join(named)}" if named else "") + ("；跨城市" if payload.get("_cross_city") else "")},
+        {"n": 2, "name": "撈證據", "who": "程式", "what": f"{len(records)} 筆對齊記錄（{region} {len(mine)} 筆）、六都比較 {len((payload.get('benchmark') or {}).get('metrics') or {})} 個指標"},
+        {"n": 3, "name": "走勢訊號", "who": "程式", "what": f"{len(signals)} 區的世代淨遷入訊號（線性外推＋t 檢定）；方法驗證 r = {((payload.get('meta') or {}).get('validation_migration') or {}).get('r', '—')}"},
+        {"n": 4, "name": "條件比對", "who": "程式", "what": f"六都 158 區迴歸與相似度，{len(extra)} 行事實進提示詞" if extra else "（這個城市沒有驅動模型）"},
+        {"n": 5, "name": "權責表", "who": "程式", "what": ("碰到：" + "、".join(j["topic"] for j in jur)) if jur else "沒碰到特定議題，給青年局三件事的定義"},
+        {"n": 6, "name": "規則建議", "who": "程式", "what": f"{len(notes)} 張施政建議卡（含 {len(plans)} 張三年準備清單）"},
+        {"n": 7, "name": "寫成敘述", "who": "模型", "what": "只能引用上面的數字，不能算、不能編；[N] 標出處"},
+        {"n": 8, "name": "逐數字查核", "who": "程式", "what": f"{len(ok)} 個數字對到來源" + (f"，{len(bad)} 個對不上（文中標橘底）" if bad else "，全部對上")},
+    ]
+    return steps

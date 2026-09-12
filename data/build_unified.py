@@ -37,6 +37,7 @@ from data.fetch_district_income import DATASET as FIA_DATASET, LANDING as FIA_LA
 from data.fetch_district_jobs import DATASET as CEN_DATASET, LANDING as CEN_LANDING, fetch_district_jobs  # noqa: E402
 from data.fetch_rent import DATASET as RENT_DATASET, LANDING as RENT_LANDING, fetch_rent  # noqa: E402
 from data.drivers import OUT as DRIVERS_JSON  # noqa: E402
+from engine.jurisdiction import plan as _plan, plan_lines as _plan_lines  # noqa: E402
 from data.fetch_population import fetch_population_by_district, fetch_population_by_sex  # noqa: E402
 from data.fetch_migration import DATASET as MIG_DATASET, LANDING as MIG_LANDING, fetch_migration  # noqa: E402
 from data.fetch_official_migration import DATASET as OFF_DATASET, LANDING as OFF_LANDING, fetch_official_migration  # noqa: E402
@@ -245,6 +246,40 @@ def _migration_notes(mt: dict, region: str) -> list[dict]:
             "confidence": "medium",
             "basis": mt["method"],
         })
+    return notes
+
+
+def _plan_notes(drivers: dict, mt: dict, region: str) -> list[dict]:
+    """三年準備清單。候選區 = 本市內條件最像參考區（新北＝淡水，其他＝移入最多的區）、近三年淨遷入 ≤ 0.5% 的第一名。"""
+    import math
+    ds = [d for d in drivers.get("districts", []) if d.get("z") and d.get("y") is not None]
+    areas = mt.get("areas") or {}
+    if not ds or not areas:
+        return []
+    latest = {k: (v["rate"][-1] if v.get("rate") else None) for k, v in areas.items() if k != region}
+    top = max((k for k in latest if latest[k] is not None), key=lambda k: latest[k], default=None)
+    ref_name = "新北市淡水區" if region == "新北市" else top
+    ref = next((d for d in ds if d["area"] == ref_name), None)
+    notes = []
+    if ref:
+        keys = drivers["similarity"]
+        cands = sorted(((math.sqrt(sum((d["z"][k] - ref["z"][k]) ** 2 for k in keys)), d) for d in ds
+                        if d["city"] == region and d is not ref and -1.5 < d["y"] <= 0.5), key=lambda t: t[0])
+        if cands:
+            d = cands[0][1]
+            p = _plan(d["area"], "candidate", {"short": d["short"], "similar_to": ref["short"], "rate": latest.get(d["area"])})
+            notes.append({"title": p["title"],
+                          "body": (f"{d['short']}的租金、工作機會、所得、規模四個條件跟{ref['short']}最像（六都相似度排序第一），"
+                                   f"但近三年淨遷入平均 {d['y']:+.1f}%，移入還沒起來。這張清單把「看什麼、誰做什麼、怎麼驗收」排成三年；"
+                                   "青年局主責的只有職涯、創業、公共參與，其餘是轉請或協作。"),
+                          "detail": _plan_lines(p), "confidence": "low",
+                          "basis": "條件相似度（data/drivers.py）＋世代淨遷入訊號；" + p["note"]})
+    if top:
+        p = _plan(top, "inflow", {"short": top.replace(region, ""), "rate": latest[top]})
+        notes.append({"title": p["title"],
+                      "body": f"{top.replace(region, '')}是本市近一年青年淨移入率最高的區（{latest[top] * 100:+.1f}%）。青年搬進來之後托育、租補、交通的需求會先到，這些都不是青年局主責 —— 清單寫明誰做什麼。",
+                      "detail": _plan_lines(p), "confidence": "medium",
+                      "basis": "世代淨遷入訊號（回測：2023 起標移入的區 ≥ 89% 隔兩年真的移入）；" + p["note"]})
     return notes
 
 
@@ -1668,6 +1703,9 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
         if dn:
             idx = next((i for i, n in enumerate(notes) if "移入的區" in n["title"]), len(notes) - 1)
             notes.insert(idx + 1, dn)
+        # 三年準備清單：下一個候選（條件像移入區但還沒起來）與移入最多的區各一張
+        for k, pn in enumerate(_plan_notes(drivers, trends.get("migration") or {}, region)):
+            notes.insert(idx + 2 + k, pn)
     else:
         print("  ⚠ 沒有 data/drivers.json（先跑 python data/drivers.py），略過驅動模型")
 

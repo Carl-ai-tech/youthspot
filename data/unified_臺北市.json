@@ -398,6 +398,20 @@
     "cached": true
    },
    {
+    "agency": "內政部戶政司",
+    "dataset": "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）",
+    "url": "https://data.gov.tw/dataset/77141",
+    "format": "JSON API",
+    "auto": true,
+    "cadence": "每月",
+    "records": 0,
+    "check": "只做交叉驗證：跨區相關 r（世代淨遷入 vs 官方遷入−遷出）",
+    "coverage": "近 12 個月 各行政區（全年齡）",
+    "fetched_at": "2026-09-12 22:42",
+    "size_kb": 647,
+    "cached": true
+   },
+   {
     "agency": "內政部地政司",
     "dataset": "內政部地政司 不動產成交案件實際資訊（實價登錄）租賃案件",
     "url": "https://plvr.land.moi.gov.tw/DownloadOpenData",
@@ -442,7 +456,7 @@
   ],
   "scale": {
    "agencies": 6,
-   "datasets": 13,
+   "datasets": 14,
    "metrics": 21,
    "records": 382,
    "year_min": 1978,
@@ -471,6 +485,290 @@
     "verdict": "比不拆更差 → 引擎自動降 low"
    }
   ],
+  "validation_migration": {
+   "source": "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）",
+   "url": "https://data.gov.tw/dataset/77141",
+   "months": "11408–11507",
+   "n": 12,
+   "r": 0.931,
+   "same_sign": 12,
+   "city_official": -15690,
+   "city_cohort": -3685,
+   "pairs": [
+    {
+     "area": "南港區",
+     "official": 608,
+     "cohort": 328
+    },
+    {
+     "area": "萬華區",
+     "official": -731,
+     "cohort": -118
+    },
+    {
+     "area": "大同區",
+     "official": -833,
+     "cohort": -79
+    },
+    {
+     "area": "文山區",
+     "official": -1115,
+     "cohort": -389
+    },
+    {
+     "area": "中山區",
+     "official": -1214,
+     "cohort": -148
+    },
+    {
+     "area": "中正區",
+     "official": -1259,
+     "cohort": -213
+    },
+    {
+     "area": "信義區",
+     "official": -1676,
+     "cohort": -251
+    },
+    {
+     "area": "大安區",
+     "official": -2011,
+     "cohort": -736
+    },
+    {
+     "area": "士林區",
+     "official": -2041,
+     "cohort": -652
+    },
+    {
+     "area": "內湖區",
+     "official": -2611,
+     "cohort": -706
+    }
+   ],
+   "note": "官方遷入遷出是全年齡的登記數，我們的是 18–35 歲用單一年齡兩期相減算的；同一年、同一批區，兩者跨區相關 r 越接近 1，代表世代追蹤抓到的就是真實的搬遷。"
+  },
+  "backtest_migration": {
+   "method": "假裝現在是 T 年，只用 T 年以前的世代淨遷入率跑正式的線性外推＋訊號判定，對 T+1、T+2 的實際值。2022／2023 戶籍事件年刻意留在序列裡。",
+   "hit_rate": 0.005,
+   "pooled": {
+    "2022": {
+     "n": 158,
+     "points_used": 4,
+     "mae_model_pp": 2.23,
+     "mae_last_pp": 2.02,
+     "mae_mean_pp": 1.31,
+     "inflow_flagged": 24,
+     "inflow_hits": 22,
+     "inflow_precision": 0.92,
+     "inflow_recall": 0.32,
+     "truly_inflow": 68,
+     "outflow_flagged": 109,
+     "outflow_hits": 65,
+     "outflow_precision": 0.6,
+     "outflow_recall": 0.85,
+     "truly_outflow": 47
+    },
+    "2023": {
+     "n": 158,
+     "points_used": 5,
+     "mae_model_pp": 0.76,
+     "mae_last_pp": 0.92,
+     "mae_mean_pp": 0.61,
+     "inflow_flagged": 33,
+     "inflow_hits": 33,
+     "inflow_precision": 1.0,
+     "inflow_recall": 0.69,
+     "truly_inflow": 45,
+     "outflow_flagged": 54,
+     "outflow_hits": 51,
+     "outflow_precision": 0.94,
+     "outflow_recall": 0.62,
+     "truly_outflow": 79
+    },
+    "2024": {
+     "n": 158,
+     "points_used": 6,
+     "mae_model_pp": 1.02,
+     "mae_last_pp": 0.95,
+     "mae_mean_pp": 1.01,
+     "inflow_flagged": 36,
+     "inflow_hits": 32,
+     "inflow_precision": 0.89,
+     "inflow_recall": 0.7,
+     "truly_inflow": 43,
+     "outflow_flagged": 70,
+     "outflow_hits": 64,
+     "outflow_precision": 0.91,
+     "outflow_recall": 0.75,
+     "truly_outflow": 80
+    }
+   },
+   "named": {
+    "新北市新莊區": {
+     "2022": {
+      "signal": "方向不明",
+      "forecast": -1.37,
+      "actual_next": 0.82,
+      "future_mean": 0.39,
+      "n": 4
+     },
+     "2023": {
+      "signal": "方向不明",
+      "forecast": -0.04,
+      "actual_next": -0.04,
+      "future_mean": -0.27,
+      "n": 5
+     },
+     "2024": {
+      "signal": "方向不明",
+      "forecast": -0.02,
+      "actual_next": -0.5,
+      "future_mean": -0.45,
+      "n": 6
+     }
+    },
+    "新北市林口區": {
+     "2022": {
+      "signal": "移入減速",
+      "forecast": 1.23,
+      "actual_next": 4.62,
+      "future_mean": 3.74,
+      "n": 4
+     },
+     "2023": {
+      "signal": "持續移入",
+      "forecast": 2.92,
+      "actual_next": 2.87,
+      "future_mean": 2.5,
+      "n": 5
+     },
+     "2024": {
+      "signal": "持續移入",
+      "forecast": 2.54,
+      "actual_next": 2.12,
+      "future_mean": 1.73,
+      "n": 6
+     }
+    },
+    "新北市汐止區": {
+     "2022": {
+      "signal": "持續移入",
+      "forecast": 0.22,
+      "actual_next": 2.25,
+      "future_mean": 1.76,
+      "n": 4
+     },
+     "2023": {
+      "signal": "持續移入",
+      "forecast": 1.5,
+      "actual_next": 1.28,
+      "future_mean": 1.65,
+      "n": 5
+     },
+     "2024": {
+      "signal": "持續移入",
+      "forecast": 1.42,
+      "actual_next": 2.03,
+      "future_mean": 1.12,
+      "n": 6
+     }
+    },
+    "新北市淡水區": {
+     "2022": {
+      "signal": "持續移入",
+      "forecast": 1.06,
+      "actual_next": 3.69,
+      "future_mean": 3.65,
+      "n": 4
+     },
+     "2023": {
+      "signal": "持續移入",
+      "forecast": 2.57,
+      "actual_next": 3.61,
+      "future_mean": 4.45,
+      "n": 5
+     },
+     "2024": {
+      "signal": "持續移入",
+      "forecast": 3.19,
+      "actual_next": 5.28,
+      "future_mean": 3.92,
+      "n": 6
+     }
+    }
+   },
+   "city": {
+    "2022": {
+     "n": 12,
+     "points_used": 4,
+     "mae_model_pp": 5.75,
+     "mae_last_pp": 5.03,
+     "mae_mean_pp": 3.21,
+     "inflow_flagged": 0,
+     "inflow_hits": 0,
+     "inflow_precision": null,
+     "inflow_recall": 0.0,
+     "truly_inflow": 10,
+     "outflow_flagged": 12,
+     "outflow_hits": 0,
+     "outflow_precision": 0.0,
+     "outflow_recall": null,
+     "truly_outflow": 0,
+     "flagged_in_names": [],
+     "missed_in_names": [
+      "中山區",
+      "信義區",
+      "內湖區",
+      "北投區",
+      "士林區",
+      "大同區",
+      "大安區",
+      "文山區",
+      "松山區",
+      "萬華區"
+     ]
+    },
+    "2023": {
+     "n": 12,
+     "points_used": 5,
+     "mae_model_pp": 0.68,
+     "mae_last_pp": 1.53,
+     "mae_mean_pp": 1.04,
+     "inflow_flagged": 0,
+     "inflow_hits": 0,
+     "inflow_precision": null,
+     "inflow_recall": null,
+     "truly_inflow": 0,
+     "outflow_flagged": 0,
+     "outflow_hits": 0,
+     "outflow_precision": null,
+     "outflow_recall": 0.0,
+     "truly_outflow": 8,
+     "flagged_in_names": [],
+     "missed_in_names": []
+    },
+    "2024": {
+     "n": 12,
+     "points_used": 6,
+     "mae_model_pp": 2.18,
+     "mae_last_pp": 2.25,
+     "mae_mean_pp": 1.39,
+     "inflow_flagged": 0,
+     "inflow_hits": 0,
+     "inflow_precision": null,
+     "inflow_recall": null,
+     "truly_inflow": 0,
+     "outflow_flagged": 3,
+     "outflow_hits": 3,
+     "outflow_precision": 1.0,
+     "outflow_recall": 0.3,
+     "truly_outflow": 10,
+     "flagged_in_names": [],
+     "missed_in_names": []
+    }
+   }
+  },
   "rights": {
    "basis": "青年基本法（2026-01-21 公布施行，全國法規資料庫 H0180009）第 27 條：每四年公布青年現況統計；第 7–23 條逐條盤點",
    "aspects": [
@@ -10389,6 +10687,34 @@
    ],
    "confidence": "low",
    "basis": "淨遷入率(區, 近三年平均) = β₀ + β₁ ln(工作機會密度) + β₂ ln(所得中位數) + β₃ ln(每坪月租) + β₄ ln(18–35 歲人口) + 縣市固定效果；OLS。模型 A 不含租金（全部行政區）、模型 B 含租金；係數是相關不是因果；工作機會為 110 年普查"
+  },
+  {
+   "title": "三年準備清單：內湖區（條件像南港區、移入還沒起來）",
+   "body": "內湖區的租金、工作機會、所得、規模四個條件跟南港區最像（六都相似度排序第一），但近三年淨遷入平均 -1.4%，移入還沒起來。這張清單把「看什麼、誰做什麼、怎麼驗收」排成三年；青年局主責的只有職涯、創業、公共參與，其餘是轉請或協作。",
+   "detail": [
+    "第 1 年｜確認會不會起來　看：淨遷入率是否轉正並連續兩期（現在 -1.4%）；實價登錄租賃件數與每坪月租的漲幅（需求先到、供給未到時租金會先漲）；建照／使照核發戶數（住宅供給是最早的訊號；資料待接入）；社宅、包租代管的新增戶數",
+    "　　做：青年局（主責）把該區列入青年諮詢會與社造據點的調查名單；做一次青年需求訪查（通勤、租屋、托育）；城鄉發展局／工務局（轉請）提供該區建照、社宅與都市計畫時程，作為第 2 年判斷依據",
+    "第 2 年｜訊號轉為移入就啟動準備　看：淨遷入率訊號從「方向不明」變成「轉為移入」；租補申請量、幼兒園報名數是否上升",
+    "　　做：青年局（主責）青年據點／共創空間選址；青年創業進駐方案（在地工作機會密度低的區先做）；社會局（協作）公托、托嬰布局提前納入該區；城鄉發展局（住都中心）（協作）租金補貼與包租代管在該區的宣導與名額；交通局（協作）通勤尖峰運能、YouBike 站點",
+    "第 3 年｜驗收與調整　看：淨遷入率是否達到參考區水準；據點使用人次、租補核准數、托育供給率",
+    "　　做：青年局（主責）回頭比對第 1 年的預警與實際，修訂訊號門檻；把結果帶進下一輪預算"
+   ],
+   "confidence": "low",
+   "basis": "條件相似度（data/drivers.py）＋世代淨遷入訊號；局處名稱以新北市政府為準；其他城市對應局處名稱不同。青年局主責的只有職涯發展、創業、公共參與三件事。"
+  },
+  {
+   "title": "三年準備清單：南港區（已經在移入 +1.5%，需求會先到）",
+   "body": "南港區是本市近一年青年淨移入率最高的區（+1.5%）。青年搬進來之後托育、租補、交通的需求會先到，這些都不是青年局主責 —— 清單寫明誰做什麼。",
+   "detail": [
+    "第 1 年｜需求已經到了，先接住　看：淨遷入率與明年預估；租金漲幅（漲太快會變成推力，林口就是這樣）",
+    "　　做：青年局（主責）一年內設青年據點；公共參與管道納入新住民青年；社會局（協作）托育供給補位；城鄉發展局（住都中心）（協作）租補與包租代管名額優先配置；交通局（協作）通勤運能與接駁",
+    "第 2 年｜留下來要有工作　看：工作機會密度（普查五年一次，用租賃登錄的商業件數當替代）；青年創業進駐數",
+    "　　做：經濟發展局（協作）在地產業與招商；青年局（主責）創業基地與職涯探索課程放進該區",
+    "第 3 年｜看有沒有減速　看：訊號是否從「持續移入」變「移入減速」；租金相對本市的水準",
+    "　　做：青年局（主責）減速就回到租金與供給問題，轉請城鄉局"
+   ],
+   "confidence": "medium",
+   "basis": "世代淨遷入訊號（回測：2023 起標移入的區 ≥ 89% 隔兩年真的移入）；局處名稱以新北市政府為準；其他城市對應局處名稱不同。青年局主責的只有職涯發展、創業、公共參與三件事。"
   }
  ],
  "insights": [

@@ -121,8 +121,13 @@ class TestAdviseVerification(unittest.TestCase):
         for blk in PAYLOAD["benchmark"]["metrics"].values():
             if blk.get("unit") == "%":
                 pool |= {round(v * 100, 1) for v in blk["values"].values()}
+        # 提示詞裡的驅動模型／驗證／租金行也進查核池，所以最後用 verify 本人確認「真的對不上」
+        from llm.advise import _drivers_lines
+        from llm.synthesize import verify
+        extra = _drivers_lines(PAYLOAD, "新北市", "青年租金負擔率")
         fake = next(f"{x / 10:.1f}" for x in range(200, 1000)
-                    if not any(abs(x / 10 - p) <= 0.5 for p in pool))
+                    if not any(abs(x / 10 - p) <= 0.5 for p in pool)
+                    and verify(f"{x / 10:.1f}%", [], PAYLOAD, extra=extra)[1])
         g = self._advise_with(f"青年租金負擔率高達 {fake}%，居六都之冠。")
         self.assertFalse(g.trustworthy, g.summary())
         self.assertIn(fake, g.unverified)

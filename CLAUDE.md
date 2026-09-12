@@ -377,6 +377,15 @@ Workshop 帳號有哪些模型、開在哪一區，賽前無法得知，一跑�
    Tab 填入；「＋ 丟資料」觸發 `#scanFile` 走掃描流程並展開工具›掃描列；地區下拉 `#area` 在提示框裡；橘色送出）、
    六都分頁 `#cities`（括號＝目前）＋可滑動的城市卡片列 `#cityStrip`（`make_preview._six_cards` 讀六個 unified 產小地圖與數字）。
    原本的大地圖卡在 01 章列表上方（`.mapwrap`）。
+✅ 四件「證明它有用」的事（2026-09-12 晚）：
+   ① 官方遷徙交叉驗證 `data/fetch_official_migration.py`（ODRP011 村里遷入遷出加總到區，近 12 個月）→ `meta.validation_migration`，
+     新北 29 區 r = 0.952；② 回測 `data/backtest_migration.py`（cutoff 2022/2023/2024，同一個 `classify()`）→ `meta.backtest_migration`，
+     六都 158 區 2023 起標移入準確 ≥ 89%、抓到 ≈ 70%，淡水／林口／汐止 2022 起每年都被標到，新莊一直「方向不明」（誠實的漏）；
+   ③ 案例「租金 × 移入」小圖組（`rentMigrationFigure`，租金 2023 起 4 點、淨遷入 8 點兩把尺）＋提示詞事實行；
+   ④ `engine/jurisdiction.py` 權責表（青年局主責＝職涯、創業、公共參與）＋三年準備清單 `plan()`（candidate／inflow／outflow 三種）→
+     `build_unified._plan_notes` 產兩張卡（新北：三峽候選、淡水移入）；`llm/advise` 給模型權責表、主張型四段、「X 像 Y」主角／參考區解析、
+     `_steps()` 回傳 8 步（7 步程式、1 步模型）→ 答案下方「AI 幕僚做了 8 步」。
+   驗證卡在 01 章「模型怎麼算」最上面（`renderValidation`）。
 ✅ 206 個 Python 測試 + 53 項儀表板驗證
 
 ⬜ 教育程度 × 薪資交叉（Spec P1-1，表32 已有教育程度欄位，就差組合）

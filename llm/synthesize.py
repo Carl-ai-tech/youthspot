@@ -39,6 +39,7 @@ class Grounded:
     verified: list[str] = field(default_factory=list)
     unverified: list[str] = field(default_factory=list)
     raw: str = ""
+    steps: list[dict] = field(default_factory=list)   # 模型之前程式做了哪幾步（advise 會填），前端攤開給人看
 
     @property
     def trustworthy(self) -> bool:
@@ -232,7 +233,10 @@ def _spellings(v: float, unit: str) -> list[tuple[float, bool]]:
     if unit == "倍":
         return [(v, False), (round(v, 1), False), (round(v, 2), False)]
     if unit in ("人", "個"):
-        return [(v, False), (round(v / 10000, 1), False)]           # 832,214 人 → 83.2 萬人
+        out = [(v, False), (round(v / 10000, 1), False)]           # 832,214 人 → 83.2 萬人
+        if v < 0:                                                   # 淨遷入 −48 人：擷取器抓到的是 48
+            out += [(-v, False), (round(-v / 10000, 1), False)]
+        return out
     return [(v, False), (round(v, 1), False)]
 
 

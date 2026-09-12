@@ -809,6 +809,15 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 
 /* 資料缺口對照 */
 .gapbox{margin-top:.8rem;padding:.7rem .9rem;background:var(--sunk);border-radius:12px;}
+.steps{margin-top:.7rem;font-size:.78rem;}
+.steps summary{cursor:pointer;color:var(--ink-2);font-weight:600;list-style:none;padding:.35rem .6rem;background:var(--sunk);border-radius:999px;display:inline-block;}
+.steps summary::-webkit-details-marker{display:none;}
+.steps ol{margin:.5rem 0 0;padding-left:1.4rem;display:grid;gap:.25rem;}
+.steps li{display:grid;grid-template-columns:5.5rem 2.6rem 1fr;gap:.5rem;align-items:baseline;color:var(--ink-2);line-height:1.5;}
+.steps li b{color:var(--ink);}
+.steps li .who{font-family:var(--mono);font-size:.64rem;color:var(--ink-3);border:1px solid var(--rule);border-radius:999px;padding:0 .35rem;text-align:center;}
+.steps li.ai .who{background:var(--b44-orange);color:#fff;border-color:var(--b44-orange);}
+@media (max-width:40rem){.steps li{grid-template-columns:1fr;}}
 .gaps-t{margin:0 0 .4rem;font-size:.78rem;font-weight:600;color:var(--ink-2);}
 .gaps{list-style:none;margin:0;padding:0;display:grid;gap:.45rem;}
 .gaps li{font-size:.8rem;line-height:1.5;padding-left:.7rem;border-left:3px solid var(--rule);}
@@ -3724,6 +3733,14 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     }
     var cite = $('askCite');
     cite.innerHTML = renderSources(LAST_CITED, d.text || '');
+    // agent 做了哪幾步：7 步是程式、1 步是模型。攤開來就是「AI 在哪」的答案。
+    var steps = d.steps || [];
+    if (steps.length) {
+      var sb = document.createElement('details'); sb.className = 'steps';
+      sb.innerHTML = '<summary>AI 幕僚做了 ' + steps.length + ' 步 —— ' + steps.filter(function (x) { return x.who === '程式'; }).length + ' 步是程式、' + steps.filter(function (x) { return x.who === '模型'; }).length + ' 步是模型 ▾</summary>'
+        + '<ol>' + steps.map(function (x) { return '<li class="' + (x.who === '模型' ? 'ai' : '') + '"><b>' + x.name + '</b><span class="who">' + x.who + '</span><span>' + x.what + '</span></li>'; }).join('') + '</ol>';
+      $('askChart').appendChild(sb);
+    }
   }
 
   // ── 掃描檔上傳 ──────────────────────────────────────────

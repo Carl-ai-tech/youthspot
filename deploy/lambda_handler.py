@@ -283,6 +283,7 @@ def _ai(action: str, body: dict, backend=None) -> dict:
                 # records 要整份回、順序不能動：提示詞裡的 [N] 就是這個清單的第 N 筆，前端靠它把引用變成可點的
                 "summary": g.summary(), "records": g.records,
                 "gaps": find_gaps(g.text),
+                "steps": g.steps,
                 "model": getattr(backend, "model", backend.name)}
 
     raise ValueError(f"不認識的 action：{action}（可用：ask、synthesize、scan、scan_text、advise）")

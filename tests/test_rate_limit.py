@@ -130,11 +130,11 @@ class TestGate(unittest.TestCase):
         with self.sdk(client), patch('llm.backend._load_dotenv'), patch.object(R, 'acquire') as gate:
             backend = BedrockBackend(model='test-model', region='us-west-2')
             import boto3
-            self.assertEqual(boto3.client.call_args.kwargs['config']['retries'], {'total_max_attempts': 1})
             with tempfile.TemporaryDirectory() as tmp:
                 for ext, fmt in [('png','png'), ('jpg','jpeg'), ('jpeg','jpeg'), ('gif','gif'), ('webp','webp')]:
                     p=Path(tmp)/('img.'+ext);p.write_bytes(b'fixture')
                     self.assertEqual(backend.complete('question',p),'helloworld')
+                    self.assertEqual(boto3.client.call_args.kwargs['config']['retries'], {'total_max_attempts': 1})
                     body=client.converse.call_args.kwargs
                     self.assertEqual(body['messages'][0]['content'],[{'image':{'format':fmt,'source':{'bytes':b'fixture'}}},{'text':'question'}])
             gate.assert_called_with('us-west-2')
@@ -142,6 +142,49 @@ class TestGate(unittest.TestCase):
             before=client.converse.call_count
             with self.assertRaises(R.RateLimitError):backend.complete('question')
             self.assertEqual(client.converse.call_count,before)
+
+    def test_ambiguous_timeout_retains_distributed_lease(self):
+        client = Mock()
+        with self.sdk(client), patch.dict(os.environ, {'YOUTHSCOPE_RATE_TABLE': 'gate'}, clear=True):
+            with self.assertRaises(R.InferenceTimeout):
+                with R.acquire('us-west-2'):
+                    raise R.InferenceTimeout('lost response', may_be_running=True)
+        self.assertEqual(client.update_item.call_count, 1)
+
+    def test_expired_budget_never_acquires_gate(self):
+        client = Mock()
+        with self.sdk(client), R.request_budget(0):
+            with self.assertRaises(R.InferenceTimeout):
+                with R.acquire('us-west-2'): self.fail('must not start')
+        client.update_item.assert_not_called()
+
+    def test_multiple_calls_share_remaining_budget(self):
+        client = Mock()
+        client.converse.return_value = {'output': {'message': {'content': [{'text': 'ok'}]}}}
+        clock = [100.0]
+        with self.sdk(client), patch('llm.backend._load_dotenv'), patch.object(R, 'acquire'), \
+                patch.object(R.time, 'monotonic', side_effect=lambda: clock[0]), R.request_budget(55):
+            backend = BedrockBackend(model='test', region='us-west-2')
+            import boto3
+            backend.complete('first')
+            self.assertEqual(boto3.client.call_args.kwargs['config']['read_timeout'], 48)
+            clock[0] += 40
+            backend.complete('second')
+            self.assertEqual(boto3.client.call_args.kwargs['config']['read_timeout'], 10)
+            clock[0] += 11
+            with self.assertRaises(R.InferenceTimeout): backend.complete('third')
+            self.assertEqual(client.converse.call_count, 2)
+        self.assertEqual(R.remaining_budget(), 55)
+
+    def test_socket_timeout_is_marked_ambiguous_and_not_retried(self):
+        class ReadTimeoutError(Exception): pass
+        client = Mock(); client.converse.side_effect = ReadTimeoutError()
+        with self.sdk(client), patch('llm.backend._load_dotenv'), patch.object(R, 'acquire'):
+            backend = BedrockBackend(model='test', region='us-west-2')
+            with self.assertRaises(R.InferenceTimeout) as failure: backend.complete('question')
+            self.assertTrue(failure.exception.inference_may_be_running)
+            client.converse.assert_called_once()
+            client.close.assert_called_once()
 
 
 if __name__ == '__main__': unittest.main()

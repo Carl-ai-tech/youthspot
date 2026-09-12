@@ -64,6 +64,29 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
     fe = mb["coef"].get("fe_臺北市")
     if fe:
         lines.append(f"  - 臺北市固定效果 {fe['b']:+.1f} 個百分點：同樣條件下臺北的區青年淨流出較多（模型沒有房價變數）")
+    # 租金 × 移入：點名的區＋預設六區，租金 2023→最新 的漲幅與淨遷入率的起訖
+    rent_t = (payload.get("trends") or {}).get("rent") or {}
+    mig_t = (payload.get("trends") or {}).get("migration") or {}
+    if rent_t.get("series") and mig_t.get("areas"):
+        q0 = question.replace("台", "臺")
+        want = [region + n for n in ("新莊區", "淡水區", "林口區", "汐止區", "三峽區", "土城區")]
+        want += [a for a in mig_t["areas"] if a != region and a.replace(region, "") in q0 and a not in want]
+        rows = []
+        for a in want:
+            rs, ns = rent_t["series"].get(a), (rent_t.get("n") or {}).get(a)
+            m = mig_t["areas"].get(a)
+            if not rs or not m or not m.get("rate"):
+                continue
+            pts = [(y, v) for y, v, n in zip(rent_t["years"], rs, ns or [0] * len(rs)) if v is not None and n >= rent_t.get("min_n", 30)]
+            rates = [(y, r) for y, r in zip(mig_t["years"], m["rate"]) if r is not None]
+            if len(pts) < 2 or len(rates) < 2:
+                continue
+            (y0, r0), (y1, r1) = pts[0], pts[-1]
+            rows.append(f"  - {a.replace(region, '')}：每坪月租 {y0} 年 {r0:,} → {y1} 年 {r1:,} 元（{(r1 / r0 - 1) * 100:+.0f}%）；"
+                        f"淨遷入率 {rates[0][0]} 年 {rates[0][1] * 100:+.1f}% → {rates[-1][0]} 年 {rates[-1][1] * 100:+.1f}%（{m.get('signal') or '—'}）")
+        if rows:
+            lines.append("租金 × 移入（實價登錄租賃 2023 起才有足夠樣本；租金漲、移入降＝租金推力；租金低、移入強＝便宜拉力）：")
+            lines += rows
     mine = [d for d in D["districts"] if d["city"] == region and d.get("resid") is not None]
     if len(mine) >= 5:
         hi = sorted(mine, key=lambda d: -d["resid"])[:3]

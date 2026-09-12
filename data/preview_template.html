@@ -433,6 +433,15 @@ body{
 @media (max-width:40rem){.wrow{grid-template-columns:1fr auto;} .wrow .wq{grid-column:1/-1;justify-self:start;}}
 .drv-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin:.2rem 0 .6rem;}
 .vcard{background:var(--sunk);border-radius:12px;padding:.9rem 1rem 1rem;}
+.rm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.8rem;}
+.rm-cell{background:var(--sunk);border-radius:10px;padding:.6rem .7rem .7rem;}
+.rm-cell svg{width:100%;height:auto;display:block;}
+.rm-t{font-size:.9rem;font-weight:700;margin:0 0 .2rem;display:flex;justify-content:space-between;align-items:baseline;}
+.rm-t small{font-family:var(--mono);font-size:.64rem;font-weight:500;color:var(--ink-3);}
+.rm-n{font-size:.72rem;color:var(--ink-3);margin:.3rem 0 0;line-height:1.5;font-family:var(--mono);font-variant-numeric:tabular-nums;}
+.rm-n b{color:var(--ink);}
+.rm-k{display:inline-flex;align-items:center;gap:.35rem;margin-right:.9rem;}
+.rm-k i{width:14px;height:3px;border-radius:2px;display:inline-block;}
 .vk{font-size:.82rem;font-weight:700;margin:0 0 .3rem;color:var(--ink-2);}
 .vbig{font-family:var(--mono);font-size:1.9rem;font-weight:700;letter-spacing:-.02em;margin:0 0 .3rem;line-height:1.1;}
 .vbig small{display:block;font-size:.72rem;font-weight:400;color:var(--ink-3);letter-spacing:0;margin-top:.15rem;}
@@ -1836,17 +1845,24 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         + ' fill="var(--ink-3)">' + xs[i] + '</text>';
     }
 
-    // 折線
+    // 折線。線尾標籤先算好位置再互相推開（最少隔 12px），七條線擠在同一個角落時才讀得出誰是誰
+    var labels = series.map(function (s2) {
+      var v = s2.values.filter(function (x) { return x != null; });
+      return { y: py(v[v.length - 1]) - 9, s: s2 };
+    }).sort(function (a, b) { return a.y - b.y; });
+    for (var li = 1; li < labels.length; li++) if (labels[li].y - labels[li - 1].y < 12) labels[li].y = labels[li - 1].y + 12;
+    for (var lj = labels.length - 2; lj >= 0; lj--) if (labels[lj + 1].y - labels[lj].y < 12) labels[lj].y = labels[lj + 1].y - 12;
     series.forEach(function (s2) {
       var pts = s2.values.map(function (v, i) {
-        return px(i).toFixed(1) + ',' + py(v).toFixed(1);
-      }).join(' ');
+        return v == null ? null : px(i).toFixed(1) + ',' + py(v).toFixed(1);
+      }).filter(Boolean).join(' ');
       out += '<polyline points="' + pts + '" fill="none" stroke="' + s2.color
         + '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>';
       var lastX = px(s2.values.length - 1), lastY = py(s2.values[s2.values.length - 1]);
       out += '<circle cx="' + lastX.toFixed(1) + '" cy="' + lastY.toFixed(1)
         + '" r="3.5" fill="' + s2.color + '"/>';
-      out += '<text x="' + (lastX - 6).toFixed(1) + '" y="' + (lastY - 9).toFixed(1)
+      var lab = labels.filter(function (l) { return l.s === s2; })[0];
+      out += '<text x="' + (lastX - 6).toFixed(1) + '" y="' + (lab ? lab.y : lastY - 9).toFixed(1)
         + '" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11"'
         + ' font-weight="600" fill="' + s2.color + '">' + s2.label + ' '
         + opts.fmt(s2.values[s2.values.length - 1]) + '</text>';
@@ -2012,6 +2028,59 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   }
 
+  // ── 租金 × 移入：局長講的因果鏈（租金漲 → 青年走）用他點名的區、用官方數字看一次。
+  //    租金只從 2023 起（110 年 7 月才強制申報），所以是 4 個點；淨遷入率 2019– 8 個點。兩條各自的尺。
+  function rentMigrationFigure() {
+    var T2 = DATA.trends, R2 = T2 && T2.rent, Mg = T2 && T2.migration;
+    if (!R2 || !Mg || !Mg.areas) return null;
+    var want = ['新莊區', '淡水區', '林口區', '汐止區', '三峽區', '土城區'].map(function (n) { return M.region + n; });
+    var picks = want.filter(function (a) { return Mg.areas[a] && R2.series[a]; });
+    if (picks.length < 3) {
+      // 其他城市：移入最多 3 區＋流出最多 3 區
+      var names = Object.keys(Mg.areas).filter(function (k) { return k !== M.region && R2.series[k] && Mg.areas[k].rate[Mg.areas[k].rate.length - 1] != null; })
+        .sort(function (a, b) { return Mg.areas[b].rate[Mg.areas[b].rate.length - 1] - Mg.areas[a].rate[Mg.areas[a].rate.length - 1]; });
+      picks = names.slice(0, 3).concat(names.slice(-3));
+    }
+    if (!picks.length) return null;
+    var years = Mg.years, ry = R2.years, W = 300, H = 150, L = 34, Rr = 40, T = 18, B = 22;
+    var cells = picks.map(function (a) {
+      var rate = Mg.areas[a].rate.map(function (v) { return v == null ? null : v * 100; });
+      var rent = ry.map(function (y, i) { return (R2.n[a] && R2.n[a][i] >= (R2.min_n || 30)) ? R2.series[a][i] : null; });
+      var rv = rate.filter(function (v) { return v != null; }), rr = rent.filter(function (v) { return v != null; });
+      if (rr.length < 2) return '';
+      var lo = Math.min.apply(null, rv.concat([0])), hi = Math.max.apply(null, rv.concat([0])); var pad = (hi - lo) * .15 || 1; lo -= pad; hi += pad;
+      var rlo = Math.min.apply(null, rr) * .92, rhi = Math.max.apply(null, rr) * 1.05;
+      var px = function (y) { return L + (y - years[0]) / (years[years.length - 1] - years[0]) * (W - L - Rr); };
+      var py = function (v) { return T + (1 - (v - lo) / (hi - lo)) * (H - T - B); };
+      var pr = function (v) { return T + (1 - (v - rlo) / (rhi - rlo)) * (H - T - B); };
+      var line = years.map(function (y, i) { return rate[i] == null ? null : px(y).toFixed(1) + ',' + py(rate[i]).toFixed(1); }).filter(Boolean).join(' ');
+      var rline = ry.map(function (y, i) { return rent[i] == null ? null : px(y).toFixed(1) + ',' + pr(rent[i]).toFixed(1); }).filter(Boolean).join(' ');
+      var first = rr[0], last = rr[rr.length - 1], chg = Math.round((last / first - 1) * 100);
+      var sig = Mg.areas[a].signal || '';
+      var r0 = rv[0], r1 = rv[rv.length - 1];
+      var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + a + ' 租金與淨遷入率">'
+        + '<line x1="' + L + '" x2="' + (W - Rr) + '" y1="' + py(0).toFixed(1) + '" y2="' + py(0).toFixed(1) + '" style="stroke:var(--ink-3);stroke-width:1"/>'
+        + '<polyline points="' + line + '" style="fill:none;stroke:var(--accent);stroke-width:2"/>'
+        + '<polyline points="' + rline + '" style="fill:none;stroke:var(--b44-orange);stroke-width:2;stroke-dasharray:4 3"/>'
+        + ry.map(function (y, i) { return rent[i] == null ? '' : '<circle cx="' + px(y).toFixed(1) + '" cy="' + pr(rent[i]).toFixed(1) + '" r="2.6" style="fill:var(--b44-orange)"/>'; }).join('')
+        + '<text x="' + (L - 4) + '" y="' + (py(hi - pad) + 3).toFixed(1) + '" text-anchor="end" class="sc-ax">' + (hi - pad > 0 ? '+' : '') + (hi - pad).toFixed(0) + '%</text>'
+        + '<text x="' + (L - 4) + '" y="' + (py(lo + pad) + 3).toFixed(1) + '" text-anchor="end" class="sc-ax">' + (lo + pad).toFixed(0) + '%</text>'
+        + '<text x="' + (W - Rr + 4) + '" y="' + (pr(rhi / 1.05) + 3).toFixed(1) + '" class="sc-ax" style="fill:var(--b44-orange)">' + Math.round(rhi / 1.05) + '</text>'
+        + '<text x="' + (W - Rr + 4) + '" y="' + (pr(rlo / .92) + 3).toFixed(1) + '" class="sc-ax" style="fill:var(--b44-orange)">' + Math.round(rlo / .92) + '</text>'
+        + '<text x="' + L + '" y="' + (H - 6) + '" class="sc-ax">' + years[0] + '</text><text x="' + (W - Rr) + '" y="' + (H - 6) + '" text-anchor="end" class="sc-ax">' + years[years.length - 1] + '</text>'
+        + '</svg>';
+      return '<div class="rm-cell"><p class="rm-t">' + a.replace(M.region, '') + '<small>' + sig + '</small></p>' + svg
+        + '<p class="rm-n">租金 ' + ry[ry.length - rr.length] + '→' + ry[ry.length - 1] + '　<b>' + first + '→' + last + '</b> 元/坪（' + (chg >= 0 ? '+' : '') + chg + '%）<br>淨遷入率 ' + years[0] + ' ' + (r0 > 0 ? '+' : '') + r0.toFixed(1) + '% → ' + years[years.length - 1] + ' <b>' + (r1 > 0 ? '+' : '') + r1.toFixed(1) + '%</b></p></div>';
+    }).join('');
+    if (!cells) return null;
+    var fig = document.createElement('figure'); fig.className = 'figbox'; fig.setAttribute('data-chart', 'rent-migration');
+    fig.innerHTML = '<p class="fig-title">租金 × 移入：局長講的因果鏈，用他點名的區看一次<span class="scopetag">' + LOCAL + ' · 兩把尺</span></p>'
+      + '<p class="fig-sub"><span class="rm-k"><i style="background:var(--accent)"></i>18–35 歲淨遷入率（左軸，' + years[0] + '–' + years[years.length - 1] + '）</span><span class="rm-k"><i style="background:var(--b44-orange)"></i>住宅每坪月租中位數（右軸，元，實價登錄 2023– 才有足夠樣本）</span></p>'
+      + '<div class="rm-grid">' + cells + '</div>'
+      + '<p class="cap">讀法：租金往上、移入往下（林口）是「租金漲 → 青年走」；租金最低、移入最強（淡水）是「便宜 → 青年來」；租金漲最快但仍在流出（三峽）代表需求在起來、供給還沒到 —— 這是「下一個候選」的樣子。租金樣本偏向代管／包租物件，只看方向不看絕對值。</p>';
+    return fig;
+  }
+
   function renderDrivers() {
     var host = $('drvTrend');
     if (!host) return;
@@ -2020,6 +2089,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     var figMig = migrationFigure();
     if (figMig) { host.appendChild(figMig); bindLineHover(figMig); }
     else host.innerHTML = '<p class="note">這個城市還沒有世代淨遷入資料。</p>';
+    var figCase = rentMigrationFigure();
+    if (figCase) host.appendChild(figCase);
     var D = DATA.trends && DATA.trends.drivers;
     if (!D) { hostSim.innerHTML = '<p class="note">尚未建立驅動模型（python data/drivers.py）。</p>'; return; }
     var all = D.districts.filter(function (d) { return d.y != null; });

@@ -840,13 +840,14 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 /* ── base44 式英雄區：點陣背景、置中大標、白色提示框、城市分頁與卡片列 ── */
 :root{--b44-bg:#F1F0EC;--b44-dot:#D5D3CD;--b44-orange:#FF5A1F;--b44-card:#FFFFFF;--b44-ink:#111114;--b44-mute:#6B6B70;}
 body{background:var(--b44-bg);}
+html{overflow-x:hidden;}   /* 英雄區的點陣背景滿版出血、卡片列負邊距，都不該讓整頁出現橫向捲軸 */
 .topbar{background:rgba(241,240,236,.88);border-bottom:0;}
 .topbar .brand .dot{width:14px;height:14px;border-radius:50%;background:var(--b44-orange);display:inline-block;align-self:center;}
 .topbar .brand strong{font-size:1.15rem;}
 .topbar .toc a{font-size:.86rem;font-weight:500;color:var(--b44-ink);}
 .topbar .export-btn{background:var(--b44-ink);color:#fff;border-radius:999px;padding:.55rem 1.1rem;font-weight:700;}
 .hero44{position:relative;text-align:center;padding:3.4rem 0 1.6rem;}
-.hero44::before{content:"";position:absolute;inset:-4rem -100vw 0;z-index:-1;background-image:radial-gradient(var(--b44-dot) 1.1px,transparent 1.2px);background-size:22px 22px;opacity:.9;}
+.hero44::before{content:"";position:absolute;top:-4rem;bottom:0;left:calc(50% - 50vw);width:100vw;z-index:-1;background-image:radial-gradient(var(--b44-dot) 1.1px,transparent 1.2px);background-size:22px 22px;opacity:.9;}
 .hero44 h1{font-size:clamp(2.5rem,7.2vw,5.2rem);font-weight:900;letter-spacing:-.045em;line-height:1.02;margin:0 auto .9rem;color:var(--b44-ink);text-wrap:balance;max-width:16em;}
 .hero44 .lede{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--b44-ink);opacity:.85;margin:0 auto 1.8rem;max-width:40em;line-height:1.6;}
 .prompt .asktips[hidden]{display:none!important;}

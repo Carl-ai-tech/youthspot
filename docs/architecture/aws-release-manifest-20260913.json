@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "handler": "deploy.runtime.handler",
+  "runtime": "python3.12",
+  "api_endpoint": "/api",
+  "dependency_source": "AWS Python 3.12 runtime boto3; no bundled pip packages",
+  "files": {
+    "lambda": [
+      {
+        "path": "data/__init__.py",
+        "bytes": 173,
+        "sha256": "b1263a78a2fab35f8880f4ed5cba115ebf3369d27c7987aa15f329e81e8f89ef"
+      },
+      {
+        "path": "data/_make_placeholder.py",
+        "bytes": 3951,
+        "sha256": "84e91e1437f4a32c23710c8c0c3d8af4a66a66705933a6967704d43d90f574fe"
+      },
+      {
+        "path": "data/backtest.py",
+        "bytes": 5193,
+        "sha256": "32c1b0572fb11550885617e3e204f1221266d62b8856f18240050732f2f59889"
+      },
+      {
+        "path": "data/backtest_migration.py",
+        "bytes": 10540,
+        "sha256": "d34e944ac089a83f666ab0a59216b5cf73874a03824152bea513b18b2dc7ba2b"
+      },
+      {
+        "path": "data/build_reference.py",
+        "bytes": 6726,
+        "sha256": "529b97a868e9ac6351bacfb6d5c343ace069900e6a2b805db7802fc3d010d05b"
+      },
+      {
+        "path": "data/build_unified.py",
+        "bytes": 102661,
+        "sha256": "84953919dfb1252da3a8b0c18b3e398362a222ec054ad1fef4223e4ffd573e28"
+      },
+      {
+        "path": "data/drivers.py",
+        "bytes": 15058,
+        "sha256": "95d6bfbded1bd1934c8dd5fefe45190840a506bc737758a62d5d073af3c8500a"
+      },
+      {
+        "path": "data/fetch_benchmark.py",
+        "bytes": 4434,
+        "sha256": "600e36361e6ba0a8c1e180d50c53a8256a558d77656d674845f7bb9848247631"
+      },
+      {
+        "path": "data/fetch_district_income.py",
+        "bytes": 6069,
+        "sha256": "63f0badbf97be931ac0b8e0bad105db4bd7d4f5141b9b374be4bbbdc118cb2b4"
+      },
+      {
+        "path": "data/fetch_district_jobs.py",
+        "bytes": 6413,
+        "sha256": "a7b0eaf9dbfe4f860df8982aa65776acdc5b72aa80e1ba6cd6dd90fd3e74b953"
+      },
+      {
+        "path": "data/fetch_employment.py",
+        "bytes": 4321,
+        "sha256": "b68a085d12387f5432d8f30c36a64862fc7a9c27ad320516e1fb642af6697f63"
+      },
+      {
+        "path": "data/fetch_employment_industry.py",
+        "bytes": 5524,
+        "sha256": "e87421ad9e221d5e900852b8dbdda5e95fc02f446e36cb16648873cc070f41f3"
+      },
+      {
+        "path": "data/fetch_geo.py",
+        "bytes": 8944,
+        "sha256": "4cb786694e631cadfcd27099cf49a2797073b2782860f7afdfde635eac641d61"
+      },
+      {
+        "path": "data/fetch_housing.py",
+        "bytes": 7887,
+        "sha256": "093e008762c18e2ba8c88f52aa78a7d1547428ef6b76adc9c0e3b7f28f50e570"
+      },
+      {
+        "path": "data/fetch_labour.py",
+        "bytes": 3537,
+        "sha256": "2d9e4f81eb0cf0a1ac2dbd4c82bdd2464f0c815f7b69125f317dfccd683cf381"
+      },
+      {
+        "path": "data/fetch_labour_sex.py",
+        "bytes": 5496,
+        "sha256": "9366d5869e97f43bf1e1235c09f964e4b0bdcba8c42efc841f8bb96f20012c11"
+      },
+      {
+        "path": "data/fetch_lfpr_local.py",
+        "bytes": 3368,
+        "sha256": "d70fc8204bb9db2ad036de8f5bf7be846008b4d0badbdb8a7aee757f04a98ff9"
+      },
+      {
+        "path": "data/fetch_migration.py",
+        "bytes": 6032,
+        "sha256": "9b82c1e07933cd007f9f27ee53ba88bb3842284c22ce882f199aff018b8a96a4"
+      },
+      {
+        "path": "data/fetch_ntpc_labour.py",
+        "bytes": 4740,
+        "sha256": "20d98ad37aa85bf8d3da5bc93af9484f76c608ec75e35e9f92191c57a2ec932f"
+      },
+      {
+        "path": "data/fetch_official_migration.py",
+        "bytes": 5075,
+        "sha256": "1c2cda8494ba834630cfe3d682e66acbdcc245ce09c6d6511fd5d8fdc6b4d97a"
+      },
+      {
+        "path": "data/fetch_population.py",
+        "bytes": 6496,
+        "sha256": "117120c32a111a969a549bf8ce19623267977ea2e19cee04c9204d0f032bcaac"
+      },
+      {
+        "path": "data/fetch_rent.py",
+        "bytes": 9712,
+        "sha256": "5366aad2d46686f4a0c9e6f1cf4f8df04093f853901fe8ad9c52bc7f50eb580a"
+      },
+      {
+        "path": "data/fetch_salary.py",
+        "bytes": 4864,
+        "sha256": "d09a721fee922444bdb44008cd5c775d7bfe41ab925855b53083b97de4700356"
+      },
+      {
+        "path": "data/fetch_salary_education.py",
+        "bytes": 3727,
+        "sha256": "b6525280ee5be48cc28d531a40c420c25f86b97264023517c81a810952196e57"
+      },
+      {
+        "path": "data/fetch_unemployment_local.py",
+        "bytes": 2517,
+        "sha256": "0556917d78ad018d7e698d3f5ffc1e06d8b489d824510ce2f2a64824fa447f40"
+      },
+      {
+        "path": "data/fetch_vacancy.py",
+        "bytes": 2778,
+        "sha256": "1d8397d514c7e10d8859d0d607bb122f81c1f7b3fcdc3f63822a34636d97ba73"
+      },
+      {
+        "path": "data/forecast.py",
+        "bytes": 5362,
+        "sha256": "8805227a061f60fcbf290d114307f0f6720fa38426438611abb3445ff72c4923"
+      },
+      {
+        "path": "data/insights.py",
+        "bytes": 25700,
+        "sha256": "3d15ab50b2635feecfe70becd3122ffcd54211db99dced016d5c7b3a3e90896c"
+      },
+      {
+        "path": "data/make_preview.py",
+        "bytes": 3944,
+        "sha256": "0c67020bc305cf0bf8b477b309ab3fdd26dda98cbb5714d7895f970454cf1812"
+      },
+      {
+        "path": "data/odsreader.py",
+        "bytes": 3004,
+        "sha256": "eb0a1084dea91bc5b948a465c342412dc1b00e0a7cae0d64fa0f1839821993ad"
+      },
+      {
+        "path": "data/reference_ntpc.json",
+        "bytes": 6452,
+        "sha256": "b6e66fab6ce32dddb8c22ecd852e8414ddf02764800df3a4e65d8f9901aa8e83"
+      },
+      {
+        "path": "data/reference_placeholder.json",
+        "bytes": 3857,
+        "sha256": "032ec4f11b41138b87c0f7e8bded9e0e82231146a678c3ced07a3ea948ea7bbd"
+      },
+      {
+        "path": "data/reference_桃園市.json",
+        "bytes": 6455,
+        "sha256": "3097cec84ee0682f1ff38b14224742a634f3ac1a5dde1e7506e982cded551440"
+      },
+      {
+        "path": "data/reference_臺中市.json",
+        "bytes": 6455,
+        "sha256": "2e6a4069b6aed9451c363035cc8bd669de3f11bcbcaf3ac120e7a8db370acca7"
+      },
+      {
+        "path": "data/reference_臺北市.json",
+        "bytes": 6460,
+        "sha256": "417cb4eb47d5a8c25191ce2fe73cdadd1d4886155301b88418cf4c975b2a9288"
+      },
+      {
+        "path": "data/reference_臺南市.json",
+        "bytes": 6462,
+        "sha256": "418295b098a0e8ba9e4dc5f36be967f754218d71e613a5f2c9d7528f56bbaa27"
+      },
+      {
+        "path": "data/reference_高雄市.json",
+        "bytes": 6447,
+        "sha256": "5d4be9b9e37e8018b118bbfa191767796d03cfe31415f5664d5aff9df0dad25a"
+      },
+      {
+        "path": "data/sources.py",
+        "bytes": 3459,
+        "sha256": "fd4b10e9d6020e2b6a158157d5c2c4b821c4b39f7da900baee233a9255f92d15"
+      },
+      {
+        "path": "data/ungroup.py",
+        "bytes": 5808,
+        "sha256": "ead334318030e7128e6ad3c9bc3932312aa1b868604c14ded9dd81bde3cf3745"
+      },
+      {
+        "path": "data/unified.json",
+        "bytes": 916502,
+        "sha256": "2b70c08fc9dcfb06b6a32d85578350a7c9862584c1d1fba2700af34ba42a8f76"
+      },
+      {
+        "path": "data/unified_桃園市.json",
+        "bytes": 569832,
+        "sha256": "fc72ec15fe3cb19678d4bb4854657d7c079c704ffb2dd6793777f9a5df19da7f"
+      },
+      {
+        "path": "data/unified_臺中市.json",
+        "bytes": 898513,
+        "sha256": "7e7dd40673a7fce2e04d646515f5ebac573611ddf4f9396762be9fd048fc502a"
+      },
+      {
+        "path": "data/unified_臺北市.json",
+        "bytes": 536108,
+        "sha256": "103143c5ae0f83181138d6f5d63d761619e1fd102ffc5146ae759e7b695eece4"
+      },
+      {
+        "path": "data/unified_臺南市.json",
+        "bytes": 1091627,
+        "sha256": "57492ad2a7a74683d5d9c414b19c7d99249317ae3d6e030ce0c884a2d0fe38f6"
+      },
+      {
+        "path": "data/unified_高雄市.json",
+        "bytes": 1085572,
+        "sha256": "4a1b8fa16defd9ef9c8c13e65c206e9751ddc507abf48caa78365df3a12c53b8"
+      },
+      {
+        "path": "deploy/lambda_handler.py",
+        "bytes": 14555,
+        "sha256": "be33c4b250116ec189b40b59f2a32d87f3334a6389b8e10d0bf5a90f89c56d85"
+      },
+      {
+        "path": "deploy/runtime.py",
+        "bytes": 3750,
+        "sha256": "5249a1c1b3c4593b668df483473d89c7f18c54407263ce7ea889f93db3086b7c"
+      },
+      {
+        "path": "engine/__init__.py",
+        "bytes": 794,
+        "sha256": "822306188eaad76be26b902294cfa9b10d59b894c21abafffd71c6c2e4314d8e"
+      },
+      {
+        "path": "engine/align.py",
+        "bytes": 20440,
+        "sha256": "c818b3cc41be1ab941334def45782197dc33689bd9e8c4a4109e253e7cee9dbc"
+      },
+      {
+        "path": "engine/jurisdiction.py",
+        "bytes": 8513,
+        "sha256": "49aa629accd88d844cb1792ef68f56c651d115e7f99ac6068a74be48aea2553f"
+      },
+      {
+        "path": "engine/reference.py",
+        "bytes": 7363,
+        "sha256": "0f46ba84b5cc75b12b0746245a8d2b332705454e980b1216f2339df28c4da6db"
+      },
+      {
+        "path": "engine/schema.py",
+        "bytes": 6469,
+        "sha256": "836036744a2f826b869113e4c5968c1fc67b02b961b424dc9490ab80e975c3cf"
+      },
+      {
+        "path": "llm/__init__.py",
+        "bytes": 929,
+        "sha256": "8052d13c2b612566f1bd1ab177ac756d081376e22685816d380cb8a52776e0ae"
+      },
+      {
+        "path": "llm/advise.py",
+        "bytes": 26414,
+        "sha256": "48080777deab5b5603d6c88acfbf5194c27851df2f098ea8672a25ceeea8cf49"
+      },
+      {
+        "path": "llm/ask.py",
+        "bytes": 8814,
+        "sha256": "239f0bd5ba7a8ff4eeb3048ab8822c89b51fa3a7ad43e9bb3463152858cccec4"
+      },
+      {
+        "path": "llm/backend.py",
+        "bytes": 11995,
+        "sha256": "40a4aea481b7eff70776bb4b5755c22a690a9388f9081a9f67413ab962e08267"
+      },
+      {
+        "path": "llm/gaps.py",
+        "bytes": 6541,
+        "sha256": "62ac05782a574a60c18d38a54daa562622cf21275e22938b9e908e39f4b6453c"
+      },
+      {
+        "path": "llm/rate_limit.py",
+        "bytes": 4272,
+        "sha256": "8f9ec9335eafa7ca70256924a9d784de2b8b7c8892b8e8466ec8c561a85baf50"
+      },
+      {
+        "path": "llm/scan_table.py",
+        "bytes": 9251,
+        "sha256": "6a6297597e4e706348aaf64a64cb775c194755198c43885cfed235118e317d03"
+      },
+      {
+        "path": "llm/synthesize.py",
+        "bytes": 13854,
+        "sha256": "dba776e35e5cf82c2e71aafd0d92b7d263554fb9dfcf29f00256d70dca71d214"
+      },
+      {
+        "path": "llm/table_text.py",
+        "bytes": 12116,
+        "sha256": "08a69a713b1bdac80745af8aaf41bdeee2a731e743cf919c655d6e61c5c388a5"
+      }
+    ],
+    "static": [
+      {
+        "path": "preview.html",
+        "bytes": 1312300,
+        "sha256": "5fb9b5c26c1acdbc63a9f906e0171ceef85cbc9dcbca626c595a0dcfb04b41d3"
+      },
+      {
+        "path": "preview_桃園市.html",
+        "bytes": 1016068,
+        "sha256": "a60c42bad13ac09666b0a084fff60b052d19086ea8064e948a6885c3dc44e61d"
+      },
+      {
+        "path": "preview_臺中市.html",
+        "bytes": 1294325,
+        "sha256": "5ad56e2d1f43013a18f7a4864fa12f3eb69f4bc4cc334c1d2a6a749977c25a34"
+      },
+      {
+        "path": "preview_臺北市.html",
+        "bytes": 985318,
+        "sha256": "1f2cbf0920cd73facbff69ca88048bd48df8d317ce505baff63f7d219c020e0d"
+      },
+      {
+        "path": "preview_臺南市.html",
+        "bytes": 1462942,
+        "sha256": "02f5546f84d47796a22ee695a0fc3ef15b415ef494c0239e1ee20d4b1b2a6b2c"
+      },
+      {
+        "path": "preview_高雄市.html",
+        "bytes": 1454728,
+        "sha256": "973a3f1b072651e0fa04a8ce56bbc1fb4f463c9b51391b2ec62f1d016039bd64"
+      },
+      {
+        "path": "tests/fixtures/table32_sheet.png",
+        "bytes": 49520,
+        "sha256": "d4c80840b57e50bb39ffbe431004cf082f43e048536d1fbfa59517108f40b6d2"
+      },
+      {
+        "path": "unified.json",
+        "bytes": 916502,
+        "sha256": "2b70c08fc9dcfb06b6a32d85578350a7c9862584c1d1fba2700af34ba42a8f76"
+      },
+      {
+        "path": "unified_桃園市.json",
+        "bytes": 569832,
+        "sha256": "fc72ec15fe3cb19678d4bb4854657d7c079c704ffb2dd6793777f9a5df19da7f"
+      },
+      {
+        "path": "unified_臺中市.json",
+        "bytes": 898513,
+        "sha256": "7e7dd40673a7fce2e04d646515f5ebac573611ddf4f9396762be9fd048fc502a"
+      },
+      {
+        "path": "unified_臺北市.json",
+        "bytes": 536108,
+        "sha256": "103143c5ae0f83181138d6f5d63d761619e1fd102ffc5146ae759e7b695eece4"
+      },
+      {
+        "path": "unified_臺南市.json",
+        "bytes": 1091627,
+        "sha256": "57492ad2a7a74683d5d9c414b19c7d99249317ae3d6e030ce0c884a2d0fe38f6"
+      },
+      {
+        "path": "unified_高雄市.json",
+        "bytes": 1085572,
+        "sha256": "4a1b8fa16defd9ef9c8c13e65c206e9751ddc507abf48caa78365df3a12c53b8"
+      }
+    ]
+  },
+  "artifacts": {
+    "lambda.zip": {
+      "bytes": 735203,
+      "sha256": "28b85a4195ce187ba7695c185262a854c0edea9b0b6480fdbe8fba28cfa8cbcd"
+    },
+    "static.zip": {
+      "bytes": 2179799,
+      "sha256": "485dda66d21439e280349f7539248ac6a567a388a371c66c09f0fb3768f4012d"
+    }
+  }
+}

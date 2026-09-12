@@ -1,4 +1,24 @@
-# YouthLens — 年齡層對齊引擎
+# YouthScope 青年放大鏡
+
+黑客松整合版本：沿用YouthScope 橘紅色 `ys.` Logo，以此儲存庫的六都資料、統計對齊、趨勢預測及證據儀表板為服務主體。GitHub 儲存庫名稱仍為 youthspot；產品名稱統一 YouthScope。
+
+主要使用者是青年局承辦與局長：從趨勢訊號查證青年問題、比較地區、檢視預測限制，再形成待討論的服務方案。
+
+- [團員介紹、人員分工與講述順序](docs/TEAM.md)
+- [Archify 系統架構圖](docs/architecture/README.md)
+- [競賽規範審查](docs/COMPETITION_COMPLIANCE_REVIEW.md)
+- [整合決策](docs/INTEGRATION.md)
+- [提案書](docs/提案書.md)
+- [工具說明](docs/工具說明.md)
+- 本機啟動：`python3 serve.py 8788`，開啟 `http://127.0.0.1:8788/preview.html`。
+- 離線瀏覽：直接開啟 `preview.html`；AI 連線功能需另有可用後端，不能將離線查詢當成模型驗證。
+- 重建新北頁：`python3 data/make_preview.py`；其他城市加 `--region 臺北市` 等參數。
+
+以下保留資料引擎的原始技術說明；其中數據為既有快照與先前測試紀錄，不代表本次重新下載或驗證預測效益。
+
+---
+
+# YouthScope — 年齡層對齊引擎
 
 Spec §5 的可執行實作，**接的是真的政府資料**。這是專案的第一層（護城河），
 前端與 AI 問答都建在它上面。
@@ -151,3 +171,9 @@ Demo 旁白已改成陳述真實形狀，不要照唸 1.4 倍 —— 評審可�
 - [ ] `build_unified.py`：跑完整條 pipeline 產出 `unified.json` 給前端
 - [ ] 缺工趨勢預測 —— 命題明列的預期成果，時間序列已備妥（1978–2025，48 年）
 - [ ] §5.6 的 LLM 語意判讀（`llm_bridge.py`，只回傳區間，不碰數值）
+
+## AWS 展示與協作
+
+[YouthScope 線上展示](https://d3mmoubox2tlbx.cloudfront.net/) · [部署操作](deploy/CLOUDFORMATION.md)
+
+資料與統計更新沿用 master；品牌變更請改 data/preview_template.html 再重產六都頁面。AWS API 的 `/api/health` 回報 `release_commit`，可與 GitHub 提交核對，避免網站與程式版本混淆。公開 API 不提供 pipeline；資料更新應經本機流程、測試與發布。

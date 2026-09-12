@@ -1,0 +1,17 @@
+{
+  "artifact_sha256": "192f51ce4858df43c59d3cd9399a76852d6be9ffbeedeb8a72ea85da83e8c9a3",
+  "visual_review": "passed",
+  "reviewer": "Codex image-capable reviewer",
+  "reviewed_screenshots": [
+    "youthscope.visual-check.1440x900.light.png",
+    "youthscope.visual-check.2048x1320.dark.png"
+  ],
+  "observations": [
+    "箭頭與文字不重疊，主路徑與 AI 支路可辨識",
+    "大桌面圖面與必要分工卡片垂直平衡",
+    "小型副標需使用內建縮放進一步閱讀"
+  ],
+  "interaction_verification": "blocked: CUA file URL policy; no workaround attempted",
+  "svg_verification": "XML parsed; exact delivered inline SVG plus embedded styles; not native viewer export",
+  "correction_rounds": 1
+}

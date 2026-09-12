@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "YouthScope 系統架構",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1240,
+      660
+    ]
+  },
+  "components": [
+    {
+      "id": "gov",
+      "type": "external",
+      "label": "政府開放資料",
+      "sublabel": "戶政、主計、勞動等來源",
+      "pos": [
+        60,
+        65
+      ],
+      "size": [
+        245,
+        85
+      ]
+    },
+    {
+      "id": "etl",
+      "type": "backend",
+      "label": "資料 ETL",
+      "sublabel": "data/fetch_*、快取與清理",
+      "pos": [
+        350,
+        65
+      ],
+      "size": [
+        245,
+        85
+      ]
+    },
+    {
+      "id": "stats",
+      "type": "backend",
+      "label": "對齊與統計預測",
+      "sublabel": "engine ＋ data/forecast.py",
+      "pos": [
+        640,
+        65
+      ],
+      "size": [
+        245,
+        85
+      ]
+    },
+    {
+      "id": "unified",
+      "type": "database",
+      "label": "unified.json",
+      "sublabel": "來源、口徑、信心與趨勢",
+      "pos": [
+        930,
+        65
+      ],
+      "size": [
+        245,
+        85
+      ]
+    },
+    {
+      "id": "preview",
+      "type": "backend",
+      "label": "網頁產製",
+      "sublabel": "data/make_preview.py",
+      "pos": [
+        930,
+        270
+      ],
+      "size": [
+        245,
+        85
+      ]
+    },
+    {
+      "id": "browser",
+      "type": "frontend",
+      "label": "YouthScope 瀏覽器",
+      "sublabel": "preview.html：查詢與圖表",
+      "pos": [
+        640,
+        270
+      ],
+      "size": [
+        245,
+        85
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "AI 入口（擇一）",
+      "sublabel": "serve.py ／ Lambda _ai",
+      "pos": [
+        640,
+        495
+      ],
+      "size": [
+        245,
+        85
+      ]
+    },
+    {
+      "id": "llm",
+      "type": "backend",
+      "label": "模型後端介面",
+      "sublabel": "llm/backend.py",
+      "pos": [
+        350,
+        495
+      ],
+      "size": [
+        245,
+        85
+      ]
+    },
+    {
+      "id": "bedrock",
+      "type": "cloud",
+      "label": "Amazon Bedrock",
+      "sublabel": "AWS 路徑；連通未驗證",
+      "pos": [
+        60,
+        495
+      ],
+      "size": [
+        245,
+        85
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "gov-etl",
+      "from": "gov",
+      "to": "etl",
+      "label": "下載／解析",
+      "variant": "emphasis",
+      "labelDy": -40
+    },
+    {
+      "id": "etl-stats",
+      "from": "etl",
+      "to": "stats",
+      "label": "建參考資料",
+      "variant": "emphasis",
+      "labelDy": -40
+    },
+    {
+      "id": "stats-unified",
+      "from": "stats",
+      "to": "unified",
+      "label": "組裝／寫入",
+      "variant": "emphasis",
+      "labelDy": -40
+    },
+    {
+      "id": "unified-preview",
+      "from": "unified",
+      "to": "preview",
+      "label": "讀取資料",
+      "variant": "emphasis",
+      "labelDy": 55
+    },
+    {
+      "id": "preview-browser",
+      "from": "preview",
+      "to": "browser",
+      "label": "嵌入 HTML",
+      "variant": "emphasis",
+      "labelDy": -40
+    },
+    {
+      "id": "browser-api",
+      "from": "browser",
+      "to": "api",
+      "label": "POST AI 請求",
+      "variant": "default",
+      "labelDy": 55
+    },
+    {
+      "id": "api-llm",
+      "from": "api",
+      "to": "llm",
+      "label": "組提示／選後端",
+      "variant": "default",
+      "labelDy": -40
+    },
+    {
+      "id": "llm-bedrock",
+      "from": "llm",
+      "to": "bedrock",
+      "label": "模型推論",
+      "variant": "default",
+      "labelDy": -40
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Ray｜提案分工",
+      "items": [
+        "需求痛點、構思與系統架構",
+        "應用整合、AWS 部署與 Bedrock 串接"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Webb｜提案分工",
+      "items": [
+        "資料整合、統計與預測",
+        "方法回測與技術驗證"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "實作與部署界線",
+      "items": [
+        "本機可選 stub／Anthropic／Bedrock",
+        "AWS 腳本不代表已部署；詳見 README"
+      ]
+    }
+  ]
+}

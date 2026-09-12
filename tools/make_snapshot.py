@@ -45,7 +45,7 @@ def main() -> int:
     html = re.sub(r"<script\b[^>]*>.*?</script>", "", html, flags=re.S)
     stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     banner = ('<div style="background:#fff3cd;color:#5a4300;padding:.6rem 1rem;font:14px system-ui">'
-              f'這是 YouthLens 儀表板在 {stamp} 渲染後的靜態快照（所有區塊已展開，互動功能不可用）。'
+              f'這是 YouthScope 儀表板在 {stamp} 渲染後的靜態快照（所有區塊已展開，互動功能不可用）。'
               '互動版在 /preview.html。</div>')
     html = html.replace("<body>", "<body>" + banner, 1)
     OUT.write_text(html, encoding="utf-8")

@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "YouthScope AWS 部署提案（未實作驗證）",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1210,
+      620
+    ]
+  },
+  "components": [
+    {
+      "id": "reader",
+      "type": "external",
+      "label": "使用者瀏覽器",
+      "sublabel": "提案：HTTPS 存取",
+      "pos": [
+        70,
+        65
+      ],
+      "size": [
+        270,
+        90
+      ]
+    },
+    {
+      "id": "edge",
+      "type": "cloud",
+      "label": "CloudFront｜待新增",
+      "sublabel": "提案：快取與安全連線",
+      "pos": [
+        460,
+        65
+      ],
+      "size": [
+        270,
+        90
+      ]
+    },
+    {
+      "id": "private",
+      "type": "database",
+      "label": "私有 S3｜待修正",
+      "sublabel": "提案：OAC；封鎖公開存取",
+      "pos": [
+        850,
+        65
+      ],
+      "size": [
+        270,
+        90
+      ]
+    },
+    {
+      "id": "model",
+      "type": "cloud",
+      "label": "Bedrock｜待驗證",
+      "sublabel": "提案：模型與 IAM 權限驗證",
+      "pos": [
+        850,
+        365
+      ],
+      "size": [
+        270,
+        90
+      ]
+    },
+    {
+      "id": "gate",
+      "type": "backend",
+      "label": "共用速率閘門｜待實作",
+      "sublabel": "提案：所有模型與重試共用",
+      "pos": [
+        460,
+        365
+      ],
+      "size": [
+        270,
+        90
+      ]
+    },
+    {
+      "id": "lambda",
+      "type": "cloud",
+      "label": "Lambda 入口｜待驗證",
+      "sublabel": "既有 handler；存取方案待定",
+      "pos": [
+        70,
+        365
+      ],
+      "size": [
+        270,
+        90
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "reader-edge",
+      "from": "reader",
+      "to": "edge",
+      "label": "HTTPS"
+    },
+    {
+      "id": "edge-private",
+      "from": "edge",
+      "to": "private",
+      "label": "OAC 取檔"
+    },
+    {
+      "id": "reader-lambda",
+      "from": "reader",
+      "to": "lambda",
+      "label": "POST AI 請求",
+      "labelDy": 100
+    },
+    {
+      "id": "lambda-gate",
+      "from": "lambda",
+      "to": "gate",
+      "label": "推論排程"
+    },
+    {
+      "id": "gate-model",
+      "from": "gate",
+      "to": "model",
+      "label": "呼叫間隔 >1秒"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "待核可的目標方案",
+      "items": [
+        "區域：us-east-1 或 us-west-2",
+        "現有公開 S3 腳本不可直接使用"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "共用節流設計｜待實作",
+      "items": [
+        "所有模型、所有實例、重試共用",
+        "原子協調機制與儲存選型待定"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "監測與權限｜待驗證",
+      "items": [
+        "CloudWatch 日誌／計數監測待設定",
+        "IAM／OAC／模型權限須在帳號驗證"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/Users/ayun/Documents/Project/youthspot/docs/architecture/aws-proposal.architecture.json",
+  "output": "/Users/ayun/Documents/Project/youthspot/docs/architecture/aws-proposal.html",
+  "specification": {
+    "sha256": "0489c103ce353beb5c101532ad4f8e02ac4e93c4b6ddd3fb5c2145bb1074efa8",
+    "bytes": 3003
+  },
+  "artifact": {
+    "sha256": "855fed0e239dbfe45c0cbcf0d0eee224b03be561e1064f9cb24c1e6a9e205eb7",
+    "bytes": 803065
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

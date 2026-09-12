@@ -244,6 +244,11 @@ aside.side { position:sticky; top:4.2rem; }
 .maplegend .ramp i{flex:1;}
 .maplegend span{font-size:.71rem;color:var(--ink-3);font-family:var(--mono);}
 .mapmetric{display:flex;gap:.3rem;}
+.mapyears{display:flex;gap:.25rem;align-items:center;flex-wrap:wrap;margin:.45rem 0 .1rem;font-size:.72rem;color:var(--ink-3);}
+.mapyears .yl{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;margin-right:.2rem;}
+.mapyears button{font:inherit;font-family:var(--mono);font-size:.7rem;padding:.18rem .5rem;border-radius:999px;border:1px solid var(--rule);background:var(--card);color:var(--ink-2);cursor:pointer;}
+.mapyears button[aria-pressed="true"]{background:var(--deep);color:#fff;border-color:var(--deep);}
+.mapyears .single{font-size:.72rem;}
 .mapmetric button{font:inherit;font-size:.74rem;padding:.3rem .7rem;border-radius:999px;
   border:1px solid var(--rule);background:transparent;color:var(--ink-2);cursor:pointer;
   transition:background .15s,border-color .15s,color .15s;}
@@ -1073,6 +1078,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         </div>
       </div>
       <div class="mapmetric" id="mapMetric" role="group" aria-label="地圖指標"></div>
+      <div class="mapyears" id="mapYears" role="group" aria-label="地圖年份"></div>
       <div class="mapbox">
         <svg id="ntpcMap" viewBox="0 0 1000 1000" role="img"
              aria-label="新北市各行政區青年分布地圖"></svg>
@@ -2781,6 +2787,36 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     '住宅每坪月租中位數': '實價登錄租賃案件近四季中位數（元／坪／月）· 全體案件非青年 · 樣本偏向代管／包租物件'
   };
   var MAP_INVERT = ['青年淨遷入率', '青年人口年變化率'];   // 值越低越紅（流出／減少是壞事）
+  var mapYear = null;   // null＝最新一年（記錄本身）；選了年份就從 trends 的年序列取值
+  // 有逐年序列的指標：從 trends 拿；其餘只有一年（人口＝最新期別、密度＝110 年普查）
+  function mapSeries(metric) {
+    var T2 = DATA.trends || {};
+    if (metric === '青年淨遷入率' && T2.migration && T2.migration.areas) {
+      return { years: T2.migration.years, get: function (a, y) { var e = T2.migration.areas[a]; var i = T2.migration.years.indexOf(y); return e && e.rate ? e.rate[i] : undefined; },
+               note: '世代追蹤，每年 7 月一期' };
+    }
+    if (metric === '綜合所得中位數' && T2.district_income && T2.district_income.series) {
+      var di = T2.district_income;
+      return { years: di.years, get: function (a, y) { var sv = di.series[a]; var i = di.years.indexOf(y); return sv && sv[i] != null ? sv[i] / 10 : undefined; },
+               note: '財政部綜稅（申報年度），' + di.break_year + ' 年度起定義改變' };
+    }
+    if (metric === '住宅每坪月租中位數' && T2.rent && T2.rent.series) {
+      var rt = T2.rent;
+      return { years: rt.years.filter(function (y, i) { return Object.keys(rt.n).some(function (a) { return (rt.n[a][i] || 0) >= (rt.min_n || 30); }); }),
+               get: function (a, y) { var i = rt.years.indexOf(y); var n = rt.n[a] ? rt.n[a][i] : 0; return (n >= (rt.min_n || 30) && rt.series[a]) ? rt.series[a][i] : undefined; },
+               note: '實價登錄租賃，樣本 ≥ ' + (rt.min_n || 30) + ' 筆的年份才算' };
+    }
+    return null;
+  }
+  function mapValue(areaFull, metric) {
+    var ser = mapSeries(metric);
+    if (ser && mapYear != null && ser.years.indexOf(mapYear) >= 0) {
+      var v = ser.get(areaFull, mapYear);
+      return v === undefined || v === null ? null : { value: v, unit: unitOfMetric(metric), year: mapYear, series: true };
+    }
+    var r = findMap(areaFull, metric);
+    return r ? { value: r.value, unit: r.unit, year: r.year, rec: r } : null;
+  }
   var mapMetric = MAP_METRICS[1];   // 主畫面預設看「青年往哪裡搬」；沒有這個指標的城市會自動退回人口數
 
   // 人口在 29 個區之間極度偏斜（板橋 vs 平溪差兩個數量級）。
@@ -2819,9 +2855,22 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       }).join('');
     }
 
+    // 年份列：有序列的指標列出年份鈕，沒有的就寫清楚只有哪一年
+    var ser = mapSeries(mapMetric), my = $('mapYears');
+    if (ser && (mapYear == null || ser.years.indexOf(mapYear) < 0)) mapYear = ser.years[ser.years.length - 1];
+    if (my) {
+      if (ser) {
+        my.innerHTML = '<span class="yl">年份</span>' + ser.years.map(function (y) {
+          return '<button type="button" data-y="' + y + '" aria-pressed="' + (y === mapYear) + '">' + y + '</button>';
+        }).join('') + '<span class="single">· ' + ser.note + '</span>';
+      } else {
+        var any = null; names.some(function (n) { any = findMap(M.region + n, mapMetric); return !!any; });
+        my.innerHTML = '<span class="yl">年份</span><span class="single">' + (any ? any.year + ' 年（' + (any.provenance.source_dataset || '').replace(/（.*$/, '') + '）— 這個指標只有這一年' : '—') + '</span>';
+      }
+    }
     var vals = {}, list = [];
     names.forEach(function (n) {
-      var r = findMap(M.region + n, mapMetric);
+      var r = mapValue(M.region + n, mapMetric);
       if (r) { vals[n] = r.value; list.push(r.value); }
     });
     var cuts = list.length ? quantileBins(list, 6) : [];
@@ -2848,11 +2897,12 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       var lo = Math.min.apply(null, list), hi = Math.max.apply(null, list);
       var u = unitOfMetric(mapMetric);
       var rampIdx = MAP_INVERT.indexOf(mapMetric) >= 0 ? [6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6];
-      host.innerHTML = '<span>' + show({ value: lo, unit: u }) + '</span>'
+      var ul = (u && u !== '%') ? ' ' + u : '';
+      host.innerHTML = '<span>' + show({ value: lo, unit: u }) + ul + '</span>'
         + '<span class="ramp">' + rampIdx.map(function (i) {
           return '<i style="background:var(--seq-' + i + ')"></i>';
         }).join('') + '</span>'
-        + '<span>' + show({ value: hi, unit: u }) + '</span>'
+        + '<span>' + show({ value: hi, unit: u }) + ul + '</span>'
         + '<span style="flex-basis:100%;color:var(--ink-3)">分位數分級（每級區數相近）·'
         + ' 灰色代表該區沒有這個指標</span>';
     }
@@ -2870,12 +2920,12 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     svg.addEventListener('mousemove', function (e) {
       var t = e.target, n = t && t.dataset && t.dataset.name;
       if (!n || !tip) { if (tip) tip.hidden = true; return; }
-      var r = find(M.region + n, state.band, mapMetric);
+      var v = mapValue(M.region + n, mapMetric);
       tip.hidden = false;
-      tip.innerHTML = '<b>' + n + '</b>' + state.band + ' 歲　'
-        + (r ? show(r) + (unitOfMetric(mapMetric) === '%' ? '' : ' 人') : '無資料')
-        + (r ? '<span class="conf">' + r.provenance.confidence + '　'
-             + r.provenance.method + '</span>' : '');
+      var who = v && v.rec ? (v.rec.age_group === '全體' ? '全體' : v.rec.age_group + ' 歲') : (v && v.series ? (mapMetric === '青年淨遷入率' ? '18-35 歲' : '全體') : state.band + ' 歲');
+      tip.innerHTML = '<b>' + n + '</b>' + who + '　' + (v ? v.year + ' 年　' : '')
+        + (v ? show({ value: v.value, unit: v.unit }) + (v.unit && v.unit !== '%' ? ' ' + v.unit : '') : '無資料')
+        + (v && v.rec ? '<span class="conf">' + confLabel(v.rec.provenance.confidence) + '　' + v.rec.provenance.method + '</span>' : '');
       var box = svg.getBoundingClientRect();
       tip.style.left = (e.clientX - box.left) + 'px';
       tip.style.top = (e.clientY - box.top) + 'px';
@@ -2894,10 +2944,17 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       mm.addEventListener('click', function (e) {
         var m = e.target && e.target.dataset && e.target.dataset.m;
         if (!m) return;
-        mapMetric = m;
+        mapMetric = m; mapYear = null;
         renderMap();
       });
     }
+    var my = $('mapYears');
+    if (my && my.addEventListener) my.addEventListener('click', function (e) {
+      var y = e.target && e.target.dataset && e.target.dataset.y;
+      if (!y) return;
+      mapYear = parseInt(y, 10);
+      renderMap();
+    });
   })();
 
   function render() {

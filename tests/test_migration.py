@@ -21,7 +21,7 @@ class TestRealCache(unittest.TestCase):
         if not (CACHE_DIR / "odrp014_10707_p1.json").exists():
             self.skipTest("快取不在")
         d = fm.fetch_migration("新北市", period="11507")
-        self.assertEqual(d["years"][0], 2019)
+        self.assertEqual(d["years"][0], 2018)   # 106/7 起用 ODRP005，序列從 2018 開始
         tw = d["areas"]["新北市淡水區"]
         # 淡水：人口差負、世代淨遷入正 —— 這就是整個指標存在的理由
         self.assertLess(tw["naive"][-1], 0)

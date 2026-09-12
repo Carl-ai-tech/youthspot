@@ -269,8 +269,8 @@
     "records": 684,
     "check": "村里 × 單一年齡加總 = 全市；男 + 女 = 合計；世代淨遷入 Σ 各區 = 全市（2018– 共 9 期）",
     "coverage": "民國 115 年 7 月",
-    "fetched_at": "2026-09-12 15:14",
-    "size_kb": 8454,
+    "fetched_at": "2026-09-13 00:57",
+    "size_kb": 8833,
     "cached": true
    },
    {
@@ -570,53 +570,53 @@
    "pooled": {
     "2022": {
      "n": 158,
-     "points_used": 4,
-     "mae_model_pp": 2.23,
+     "points_used": 5,
+     "mae_model_pp": 1.94,
      "mae_last_pp": 2.02,
-     "mae_mean_pp": 1.31,
-     "inflow_flagged": 24,
-     "inflow_hits": 22,
-     "inflow_precision": 0.92,
-     "inflow_recall": 0.32,
+     "mae_mean_pp": 1.29,
+     "inflow_flagged": 22,
+     "inflow_hits": 21,
+     "inflow_precision": 0.95,
+     "inflow_recall": 0.31,
      "truly_inflow": 68,
      "outflow_flagged": 109,
      "outflow_hits": 65,
      "outflow_precision": 0.6,
-     "outflow_recall": 0.85,
+     "outflow_recall": 0.87,
      "truly_outflow": 47
     },
     "2023": {
      "n": 158,
-     "points_used": 5,
-     "mae_model_pp": 0.86,
+     "points_used": 6,
+     "mae_model_pp": 0.77,
      "mae_last_pp": 0.92,
-     "mae_mean_pp": 0.61,
-     "inflow_flagged": 37,
-     "inflow_hits": 37,
+     "mae_mean_pp": 0.64,
+     "inflow_flagged": 35,
+     "inflow_hits": 35,
      "inflow_precision": 1.0,
      "inflow_recall": 0.76,
      "truly_inflow": 45,
-     "outflow_flagged": 103,
-     "outflow_hits": 88,
-     "outflow_precision": 0.85,
-     "outflow_recall": 0.92,
+     "outflow_flagged": 94,
+     "outflow_hits": 83,
+     "outflow_precision": 0.88,
+     "outflow_recall": 0.86,
      "truly_outflow": 79
     },
     "2024": {
      "n": 158,
-     "points_used": 6,
-     "mae_model_pp": 0.96,
+     "points_used": 7,
+     "mae_model_pp": 0.9,
      "mae_last_pp": 0.95,
-     "mae_mean_pp": 1.01,
+     "mae_mean_pp": 1.05,
      "inflow_flagged": 41,
      "inflow_hits": 37,
      "inflow_precision": 0.9,
-     "inflow_recall": 0.72,
+     "inflow_recall": 0.74,
      "truly_inflow": 43,
-     "outflow_flagged": 79,
-     "outflow_hits": 72,
-     "outflow_precision": 0.91,
-     "outflow_recall": 0.81,
+     "outflow_flagged": 74,
+     "outflow_hits": 69,
+     "outflow_precision": 0.93,
+     "outflow_recall": 0.78,
      "truly_outflow": 80
     }
    },
@@ -624,103 +624,103 @@
     "新北市新莊區": {
      "2022": {
       "signal": "方向不明",
-      "forecast": -1.37,
+      "forecast": -0.92,
       "actual_next": 0.82,
       "future_mean": 0.39,
-      "n": 4
+      "n": 5
      },
      "2023": {
       "signal": "持平",
-      "forecast": -0.33,
+      "forecast": -0.11,
       "actual_next": -0.04,
       "future_mean": -0.27,
-      "n": 4
+      "n": 5
      },
      "2024": {
       "signal": "持平",
-      "forecast": -0.19,
+      "forecast": -0.05,
       "actual_next": -0.5,
       "future_mean": -0.45,
-      "n": 5
+      "n": 6
      }
     },
     "新北市林口區": {
      "2022": {
-      "signal": "移入減速",
-      "forecast": 1.23,
+      "signal": "持續移入",
+      "forecast": 2.81,
       "actual_next": 4.62,
       "future_mean": 3.74,
-      "n": 4
+      "n": 5
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 2.61,
+      "forecast": 3.8,
       "actual_next": 2.87,
       "future_mean": 2.5,
-      "n": 4
+      "n": 5
      },
      "2024": {
-      "signal": "移入減速",
-      "forecast": 2.25,
+      "signal": "持續移入",
+      "forecast": 3.14,
       "actual_next": 2.12,
       "future_mean": 1.73,
-      "n": 5
+      "n": 6
      }
     },
     "新北市汐止區": {
      "2022": {
       "signal": "持續移入",
-      "forecast": 0.22,
+      "forecast": 0.83,
       "actual_next": 2.25,
       "future_mean": 1.76,
-      "n": 4
+      "n": 5
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 1.15,
+      "forecast": 1.54,
       "actual_next": 1.28,
       "future_mean": 1.65,
-      "n": 4
+      "n": 5
      },
      "2024": {
       "signal": "持續移入",
-      "forecast": 1.2,
+      "forecast": 1.49,
       "actual_next": 2.03,
       "future_mean": 1.12,
-      "n": 5
+      "n": 6
      }
     },
     "新北市淡水區": {
      "2022": {
       "signal": "持續移入",
-      "forecast": 1.06,
+      "forecast": 1.91,
       "actual_next": 3.69,
       "future_mean": 3.65,
-      "n": 4
+      "n": 5
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 2.2,
+      "forecast": 2.77,
       "actual_next": 3.61,
       "future_mean": 4.45,
-      "n": 4
+      "n": 5
      },
      "2024": {
       "signal": "持續移入",
-      "forecast": 3.14,
+      "forecast": 3.42,
       "actual_next": 5.28,
       "future_mean": 3.92,
-      "n": 5
+      "n": 6
      }
     }
    },
    "city": {
     "2022": {
      "n": 37,
-     "points_used": 4,
-     "mae_model_pp": 1.5,
+     "points_used": 5,
+     "mae_model_pp": 1.45,
      "mae_last_pp": 1.41,
-     "mae_mean_pp": 1.1,
+     "mae_mean_pp": 1.03,
      "inflow_flagged": 5,
      "inflow_hits": 4,
      "inflow_precision": 0.8,
@@ -750,18 +750,18 @@
     },
     "2023": {
      "n": 37,
-     "points_used": 5,
-     "mae_model_pp": 0.69,
+     "points_used": 6,
+     "mae_model_pp": 0.58,
      "mae_last_pp": 0.83,
-     "mae_mean_pp": 0.66,
-     "inflow_flagged": 7,
-     "inflow_hits": 7,
+     "mae_mean_pp": 0.69,
+     "inflow_flagged": 6,
+     "inflow_hits": 6,
      "inflow_precision": 1.0,
      "inflow_recall": 0.6,
      "truly_inflow": 10,
-     "outflow_flagged": 28,
+     "outflow_flagged": 27,
      "outflow_hits": 23,
-     "outflow_precision": 0.82,
+     "outflow_precision": 0.85,
      "outflow_recall": 0.95,
      "truly_outflow": 20,
      "flagged_in_names": [
@@ -770,8 +770,7 @@
       "安南區",
       "安平區",
       "新市區",
-      "永康區",
-      "西港區"
+      "永康區"
      ],
      "missed_in_names": [
       "安定區",
@@ -782,26 +781,24 @@
     },
     "2024": {
      "n": 37,
-     "points_used": 6,
-     "mae_model_pp": 0.97,
+     "points_used": 7,
+     "mae_model_pp": 0.95,
      "mae_last_pp": 0.85,
-     "mae_mean_pp": 0.86,
-     "inflow_flagged": 10,
-     "inflow_hits": 8,
-     "inflow_precision": 0.8,
-     "inflow_recall": 0.75,
+     "mae_mean_pp": 0.87,
+     "inflow_flagged": 8,
+     "inflow_hits": 7,
+     "inflow_precision": 0.88,
+     "inflow_recall": 0.62,
      "truly_inflow": 8,
-     "outflow_flagged": 22,
-     "outflow_hits": 22,
+     "outflow_flagged": 21,
+     "outflow_hits": 21,
      "outflow_precision": 1.0,
-     "outflow_recall": 0.9,
+     "outflow_recall": 0.86,
      "truly_outflow": 21,
      "flagged_in_names": [
       "仁德區",
-      "六甲區",
       "善化區",
       "安南區",
-      "安定區",
       "安平區",
       "新市區",
       "永康區",
@@ -809,6 +806,7 @@
       "麻豆區"
      ],
      "missed_in_names": [
+      "安定區",
       "歸仁區",
       "關廟區"
      ]
@@ -817,7 +815,7 @@
   },
   "sensitivity_migration": {
    "n": 37,
-   "stable": 28,
+   "stable": 26,
    "rows": [
     {
      "area": "七股區",
@@ -857,7 +855,7 @@
      "raw": "持平",
      "dropped": "持續流出",
      "stable": false,
-     "edge": false
+     "edge": true
     },
     {
      "area": "六甲區",
@@ -873,7 +871,7 @@
      "raw": "方向不明",
      "dropped": "持續流出",
      "stable": false,
-     "edge": true
+     "edge": false
     },
     {
      "area": "北門區",
@@ -885,16 +883,16 @@
     },
     {
      "area": "南化區",
-     "merged": "持續流出",
-     "raw": "持續流出",
-     "dropped": "持續流出",
+     "merged": "流出加劇",
+     "raw": "流出加劇",
+     "dropped": "流出加劇",
      "stable": true,
-     "edge": false
+     "edge": true
     },
     {
      "area": "南區",
      "merged": "持續流出",
-     "raw": "方向不明",
+     "raw": "持平",
      "dropped": "持續流出",
      "stable": false,
      "edge": false
@@ -933,11 +931,11 @@
     },
     {
      "area": "安定區",
-     "merged": "轉為移入",
-     "raw": "轉為移入",
-     "dropped": "轉為移入",
+     "merged": "持平",
+     "raw": "持平",
+     "dropped": "持平",
      "stable": true,
-     "edge": false
+     "edge": true
     },
     {
      "area": "安平區",
@@ -965,7 +963,7 @@
     },
     {
      "area": "山上區",
-     "merged": "持續流出",
+     "merged": "方向不明",
      "raw": "方向不明",
      "dropped": "持續流出",
      "stable": false,
@@ -973,10 +971,10 @@
     },
     {
      "area": "左鎮區",
-     "merged": "方向不明",
+     "merged": "轉為移入",
      "raw": "方向不明",
-     "dropped": "方向不明",
-     "stable": true,
+     "dropped": "轉為移入",
+     "stable": false,
      "edge": false
     },
     {
@@ -993,7 +991,7 @@
      "raw": "方向不明",
      "dropped": "持續流出",
      "stable": false,
-     "edge": false
+     "edge": true
     },
     {
      "area": "新市區",
@@ -1102,17 +1100,17 @@
     {
      "area": "麻豆區",
      "merged": "持平",
-     "raw": "持平",
+     "raw": "方向不明",
      "dropped": "方向不明",
      "stable": false,
-     "edge": false
+     "edge": true
     },
     {
      "area": "龍崎區",
      "merged": "持續流出",
-     "raw": "持續流出",
+     "raw": "流出加劇",
      "dropped": "持續流出",
-     "stable": true,
+     "stable": false,
      "edge": false
     }
    ],
@@ -5583,6 +5581,7 @@
    "source": "內政部戶政司 ODRP014 村里單一年齡人口（世代追蹤：兩期相減）",
    "url": "https://data.gov.tw/dataset/32973",
    "years": [
+    2018,
     2019,
     2020,
     2021,
@@ -5596,6 +5595,7 @@
     "臺南市": {
      "net": [
       -1197,
+      -1197,
       -1362,
       -1893,
       -3618,
@@ -5605,6 +5605,7 @@
       -479
      ],
      "rate": [
+      -0.0026,
       -0.0027,
       -0.0031,
       -0.0044,
@@ -5615,6 +5616,7 @@
       -0.0013
      ],
      "naive": [
+      -11845,
       -11155,
       -12403,
       -13457,
@@ -5625,27 +5627,28 @@
       -10306
      ],
      "signal": "持平",
-     "slope_pp": 0.068,
-     "slope_se_pp": 0.036,
-     "t": 1.88,
+     "slope_pp": 0.058,
+     "slope_se_pp": 0.028,
+     "t": 2.06,
      "significant": false,
      "r2": 0.41,
-     "mean": -0.001,
-     "sd": 0.0028,
-     "mean_ci": 0.0026,
-     "level_t": -0.96,
+     "mean": -0.0012,
+     "sd": 0.0026,
+     "mean_ci": 0.0022,
+     "level_t": -1.3,
      "level_significant": false,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.002,
-     "margin": 0.0076,
+     "forecast": 0.0017,
+     "margin": 0.0066,
      "confidence": "medium",
      "positive_years": 3,
-     "n": 7
+     "n": 8
     },
     "臺南市七股區": {
      "net": [
+      -22,
       -84,
       -72,
       -18,
@@ -5656,6 +5659,7 @@
       -38
      ],
      "rate": [
+      -0.0045,
       -0.0176,
       -0.0156,
       -0.004,
@@ -5666,6 +5670,7 @@
       -0.0098
      ],
      "naive": [
+      -154,
       -160,
       -133,
       -88,
@@ -5676,27 +5681,28 @@
       -203
      ],
      "signal": "持續流出",
-     "slope_pp": 0.074,
-     "slope_se_pp": 0.084,
-     "t": 0.88,
+     "slope_pp": 0.014,
+     "slope_se_pp": 0.074,
+     "t": 0.19,
      "significant": false,
-     "r2": 0.13,
-     "mean": -0.0101,
+     "r2": 0.01,
+     "mean": -0.0094,
      "sd": 0.0053,
-     "mean_ci": 0.0049,
-     "level_t": -5.03,
+     "mean_ci": 0.0045,
+     "level_t": -5.01,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0068,
-     "margin": 0.0179,
+     "forecast": -0.0087,
+     "margin": 0.0175,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 7
+     "n": 8
     },
     "臺南市下營區": {
      "net": [
+      -86,
       -70,
       -87,
       -98,
@@ -5707,6 +5713,7 @@
       -36
      ],
      "rate": [
+      -0.0155,
       -0.013,
       -0.0166,
       -0.0196,
@@ -5717,6 +5724,7 @@
       -0.0086
      ],
      "naive": [
+      -212,
       -147,
       -191,
       -243,
@@ -5727,27 +5735,28 @@
       -132
      ],
      "signal": "持續流出",
-     "slope_pp": -0.004,
-     "slope_se_pp": 0.108,
+     "slope_pp": -0.003,
+     "slope_se_pp": 0.083,
      "t": -0.04,
      "significant": false,
      "r2": 0.0,
      "mean": -0.0156,
-     "sd": 0.0064,
-     "mean_ci": 0.0059,
-     "level_t": -6.47,
+     "sd": 0.0059,
+     "mean_ci": 0.0049,
+     "level_t": -7.47,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
      "forecast": -0.0158,
-     "margin": 0.0229,
+     "margin": 0.0195,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市中西區": {
      "net": [
+      -50,
       -99,
       -107,
       -190,
@@ -5758,6 +5767,7 @@
       -194
      ],
      "rate": [
+      -0.003,
       -0.0062,
       -0.0069,
       -0.0127,
@@ -5768,6 +5778,7 @@
       -0.0153
      ],
      "naive": [
+      -442,
       -453,
       -499,
       -627,
@@ -5778,27 +5789,28 @@
       -523
      ],
      "signal": "持續流出",
-     "slope_pp": -0.075,
-     "slope_se_pp": 0.053,
-     "t": -1.43,
+     "slope_pp": -0.093,
+     "slope_se_pp": 0.042,
+     "t": -2.23,
      "significant": false,
-     "r2": 0.29,
-     "mean": -0.0091,
-     "sd": 0.0037,
+     "r2": 0.45,
+     "mean": -0.0084,
+     "sd": 0.004,
      "mean_ci": 0.0034,
-     "level_t": -6.56,
+     "level_t": -5.86,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0125,
-     "margin": 0.0111,
+     "forecast": -0.0131,
+     "margin": 0.0098,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 7
+     "n": 8
     },
     "臺南市仁德區": {
      "net": [
+      77,
       140,
       115,
       24,
@@ -5809,6 +5821,7 @@
       155
      ],
      "rate": [
+      0.0041,
       0.0076,
       0.0064,
       0.0014,
@@ -5819,6 +5832,7 @@
       0.0097
      ],
      "naive": [
+      -677,
       -369,
       -503,
       -553,
@@ -5829,27 +5843,28 @@
       -284
      ],
      "signal": "持續移入",
-     "slope_pp": 0.069,
-     "slope_se_pp": 0.069,
-     "t": 1.0,
+     "slope_pp": 0.079,
+     "slope_se_pp": 0.053,
+     "t": 1.48,
      "significant": false,
-     "r2": 0.17,
-     "mean": 0.0087,
-     "sd": 0.0045,
-     "mean_ci": 0.0041,
-     "level_t": 5.14,
+     "r2": 0.27,
+     "mean": 0.0081,
+     "sd": 0.0044,
+     "mean_ci": 0.0037,
+     "level_t": 5.16,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0118,
-     "margin": 0.0147,
+     "forecast": 0.0121,
+     "margin": 0.0126,
      "confidence": "medium",
-     "positive_years": 8,
-     "n": 7
+     "positive_years": 9,
+     "n": 8
     },
     "臺南市佳里區": {
      "net": [
+      -134,
       -100,
       -19,
       -120,
@@ -5860,6 +5875,7 @@
       -5
      ],
      "rate": [
+      -0.009,
       -0.0069,
       -0.0014,
       -0.0088,
@@ -5870,6 +5886,7 @@
       -0.0004
      ],
      "naive": [
+      -512,
       -373,
       -416,
       -516,
@@ -5880,27 +5897,28 @@
       -366
      ],
      "signal": "持續流出",
-     "slope_pp": 0.102,
-     "slope_se_pp": 0.065,
-     "t": 1.56,
+     "slope_pp": 0.112,
+     "slope_se_pp": 0.05,
+     "t": 2.24,
      "significant": false,
-     "r2": 0.33,
-     "mean": -0.0029,
-     "sd": 0.0047,
-     "mean_ci": 0.0043,
-     "level_t": -1.63,
+     "r2": 0.45,
+     "mean": -0.0036,
+     "sd": 0.0048,
+     "mean_ci": 0.004,
+     "level_t": -2.13,
      "level_significant": false,
-     "edge": false,
+     "edge": true,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0017,
-     "margin": 0.0137,
+     "forecast": 0.002,
+     "margin": 0.0118,
      "confidence": "low",
      "positive_years": 2,
-     "n": 7
+     "n": 8
     },
     "臺南市六甲區": {
      "net": [
+      -49,
       -93,
       -110,
       -29,
@@ -5911,6 +5929,7 @@
       -73
      ],
      "rate": [
+      -0.009,
       -0.0175,
       -0.0214,
       -0.0059,
@@ -5921,6 +5940,7 @@
       -0.0168
      ],
      "naive": [
+      -107,
       -217,
       -171,
       -128,
@@ -5931,27 +5951,28 @@
       -195
      ],
      "signal": "持續流出",
-     "slope_pp": 0.123,
-     "slope_se_pp": 0.133,
-     "t": 0.93,
+     "slope_pp": 0.078,
+     "slope_se_pp": 0.106,
+     "t": 0.73,
      "significant": false,
-     "r2": 0.15,
-     "mean": -0.0104,
-     "sd": 0.0085,
-     "mean_ci": 0.0078,
-     "level_t": -3.23,
+     "r2": 0.08,
+     "mean": -0.0102,
+     "sd": 0.0079,
+     "mean_ci": 0.0066,
+     "level_t": -3.66,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0048,
-     "margin": 0.0282,
+     "forecast": -0.0063,
+     "margin": 0.0249,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 7
+     "n": 8
     },
     "臺南市北區": {
      "net": [
+      -169,
       -51,
       -186,
       -236,
@@ -5962,6 +5983,7 @@
       -184
      ],
      "rate": [
+      -0.0055,
       -0.0017,
       -0.0064,
       -0.0083,
@@ -5972,6 +5994,7 @@
       -0.0074
      ],
      "naive": [
+      -1074,
       -748,
       -936,
       -921,
@@ -5982,27 +6005,28 @@
       -694
      ],
      "signal": "持續流出",
-     "slope_pp": 0.021,
-     "slope_se_pp": 0.069,
-     "t": 0.3,
+     "slope_pp": 0.022,
+     "slope_se_pp": 0.053,
+     "t": 0.41,
      "significant": false,
-     "r2": 0.02,
-     "mean": -0.0044,
-     "sd": 0.0041,
-     "mean_ci": 0.0038,
-     "level_t": -2.88,
+     "r2": 0.03,
+     "mean": -0.0046,
+     "sd": 0.0038,
+     "mean_ci": 0.0032,
+     "level_t": -3.41,
      "level_significant": true,
-     "edge": true,
+     "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
      "forecast": -0.0035,
-     "margin": 0.0146,
-     "confidence": "low",
+     "margin": 0.0124,
+     "confidence": "medium",
      "positive_years": 2,
-     "n": 7
+     "n": 8
     },
     "臺南市北門區": {
      "net": [
+      -14,
       -61,
       -26,
       -48,
@@ -6013,6 +6037,7 @@
       -9
      ],
      "rate": [
+      -0.0059,
       -0.0266,
       -0.0121,
       -0.0233,
@@ -6023,6 +6048,7 @@
       -0.0056
      ],
      "naive": [
+      -102,
       -115,
       -108,
       -117,
@@ -6033,27 +6059,28 @@
       -73
      ],
      "signal": "持續流出",
-     "slope_pp": -0.07,
-     "slope_se_pp": 0.254,
-     "t": -0.28,
+     "slope_pp": -0.158,
+     "slope_se_pp": 0.202,
+     "t": -0.78,
      "significant": false,
-     "r2": 0.01,
-     "mean": -0.0222,
+     "r2": 0.09,
+     "mean": -0.0202,
      "sd": 0.0151,
-     "mean_ci": 0.0139,
-     "level_t": -3.91,
+     "mean_ci": 0.0126,
+     "level_t": -3.78,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0254,
-     "margin": 0.0538,
+     "forecast": -0.0282,
+     "margin": 0.0475,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市南化區": {
      "net": [
+      -2,
       -11,
       -47,
       -30,
@@ -6064,6 +6091,7 @@
       -39
      ],
      "rate": [
+      -0.001,
       -0.0058,
       -0.0254,
       -0.0171,
@@ -6074,6 +6102,7 @@
       -0.0278
      ],
      "naive": [
+      -6,
       -51,
       -89,
       -77,
@@ -6083,28 +6112,29 @@
       -111,
       -78
      ],
-     "signal": "持續流出",
-     "slope_pp": -0.236,
-     "slope_se_pp": 0.13,
-     "t": -1.82,
-     "significant": false,
-     "r2": 0.4,
-     "mean": -0.0195,
-     "sd": 0.0098,
-     "mean_ci": 0.0091,
-     "level_t": -5.23,
+     "signal": "流出加劇",
+     "slope_pp": -0.288,
+     "slope_se_pp": 0.105,
+     "t": -2.76,
+     "significant": true,
+     "r2": 0.56,
+     "mean": -0.0172,
+     "sd": 0.0112,
+     "mean_ci": 0.0094,
+     "level_t": -4.33,
      "level_significant": true,
-     "edge": false,
+     "edge": true,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0301,
-     "margin": 0.0275,
-     "confidence": "medium",
+     "forecast": -0.0318,
+     "margin": 0.0246,
+     "confidence": "low",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市南區": {
      "net": [
+      -116,
       40,
       -95,
       -161,
@@ -6115,6 +6145,7 @@
       -181
      ],
      "rate": [
+      -0.0037,
       0.0013,
       -0.0032,
       -0.0057,
@@ -6125,6 +6156,7 @@
       -0.0078
      ],
      "naive": [
+      -1047,
       -961,
       -1149,
       -1157,
@@ -6135,27 +6167,28 @@
       -1015
      ],
      "signal": "持續流出",
-     "slope_pp": -0.084,
-     "slope_se_pp": 0.05,
-     "t": -1.68,
+     "slope_pp": -0.064,
+     "slope_se_pp": 0.04,
+     "t": -1.59,
      "significant": false,
-     "r2": 0.36,
-     "mean": -0.0045,
-     "sd": 0.0037,
-     "mean_ci": 0.0034,
-     "level_t": -3.24,
+     "r2": 0.3,
+     "mean": -0.0044,
+     "sd": 0.0034,
+     "mean_ci": 0.0028,
+     "level_t": -3.64,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0083,
-     "margin": 0.0106,
+     "forecast": -0.0076,
+     "margin": 0.0094,
      "confidence": "medium",
      "positive_years": 2,
-     "n": 7
+     "n": 8
     },
     "臺南市善化區": {
      "net": [
+      256,
       409,
       315,
       257,
@@ -6166,6 +6199,7 @@
       215
      ],
      "rate": [
+      0.0223,
       0.036,
       0.0278,
       0.023,
@@ -6176,6 +6210,7 @@
       0.0199
      ],
      "naive": [
+      -136,
       56,
       -132,
       -226,
@@ -6186,27 +6221,28 @@
       -97
      ],
      "signal": "持續移入",
-     "slope_pp": -0.071,
-     "slope_se_pp": 0.103,
-     "t": -0.69,
+     "slope_pp": -0.008,
+     "slope_se_pp": 0.088,
+     "t": -0.09,
      "significant": false,
-     "r2": 0.09,
-     "mean": 0.0285,
+     "r2": 0.0,
+     "mean": 0.0277,
      "sd": 0.0063,
-     "mean_ci": 0.0059,
-     "level_t": 11.89,
+     "mean_ci": 0.0052,
+     "level_t": 12.51,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0253,
-     "margin": 0.0218,
+     "forecast": 0.0273,
+     "margin": 0.0207,
      "confidence": "medium",
-     "positive_years": 8,
-     "n": 7
+     "positive_years": 9,
+     "n": 8
     },
     "臺南市大內區": {
      "net": [
+      -24,
       -30,
       -28,
       -38,
@@ -6217,6 +6253,7 @@
       -28
      ],
      "rate": [
+      -0.0126,
       -0.0161,
       -0.0155,
       -0.0216,
@@ -6228,6 +6265,7 @@
      ],
      "naive": [
       -55,
+      -55,
       -58,
       -52,
       -31,
@@ -6237,27 +6275,28 @@
       -72
      ],
      "signal": "持續流出",
-     "slope_pp": 0.008,
-     "slope_se_pp": 0.055,
-     "t": 0.14,
+     "slope_pp": -0.021,
+     "slope_se_pp": 0.046,
+     "t": -0.45,
      "significant": false,
-     "r2": 0.0,
-     "mean": -0.0165,
-     "sd": 0.0032,
-     "mean_ci": 0.003,
-     "level_t": -13.51,
+     "r2": 0.03,
+     "mean": -0.0161,
+     "sd": 0.0033,
+     "mean_ci": 0.0028,
+     "level_t": -13.73,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0162,
-     "margin": 0.0116,
+     "forecast": -0.0171,
+     "margin": 0.0107,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市學甲區": {
      "net": [
+      -77,
       -29,
       -34,
       -76,
@@ -6268,6 +6307,7 @@
       -15
      ],
      "rate": [
+      -0.0122,
       -0.0048,
       -0.0058,
       -0.0135,
@@ -6278,6 +6318,7 @@
       -0.0032
      ],
      "naive": [
+      -241,
       -224,
       -202,
       -285,
@@ -6288,27 +6329,28 @@
       -178
      ],
      "signal": "持續流出",
-     "slope_pp": 0.078,
-     "slope_se_pp": 0.061,
-     "t": 1.29,
+     "slope_pp": 0.104,
+     "slope_se_pp": 0.049,
+     "t": 2.12,
      "significant": false,
-     "r2": 0.25,
-     "mean": -0.0048,
-     "sd": 0.0041,
-     "mean_ci": 0.0038,
-     "level_t": -3.06,
+     "r2": 0.43,
+     "mean": -0.0057,
+     "sd": 0.0046,
+     "mean_ci": 0.0039,
+     "level_t": -3.48,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0012,
-     "margin": 0.0129,
+     "forecast": -0.0004,
+     "margin": 0.0116,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 7
+     "n": 8
     },
     "臺南市安南區": {
      "net": [
+      32,
       143,
       248,
       230,
@@ -6319,6 +6361,7 @@
       388
      ],
      "rate": [
+      0.0006,
       0.0029,
       0.0051,
       0.0049,
@@ -6329,6 +6372,7 @@
       0.0089
      ],
      "naive": [
+      -1560,
       -1486,
       -1316,
       -1431,
@@ -6339,27 +6383,28 @@
       -931
      ],
      "signal": "持續移入",
-     "slope_pp": 0.143,
-     "slope_se_pp": 0.089,
-     "t": 1.61,
+     "slope_pp": 0.163,
+     "slope_se_pp": 0.069,
+     "t": 2.37,
      "significant": false,
-     "r2": 0.34,
-     "mean": 0.01,
-     "sd": 0.0064,
-     "mean_ci": 0.0059,
-     "level_t": 4.13,
+     "r2": 0.48,
+     "mean": 0.0089,
+     "sd": 0.0068,
+     "mean_ci": 0.0057,
+     "level_t": 3.67,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0165,
-     "margin": 0.0187,
+     "forecast": 0.0171,
+     "margin": 0.0162,
      "confidence": "medium",
-     "positive_years": 8,
-     "n": 7
+     "positive_years": 9,
+     "n": 8
     },
     "臺南市安定區": {
      "net": [
+      39,
       -49,
       -39,
       -11,
@@ -6370,6 +6415,7 @@
       58
      ],
      "rate": [
+      0.005,
       -0.0064,
       -0.0053,
       -0.0015,
@@ -6380,6 +6426,7 @@
       0.0091
      ],
      "naive": [
+      -134,
       -214,
       -223,
       -170,
@@ -6389,28 +6436,29 @@
       -127,
       -139
      ],
-     "signal": "轉為移入",
-     "slope_pp": 0.269,
-     "slope_se_pp": 0.036,
-     "t": 7.53,
+     "signal": "持平",
+     "slope_pp": 0.17,
+     "slope_se_pp": 0.068,
+     "t": 2.51,
      "significant": true,
-     "r2": 0.92,
-     "mean": 0.0022,
-     "sd": 0.0074,
-     "mean_ci": 0.0068,
-     "level_t": 0.79,
+     "r2": 0.51,
+     "mean": 0.0025,
+     "sd": 0.0069,
+     "mean_ci": 0.0058,
+     "level_t": 1.04,
      "level_significant": false,
-     "edge": false,
+     "edge": true,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0143,
-     "margin": 0.0075,
-     "confidence": "medium",
-     "positive_years": 4,
-     "n": 7
+     "forecast": 0.0111,
+     "margin": 0.0159,
+     "confidence": "low",
+     "positive_years": 5,
+     "n": 8
     },
     "臺南市安平區": {
      "net": [
+      136,
       68,
       -10,
       115,
@@ -6421,6 +6469,7 @@
       196
      ],
      "rate": [
+      0.0084,
       0.0042,
       -0.0006,
       0.0073,
@@ -6431,6 +6480,7 @@
       0.0125
      ],
      "naive": [
+      -19,
       -97,
       -235,
       -176,
@@ -6441,27 +6491,28 @@
       -59
      ],
      "signal": "持續移入",
-     "slope_pp": 0.235,
-     "slope_se_pp": 0.084,
-     "t": 2.79,
-     "significant": true,
-     "r2": 0.61,
-     "mean": 0.0105,
-     "sd": 0.0079,
-     "mean_ci": 0.0073,
-     "level_t": 3.49,
+     "slope_pp": 0.179,
+     "slope_se_pp": 0.074,
+     "t": 2.43,
+     "significant": false,
+     "r2": 0.49,
+     "mean": 0.0102,
+     "sd": 0.0074,
+     "mean_ci": 0.0062,
+     "level_t": 3.91,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.021,
-     "margin": 0.0179,
+     "forecast": 0.0192,
+     "margin": 0.0173,
      "confidence": "medium",
-     "positive_years": 7,
-     "n": 7
+     "positive_years": 8,
+     "n": 8
     },
     "臺南市官田區": {
      "net": [
+      -45,
       -18,
       59,
       -30,
@@ -6472,6 +6523,7 @@
       -25
      ],
      "rate": [
+      -0.0084,
       -0.0035,
       0.0117,
       -0.006,
@@ -6482,6 +6534,7 @@
       -0.0057
      ],
      "naive": [
+      -99,
       -137,
       -48,
       -166,
@@ -6492,27 +6545,28 @@
       -168
      ],
      "signal": "持平",
-     "slope_pp": -0.069,
-     "slope_se_pp": 0.105,
-     "t": -0.66,
+     "slope_pp": -0.001,
+     "slope_se_pp": 0.091,
+     "t": -0.02,
      "significant": false,
-     "r2": 0.08,
-     "mean": -0.0013,
+     "r2": 0.0,
+     "mean": -0.0022,
      "sd": 0.0065,
-     "mean_ci": 0.006,
-     "level_t": -0.55,
+     "mean_ci": 0.0054,
+     "level_t": -0.97,
      "level_significant": false,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0044,
-     "margin": 0.0223,
+     "forecast": -0.0023,
+     "margin": 0.0214,
      "confidence": "medium",
      "positive_years": 3,
-     "n": 7
+     "n": 8
     },
     "臺南市將軍區": {
      "net": [
+      -56,
       -13,
       -60,
       -33,
@@ -6523,6 +6577,7 @@
       -36
      ],
      "rate": [
+      -0.0133,
       -0.0032,
       -0.0154,
       -0.0087,
@@ -6533,6 +6588,7 @@
       -0.0117
      ],
      "naive": [
+      -164,
       -130,
       -170,
       -100,
@@ -6543,27 +6599,28 @@
       -156
      ],
      "signal": "持續流出",
-     "slope_pp": -0.077,
-     "slope_se_pp": 0.067,
-     "t": -1.15,
+     "slope_pp": -0.033,
+     "slope_se_pp": 0.058,
+     "t": -0.58,
      "significant": false,
-     "r2": 0.21,
-     "mean": -0.0102,
-     "sd": 0.0044,
-     "mean_ci": 0.0041,
-     "level_t": -6.13,
+     "r2": 0.05,
+     "mean": -0.0106,
+     "sd": 0.0042,
+     "mean_ci": 0.0035,
+     "level_t": -7.09,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0137,
-     "margin": 0.0141,
+     "forecast": -0.0123,
+     "margin": 0.0136,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市山上區": {
      "net": [
+      7,
       -14,
       -6,
       -29,
@@ -6574,6 +6631,7 @@
       -15
      ],
      "rate": [
+      0.004,
       -0.0081,
       -0.0036,
       -0.0176,
@@ -6585,6 +6643,7 @@
      ],
      "naive": [
       -19,
+      -19,
       -44,
       -57,
       -13,
@@ -6593,28 +6652,29 @@
       -74,
       -58
      ],
-     "signal": "持續流出",
-     "slope_pp": -0.024,
-     "slope_se_pp": 0.183,
-     "t": -0.13,
+     "signal": "方向不明",
+     "slope_pp": -0.081,
+     "slope_se_pp": 0.145,
+     "t": -0.56,
      "significant": false,
-     "r2": 0.0,
-     "mean": -0.0057,
-     "sd": 0.0108,
-     "mean_ci": 0.01,
-     "level_t": -1.39,
+     "r2": 0.05,
+     "mean": -0.0045,
+     "sd": 0.0106,
+     "mean_ci": 0.0088,
+     "level_t": -1.2,
      "level_significant": false,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0068,
-     "margin": 0.0388,
+     "forecast": -0.0086,
+     "margin": 0.034,
      "confidence": "low",
-     "positive_years": 2,
-     "n": 7
+     "positive_years": 3,
+     "n": 8
     },
     "臺南市左鎮區": {
      "net": [
+      -23,
       -19,
       -9,
       -5,
@@ -6625,6 +6685,7 @@
       7
      ],
      "rate": [
+      -0.0275,
       -0.0238,
       -0.012,
       -0.0069,
@@ -6635,6 +6696,7 @@
       0.0111
      ],
      "naive": [
+      -30,
       -34,
       -36,
       -22,
@@ -6644,28 +6706,29 @@
       -29,
       -2
      ],
-     "signal": "方向不明",
-     "slope_pp": 0.271,
-     "slope_se_pp": 0.131,
-     "t": 2.07,
-     "significant": false,
-     "r2": 0.46,
-     "mean": -0.0094,
-     "sd": 0.0105,
+     "signal": "轉為移入",
+     "slope_pp": 0.311,
+     "slope_se_pp": 0.103,
+     "t": 3.01,
+     "significant": true,
+     "r2": 0.6,
+     "mean": -0.0117,
+     "sd": 0.0116,
      "mean_ci": 0.0097,
-     "level_t": -2.37,
-     "level_significant": false,
+     "level_t": -2.83,
+     "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0028,
-     "margin": 0.0277,
-     "confidence": "low",
+     "forecast": 0.0041,
+     "margin": 0.0242,
+     "confidence": "medium",
      "positive_years": 1,
-     "n": 7
+     "n": 8
     },
     "臺南市後壁區": {
      "net": [
+      -75,
       -61,
       -63,
       -15,
@@ -6676,6 +6739,7 @@
       -71
      ],
      "rate": [
+      -0.0147,
       -0.0122,
       -0.0131,
       -0.0032,
@@ -6686,6 +6750,7 @@
       -0.0175
      ],
      "naive": [
+      -128,
       -118,
       -162,
       -80,
@@ -6696,27 +6761,28 @@
       -118
      ],
      "signal": "持續流出",
-     "slope_pp": -0.105,
-     "slope_se_pp": 0.082,
-     "t": -1.29,
+     "slope_pp": -0.063,
+     "slope_se_pp": 0.068,
+     "t": -0.92,
      "significant": false,
-     "r2": 0.25,
-     "mean": -0.013,
-     "sd": 0.0056,
-     "mean_ci": 0.0051,
-     "level_t": -6.21,
+     "r2": 0.12,
+     "mean": -0.0132,
+     "sd": 0.0052,
+     "mean_ci": 0.0043,
+     "level_t": -7.24,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0178,
-     "margin": 0.0173,
+     "forecast": -0.0164,
+     "margin": 0.016,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市新化區": {
      "net": [
+      -58,
       -27,
       -3,
       -8,
@@ -6727,6 +6793,7 @@
       -64
      ],
      "rate": [
+      -0.0053,
       -0.0025,
       -0.0003,
       -0.0008,
@@ -6737,6 +6804,7 @@
       -0.0072
      ],
      "naive": [
+      -217,
       -199,
       -238,
       -218,
@@ -6747,27 +6815,28 @@
       -302
      ],
      "signal": "持續流出",
-     "slope_pp": -0.133,
-     "slope_se_pp": 0.091,
-     "t": -1.45,
+     "slope_pp": -0.086,
+     "slope_se_pp": 0.076,
+     "t": -1.14,
      "significant": false,
-     "r2": 0.3,
-     "mean": -0.0043,
-     "sd": 0.0064,
-     "mean_ci": 0.0059,
-     "level_t": -1.76,
+     "r2": 0.18,
+     "mean": -0.0044,
+     "sd": 0.0059,
+     "mean_ci": 0.005,
+     "level_t": -2.09,
      "level_significant": false,
-     "edge": false,
+     "edge": true,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0102,
-     "margin": 0.0194,
+     "forecast": -0.0087,
+     "margin": 0.0178,
      "confidence": "low",
      "positive_years": 2,
-     "n": 7
+     "n": 8
     },
     "臺南市新市區": {
      "net": [
+      112,
       162,
       116,
       132,
@@ -6778,6 +6847,7 @@
       51
      ],
      "rate": [
+      0.0118,
       0.0175,
       0.0126,
       0.0146,
@@ -6788,6 +6858,7 @@
       0.0062
      ],
      "naive": [
+      -122,
       -130,
       -110,
       -185,
@@ -6798,27 +6869,28 @@
       -263
      ],
      "signal": "持續移入",
-     "slope_pp": 0.07,
-     "slope_se_pp": 0.183,
-     "t": 0.38,
+     "slope_pp": 0.076,
+     "slope_se_pp": 0.14,
+     "t": 0.54,
      "significant": false,
-     "r2": 0.03,
-     "mean": 0.0159,
-     "sd": 0.0109,
-     "mean_ci": 0.0101,
-     "level_t": 3.84,
+     "r2": 0.05,
+     "mean": 0.0154,
+     "sd": 0.0102,
+     "mean_ci": 0.0085,
+     "level_t": 4.25,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.019,
-     "margin": 0.0387,
+     "forecast": 0.0192,
+     "margin": 0.0329,
      "confidence": "medium",
-     "positive_years": 7,
-     "n": 7
+     "positive_years": 8,
+     "n": 8
     },
     "臺南市新營區": {
      "net": [
+      -275,
       -352,
       -276,
       -234,
@@ -6829,6 +6901,7 @@
       -215
      ],
      "rate": [
+      -0.014,
       -0.0184,
       -0.0149,
       -0.013,
@@ -6839,6 +6912,7 @@
       -0.0137
      ],
      "naive": [
+      -482,
       -561,
       -568,
       -504,
@@ -6849,27 +6923,28 @@
       -504
      ],
      "signal": "持續流出",
-     "slope_pp": 0.114,
-     "slope_se_pp": 0.053,
-     "t": 2.17,
+     "slope_pp": 0.092,
+     "slope_se_pp": 0.043,
+     "t": 2.15,
      "significant": false,
-     "r2": 0.49,
-     "mean": -0.0123,
-     "sd": 0.0043,
-     "mean_ci": 0.004,
-     "level_t": -7.52,
+     "r2": 0.43,
+     "mean": -0.0125,
+     "sd": 0.004,
+     "mean_ci": 0.0034,
+     "level_t": -8.73,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0071,
-     "margin": 0.0111,
+     "forecast": -0.0078,
+     "margin": 0.01,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市東區": {
      "net": [
+      -547,
       -435,
       -528,
       -827,
@@ -6880,6 +6955,7 @@
       -369
      ],
      "rate": [
+      -0.0122,
       -0.0099,
       -0.0124,
       -0.0199,
@@ -6890,6 +6966,7 @@
       -0.0102
      ],
      "naive": [
+      -998,
       -798,
       -1151,
       -1490,
@@ -6900,27 +6977,28 @@
       -791
      ],
      "signal": "持續流出",
-     "slope_pp": 0.005,
-     "slope_se_pp": 0.07,
-     "t": 0.08,
+     "slope_pp": -0.005,
+     "slope_se_pp": 0.054,
+     "t": -0.08,
      "significant": false,
      "r2": 0.0,
-     "mean": -0.0135,
-     "sd": 0.0041,
-     "mean_ci": 0.0038,
-     "level_t": -8.59,
+     "mean": -0.0133,
+     "sd": 0.0039,
+     "mean_ci": 0.0032,
+     "level_t": -9.74,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0132,
-     "margin": 0.0149,
+     "forecast": -0.0135,
+     "margin": 0.0127,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 7
+     "n": 8
     },
     "臺南市東山區": {
      "net": [
+      -34,
       -49,
       -71,
       -88,
@@ -6931,6 +7009,7 @@
       -53
      ],
      "rate": [
+      -0.0076,
       -0.0113,
       -0.0167,
       -0.0213,
@@ -6941,6 +7020,7 @@
       -0.0151
      ],
      "naive": [
+      -113,
       -120,
       -115,
       -135,
@@ -6951,27 +7031,28 @@
       -140
      ],
      "signal": "持續流出",
-     "slope_pp": -0.021,
-     "slope_se_pp": 0.063,
-     "t": -0.34,
+     "slope_pp": -0.068,
+     "slope_se_pp": 0.056,
+     "t": -1.21,
      "significant": false,
-     "r2": 0.02,
-     "mean": -0.0156,
-     "sd": 0.0038,
-     "mean_ci": 0.0035,
-     "level_t": -11.01,
+     "r2": 0.2,
+     "mean": -0.0146,
+     "sd": 0.0045,
+     "mean_ci": 0.0038,
+     "level_t": -9.22,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0166,
-     "margin": 0.0134,
+     "forecast": -0.0181,
+     "margin": 0.0133,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市柳營區": {
      "net": [
+      -38,
       9,
       -61,
       -46,
@@ -6982,6 +7063,7 @@
       -28
      ],
      "rate": [
+      -0.0072,
       0.0018,
       -0.0121,
       -0.0094,
@@ -6992,6 +7074,7 @@
       -0.0068
      ],
      "naive": [
+      -88,
       -92,
       -161,
       -149,
@@ -7002,27 +7085,28 @@
       -141
      ],
      "signal": "持續流出",
-     "slope_pp": -0.079,
-     "slope_se_pp": 0.087,
-     "t": -0.9,
+     "slope_pp": -0.056,
+     "slope_se_pp": 0.068,
+     "t": -0.83,
      "significant": false,
-     "r2": 0.14,
+     "r2": 0.1,
      "mean": -0.0074,
-     "sd": 0.0055,
-     "mean_ci": 0.0051,
-     "level_t": -3.53,
+     "sd": 0.0051,
+     "mean_ci": 0.0043,
+     "level_t": -4.06,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0109,
-     "margin": 0.0185,
+     "forecast": -0.0102,
+     "margin": 0.016,
      "confidence": "medium",
      "positive_years": 2,
-     "n": 7
+     "n": 8
     },
     "臺南市楠西區": {
      "net": [
+      -34,
       -75,
       -7,
       -32,
@@ -7033,6 +7117,7 @@
       -24
      ],
      "rate": [
+      -0.0162,
       -0.0367,
       -0.0036,
       -0.0175,
@@ -7043,6 +7128,7 @@
       -0.016
      ],
      "naive": [
+      -48,
       -97,
       -53,
       -112,
@@ -7053,27 +7139,28 @@
       -58
      ],
      "signal": "持續流出",
-     "slope_pp": 0.018,
-     "slope_se_pp": 0.189,
-     "t": 0.09,
+     "slope_pp": -0.006,
+     "slope_se_pp": 0.145,
+     "t": -0.04,
      "significant": false,
      "r2": 0.0,
-     "mean": -0.0189,
-     "sd": 0.0111,
-     "mean_ci": 0.0103,
-     "level_t": -4.5,
+     "mean": -0.0186,
+     "sd": 0.0103,
+     "mean_ci": 0.0086,
+     "level_t": -5.09,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0181,
-     "margin": 0.0399,
+     "forecast": -0.0189,
+     "margin": 0.0341,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市歸仁區": {
      "net": [
+      -75,
       -151,
       -6,
       -90,
@@ -7084,6 +7171,7 @@
       256
      ],
      "rate": [
+      -0.0041,
       -0.0086,
       -0.0004,
       -0.0054,
@@ -7094,6 +7182,7 @@
       0.017
      ],
      "naive": [
+      -541,
       -583,
       -423,
       -556,
@@ -7104,27 +7193,28 @@
       -201
      ],
      "signal": "轉為移入",
-     "slope_pp": 0.402,
-     "slope_se_pp": 0.073,
-     "t": 5.5,
+     "slope_pp": 0.344,
+     "slope_se_pp": 0.067,
+     "t": 5.17,
      "significant": true,
-     "r2": 0.86,
-     "mean": 0.0053,
-     "sd": 0.0114,
-     "mean_ci": 0.0106,
-     "level_t": 1.23,
+     "r2": 0.82,
+     "mean": 0.0041,
+     "sd": 0.0111,
+     "mean_ci": 0.0093,
+     "level_t": 1.05,
      "level_significant": false,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0234,
-     "margin": 0.0155,
+     "forecast": 0.0215,
+     "margin": 0.0156,
      "confidence": "medium",
      "positive_years": 4,
-     "n": 7
+     "n": 8
     },
     "臺南市永康區": {
      "net": [
+      435,
       171,
       130,
       -18,
@@ -7135,6 +7225,7 @@
       116
      ],
      "rate": [
+      0.0071,
       0.0028,
       0.0022,
       -0.0003,
@@ -7145,6 +7236,7 @@
       0.0023
      ],
      "naive": [
+      -1276,
       -1366,
       -1616,
       -1886,
@@ -7155,27 +7247,28 @@
       -1160
      ],
      "signal": "持續移入",
-     "slope_pp": 0.048,
-     "slope_se_pp": 0.041,
-     "t": 1.17,
+     "slope_pp": 0.008,
+     "slope_se_pp": 0.04,
+     "t": 0.19,
      "significant": false,
-     "r2": 0.21,
-     "mean": 0.0032,
-     "sd": 0.0027,
-     "mean_ci": 0.0025,
-     "level_t": 3.07,
+     "r2": 0.01,
+     "mean": 0.0037,
+     "sd": 0.0029,
+     "mean_ci": 0.0024,
+     "level_t": 3.58,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0053,
-     "margin": 0.0087,
+     "forecast": 0.004,
+     "margin": 0.0095,
      "confidence": "medium",
-     "positive_years": 6,
-     "n": 7
+     "positive_years": 7,
+     "n": 8
     },
     "臺南市玉井區": {
      "net": [
+      -24,
       -48,
       -59,
       -35,
@@ -7186,6 +7279,7 @@
       -30
      ],
      "rate": [
+      -0.0077,
       -0.0159,
       -0.0202,
       -0.0125,
@@ -7196,6 +7290,7 @@
       -0.0126
      ],
      "naive": [
+      -42,
       -115,
       -107,
       -88,
@@ -7206,27 +7301,28 @@
       -98
      ],
      "signal": "持續流出",
-     "slope_pp": 0.089,
-     "slope_se_pp": 0.066,
-     "t": 1.35,
+     "slope_pp": 0.017,
+     "slope_se_pp": 0.067,
+     "t": 0.26,
      "significant": false,
-     "r2": 0.27,
-     "mean": -0.0144,
-     "sd": 0.0045,
-     "mean_ci": 0.0042,
-     "level_t": -8.46,
+     "r2": 0.01,
+     "mean": -0.0136,
+     "sd": 0.0048,
+     "mean_ci": 0.004,
+     "level_t": -7.99,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0104,
-     "margin": 0.0139,
+     "forecast": -0.0127,
+     "margin": 0.0158,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市白河區": {
      "net": [
+      -137,
       -113,
       -75,
       -98,
@@ -7237,6 +7333,7 @@
       -34
      ],
      "rate": [
+      -0.0222,
       -0.019,
       -0.013,
       -0.0175,
@@ -7247,6 +7344,7 @@
       -0.0071
      ],
      "naive": [
+      -197,
       -194,
       -146,
       -181,
@@ -7257,27 +7355,28 @@
       -120
      ],
      "signal": "持續流出",
-     "slope_pp": 0.134,
-     "slope_se_pp": 0.039,
-     "t": 3.43,
+     "slope_pp": 0.154,
+     "slope_se_pp": 0.032,
+     "t": 4.76,
      "significant": true,
-     "r2": 0.7,
-     "mean": -0.0133,
-     "sd": 0.0042,
-     "mean_ci": 0.0039,
-     "level_t": -8.31,
+     "r2": 0.79,
+     "mean": -0.0144,
+     "sd": 0.005,
+     "mean_ci": 0.0042,
+     "level_t": -8.09,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0072,
-     "margin": 0.0083,
+     "forecast": -0.0066,
+     "margin": 0.0076,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 7
+     "n": 8
     },
     "臺南市西港區": {
      "net": [
+      -23,
       -72,
       -72,
       15,
@@ -7288,6 +7387,7 @@
       10
      ],
      "rate": [
+      -0.0036,
       -0.0114,
       -0.0117,
       0.0026,
@@ -7298,6 +7398,7 @@
       0.0019
      ],
      "naive": [
+      -151,
       -185,
       -177,
       -208,
@@ -7308,27 +7409,28 @@
       -174
      ],
      "signal": "持平",
-     "slope_pp": 0.172,
-     "slope_se_pp": 0.147,
-     "t": 1.17,
+     "slope_pp": 0.141,
+     "slope_se_pp": 0.114,
+     "t": 1.24,
      "significant": false,
-     "r2": 0.22,
-     "mean": -0.0005,
-     "sd": 0.0097,
-     "mean_ci": 0.009,
-     "level_t": -0.13,
+     "r2": 0.2,
+     "mean": -0.0009,
+     "sd": 0.0091,
+     "mean_ci": 0.0076,
+     "level_t": -0.27,
      "level_significant": false,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0073,
-     "margin": 0.031,
+     "forecast": 0.0063,
+     "margin": 0.0267,
      "confidence": "medium",
      "positive_years": 5,
-     "n": 7
+     "n": 8
     },
     "臺南市關廟區": {
      "net": [
+      23,
       -35,
       -56,
       10,
@@ -7339,6 +7441,7 @@
       -15
      ],
      "rate": [
+      0.0028,
       -0.0043,
       -0.007,
       0.0013,
@@ -7349,6 +7452,7 @@
       -0.0022
      ],
      "naive": [
+      -199,
       -170,
       -208,
       -162,
@@ -7359,27 +7463,28 @@
       -239
      ],
      "signal": "持平",
-     "slope_pp": 0.153,
-     "slope_se_pp": 0.102,
-     "t": 1.5,
+     "slope_pp": 0.089,
+     "slope_se_pp": 0.088,
+     "t": 1.02,
      "significant": false,
-     "r2": 0.31,
-     "mean": 0.0001,
-     "sd": 0.0072,
-     "mean_ci": 0.0067,
-     "level_t": 0.02,
+     "r2": 0.15,
+     "mean": 0.0004,
+     "sd": 0.0068,
+     "mean_ci": 0.0057,
+     "level_t": 0.16,
      "level_significant": false,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.007,
-     "margin": 0.0216,
+     "forecast": 0.0049,
+     "margin": 0.0206,
      "confidence": "medium",
-     "positive_years": 3,
-     "n": 7
+     "positive_years": 4,
+     "n": 8
     },
     "臺南市鹽水區": {
      "net": [
+      -21,
       -62,
       -56,
       15,
@@ -7390,6 +7495,7 @@
       -94
      ],
      "rate": [
+      -0.0035,
       -0.0105,
       -0.0098,
       0.0027,
@@ -7400,6 +7506,7 @@
       -0.0195
      ],
      "naive": [
+      -143,
       -170,
       -148,
       -62,
@@ -7410,27 +7517,28 @@
       -244
      ],
      "signal": "持續流出",
-     "slope_pp": -0.085,
-     "slope_se_pp": 0.109,
-     "t": -0.78,
+     "slope_pp": -0.091,
+     "slope_se_pp": 0.083,
+     "t": -1.08,
      "significant": false,
-     "r2": 0.11,
-     "mean": -0.0082,
-     "sd": 0.0068,
-     "mean_ci": 0.0063,
-     "level_t": -3.17,
+     "r2": 0.16,
+     "mean": -0.0076,
+     "sd": 0.0065,
+     "mean_ci": 0.0054,
+     "level_t": -3.29,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.012,
-     "margin": 0.0231,
+     "forecast": -0.0122,
+     "margin": 0.0196,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 7
+     "n": 8
     },
     "臺南市麻豆區": {
      "net": [
+      -110,
       -118,
       -49,
       -33,
@@ -7441,6 +7549,7 @@
       -34
      ],
      "rate": [
+      -0.0105,
       -0.0116,
       -0.005,
       -0.0035,
@@ -7451,6 +7560,7 @@
       -0.004
      ],
      "naive": [
+      -290,
       -286,
       -307,
       -286,
@@ -7461,27 +7571,28 @@
       -289
      ],
      "signal": "持平",
-     "slope_pp": 0.211,
-     "slope_se_pp": 0.105,
-     "t": 2.0,
-     "significant": false,
-     "r2": 0.44,
-     "mean": -0.0012,
-     "sd": 0.0083,
-     "mean_ci": 0.0077,
-     "level_t": -0.38,
+     "slope_pp": 0.21,
+     "slope_se_pp": 0.081,
+     "t": 2.6,
+     "significant": true,
+     "r2": 0.53,
+     "mean": -0.0023,
+     "sd": 0.0084,
+     "mean_ci": 0.007,
+     "level_t": -0.79,
      "level_significant": false,
-     "edge": false,
+     "edge": true,
      "level_t_crit": null,
      "forecast_year": 2027,
      "forecast": 0.0083,
-     "margin": 0.0223,
-     "confidence": "medium",
+     "margin": 0.0189,
+     "confidence": "low",
      "positive_years": 3,
-     "n": 7
+     "n": 8
     },
     "臺南市龍崎區": {
      "net": [
+      4,
       0,
       -28,
       -15,
@@ -7492,6 +7603,7 @@
       -22
      ],
      "rate": [
+      0.0055,
       0.0,
       -0.0418,
       -0.0244,
@@ -7502,6 +7614,7 @@
       -0.0498
      ],
      "naive": [
+      -20,
       -37,
       -54,
       -43,
@@ -7512,24 +7625,24 @@
       -41
      ],
      "signal": "持續流出",
-     "slope_pp": -0.376,
-     "slope_se_pp": 0.247,
-     "t": -1.52,
+     "slope_pp": -0.497,
+     "slope_se_pp": 0.203,
+     "t": -2.44,
      "significant": false,
-     "r2": 0.32,
-     "mean": -0.0296,
-     "sd": 0.0176,
-     "mean_ci": 0.0163,
-     "level_t": -4.46,
+     "r2": 0.5,
+     "mean": -0.0252,
+     "sd": 0.0205,
+     "mean_ci": 0.0171,
+     "level_t": -3.49,
      "level_significant": true,
      "edge": false,
      "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0466,
-     "margin": 0.0523,
+     "forecast": -0.0504,
+     "margin": 0.0478,
      "confidence": "medium",
-     "positive_years": 0,
-     "n": 7
+     "positive_years": 1,
+     "n": 8
     }
    },
    "method": "世代追蹤淨遷入率 → 2022／2023 事件年合併成一點（n = 7）→ 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；|t| 在臨界值 ±20% 內標「邊緣」、信心低；預測為線性外推＋95% 預測區間（t 分布，forecast.py）",
@@ -8185,7 +8298,9 @@
     "ln_income": "所得中位數",
     "ln_rent": "每坪月租",
     "ln_youth": "青年人口規模",
-    "ln_rent_burden": "租金負擔（租金÷所得）"
+    "ln_rent_burden": "租金負擔（租金÷所得）",
+    "rail": "有軌道站",
+    "rail_recent": "2010 年後才有站"
    },
    "similarity": [
     "rel_rent",
@@ -8531,6 +8646,142 @@
       "ln_rent_burden",
       "ln_youth"
      ]
+    },
+    "rail": {
+     "coef": {
+      "截距": {
+       "b": -25.1003,
+       "se": 6.2071,
+       "t": -4.04,
+       "significant": true,
+       "se_hc3": 7.3026,
+       "t_hc3": -3.44,
+       "significant_hc3": true
+      },
+      "ln_jobs_density": {
+       "b": 0.3897,
+       "se": 0.1769,
+       "t": 2.2,
+       "significant": true,
+       "se_hc3": 0.1766,
+       "t_hc3": 2.21,
+       "significant_hc3": true,
+       "beta_std": 0.19,
+       "label": "工作機會密度",
+       "per_10pct": 0.037
+      },
+      "ln_income": {
+       "b": 3.8789,
+       "se": 1.0831,
+       "t": 3.58,
+       "significant": true,
+       "se_hc3": 1.2901,
+       "t_hc3": 3.01,
+       "significant_hc3": true,
+       "beta_std": 0.421,
+       "label": "所得中位數",
+       "per_10pct": 0.37
+      },
+      "ln_youth": {
+       "b": 0.1273,
+       "se": 0.1197,
+       "t": 1.06,
+       "significant": false,
+       "se_hc3": 0.1353,
+       "t_hc3": 0.94,
+       "significant_hc3": false,
+       "beta_std": 0.109,
+       "label": "青年人口規模",
+       "per_10pct": 0.012
+      },
+      "rail": {
+       "b": 0.049,
+       "se": 0.2493,
+       "t": 0.2,
+       "significant": false,
+       "se_hc3": 0.2926,
+       "t_hc3": 0.17,
+       "significant_hc3": false,
+       "beta_std": 0.016,
+       "label": "有軌道站",
+       "per_10pct": 0.049
+      },
+      "rail_recent": {
+       "b": 0.3477,
+       "se": 0.3894,
+       "t": 0.89,
+       "significant": false,
+       "se_hc3": 0.4052,
+       "t_hc3": 0.86,
+       "significant_hc3": false,
+       "beta_std": 0.063,
+       "label": "2010 年後才有站",
+       "per_10pct": 0.348
+      },
+      "fe_臺北市": {
+       "b": -2.3777,
+       "se": 0.5169,
+       "t": -4.6,
+       "significant": true,
+       "se_hc3": 0.5604,
+       "t_hc3": -4.24,
+       "significant_hc3": true
+      },
+      "fe_桃園市": {
+       "b": 0.7708,
+       "se": 0.4189,
+       "t": 1.84,
+       "significant": false,
+       "se_hc3": 0.478,
+       "t_hc3": 1.61,
+       "significant_hc3": false
+      },
+      "fe_臺中市": {
+       "b": 0.3398,
+       "se": 0.326,
+       "t": 1.04,
+       "significant": false,
+       "se_hc3": 0.3553,
+       "t_hc3": 0.96,
+       "significant_hc3": false
+      },
+      "fe_臺南市": {
+       "b": 0.0363,
+       "se": 0.3232,
+       "t": 0.11,
+       "significant": false,
+       "se_hc3": 0.3388,
+       "t_hc3": 0.11,
+       "significant_hc3": false
+      },
+      "fe_高雄市": {
+       "b": 0.0931,
+       "se": 0.3094,
+       "t": 0.3,
+       "significant": false,
+       "se_hc3": 0.3295,
+       "t_hc3": 0.28,
+       "significant_hc3": false
+      }
+     },
+     "r2": 0.412,
+     "n": 158,
+     "df": 147,
+     "t_critical": 1.96,
+     "corr": {
+      "ln_jobs_density": 0.41,
+      "ln_income": 0.4,
+      "ln_youth": 0.47,
+      "rail": 0.29,
+      "rail_recent": 0.28
+     },
+     "features": [
+      "ln_jobs_density",
+      "ln_income",
+      "ln_youth",
+      "rail",
+      "rail_recent"
+     ]
     }
    },
    "excluded_full": [
@@ -8591,6 +8842,7 @@
      "short": "三峽區",
      "y": -0.47,
      "rate_series": [
+      0.0054,
       0.0017,
       0.0037,
       -0.0079,
@@ -8615,7 +8867,10 @@
       "ln_jobs_density": -0.331,
       "ln_income": 0.08,
       "ln_youth": 0.644
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市三芝區",
@@ -8623,6 +8878,7 @@
      "short": "三芝區",
      "y": -0.907,
      "rate_series": [
+      -0.0189,
       -0.0217,
       -0.0181,
       -0.0132,
@@ -8647,7 +8903,10 @@
       "ln_jobs_density": -0.632,
       "ln_income": -1.61,
       "ln_youth": -0.683
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市三重區",
@@ -8655,6 +8914,7 @@
      "short": "三重區",
      "y": 0.607,
      "rate_series": [
+      -0.0075,
       -0.005,
       -0.0002,
       -0.0058,
@@ -8679,7 +8939,10 @@
       "ln_jobs_density": 0.124,
       "ln_income": 0.105,
       "ln_youth": 1.501
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2012,
+     "rail_recent": 1.0
     },
     {
      "area": "新北市中和區",
@@ -8687,6 +8950,7 @@
      "short": "中和區",
      "y": 0.16,
      "rate_series": [
+      -0.0069,
       -0.0021,
       0.0034,
       -0.0028,
@@ -8711,7 +8975,10 @@
       "ln_jobs_density": 0.483,
       "ln_income": 0.675,
       "ln_youth": 1.503
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1998,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市五股區",
@@ -8719,6 +8986,7 @@
      "short": "五股區",
      "y": 1.587,
      "rate_series": [
+      0.0124,
       0.0196,
       0.0248,
       0.018,
@@ -8743,7 +9011,10 @@
       "ln_jobs_density": 0.965,
       "ln_income": -0.307,
       "ln_youth": 0.547
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市八里區",
@@ -8751,6 +9022,7 @@
      "short": "八里區",
      "y": 1.747,
      "rate_series": [
+      0.004,
       0.0091,
       0.0044,
       0.0069,
@@ -8775,7 +9047,10 @@
       "ln_jobs_density": 0.11,
       "ln_income": -0.538,
       "ln_youth": -0.085
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市土城區",
@@ -8783,6 +9058,7 @@
      "short": "土城區",
      "y": 0.42,
      "rate_series": [
+      -0.0109,
       -0.0048,
       0.0001,
       -0.0062,
@@ -8807,7 +9083,10 @@
       "ln_jobs_density": 0.225,
       "ln_income": 0.08,
       "ln_youth": 1.197
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2006,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市坪林區",
@@ -8815,6 +9094,7 @@
      "short": "坪林區",
      "y": -2.677,
      "rate_series": [
+      0.0099,
       0.0075,
       0.0022,
       -0.006,
@@ -8832,7 +9112,10 @@
      "rel_rent": null,
      "fitted": -1.6,
      "resid": -1.077,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市平溪區",
@@ -8840,6 +9123,7 @@
      "short": "平溪區",
      "y": 0.11,
      "rate_series": [
+      0.0258,
       -0.0235,
       -0.0182,
       -0.024,
@@ -8857,7 +9141,10 @@
      "rel_rent": null,
      "fitted": -1.883,
      "resid": 1.993,
-     "z": null
+     "z": null,
+     "rail": 1.0,
+     "rail_since": 1921,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市新店區",
@@ -8865,6 +9152,7 @@
      "short": "新店區",
      "y": 0.643,
      "rate_series": [
+      0.0007,
       0.0035,
       0.0047,
       -0.0005,
@@ -8889,7 +9177,10 @@
       "ln_jobs_density": 0.225,
       "ln_income": 0.985,
       "ln_youth": 1.299
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1999,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市新莊區",
@@ -8897,6 +9188,7 @@
      "short": "新莊區",
      "y": -0.31,
      "rate_series": [
+      -0.004,
       0.0003,
       0.0017,
       -0.0023,
@@ -8921,7 +9213,10 @@
       "ln_jobs_density": 0.165,
       "ln_income": 0.361,
       "ln_youth": 1.603
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2012,
+     "rail_recent": 1.0
     },
     {
      "area": "新北市板橋區",
@@ -8929,6 +9224,7 @@
      "short": "板橋區",
      "y": -0.037,
      "rate_series": [
+      -0.0054,
       0.001,
       -0.0013,
       -0.0048,
@@ -8953,7 +9249,10 @@
       "ln_jobs_density": -0.04,
       "ln_income": 0.887,
       "ln_youth": 1.738
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1901,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市林口區",
@@ -8961,6 +9260,7 @@
      "short": "林口區",
      "y": 2.11,
      "rate_series": [
+      0.0241,
       0.0493,
       0.0477,
       0.0353,
@@ -8985,7 +9285,10 @@
       "ln_jobs_density": 0.11,
       "ln_income": 2.273,
       "ln_youth": 0.695
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2017,
+     "rail_recent": 1.0
     },
     {
      "area": "新北市樹林區",
@@ -8993,6 +9296,7 @@
      "short": "樹林區",
      "y": -1.247,
      "rate_series": [
+      -0.0092,
       -0.0045,
       -0.0036,
       -0.0097,
@@ -9017,7 +9321,10 @@
       "ln_jobs_density": 0.66,
       "ln_income": -0.149,
       "ln_youth": 0.96
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1901,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市永和區",
@@ -9025,6 +9332,7 @@
      "short": "永和區",
      "y": -1.167,
      "rate_series": [
+      -0.0161,
       -0.0071,
       -0.008,
       -0.0125,
@@ -9049,7 +9357,10 @@
       "ln_jobs_density": -0.35,
       "ln_income": 1.321,
       "ln_youth": 0.945
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1998,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市汐止區",
@@ -9057,6 +9368,7 @@
      "short": "汐止區",
      "y": 1.177,
      "rate_series": [
+      0.0042,
       0.0135,
       0.0166,
       0.0083,
@@ -9081,7 +9393,10 @@
       "ln_jobs_density": 0.867,
       "ln_income": 0.641,
       "ln_youth": 1.078
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1902,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市泰山區",
@@ -9089,6 +9404,7 @@
      "short": "泰山區",
      "y": 0.797,
      "rate_series": [
+      -0.0118,
       -0.0059,
       -0.0044,
       -0.0089,
@@ -9113,7 +9429,10 @@
       "ln_jobs_density": 0.184,
       "ln_income": 0.421,
       "ln_youth": 0.336
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2017,
+     "rail_recent": 1.0
     },
     {
      "area": "新北市淡水區",
@@ -9121,6 +9440,7 @@
      "short": "淡水區",
      "y": 3.82,
      "rate_series": [
+      0.0191,
       0.0315,
       0.0327,
       0.0229,
@@ -9145,7 +9465,10 @@
       "ln_jobs_density": -0.447,
       "ln_income": 0.584,
       "ln_youth": 1.036
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1997,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市深坑區",
@@ -9153,6 +9476,7 @@
      "short": "深坑區",
      "y": -0.017,
      "rate_series": [
+      -0.0037,
       -0.0002,
       0.0015,
       -0.0038,
@@ -9177,7 +9501,10 @@
       "ln_jobs_density": 0.366,
       "ln_income": -0.228,
       "ln_youth": -0.569
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市烏來區",
@@ -9185,6 +9512,7 @@
      "short": "烏來區",
      "y": -0.44,
      "rate_series": [
+      0.0318,
       0.0127,
       -0.0006,
       -0.0081,
@@ -9202,7 +9530,10 @@
      "rel_rent": null,
      "fitted": -1.081,
      "resid": 0.641,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市瑞芳區",
@@ -9210,6 +9541,7 @@
      "short": "瑞芳區",
      "y": -1.813,
      "rate_series": [
+      -0.0128,
       -0.0123,
       -0.0139,
       -0.0097,
@@ -9234,7 +9566,10 @@
       "ln_jobs_density": -0.227,
       "ln_income": -1.165,
       "ln_youth": -0.342
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1919,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市石碇區",
@@ -9242,6 +9577,7 @@
      "short": "石碇區",
      "y": -1.967,
      "rate_series": [
+      0.0044,
       -0.0019,
       -0.0151,
       -0.0117,
@@ -9259,7 +9595,10 @@
      "rel_rent": null,
      "fitted": -1.747,
      "resid": -0.22,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市石門區",
@@ -9267,6 +9606,7 @@
      "short": "石門區",
      "y": -4.003,
      "rate_series": [
+      -0.0126,
       -0.0188,
       -0.035,
       -0.0243,
@@ -9284,7 +9624,10 @@
      "rel_rent": null,
      "fitted": -1.675,
      "resid": -2.328,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市萬里區",
@@ -9292,6 +9635,7 @@
      "short": "萬里區",
      "y": -1.79,
      "rate_series": [
+      -0.0083,
       -0.01,
       -0.0053,
       -0.0078,
@@ -9316,7 +9660,10 @@
       "ln_jobs_density": -0.763,
       "ln_income": -1.242,
       "ln_youth": -0.805
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市蘆洲區",
@@ -9324,6 +9671,7 @@
      "short": "蘆洲區",
      "y": -1.103,
      "rate_series": [
+      -0.0092,
       -0.0043,
       0.0006,
       -0.0058,
@@ -9348,7 +9696,10 @@
       "ln_jobs_density": -0.622,
       "ln_income": -0.046,
       "ln_youth": 1.071
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2010,
+     "rail_recent": 1.0
     },
     {
      "area": "新北市貢寮區",
@@ -9356,6 +9707,7 @@
      "short": "貢寮區",
      "y": -2.597,
      "rate_series": [
+      -0.0045,
       -0.0214,
       -0.0189,
       -0.0143,
@@ -9373,7 +9725,10 @@
      "rel_rent": null,
      "fitted": -1.518,
      "resid": -1.079,
-     "z": null
+     "z": null,
+     "rail": 1.0,
+     "rail_since": 1924,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市金山區",
@@ -9381,6 +9736,7 @@
      "short": "金山區",
      "y": -1.95,
      "rate_series": [
+      -0.0141,
       -0.0108,
       -0.0191,
       -0.0095,
@@ -9398,7 +9754,10 @@
      "rel_rent": null,
      "fitted": -1.338,
      "resid": -0.612,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市雙溪區",
@@ -9406,6 +9765,7 @@
      "short": "雙溪區",
      "y": -2.703,
      "rate_series": [
+      -0.0133,
       -0.026,
       -0.0383,
       -0.032,
@@ -9423,7 +9783,10 @@
      "rel_rent": null,
      "fitted": -1.614,
      "resid": -1.089,
-     "z": null
+     "z": null,
+     "rail": 1.0,
+     "rail_since": 1924,
+     "rail_recent": 0.0
     },
     {
      "area": "新北市鶯歌區",
@@ -9431,6 +9794,7 @@
      "short": "鶯歌區",
      "y": 0.547,
      "rate_series": [
+      -0.0134,
       0.0053,
       0.0092,
       0.0058,
@@ -9455,7 +9819,10 @@
       "ln_jobs_density": 0.036,
       "ln_income": -0.388,
       "ln_youth": 0.465
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1901,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市中山區",
@@ -9463,6 +9830,7 @@
      "short": "中山區",
      "y": 0.07,
      "rate_series": [
+      0.0071,
       0.0035,
       -0.0012,
       -0.0112,
@@ -9487,7 +9855,10 @@
       "ln_jobs_density": 2.389,
       "ln_income": 2.105,
       "ln_youth": 0.921
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1997,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市中正區",
@@ -9495,6 +9866,7 @@
      "short": "中正區",
      "y": -1.733,
      "rate_series": [
+      -0.0046,
       -0.0075,
       -0.0143,
       -0.0191,
@@ -9519,7 +9891,10 @@
       "ln_jobs_density": 2.056,
       "ln_income": 2.934,
       "ln_youth": 0.561
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1996,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市信義區",
@@ -9527,6 +9902,7 @@
      "short": "信義區",
      "y": -0.47,
      "rate_series": [
+      0.0022,
       -0.002,
       -0.009,
       -0.0178,
@@ -9551,7 +9927,10 @@
       "ln_jobs_density": 1.822,
       "ln_income": 1.764,
       "ln_youth": 0.905
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2013,
+     "rail_recent": 1.0
     },
     {
      "area": "臺北市內湖區",
@@ -9559,6 +9938,7 @@
      "short": "內湖區",
      "y": -1.397,
      "rate_series": [
+      0.0026,
       -0.0001,
       -0.0075,
       -0.0136,
@@ -9583,7 +9963,10 @@
       "ln_jobs_density": 1.548,
       "ln_income": 2.351,
       "ln_youth": 1.165
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2009,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市北投區",
@@ -9591,6 +9974,7 @@
      "short": "北投區",
      "y": -0.95,
      "rate_series": [
+      0.0016,
       -0.0044,
       -0.0087,
       -0.0178,
@@ -9615,7 +9999,10 @@
       "ln_jobs_density": 0.039,
       "ln_income": 1.571,
       "ln_youth": 1.034
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1997,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市南港區",
@@ -9623,6 +10010,7 @@
      "short": "南港區",
      "y": 0.073,
      "rate_series": [
+      0.007,
       -0.0018,
       0.0025,
       -0.0106,
@@ -9647,7 +10035,10 @@
       "ln_jobs_density": 1.406,
       "ln_income": 1.482,
       "ln_youth": 0.511
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1899,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市士林區",
@@ -9655,6 +10046,7 @@
      "short": "士林區",
      "y": -1.26,
      "rate_series": [
+      0.0008,
       -0.0022,
       -0.0104,
       -0.0207,
@@ -9679,7 +10071,10 @@
       "ln_jobs_density": 0.068,
       "ln_income": 1.561,
       "ln_youth": 1.1
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1997,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市大同區",
@@ -9687,6 +10082,7 @@
      "short": "大同區",
      "y": -0.353,
      "rate_series": [
+      0.0054,
       -0.0022,
       -0.0089,
       -0.0033,
@@ -9711,7 +10107,10 @@
       "ln_jobs_density": 1.293,
       "ln_income": 1.218,
       "ln_youth": 0.485
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1997,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市大安區",
@@ -9719,6 +10118,7 @@
      "short": "大安區",
      "y": -1.66,
      "rate_series": [
+      -0.0026,
       -0.0035,
       -0.0122,
       -0.0324,
@@ -9743,7 +10143,10 @@
       "ln_jobs_density": 1.663,
       "ln_income": 3.314,
       "ln_youth": 1.068
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1996,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市文山區",
@@ -9751,6 +10154,7 @@
      "short": "文山區",
      "y": -0.953,
      "rate_series": [
+      0.0048,
       0.0015,
       -0.0102,
       -0.0117,
@@ -9775,7 +10179,10 @@
       "ln_jobs_density": -0.885,
       "ln_income": 1.96,
       "ln_youth": 1.135
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1996,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市松山區",
@@ -9783,6 +10190,7 @@
      "short": "松山區",
      "y": -1.353,
      "rate_series": [
+      0.0023,
       -0.004,
       -0.0129,
       -0.0221,
@@ -9807,7 +10215,10 @@
       "ln_jobs_density": 1.991,
       "ln_income": 2.775,
       "ln_youth": 0.779
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1901,
+     "rail_recent": 0.0
     },
     {
      "area": "臺北市萬華區",
@@ -9815,6 +10226,7 @@
      "short": "萬華區",
      "y": -0.36,
      "rate_series": [
+      0.0054,
       -0.0004,
       -0.008,
       -0.0152,
@@ -9839,7 +10251,10 @@
       "ln_jobs_density": 0.03,
       "ln_income": 0.456,
       "ln_youth": 0.783
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1901,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市中壢區",
@@ -9847,6 +10262,7 @@
      "short": "中壢區",
      "y": 1.23,
      "rate_series": [
+      0.026,
       0.0146,
       0.0152,
       0.0093,
@@ -9871,7 +10287,10 @@
       "ln_jobs_density": 0.409,
       "ln_income": 0.985,
       "ln_youth": 1.668
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1893,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市八德區",
@@ -9879,6 +10298,7 @@
      "short": "八德區",
      "y": 1.36,
      "rate_series": [
+      0.0248,
       0.0192,
       0.0174,
       0.0092,
@@ -9903,7 +10323,10 @@
       "ln_jobs_density": -0.266,
       "ln_income": 0.216,
       "ln_youth": 1.122
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市大園區",
@@ -9911,6 +10334,7 @@
      "short": "大園區",
      "y": 3.33,
      "rate_series": [
+      0.0163,
       0.024,
       0.0127,
       0.0031,
@@ -9935,7 +10359,10 @@
       "ln_jobs_density": 1.332,
       "ln_income": 0.479,
       "ln_youth": 0.538
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2017,
+     "rail_recent": 1.0
     },
     {
      "area": "桃園市大溪區",
@@ -9943,6 +10370,7 @@
      "short": "大溪區",
      "y": -0.88,
      "rate_series": [
+      0.0014,
       0.005,
       0.0046,
       -0.0074,
@@ -9967,7 +10395,10 @@
       "ln_jobs_density": -0.241,
       "ln_income": -0.241,
       "ln_youth": 0.486
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市平鎮區",
@@ -9975,6 +10406,7 @@
      "short": "平鎮區",
      "y": -0.673,
      "rate_series": [
+      0.0066,
       0.0069,
       0.0004,
       -0.0023,
@@ -9999,7 +10431,10 @@
       "ln_jobs_density": -0.003,
       "ln_income": 0.421,
       "ln_youth": 1.168
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市復興區",
@@ -10007,6 +10442,7 @@
      "short": "復興區",
      "y": 0.117,
      "rate_series": [
+      0.0736,
       0.0183,
       0.0139,
       0.0152,
@@ -10024,7 +10460,10 @@
      "rel_rent": null,
      "fitted": -0.986,
      "resid": 1.103,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市新屋區",
@@ -10032,6 +10471,7 @@
      "short": "新屋區",
      "y": 0.677,
      "rate_series": [
+      0.009,
       0.0002,
       -0.0017,
       -0.0027,
@@ -10056,7 +10496,10 @@
       "ln_jobs_density": 0.688,
       "ln_income": -0.361,
       "ln_youth": 0.03
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市桃園區",
@@ -10064,6 +10507,7 @@
      "short": "桃園區",
      "y": 0.603,
      "rate_series": [
+      0.0128,
       0.0118,
       0.0078,
       0.0089,
@@ -10088,7 +10532,10 @@
       "ln_jobs_density": 0.21,
       "ln_income": 1.218,
       "ln_youth": 1.726
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1893,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市楊梅區",
@@ -10096,6 +10543,7 @@
      "short": "楊梅區",
      "y": 0.83,
      "rate_series": [
+      0.0222,
       0.0145,
       0.0125,
       0.0105,
@@ -10120,7 +10568,10 @@
       "ln_jobs_density": 0.235,
       "ln_income": 0.265,
       "ln_youth": 1.042
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1893,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市蘆竹區",
@@ -10128,6 +10579,7 @@
      "short": "蘆竹區",
      "y": 0.563,
      "rate_series": [
+      0.0216,
       0.0126,
       0.0083,
       -0.0006,
@@ -10152,7 +10604,10 @@
       "ln_jobs_density": 1.092,
       "ln_income": 1.321,
       "ln_youth": 0.987
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2017,
+     "rail_recent": 1.0
     },
     {
      "area": "桃園市觀音區",
@@ -10160,6 +10615,7 @@
      "short": "觀音區",
      "y": 2.123,
      "rate_series": [
+      0.01,
       0.0072,
       0.0111,
       0.0097,
@@ -10184,7 +10640,10 @@
       "ln_jobs_density": 0.836,
       "ln_income": -0.202,
       "ln_youth": 0.455
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市龍潭區",
@@ -10192,6 +10651,7 @@
      "short": "龍潭區",
      "y": -0.003,
      "rate_series": [
+      0.0127,
       0.004,
       -0.0005,
       0.0023,
@@ -10216,7 +10676,10 @@
       "ln_jobs_density": 0.329,
       "ln_income": 0.432,
       "ln_youth": 0.724
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "桃園市龜山區",
@@ -10224,6 +10687,7 @@
      "short": "龜山區",
      "y": 3.943,
      "rate_series": [
+      0.0334,
       0.015,
       0.0146,
       0.023,
@@ -10248,7 +10712,10 @@
       "ln_jobs_density": 1.126,
       "ln_income": 0.898,
       "ln_youth": 1.043
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2017,
+     "rail_recent": 1.0
     },
     {
      "area": "臺中市中區",
@@ -10256,6 +10723,7 @@
      "short": "中區",
      "y": -0.293,
      "rate_series": [
+      0.0036,
       -0.0124,
       -0.0267,
       -0.0296,
@@ -10280,7 +10748,10 @@
       "ln_jobs_density": 1.402,
       "ln_income": -0.307,
       "ln_youth": -1.065
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1905,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市北區",
@@ -10288,6 +10759,7 @@
      "short": "北區",
      "y": 0.683,
      "rate_series": [
+      0.0032,
       -0.0049,
       -0.0015,
       -0.0052,
@@ -10312,7 +10784,10 @@
       "ln_jobs_density": 0.589,
       "ln_income": 0.313,
       "ln_youth": 0.768
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2021,
+     "rail_recent": 1.0
     },
     {
      "area": "臺中市北屯區",
@@ -10320,6 +10795,7 @@
      "short": "北屯區",
      "y": 2.583,
      "rate_series": [
+      0.0153,
       0.018,
       0.0151,
       0.0199,
@@ -10344,7 +10820,10 @@
       "ln_jobs_density": -0.164,
       "ln_income": 0.931,
       "ln_youth": 1.424
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2021,
+     "rail_recent": 1.0
     },
     {
      "area": "臺中市南區",
@@ -10352,6 +10831,7 @@
      "short": "南區",
      "y": 1.407,
      "rate_series": [
+      0.0105,
       0.0121,
       0.0037,
       0.008,
@@ -10376,7 +10856,10 @@
       "ln_jobs_density": -0.094,
       "ln_income": 0.709,
       "ln_youth": 0.764
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1996,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市南屯區",
@@ -10384,6 +10867,7 @@
      "short": "南屯區",
      "y": 1.293,
      "rate_series": [
+      0.0099,
       0.0129,
       0.0138,
       0.0097,
@@ -10408,7 +10892,10 @@
       "ln_jobs_density": 0.884,
       "ln_income": 1.697,
       "ln_youth": 1.041
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2021,
+     "rail_recent": 1.0
     },
     {
      "area": "臺中市后里區",
@@ -10416,6 +10903,7 @@
      "short": "后里區",
      "y": -0.523,
      "rate_series": [
+      0.0048,
       -0.0016,
       -0.0093,
       -0.0099,
@@ -10440,7 +10928,10 @@
       "ln_jobs_density": 0.831,
       "ln_income": -0.608,
       "ln_youth": 0.062
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1905,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市和平區",
@@ -10448,6 +10939,7 @@
      "short": "和平區",
      "y": -1.557,
      "rate_series": [
+      0.0404,
       -0.0266,
       -0.0083,
       0.0034,
@@ -10465,7 +10957,10 @@
      "rel_rent": null,
      "fitted": -0.982,
      "resid": -0.575,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市外埔區",
@@ -10473,6 +10968,7 @@
      "short": "外埔區",
      "y": -0.383,
      "rate_series": [
+      0.0041,
       -0.003,
       -0.009,
       -0.0086,
@@ -10490,7 +10986,10 @@
      "rel_rent": null,
      "fitted": -0.374,
      "resid": -0.009,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市大安區",
@@ -10498,6 +10997,7 @@
      "short": "大安區",
      "y": -1.47,
      "rate_series": [
+      -0.0091,
       -0.0095,
       -0.0062,
       -0.0177,
@@ -10515,7 +11015,10 @@
      "rel_rent": null,
      "fitted": -0.89,
      "resid": -0.58,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市大甲區",
@@ -10523,6 +11026,7 @@
      "short": "大甲區",
      "y": -1.81,
      "rate_series": [
+      -0.0061,
       -0.0124,
       -0.0168,
       -0.0127,
@@ -10547,7 +11051,10 @@
       "ln_jobs_density": 0.798,
       "ln_income": -0.566,
       "ln_youth": 0.293
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1922,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市大肚區",
@@ -10555,6 +11062,7 @@
      "short": "大肚區",
      "y": -1.117,
      "rate_series": [
+      -0.005,
       -0.0047,
       -0.0094,
       -0.0004,
@@ -10579,7 +11087,10 @@
       "ln_jobs_density": 0.138,
       "ln_income": -0.497,
       "ln_youth": 0.086
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1920,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市大里區",
@@ -10587,6 +11098,7 @@
      "short": "大里區",
      "y": -0.6,
      "rate_series": [
+      -0.0022,
       -0.0005,
       -0.002,
       -0.0043,
@@ -10611,7 +11123,10 @@
       "ln_jobs_density": 0.398,
       "ln_income": -0.456,
       "ln_youth": 1.123
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市大雅區",
@@ -10619,6 +11134,7 @@
      "short": "大雅區",
      "y": -1.02,
      "rate_series": [
+      -0.001,
       -0.0009,
       -0.0053,
       -0.0009,
@@ -10643,7 +11159,10 @@
       "ln_jobs_density": 1.234,
       "ln_income": -0.294,
       "ln_youth": 0.539
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市太平區",
@@ -10651,6 +11170,7 @@
      "short": "太平區",
      "y": 1.613,
      "rate_series": [
+      0.0128,
       0.012,
       0.0051,
       0.0037,
@@ -10675,7 +11195,10 @@
       "ln_jobs_density": 0.039,
       "ln_income": -0.524,
       "ln_youth": 1.098
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市新社區",
@@ -10683,6 +11206,7 @@
      "short": "新社區",
      "y": -1.21,
      "rate_series": [
+      -0.0106,
       -0.0092,
       -0.0136,
       -0.0135,
@@ -10700,7 +11224,10 @@
      "rel_rent": null,
      "fitted": -1.012,
      "resid": -0.198,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市東勢區",
@@ -10708,6 +11235,7 @@
      "short": "東勢區",
      "y": -0.953,
      "rate_series": [
+      -0.0114,
       -0.0113,
       -0.0148,
       -0.0159,
@@ -10725,7 +11253,10 @@
      "rel_rent": null,
      "fitted": -0.753,
      "resid": -0.2,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市東區",
@@ -10733,6 +11264,7 @@
      "short": "東區",
      "y": 1.407,
      "rate_series": [
+      0.0103,
       0.004,
       0.0014,
       -0.0019,
@@ -10757,7 +11289,10 @@
       "ln_jobs_density": 0.116,
       "ln_income": -0.111,
       "ln_youth": 0.314
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1905,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市梧棲區",
@@ -10765,6 +11300,7 @@
      "short": "梧棲區",
      "y": 5.397,
      "rate_series": [
+      -0.0008,
       0.0046,
       0.001,
       0.0031,
@@ -10789,7 +11325,10 @@
       "ln_jobs_density": 0.816,
       "ln_income": 0.068,
       "ln_youth": 0.299
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市沙鹿區",
@@ -10797,6 +11336,7 @@
      "short": "沙鹿區",
      "y": 1.807,
      "rate_series": [
+      0.0126,
       0.0125,
       0.0041,
       0.0018,
@@ -10821,7 +11361,10 @@
       "ln_jobs_density": -0.167,
       "ln_income": 0.526,
       "ln_youth": 0.563
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1920,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市清水區",
@@ -10829,6 +11372,7 @@
      "short": "清水區",
      "y": 0.533,
      "rate_series": [
+      0.0012,
       0.0093,
       0.0059,
       0.0071,
@@ -10853,7 +11397,10 @@
       "ln_jobs_density": -0.209,
       "ln_income": -0.254,
       "ln_youth": 0.469
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1920,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市潭子區",
@@ -10861,6 +11408,7 @@
      "short": "潭子區",
      "y": 0.223,
      "rate_series": [
+      0.0046,
       0.0055,
       -0.0049,
       -0.0027,
@@ -10885,7 +11433,10 @@
       "ln_jobs_density": 0.639,
       "ln_income": -0.388,
       "ln_youth": 0.643
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1905,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市烏日區",
@@ -10893,6 +11444,7 @@
      "short": "烏日區",
      "y": 1.473,
      "rate_series": [
+      0.0131,
       0.0036,
       0.0051,
       0.0171,
@@ -10917,7 +11469,10 @@
       "ln_jobs_density": 0.548,
       "ln_income": 0.204,
       "ln_youth": 0.407
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1905,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市石岡區",
@@ -10925,6 +11480,7 @@
      "short": "石岡區",
      "y": -1.813,
      "rate_series": [
+      -0.0094,
       -0.0106,
       -0.007,
       -0.0149,
@@ -10942,7 +11498,10 @@
      "rel_rent": null,
      "fitted": -0.88,
      "resid": -0.933,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市神岡區",
@@ -10950,6 +11509,7 @@
      "short": "神岡區",
      "y": -0.923,
      "rate_series": [
+      -0.0029,
       -0.0027,
       -0.0052,
       -0.0094,
@@ -10974,7 +11534,10 @@
       "ln_jobs_density": 1.173,
       "ln_income": -0.909,
       "ln_youth": 0.211
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市西區",
@@ -10982,6 +11545,7 @@
      "short": "西區",
      "y": -0.243,
      "rate_series": [
+      -0.0065,
       -0.0039,
       -0.007,
       -0.0172,
@@ -11006,7 +11570,10 @@
       "ln_jobs_density": 1.193,
       "ln_income": 1.06,
       "ln_youth": 0.535
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市西屯區",
@@ -11014,6 +11581,7 @@
      "short": "西屯區",
      "y": 0.9,
      "rate_series": [
+      0.0027,
       0.0046,
       0.0031,
       0.0048,
@@ -11038,7 +11606,10 @@
       "ln_jobs_density": 1.238,
       "ln_income": 1.422,
       "ln_youth": 1.207
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2021,
+     "rail_recent": 1.0
     },
     {
      "area": "臺中市豐原區",
@@ -11046,6 +11617,7 @@
      "short": "豐原區",
      "y": -0.983,
      "rate_series": [
+      -0.0042,
       -0.0034,
       -0.0072,
       -0.0107,
@@ -11070,7 +11642,10 @@
       "ln_jobs_density": 0.165,
       "ln_income": -0.456,
       "ln_youth": 0.878
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1905,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市霧峰區",
@@ -11078,6 +11653,7 @@
      "short": "霧峰區",
      "y": -1.037,
      "rate_series": [
+      0.001,
       -0.0047,
       -0.0063,
       -0.0083,
@@ -11102,7 +11678,10 @@
       "ln_jobs_density": 0.546,
       "ln_income": -0.895,
       "ln_youth": 0.17
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺中市龍井區",
@@ -11110,6 +11689,7 @@
      "short": "龍井區",
      "y": 1.043,
      "rate_series": [
+      0.0059,
       -0.0011,
       0.0024,
       0.001,
@@ -11134,7 +11714,10 @@
       "ln_jobs_density": 0.056,
       "ln_income": -0.228,
       "ln_youth": 0.43
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1920,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市七股區",
@@ -11142,6 +11725,7 @@
      "short": "七股區",
      "y": -0.973,
      "rate_series": [
+      -0.0045,
       -0.0176,
       -0.0156,
       -0.004,
@@ -11159,7 +11743,10 @@
      "rel_rent": null,
      "fitted": -1.535,
      "resid": 0.562,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市下營區",
@@ -11167,6 +11754,7 @@
      "short": "下營區",
      "y": -1.627,
      "rate_series": [
+      -0.0155,
       -0.013,
       -0.0166,
       -0.0196,
@@ -11184,7 +11772,10 @@
      "rel_rent": null,
      "fitted": -0.897,
      "resid": -0.73,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市中西區",
@@ -11192,6 +11783,7 @@
      "short": "中西區",
      "y": -1.083,
      "rate_series": [
+      -0.003,
       -0.0062,
       -0.0069,
       -0.0127,
@@ -11216,7 +11808,10 @@
       "ln_jobs_density": 0.99,
       "ln_income": 0.964,
       "ln_youth": 0.089
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市仁德區",
@@ -11224,6 +11819,7 @@
      "short": "仁德區",
      "y": 1.033,
      "rate_series": [
+      0.0041,
       0.0076,
       0.0064,
       0.0014,
@@ -11248,7 +11844,10 @@
       "ln_jobs_density": 1.063,
       "ln_income": 0.228,
       "ln_youth": 0.29
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市佳里區",
@@ -11256,6 +11855,7 @@
      "short": "佳里區",
      "y": 0.09,
      "rate_series": [
+      -0.009,
       -0.0069,
       -0.0014,
       -0.0088,
@@ -11280,7 +11880,10 @@
       "ln_jobs_density": -0.191,
       "ln_income": 0.005,
       "ln_youth": 0.035
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市六甲區",
@@ -11288,6 +11891,7 @@
      "short": "六甲區",
      "y": -0.703,
      "rate_series": [
+      -0.009,
       -0.0175,
       -0.0214,
       -0.0059,
@@ -11305,7 +11909,10 @@
      "rel_rent": null,
      "fitted": -0.926,
      "resid": 0.223,
-     "z": null
+     "z": null,
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市北區",
@@ -11313,6 +11920,7 @@
      "short": "北區",
      "y": -0.22,
      "rate_series": [
+      -0.0055,
       -0.0017,
       -0.0064,
       -0.0083,
@@ -11337,7 +11945,10 @@
       "ln_jobs_density": 0.009,
       "ln_income": 0.777,
       "ln_youth": 0.617
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市北門區",
@@ -11345,6 +11956,7 @@
      "short": "北門區",
      "y": -2.813,
      "rate_series": [
+      -0.0059,
       -0.0266,
       -0.0121,
       -0.0233,
@@ -11362,7 +11974,10 @@
      "rel_rent": null,
      "fitted": -1.597,
      "resid": -1.216,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市南化區",
@@ -11370,6 +11985,7 @@
      "short": "南化區",
      "y": -2.673,
      "rate_series": [
+      -0.001,
       -0.0058,
       -0.0254,
       -0.0171,
@@ -11387,7 +12003,10 @@
      "rel_rent": null,
      "fitted": -1.621,
      "resid": -1.052,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市南區",
@@ -11395,6 +12014,7 @@
      "short": "南區",
      "y": -0.53,
      "rate_series": [
+      -0.0037,
       0.0013,
       -0.0032,
       -0.0057,
@@ -11419,7 +12039,10 @@
       "ln_jobs_density": 0.13,
       "ln_income": -0.267,
       "ln_youth": 0.562
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市善化區",
@@ -11427,6 +12050,7 @@
      "short": "善化區",
      "y": 2.753,
      "rate_series": [
+      0.0223,
       0.036,
       0.0278,
       0.023,
@@ -11451,7 +12075,10 @@
       "ln_jobs_density": 1.169,
       "ln_income": 2.069,
       "ln_youth": -0.005
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市大內區",
@@ -11459,6 +12086,7 @@
      "short": "大內區",
      "y": -1.667,
      "rate_series": [
+      -0.0126,
       -0.0161,
       -0.0155,
       -0.0216,
@@ -11476,7 +12104,10 @@
      "rel_rent": null,
      "fitted": -1.527,
      "resid": -0.14,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市學甲區",
@@ -11484,6 +12115,7 @@
      "short": "學甲區",
      "y": -0.24,
      "rate_series": [
+      -0.0122,
       -0.0048,
       -0.0058,
       -0.0135,
@@ -11508,7 +12140,10 @@
       "ln_jobs_density": -0.516,
       "ln_income": -0.442,
       "ln_youth": -0.658
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市安南區",
@@ -11516,6 +12151,7 @@
      "short": "安南區",
      "y": 1.337,
      "rate_series": [
+      0.0006,
       0.0029,
       0.0051,
       0.0049,
@@ -11540,7 +12176,10 @@
       "ln_jobs_density": 0.152,
       "ln_income": 0.105,
       "ln_youth": 1.058
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市安定區",
@@ -11548,6 +12187,7 @@
      "short": "安定區",
      "y": 0.963,
      "rate_series": [
+      0.005,
       -0.0064,
       -0.0053,
       -0.0015,
@@ -11572,7 +12212,10 @@
       "ln_jobs_density": 1.331,
       "ln_income": 0.13,
       "ln_youth": -0.418
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市安平區",
@@ -11580,6 +12223,7 @@
      "short": "安平區",
      "y": 1.613,
      "rate_series": [
+      0.0084,
       0.0042,
       -0.0006,
       0.0073,
@@ -11604,7 +12248,10 @@
       "ln_jobs_density": -0.209,
       "ln_income": 0.698,
       "ln_youth": 0.275
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市官田區",
@@ -11612,6 +12259,7 @@
      "short": "官田區",
      "y": -0.267,
      "rate_series": [
+      -0.0084,
       -0.0035,
       0.0117,
       -0.006,
@@ -11629,7 +12277,10 @@
      "rel_rent": null,
      "fitted": -0.262,
      "resid": -0.005,
-     "z": null
+     "z": null,
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市將軍區",
@@ -11637,6 +12288,7 @@
      "short": "將軍區",
      "y": -1.267,
      "rate_series": [
+      -0.0133,
       -0.0032,
       -0.0154,
       -0.0087,
@@ -11654,7 +12306,10 @@
      "rel_rent": null,
      "fitted": -1.361,
      "resid": 0.094,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市山上區",
@@ -11662,6 +12317,7 @@
      "short": "山上區",
      "y": -0.883,
      "rate_series": [
+      0.004,
       -0.0081,
       -0.0036,
       -0.0176,
@@ -11679,7 +12335,10 @@
      "rel_rent": null,
      "fitted": -0.719,
      "resid": -0.164,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市左鎮區",
@@ -11687,6 +12346,7 @@
      "short": "左鎮區",
      "y": -0.433,
      "rate_series": [
+      -0.0275,
       -0.0238,
       -0.012,
       -0.0069,
@@ -11704,7 +12364,10 @@
      "rel_rent": null,
      "fitted": -1.944,
      "resid": 1.511,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市後壁區",
@@ -11712,6 +12375,7 @@
      "short": "後壁區",
      "y": -1.543,
      "rate_series": [
+      -0.0147,
       -0.0122,
       -0.0131,
       -0.0032,
@@ -11729,7 +12393,10 @@
      "rel_rent": null,
      "fitted": -0.721,
      "resid": -0.822,
-     "z": null
+     "z": null,
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市新化區",
@@ -11737,6 +12404,7 @@
      "short": "新化區",
      "y": -0.757,
      "rate_series": [
+      -0.0053,
       -0.0025,
       -0.0003,
       -0.0008,
@@ -11761,7 +12429,10 @@
       "ln_jobs_density": -0.292,
       "ln_income": -0.254,
       "ln_youth": -0.177
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市新市區",
@@ -11769,6 +12440,7 @@
      "short": "新市區",
      "y": 2.15,
      "rate_series": [
+      0.0118,
       0.0175,
       0.0126,
       0.0146,
@@ -11793,7 +12465,10 @@
       "ln_jobs_density": 2.194,
       "ln_income": 0.766,
       "ln_youth": -0.225
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市新營區",
@@ -11801,6 +12476,7 @@
      "short": "新營區",
      "y": -0.9,
      "rate_series": [
+      -0.014,
       -0.0184,
       -0.0149,
       -0.013,
@@ -11825,7 +12501,10 @@
       "ln_jobs_density": 0.149,
       "ln_income": 0.584,
       "ln_youth": 0.255
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市東區",
@@ -11833,6 +12512,7 @@
      "short": "東區",
      "y": -1.23,
      "rate_series": [
+      -0.0122,
       -0.0099,
       -0.0124,
       -0.0199,
@@ -11857,7 +12537,10 @@
       "ln_jobs_density": -0.043,
       "ln_income": 1.207,
       "ln_youth": 0.898
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市東山區",
@@ -11865,6 +12548,7 @@
      "short": "東山區",
      "y": -1.61,
      "rate_series": [
+      -0.0076,
       -0.0113,
       -0.0167,
       -0.0213,
@@ -11882,7 +12566,10 @@
      "rel_rent": null,
      "fitted": -1.319,
      "resid": -0.291,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市柳營區",
@@ -11890,6 +12577,7 @@
      "short": "柳營區",
      "y": -0.933,
      "rate_series": [
+      -0.0072,
       0.0018,
       -0.0121,
       -0.0094,
@@ -11907,7 +12595,10 @@
      "rel_rent": null,
      "fitted": -0.464,
      "resid": -0.469,
-     "z": null
+     "z": null,
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市楠西區",
@@ -11915,6 +12606,7 @@
      "short": "楠西區",
      "y": -2.2,
      "rate_series": [
+      -0.0162,
       -0.0367,
       -0.0036,
       -0.0175,
@@ -11932,7 +12624,10 @@
      "rel_rent": null,
      "fitted": -1.463,
      "resid": -0.737,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市歸仁區",
@@ -11940,6 +12635,7 @@
      "short": "歸仁區",
      "y": 1.58,
      "rate_series": [
+      -0.0041,
       -0.0086,
       -0.0004,
       -0.0054,
@@ -11964,7 +12660,10 @@
       "ln_jobs_density": -0.113,
       "ln_income": 0.117,
       "ln_youth": 0.246
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2007,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市永康區",
@@ -11972,6 +12671,7 @@
      "short": "永康區",
      "y": 0.533,
      "rate_series": [
+      0.0071,
       0.0028,
       0.0022,
       -0.0003,
@@ -11996,7 +12696,10 @@
       "ln_jobs_density": 0.63,
       "ln_income": 0.491,
       "ln_youth": 1.173
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市玉井區",
@@ -12004,6 +12707,7 @@
      "short": "玉井區",
      "y": -1.253,
      "rate_series": [
+      -0.0077,
       -0.0159,
       -0.0202,
       -0.0125,
@@ -12021,7 +12725,10 @@
      "rel_rent": null,
      "fitted": -1.172,
      "resid": -0.081,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市白河區",
@@ -12029,6 +12736,7 @@
      "short": "白河區",
      "y": -0.957,
      "rate_series": [
+      -0.0222,
       -0.019,
       -0.013,
       -0.0175,
@@ -12046,7 +12754,10 @@
      "rel_rent": null,
      "fitted": -0.948,
      "resid": -0.009,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市西港區",
@@ -12054,6 +12765,7 @@
      "short": "西港區",
      "y": 0.21,
      "rate_series": [
+      -0.0036,
       -0.0114,
       -0.0117,
       0.0026,
@@ -12071,7 +12783,10 @@
      "rel_rent": null,
      "fitted": -0.553,
      "resid": 0.763,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市關廟區",
@@ -12079,6 +12794,7 @@
      "short": "關廟區",
      "y": 0.517,
      "rate_series": [
+      0.0028,
       -0.0043,
       -0.007,
       0.0013,
@@ -12103,7 +12819,10 @@
       "ln_jobs_density": 0.108,
       "ln_income": -0.622,
       "ln_youth": -0.381
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市鹽水區",
@@ -12111,6 +12830,7 @@
      "short": "鹽水區",
      "y": -1.02,
      "rate_series": [
+      -0.0035,
       -0.0105,
       -0.0098,
       0.0027,
@@ -12135,7 +12855,10 @@
       "ln_jobs_density": -0.143,
       "ln_income": -0.456,
       "ln_youth": -0.658
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市麻豆區",
@@ -12143,6 +12866,7 @@
      "short": "麻豆區",
      "y": 0.52,
      "rate_series": [
+      -0.0105,
       -0.0116,
       -0.005,
       -0.0035,
@@ -12167,7 +12891,10 @@
       "ln_jobs_density": 0.176,
       "ln_income": 0.204,
       "ln_youth": -0.202
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "臺南市龍崎區",
@@ -12175,6 +12902,7 @@
      "short": "龍崎區",
      "y": -3.92,
      "rate_series": [
+      0.0055,
       0.0,
       -0.0418,
       -0.0244,
@@ -12192,7 +12920,10 @@
      "rel_rent": null,
      "fitted": -2.059,
      "resid": -1.861,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市三民區",
@@ -12200,6 +12931,7 @@
      "short": "三民區",
      "y": -0.153,
      "rate_series": [
+      -0.014,
       -0.0095,
       -0.0061,
       -0.013,
@@ -12224,7 +12956,10 @@
       "ln_jobs_density": 0.094,
       "ln_income": 0.63,
       "ln_youth": 1.357
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市仁武區",
@@ -12232,6 +12967,7 @@
      "short": "仁武區",
      "y": 2.487,
      "rate_series": [
+      0.0259,
       0.0326,
       0.0269,
       0.0342,
@@ -12256,7 +12992,10 @@
       "ln_jobs_density": 0.533,
       "ln_income": 0.584,
       "ln_youth": 0.587
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市內門區",
@@ -12264,6 +13003,7 @@
      "short": "內門區",
      "y": -1.55,
      "rate_series": [
+      -0.0022,
       -0.0168,
       -0.01,
       -0.013,
@@ -12281,7 +13021,10 @@
      "rel_rent": null,
      "fitted": -1.892,
      "resid": 0.342,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市六龜區",
@@ -12289,6 +13032,7 @@
      "short": "六龜區",
      "y": -2.0,
      "rate_series": [
+      0.0071,
       -0.0342,
       -0.0343,
       -0.014,
@@ -12306,7 +13050,10 @@
      "rel_rent": null,
      "fitted": -1.552,
      "resid": -0.448,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市前金區",
@@ -12314,6 +13061,7 @@
      "short": "前金區",
      "y": 2.93,
      "rate_series": [
+      -0.0154,
       0.0188,
       0.0041,
       0.0065,
@@ -12338,7 +13086,10 @@
       "ln_jobs_density": 1.433,
       "ln_income": 1.071,
       "ln_youth": -0.593
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2008,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市前鎮區",
@@ -12346,6 +13097,7 @@
      "short": "前鎮區",
      "y": -0.72,
      "rate_series": [
+      -0.0122,
       -0.0062,
       -0.0052,
       -0.0117,
@@ -12370,7 +13122,10 @@
       "ln_jobs_density": 0.793,
       "ln_income": 0.349,
       "ln_youth": 0.875
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2008,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市大寮區",
@@ -12378,6 +13133,7 @@
      "short": "大寮區",
      "y": 0.21,
      "rate_series": [
+      -0.0028,
       -0.0021,
       -0.0043,
       -0.0025,
@@ -12402,7 +13158,10 @@
       "ln_jobs_density": 0.706,
       "ln_income": -0.664,
       "ln_youth": 0.628
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2008,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市大樹區",
@@ -12410,6 +13169,7 @@
      "short": "大樹區",
      "y": -0.767,
      "rate_series": [
+      -0.0114,
       -0.0062,
       -0.0074,
       -0.0059,
@@ -12427,7 +13187,10 @@
      "rel_rent": null,
      "fitted": -0.688,
      "resid": -0.079,
-     "z": null
+     "z": null,
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市大社區",
@@ -12435,6 +13198,7 @@
      "short": "大社區",
      "y": 0.06,
      "rate_series": [
+      0.0,
       -0.0034,
       -0.0026,
       -0.0021,
@@ -12459,7 +13223,10 @@
       "ln_jobs_density": 0.679,
       "ln_income": -0.294,
       "ln_youth": -0.296
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市小港區",
@@ -12467,6 +13234,7 @@
      "short": "小港區",
      "y": -0.27,
      "rate_series": [
+      0.0,
       0.0009,
       -0.0022,
       -0.0093,
@@ -12491,7 +13259,10 @@
       "ln_jobs_density": 0.517,
       "ln_income": 0.277,
       "ln_youth": 0.84
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2008,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市岡山區",
@@ -12499,6 +13270,7 @@
      "short": "岡山區",
      "y": -0.573,
      "rate_series": [
+      -0.0102,
       -0.0038,
       -0.0037,
       -0.0109,
@@ -12523,7 +13295,10 @@
       "ln_jobs_density": 1.077,
       "ln_income": -0.111,
       "ln_youth": 0.471
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市左營區",
@@ -12531,6 +13306,7 @@
      "short": "左營區",
      "y": 0.143,
      "rate_series": [
+      -0.0026,
       0.0045,
       0.0038,
       -0.002,
@@ -12555,7 +13331,10 @@
       "ln_jobs_density": 0.146,
       "ln_income": 1.134,
       "ln_youth": 1.042
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市彌陀區",
@@ -12563,6 +13342,7 @@
      "short": "彌陀區",
      "y": -1.51,
      "rate_series": [
+      -0.0111,
       -0.0089,
       -0.0067,
       -0.0099,
@@ -12580,7 +13360,10 @@
      "rel_rent": null,
      "fitted": -1.266,
      "resid": -0.244,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市新興區",
@@ -12588,6 +13371,7 @@
      "short": "新興區",
      "y": 0.957,
      "rate_series": [
+      0.0014,
       -0.006,
       -0.0057,
       -0.0177,
@@ -12612,7 +13396,10 @@
       "ln_jobs_density": 1.371,
       "ln_income": 0.985,
       "ln_youth": -0.198
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2008,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市旗山區",
@@ -12620,6 +13407,7 @@
      "short": "旗山區",
      "y": -1.677,
      "rate_series": [
+      -0.0159,
       -0.0115,
       -0.0127,
       -0.0166,
@@ -12637,7 +13425,10 @@
      "rel_rent": null,
      "fitted": -0.834,
      "resid": -0.843,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市旗津區",
@@ -12645,6 +13436,7 @@
      "short": "旗津區",
      "y": -2.52,
      "rate_series": [
+      -0.0051,
       -0.0123,
       -0.0077,
       -0.0147,
@@ -12662,7 +13454,10 @@
      "rel_rent": null,
      "fitted": -1.269,
      "resid": -1.251,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市杉林區",
@@ -12670,6 +13465,7 @@
      "short": "杉林區",
      "y": -1.423,
      "rate_series": [
+      -0.0127,
       -0.0132,
       -0.0129,
       -0.0139,
@@ -12687,7 +13483,10 @@
      "rel_rent": null,
      "fitted": -2.125,
      "resid": 0.702,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市林園區",
@@ -12695,6 +13494,7 @@
      "short": "林園區",
      "y": -0.753,
      "rate_series": [
+      -0.0038,
       -0.0046,
       -0.003,
       -0.0094,
@@ -12719,7 +13519,10 @@
       "ln_jobs_density": -0.382,
       "ln_income": -0.294,
       "ln_youth": 0.237
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市桃源區",
@@ -12727,6 +13530,7 @@
      "short": "桃源區",
      "y": -1.33,
      "rate_series": [
+      0.007,
       -0.0187,
       -0.0081,
       -0.0091,
@@ -12744,7 +13548,10 @@
      "rel_rent": null,
      "fitted": -1.338,
      "resid": 0.008,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市梓官區",
@@ -12752,6 +13559,7 @@
      "short": "梓官區",
      "y": -0.207,
      "rate_series": [
+      -0.0134,
       -0.0108,
       -0.0006,
       -0.0109,
@@ -12776,7 +13584,10 @@
       "ln_jobs_density": -0.503,
       "ln_income": -0.566,
       "ln_youth": -0.295
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市楠梓區",
@@ -12784,6 +13595,7 @@
      "short": "楠梓區",
      "y": 1.573,
      "rate_series": [
+      0.015,
       0.0139,
       0.0126,
       0.0087,
@@ -12808,7 +13620,10 @@
       "ln_jobs_density": 0.438,
       "ln_income": 0.766,
       "ln_youth": 1.03
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市橋頭區",
@@ -12816,6 +13631,7 @@
      "short": "橋頭區",
      "y": 3.57,
      "rate_series": [
+      0.0023,
       0.0173,
       0.0307,
       0.0376,
@@ -12840,7 +13656,10 @@
       "ln_jobs_density": -0.188,
       "ln_income": 0.515,
       "ln_youth": -0.116
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市永安區",
@@ -12848,6 +13667,7 @@
      "short": "永安區",
      "y": -0.467,
      "rate_series": [
+      -0.0036,
       -0.004,
       0.0009,
       -0.0012,
@@ -12865,7 +13685,10 @@
      "rel_rent": null,
      "fitted": -0.656,
      "resid": 0.189,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市湖內區",
@@ -12873,6 +13696,7 @@
      "short": "湖內區",
      "y": 0.273,
      "rate_series": [
+      -0.0016,
       -0.0095,
       0.0063,
       -0.0022,
@@ -12897,7 +13721,10 @@
       "ln_jobs_density": -0.065,
       "ln_income": -0.764,
       "ln_youth": -0.446
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市燕巢區",
@@ -12905,6 +13732,7 @@
      "short": "燕巢區",
      "y": 0.067,
      "rate_series": [
+      -0.0007,
       0.0011,
       -0.0038,
       -0.0123,
@@ -12929,7 +13757,10 @@
       "ln_jobs_density": 1.202,
       "ln_income": -0.65,
       "ln_youth": -0.444
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市田寮區",
@@ -12937,6 +13768,7 @@
      "short": "田寮區",
      "y": -2.477,
      "rate_series": [
+      0.0246,
       -0.0088,
       -0.0082,
       -0.0009,
@@ -12954,7 +13786,10 @@
      "rel_rent": null,
      "fitted": -1.893,
      "resid": -0.584,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市甲仙區",
@@ -12962,6 +13797,7 @@
      "short": "甲仙區",
      "y": -2.97,
      "rate_series": [
+      0.0093,
       -0.0281,
       -0.0105,
       -0.026,
@@ -12979,7 +13815,10 @@
      "rel_rent": null,
      "fitted": -1.645,
      "resid": -1.325,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市美濃區",
@@ -12987,6 +13826,7 @@
      "short": "美濃區",
      "y": -1.347,
      "rate_series": [
+      -0.0174,
       -0.013,
       -0.0141,
       -0.0178,
@@ -13004,7 +13844,10 @@
      "rel_rent": null,
      "fitted": -1.086,
      "resid": -0.261,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市苓雅區",
@@ -13012,6 +13855,7 @@
      "short": "苓雅區",
      "y": -0.44,
      "rate_series": [
+      -0.0144,
       -0.0128,
       -0.0082,
       -0.0158,
@@ -13036,7 +13880,10 @@
       "ln_jobs_density": 0.75,
       "ln_income": 0.766,
       "ln_youth": 0.723
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2008,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市茂林區",
@@ -13044,6 +13891,7 @@
      "short": "茂林區",
      "y": 1.25,
      "rate_series": [
+      0.0556,
       -0.0289,
       -0.0308,
       -0.0304,
@@ -13061,7 +13909,10 @@
      "rel_rent": null,
      "fitted": -1.327,
      "resid": 2.577,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市茄萣區",
@@ -13069,6 +13920,7 @@
      "short": "茄萣區",
      "y": -0.903,
      "rate_series": [
+      -0.0095,
       -0.0071,
       0.0034,
       -0.0048,
@@ -13086,7 +13938,10 @@
      "rel_rent": null,
      "fitted": -1.504,
      "resid": 0.601,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市路竹區",
@@ -13094,6 +13949,7 @@
      "short": "路竹區",
      "y": -1.62,
      "rate_series": [
+      -0.0098,
       -0.0065,
       -0.0073,
       -0.0123,
@@ -13118,7 +13974,10 @@
       "ln_jobs_density": 1.141,
       "ln_income": -0.215,
       "ln_youth": -0.073
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市那瑪夏區",
@@ -13126,6 +13985,7 @@
      "short": "那瑪夏區",
      "y": -0.52,
      "rate_series": [
+      0.0062,
       -0.0158,
       -0.0087,
       -0.0045,
@@ -13143,7 +14003,10 @@
      "rel_rent": null,
      "fitted": -1.248,
      "resid": 0.728,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市阿蓮區",
@@ -13151,6 +14014,7 @@
      "short": "阿蓮區",
      "y": -1.577,
      "rate_series": [
+      -0.0157,
       -0.0067,
       -0.0134,
       -0.0122,
@@ -13168,7 +14032,10 @@
      "rel_rent": null,
      "fitted": -0.849,
      "resid": -0.728,
-     "z": null
+     "z": null,
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市鳥松區",
@@ -13176,6 +14043,7 @@
      "short": "鳥松區",
      "y": -0.77,
      "rate_series": [
+      0.0036,
       0.018,
       0.0077,
       -0.0049,
@@ -13200,7 +14068,10 @@
       "ln_jobs_density": 0.595,
       "ln_income": 1.27,
       "ln_youth": -0.17
-     }
+     },
+     "rail": 0.0,
+     "rail_since": null,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市鳳山區",
@@ -13208,6 +14079,7 @@
      "short": "鳳山區",
      "y": -0.337,
      "rate_series": [
+      -0.0006,
       0.0011,
       -0.0017,
       -0.0052,
@@ -13232,7 +14104,10 @@
       "ln_jobs_density": -0.494,
       "ln_income": 0.325,
       "ln_youth": 1.445
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市鹽埕區",
@@ -13240,6 +14115,7 @@
      "short": "鹽埕區",
      "y": -0.793,
      "rate_series": [
+      -0.0082,
       -0.0044,
       -0.0104,
       -0.0153,
@@ -13264,7 +14140,10 @@
       "ln_jobs_density": 0.451,
       "ln_income": -0.149,
       "ln_youth": -0.818
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 2008,
+     "rail_recent": 0.0
     },
     {
      "area": "高雄市鼓山區",
@@ -13272,6 +14151,7 @@
      "short": "鼓山區",
      "y": 0.133,
      "rate_series": [
+      0.0069,
       0.0064,
       0.0071,
       -0.0002,
@@ -13296,10 +14176,14 @@
       "ln_jobs_density": -0.104,
       "ln_income": 1.382,
       "ln_youth": 0.642
-     }
+     },
+     "rail": 1.0,
+     "rail_since": 1900,
+     "rail_recent": 0.0
     }
    ],
    "years": [
+    2018,
     2019,
     2020,
     2021,
@@ -13397,7 +14281,8 @@
     "內政部戶政司 ODRP014（世代淨遷入、人口）",
     "行政院主計總處 110 年工商普查（在地工作機會）",
     "財政部財政資訊中心 綜稅各區所得中位數",
-    "內政部地政司 實價登錄租賃案件（每坪月租中位數）"
+    "內政部地政司 實價登錄租賃案件（每坪月租中位數）",
+    "軌道站：各軌道系統官方路線圖與啟用日（臺鐵、高鐵、北捷、機捷、中捷、高捷、淡海／安坑／高雄輕軌），人工整理 2026-09"
    ],
    "caveats": [
     "係數是相關不是因果",
@@ -13794,10 +14679,10 @@
    "title": "青年正在移入的區，需求會先到 —— 提前準備",
    "body": "世代追蹤（扣掉少子化）顯示這些區的 18–35 歲青年連續淨移入。青年搬進來之後，托育、租金補貼申請、公共運輸與青年服務據點的需求會跟著到；提前布局比事後補救便宜。",
    "detail": [
-    "善化區　+2.0%／年（+215 人）　持續移入，2027 年預估 +2.5%（±2.2%）",
-    "歸仁區　+1.7%／年（+256 人）　轉為移入，2027 年預估 +2.3%（±1.6%）",
-    "安平區　+1.2%／年（+196 人）　持續移入，2027 年預估 +2.1%（±1.8%）",
-    "仁德區　+1.0%／年（+155 人）　持續移入，2027 年預估 +1.2%（±1.5%）"
+    "善化區　+2.0%／年（+215 人）　持續移入，2027 年預估 +2.7%（±2.1%）",
+    "歸仁區　+1.7%／年（+256 人）　轉為移入，2027 年預估 +2.1%（±1.6%）",
+    "安平區　+1.2%／年（+196 人）　持續移入，2027 年預估 +1.9%（±1.7%）",
+    "左鎮區　+1.1%／年（+7 人）　轉為移入，2027 年預估 +0.4%（±2.4%）"
    ],
    "confidence": "medium",
    "basis": "世代追蹤淨遷入率 → 2022／2023 事件年合併成一點（n = 7）→ 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；|t| 在臨界值 ±20% 內標「邊緣」、信心低；預測為線性外推＋95% 預測區間（t 分布，forecast.py）；2022–2023 為戶籍事件年"
@@ -13849,7 +14734,7 @@
    "body": "這些區的青年連續淨流出，而且多半在地工作機會密度低。人數規則會讓它們永遠排最後；青年基本法第 11 條要求在地支持與返留鄉，這裡是巡迴據點、交通補貼與在地產業的優先對象。",
    "detail": [
     "龍崎區　-5.0%／年（-22 人）　持續流出",
-    "南化區　-2.8%／年（-39 人）　持續流出",
+    "南化區　-2.8%／年（-39 人）　流出加劇",
     "鹽水區　-1.9%／年（-94 人）　持續流出",
     "大內區　-1.8%／年（-28 人）　持續流出"
    ],

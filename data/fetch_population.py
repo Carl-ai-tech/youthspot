@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from data.sources import POPULATION_API, fetch_json  # noqa: E402
+from data.sources import POPULATION_API, fetch_json, population_api  # noqa: E402
 
 MAX_AGE_FIELD = 100          # 資料到 people_age_100up_*，我們只取到 64
 
@@ -40,7 +40,7 @@ def latest_period(*, back: int = 18, refresh: bool = False) -> str:
     period = roc_period(date.today())
     for _ in range(back):
         payload = fetch_json(
-            POPULATION_API.format(period=period),
+            population_api(period),
             f"odrp014_{period}_p1.json",
             refresh=refresh,
         )
@@ -66,7 +66,7 @@ def fetch_population(
     page, total_pages = 1, 1
     while page <= total_pages:
         payload = fetch_json(
-            f"{POPULATION_API.format(period=period)}?page={page}",
+            f"{population_api(period)}?page={page}",
             f"odrp014_{period}_p{page}.json",
             refresh=refresh,
         )
@@ -112,7 +112,7 @@ def fetch_population_by_sex(
     page, total_pages = 1, 1
     while page <= total_pages:
         payload = fetch_json(
-            f"{POPULATION_API.format(period=period)}?page={page}",
+            f"{population_api(period)}?page={page}",
             f"odrp014_{period}_p{page}.json",
             refresh=refresh,
         )
@@ -147,7 +147,7 @@ def fetch_population_by_district(
     page, total_pages = 1, 1
     while page <= total_pages:
         payload = fetch_json(
-            f"{POPULATION_API.format(period=period)}?page={page}",
+            f"{population_api(period)}?page={page}",
             f"odrp014_{period}_p{page}.json",
             refresh=refresh,
         )

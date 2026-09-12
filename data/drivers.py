@@ -38,6 +38,7 @@ from data.fetch_district_jobs import fetch_district_jobs  # noqa: E402
 from data.fetch_migration import fetch_migration  # noqa: E402
 from data.fetch_population import fetch_population_by_district, latest_period  # noqa: E402
 from data.fetch_rent import MIN_N, fetch_rent  # noqa: E402
+from data.rail_stations import SOURCE as RAIL_SOURCE, rail as _rail  # noqa: E402
 from data.forecast import _t_critical  # noqa: E402
 from data.sources import DATA_DIR, SIX_CITIES  # noqa: E402
 
@@ -45,7 +46,7 @@ OUT = DATA_DIR / "drivers.json"
 Y_YEARS = 3                                   # 近三年平均
 FEATURES = ["ln_jobs_density", "ln_income", "ln_rent", "ln_youth"]
 LABELS = {"ln_jobs_density": "工作機會密度", "ln_income": "所得中位數", "ln_rent": "每坪月租", "ln_youth": "青年人口規模",
-          "ln_rent_burden": "租金負擔（租金÷所得）"}
+          "ln_rent_burden": "租金負擔（租金÷所得）", "rail": "有軌道站", "rail_recent": "2010 年後才有站"}
 # 「像淡水」的四個維度：相對本市的租金（便宜）、工作機會密度、所得、規模。距離用 z 分數算
 SIMILARITY = ["rel_rent", "ln_jobs_density", "ln_income", "ln_youth"]
 
@@ -146,6 +147,8 @@ def build_panel(*, refresh: bool = False) -> list[dict]:
             row["ln_youth"] = math.log(youth) if youth else None
             # 租金負擔：每坪月租 ÷ 所得中位數（局長的因果鏈是「收入低＋房價高」，是相對的不是絕對的）
             row["ln_rent_burden"] = math.log(row["rent"] / inc_med) if row["rent"] and inc_med else None
+            rl = _rail(area)                                   # 通勤可及性：有沒有軌道站、是不是 2010 後才有
+            row["rail"], row["rail_since"], row["rail_recent"] = float(rl["rail"]), rl["since"], float(rl["recent"])
             rows.append(row)
     # 相對本市的租金：ln(租金) − 本市各區 ln(租金) 平均。「便宜」是相對同一個都會區講的
     for city in SIX_CITIES:
@@ -179,7 +182,7 @@ def _fit(rows: list[dict], features: list[str], tag: str) -> dict:
         c = res["coef"][f]
         c["beta_std"] = round(c["b"] * _sd([r[f] for r in complete]) / sdy, 3)   # 標準化 β：哪個因子影響大
         c["label"] = LABELS[f]
-        c["per_10pct"] = round(c["b"] * math.log(1.1), 3)                       # X 高 10% → y 差幾 pp
+        c["per_10pct"] = round(c["b"], 3) if f.startswith("rail") else round(c["b"] * math.log(1.1), 3)   # 0/1 變數：有 vs 沒有；其餘 X 高 10% → y 差幾 pp
     res["corr"] = {f: corr(f) for f in features}
     res["features"] = features
     res.pop("fitted"); res.pop("resid")
@@ -198,6 +201,8 @@ def fit_drivers(rows: list[dict]) -> dict:
     full = _fit(rows, FEATURES, "_full")
     # 模型 C：把局長的因果模型放進去 —— 租金相對所得的負擔，而不是絕對租金
     burden = _fit(rows, ["ln_jobs_density", "ln_rent_burden", "ln_youth"], "_burden")
+    # 模型 D：局長的「通勤可接受」—— 軌道站有無、是不是新開的（機捷／綠線／輕軌那一波）
+    railm = _fit(rows, ["ln_jobs_density", "ln_income", "ln_youth", "rail", "rail_recent"], "_rail")
     # z 分數（相似度用）
     stats = {}
     for f in SIMILARITY:
@@ -210,7 +215,7 @@ def fit_drivers(rows: list[dict]) -> dict:
                 m, s = stats[f]
                 z[f] = round((r[f] - m) / s, 3)
         r["z"] = z if len(z) == len(SIMILARITY) else None
-    return {"base": base, "full": full, "burden": burden}
+    return {"base": base, "full": full, "burden": burden, "rail": railm}
 
 
 def similar_to(rows: list[dict], area: str, k: int = 8) -> list[dict]:
@@ -229,7 +234,7 @@ def similar_to(rows: list[dict], area: str, k: int = 8) -> list[dict]:
 
 
 KEEP = ("area", "city", "short", "y", "rate_series", "jobs_density", "income", "rent", "rent_n", "youth",
-        "rel_rent", "fitted", "resid", "fitted_full", "resid_full", "z")
+        "rel_rent", "fitted", "resid", "fitted_full", "resid_full", "z", "rail", "rail_since", "rail_recent")
 
 
 def build(*, refresh: bool = False) -> dict:
@@ -248,7 +253,8 @@ def build(*, refresh: bool = False) -> dict:
         "years": years,
         "reference_similar": {"新北市淡水區": similar_to(rows, "新北市淡水區")},
         "sources": ["內政部戶政司 ODRP014（世代淨遷入、人口）", "行政院主計總處 110 年工商普查（在地工作機會）",
-                    "財政部財政資訊中心 綜稅各區所得中位數", "內政部地政司 實價登錄租賃案件（每坪月租中位數）"],
+                    "財政部財政資訊中心 綜稅各區所得中位數", "內政部地政司 實價登錄租賃案件（每坪月租中位數）",
+                    "軌道站：" + RAIL_SOURCE],
         "caveats": ["係數是相關不是因果", "租金樣本偏向代管／包租物件（110 年 7 月起才強制申報），郊區樣本常不足",
                     "工作機會是 110 年底普查，五年一次", "戶籍 ≠ 實際居住", "近三年平均，不預測單一年"],
     }
@@ -259,7 +265,8 @@ def main(argv: list[str]) -> int:
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{out['y']}\n{out['spec']}")
     for tag, title in (("base", "模型 A：不含租金（六都全部行政區）"), ("full", "模型 B：含租金（租金樣本 ≥ 30 筆的區）"),
-                       ("burden", "模型 C：租金負擔（租金÷所得）取代所得與租金")):
+                       ("burden", "模型 C：租金負擔（租金÷所得）取代所得與租金"),
+                       ("rail", "模型 D：加軌道站有無、2010 年後才有站")):
         m = out["models"][tag]
         print(f"\n{title}　n = {m['n']}，R² = {m['r2']}，t 臨界 {m['t_critical']}")
         print(f"{'變數':<10}{'係數':>9}{'標準誤':>9}{'t':>7}{'顯著':>5}{'高10%→pp':>10}{'標準化β':>9}{'單相關':>8}")

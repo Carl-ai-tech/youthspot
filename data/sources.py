@@ -55,6 +55,13 @@ USER_AGENT = "YouthLens/0.3 (hackathon prototype; stdlib urllib)"
 TIMEOUT = 60
 
 POPULATION_API = "https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP014/{period}"
+# 107 年 7 月以前只有無區域代碼的 ODRP005（欄位相同：site_id、village、people_age_XXX_m/f）；實測 10607 有、10507 查無資料
+POPULATION_API_OLD = "https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP005/{period}"
+POPULATION_OLD_BEFORE = "10707"
+
+
+def population_api(period: str) -> str:
+    return (POPULATION_API_OLD if period < POPULATION_OLD_BEFORE else POPULATION_API).format(period=period)
 POPULATION_DATASET = "內政部戶政司 ODRP014 村里戶數、單一年齡人口"
 POPULATION_LANDING = "https://data.gov.tw/dataset/77132"   # 「新增區域代碼」版，跟程式打的 ODRP014 一致（32973 是無區域代碼的 ODRP005）
 

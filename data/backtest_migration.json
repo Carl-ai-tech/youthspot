@@ -9,53 +9,53 @@
  "pooled": {
   "2022": {
    "n": 158,
-   "points_used": 4,
-   "mae_model_pp": 2.23,
+   "points_used": 5,
+   "mae_model_pp": 1.94,
    "mae_last_pp": 2.02,
-   "mae_mean_pp": 1.31,
-   "inflow_flagged": 24,
-   "inflow_hits": 22,
-   "inflow_precision": 0.92,
-   "inflow_recall": 0.32,
+   "mae_mean_pp": 1.29,
+   "inflow_flagged": 22,
+   "inflow_hits": 21,
+   "inflow_precision": 0.95,
+   "inflow_recall": 0.31,
    "truly_inflow": 68,
    "outflow_flagged": 109,
    "outflow_hits": 65,
    "outflow_precision": 0.6,
-   "outflow_recall": 0.85,
+   "outflow_recall": 0.87,
    "truly_outflow": 47
   },
   "2023": {
    "n": 158,
-   "points_used": 5,
-   "mae_model_pp": 0.86,
+   "points_used": 6,
+   "mae_model_pp": 0.77,
    "mae_last_pp": 0.92,
-   "mae_mean_pp": 0.61,
-   "inflow_flagged": 37,
-   "inflow_hits": 37,
+   "mae_mean_pp": 0.64,
+   "inflow_flagged": 35,
+   "inflow_hits": 35,
    "inflow_precision": 1.0,
    "inflow_recall": 0.76,
    "truly_inflow": 45,
-   "outflow_flagged": 103,
-   "outflow_hits": 88,
-   "outflow_precision": 0.85,
-   "outflow_recall": 0.92,
+   "outflow_flagged": 94,
+   "outflow_hits": 83,
+   "outflow_precision": 0.88,
+   "outflow_recall": 0.86,
    "truly_outflow": 79
   },
   "2024": {
    "n": 158,
-   "points_used": 6,
-   "mae_model_pp": 0.96,
+   "points_used": 7,
+   "mae_model_pp": 0.9,
    "mae_last_pp": 0.95,
-   "mae_mean_pp": 1.01,
+   "mae_mean_pp": 1.05,
    "inflow_flagged": 41,
    "inflow_hits": 37,
    "inflow_precision": 0.9,
-   "inflow_recall": 0.72,
+   "inflow_recall": 0.74,
    "truly_inflow": 43,
-   "outflow_flagged": 79,
-   "outflow_hits": 72,
-   "outflow_precision": 0.91,
-   "outflow_recall": 0.81,
+   "outflow_flagged": 74,
+   "outflow_hits": 69,
+   "outflow_precision": 0.93,
+   "outflow_recall": 0.78,
    "truly_outflow": 80
   }
  },
@@ -65,23 +65,24 @@
    "cutoffs": {
     "2022": {
      "n": 29,
-     "points_used": 4,
-     "mae_model_pp": 1.89,
+     "points_used": 5,
+     "mae_model_pp": 1.46,
      "mae_last_pp": 1.75,
-     "mae_mean_pp": 1.1,
-     "inflow_flagged": 5,
-     "inflow_hits": 5,
+     "mae_mean_pp": 1.23,
+     "inflow_flagged": 6,
+     "inflow_hits": 6,
      "inflow_precision": 1.0,
-     "inflow_recall": 0.42,
+     "inflow_recall": 0.5,
      "truly_inflow": 12,
-     "outflow_flagged": 19,
-     "outflow_hits": 13,
-     "outflow_precision": 0.68,
-     "outflow_recall": 0.82,
+     "outflow_flagged": 20,
+     "outflow_hits": 14,
+     "outflow_precision": 0.7,
+     "outflow_recall": 0.91,
      "truly_outflow": 11,
      "flagged_in_names": [
       "五股區",
       "八里區",
+      "林口區",
       "汐止區",
       "淡水區",
       "鶯歌區"
@@ -92,25 +93,24 @@
       "土城區",
       "新店區",
       "板橋區",
-      "林口區",
       "深坑區"
      ]
     },
     "2023": {
      "n": 29,
-     "points_used": 5,
-     "mae_model_pp": 0.58,
+     "points_used": 6,
+     "mae_model_pp": 0.59,
      "mae_last_pp": 0.9,
-     "mae_mean_pp": 0.5,
+     "mae_mean_pp": 0.57,
      "inflow_flagged": 7,
      "inflow_hits": 7,
      "inflow_precision": 1.0,
      "inflow_recall": 0.78,
      "truly_inflow": 9,
-     "outflow_flagged": 17,
-     "outflow_hits": 15,
+     "outflow_flagged": 16,
+     "outflow_hits": 14,
      "outflow_precision": 0.88,
-     "outflow_recall": 0.93,
+     "outflow_recall": 0.87,
      "truly_outflow": 15,
      "flagged_in_names": [
       "五股區",
@@ -128,14 +128,14 @@
     },
     "2024": {
      "n": 29,
-     "points_used": 6,
-     "mae_model_pp": 0.92,
+     "points_used": 7,
+     "mae_model_pp": 0.94,
      "mae_last_pp": 1.03,
-     "mae_mean_pp": 1.28,
-     "inflow_flagged": 6,
-     "inflow_hits": 6,
+     "mae_mean_pp": 1.34,
+     "inflow_flagged": 8,
+     "inflow_hits": 8,
      "inflow_precision": 1.0,
-     "inflow_recall": 0.5,
+     "inflow_recall": 0.7,
      "truly_inflow": 10,
      "outflow_flagged": 14,
      "outflow_hits": 13,
@@ -143,18 +143,18 @@
      "outflow_recall": 1.0,
      "truly_outflow": 12,
      "flagged_in_names": [
+      "三重區",
       "五股區",
       "八里區",
       "新店區",
+      "林口區",
       "汐止區",
       "淡水區",
       "鶯歌區"
      ],
      "missed_in_names": [
-      "三重區",
       "土城區",
       "平溪區",
-      "林口區",
       "泰山區"
      ]
     }
@@ -163,93 +163,93 @@
     "新北市新莊區": {
      "2022": {
       "signal": "方向不明",
-      "forecast": -1.37,
+      "forecast": -0.92,
       "actual_next": 0.82,
       "future_mean": 0.39,
-      "n": 4
+      "n": 5
      },
      "2023": {
       "signal": "持平",
-      "forecast": -0.33,
+      "forecast": -0.11,
       "actual_next": -0.04,
       "future_mean": -0.27,
-      "n": 4
+      "n": 5
      },
      "2024": {
       "signal": "持平",
-      "forecast": -0.19,
+      "forecast": -0.05,
       "actual_next": -0.5,
       "future_mean": -0.45,
-      "n": 5
+      "n": 6
      }
     },
     "新北市林口區": {
      "2022": {
-      "signal": "移入減速",
-      "forecast": 1.23,
+      "signal": "持續移入",
+      "forecast": 2.81,
       "actual_next": 4.62,
       "future_mean": 3.74,
-      "n": 4
+      "n": 5
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 2.61,
+      "forecast": 3.8,
       "actual_next": 2.87,
       "future_mean": 2.5,
-      "n": 4
+      "n": 5
      },
      "2024": {
-      "signal": "移入減速",
-      "forecast": 2.25,
+      "signal": "持續移入",
+      "forecast": 3.14,
       "actual_next": 2.12,
       "future_mean": 1.73,
-      "n": 5
+      "n": 6
      }
     },
     "新北市汐止區": {
      "2022": {
       "signal": "持續移入",
-      "forecast": 0.22,
+      "forecast": 0.83,
       "actual_next": 2.25,
       "future_mean": 1.76,
-      "n": 4
+      "n": 5
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 1.15,
+      "forecast": 1.54,
       "actual_next": 1.28,
       "future_mean": 1.65,
-      "n": 4
+      "n": 5
      },
      "2024": {
       "signal": "持續移入",
-      "forecast": 1.2,
+      "forecast": 1.49,
       "actual_next": 2.03,
       "future_mean": 1.12,
-      "n": 5
+      "n": 6
      }
     },
     "新北市淡水區": {
      "2022": {
       "signal": "持續移入",
-      "forecast": 1.06,
+      "forecast": 1.91,
       "actual_next": 3.69,
       "future_mean": 3.65,
-      "n": 4
+      "n": 5
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 2.2,
+      "forecast": 2.77,
       "actual_next": 3.61,
       "future_mean": 4.45,
-      "n": 4
+      "n": 5
      },
      "2024": {
       "signal": "持續移入",
-      "forecast": 3.14,
+      "forecast": 3.42,
       "actual_next": 5.28,
       "future_mean": 3.92,
-      "n": 5
+      "n": 6
      }
     }
    }
@@ -259,10 +259,10 @@
    "cutoffs": {
     "2022": {
      "n": 12,
-     "points_used": 4,
-     "mae_model_pp": 5.75,
+     "points_used": 5,
+     "mae_model_pp": 5.44,
      "mae_last_pp": 5.03,
-     "mae_mean_pp": 3.21,
+     "mae_mean_pp": 2.86,
      "inflow_flagged": 0,
      "inflow_hits": 0,
      "inflow_precision": null,
@@ -289,29 +289,29 @@
     },
     "2023": {
      "n": 12,
-     "points_used": 5,
-     "mae_model_pp": 1.6,
+     "points_used": 6,
+     "mae_model_pp": 1.84,
      "mae_last_pp": 1.53,
-     "mae_mean_pp": 1.04,
+     "mae_mean_pp": 0.85,
      "inflow_flagged": 0,
      "inflow_hits": 0,
      "inflow_precision": null,
      "inflow_recall": null,
      "truly_inflow": 0,
-     "outflow_flagged": 12,
-     "outflow_hits": 11,
-     "outflow_precision": 0.92,
-     "outflow_recall": 1.0,
+     "outflow_flagged": 9,
+     "outflow_hits": 9,
+     "outflow_precision": 1.0,
+     "outflow_recall": 0.75,
      "truly_outflow": 8,
      "flagged_in_names": [],
      "missed_in_names": []
     },
     "2024": {
      "n": 12,
-     "points_used": 6,
-     "mae_model_pp": 1.78,
+     "points_used": 7,
+     "mae_model_pp": 1.4,
      "mae_last_pp": 2.25,
-     "mae_mean_pp": 1.39,
+     "mae_mean_pp": 1.52,
      "inflow_flagged": 0,
      "inflow_hits": 0,
      "inflow_precision": null,
@@ -333,24 +333,22 @@
    "cutoffs": {
     "2022": {
      "n": 13,
-     "points_used": 4,
-     "mae_model_pp": 2.25,
+     "points_used": 5,
+     "mae_model_pp": 2.08,
      "mae_last_pp": 1.96,
-     "mae_mean_pp": 1.08,
-     "inflow_flagged": 6,
-     "inflow_hits": 6,
+     "mae_mean_pp": 1.01,
+     "inflow_flagged": 4,
+     "inflow_hits": 4,
      "inflow_precision": 1.0,
-     "inflow_recall": 0.55,
+     "inflow_recall": 0.36,
      "truly_inflow": 11,
-     "outflow_flagged": 4,
+     "outflow_flagged": 5,
      "outflow_hits": 0,
      "outflow_precision": 0.0,
      "outflow_recall": null,
      "truly_outflow": 0,
      "flagged_in_names": [
       "復興區",
-      "桃園區",
-      "楊梅區",
       "觀音區",
       "龍潭區",
       "龜山區"
@@ -360,23 +358,25 @@
       "八德區",
       "大園區",
       "新屋區",
+      "桃園區",
+      "楊梅區",
       "蘆竹區"
      ]
     },
     "2023": {
      "n": 13,
-     "points_used": 5,
-     "mae_model_pp": 1.39,
+     "points_used": 6,
+     "mae_model_pp": 1.11,
      "mae_last_pp": 1.16,
-     "mae_mean_pp": 0.62,
+     "mae_mean_pp": 0.68,
      "inflow_flagged": 7,
      "inflow_hits": 7,
      "inflow_precision": 1.0,
      "inflow_recall": 0.67,
      "truly_inflow": 9,
-     "outflow_flagged": 1,
+     "outflow_flagged": 0,
      "outflow_hits": 0,
-     "outflow_precision": 0.0,
+     "outflow_precision": null,
      "outflow_recall": 0.0,
      "truly_outflow": 1,
      "flagged_in_names": [
@@ -396,10 +396,10 @@
     },
     "2024": {
      "n": 13,
-     "points_used": 6,
-     "mae_model_pp": 0.9,
+     "points_used": 7,
+     "mae_model_pp": 0.92,
      "mae_last_pp": 0.55,
-     "mae_mean_pp": 0.91,
+     "mae_mean_pp": 0.92,
      "inflow_flagged": 9,
      "inflow_hits": 7,
      "inflow_precision": 0.78,
@@ -434,13 +434,13 @@
    "cutoffs": {
     "2022": {
      "n": 29,
-     "points_used": 4,
-     "mae_model_pp": 2.22,
+     "points_used": 5,
+     "mae_model_pp": 2.04,
      "mae_last_pp": 1.98,
-     "mae_mean_pp": 1.36,
-     "inflow_flagged": 5,
+     "mae_mean_pp": 1.28,
+     "inflow_flagged": 4,
      "inflow_hits": 4,
-     "inflow_precision": 0.8,
+     "inflow_precision": 1.0,
      "inflow_recall": 0.31,
      "truly_inflow": 13,
      "outflow_flagged": 18,
@@ -450,7 +450,6 @@
      "truly_outflow": 6,
      "flagged_in_names": [
       "北屯區",
-      "和平區",
       "沙鹿區",
       "清水區",
       "烏日區"
@@ -469,19 +468,19 @@
     },
     "2023": {
      "n": 29,
-     "points_used": 5,
-     "mae_model_pp": 0.8,
+     "points_used": 6,
+     "mae_model_pp": 0.77,
      "mae_last_pp": 0.77,
-     "mae_mean_pp": 0.59,
+     "mae_mean_pp": 0.58,
      "inflow_flagged": 11,
      "inflow_hits": 11,
      "inflow_precision": 1.0,
      "inflow_recall": 0.92,
      "truly_inflow": 12,
-     "outflow_flagged": 18,
-     "outflow_hits": 16,
-     "outflow_precision": 0.89,
-     "outflow_recall": 1.0,
+     "outflow_flagged": 15,
+     "outflow_hits": 14,
+     "outflow_precision": 0.93,
+     "outflow_recall": 0.85,
      "truly_outflow": 13,
      "flagged_in_names": [
       "北屯區",
@@ -502,19 +501,19 @@
     },
     "2024": {
      "n": 29,
-     "points_used": 6,
-     "mae_model_pp": 0.79,
+     "points_used": 7,
+     "mae_model_pp": 0.76,
      "mae_last_pp": 0.78,
-     "mae_mean_pp": 0.95,
+     "mae_mean_pp": 0.98,
      "inflow_flagged": 11,
      "inflow_hits": 11,
      "inflow_precision": 1.0,
      "inflow_recall": 0.91,
      "truly_inflow": 11,
-     "outflow_flagged": 15,
-     "outflow_hits": 13,
-     "outflow_precision": 0.87,
-     "outflow_recall": 0.93,
+     "outflow_flagged": 13,
+     "outflow_hits": 12,
+     "outflow_precision": 0.92,
+     "outflow_recall": 0.86,
      "truly_outflow": 14,
      "flagged_in_names": [
       "北屯區",
@@ -541,10 +540,10 @@
    "cutoffs": {
     "2022": {
      "n": 37,
-     "points_used": 4,
-     "mae_model_pp": 1.5,
+     "points_used": 5,
+     "mae_model_pp": 1.45,
      "mae_last_pp": 1.41,
-     "mae_mean_pp": 1.1,
+     "mae_mean_pp": 1.03,
      "inflow_flagged": 5,
      "inflow_hits": 4,
      "inflow_precision": 0.8,
@@ -574,18 +573,18 @@
     },
     "2023": {
      "n": 37,
-     "points_used": 5,
-     "mae_model_pp": 0.69,
+     "points_used": 6,
+     "mae_model_pp": 0.58,
      "mae_last_pp": 0.83,
-     "mae_mean_pp": 0.66,
-     "inflow_flagged": 7,
-     "inflow_hits": 7,
+     "mae_mean_pp": 0.69,
+     "inflow_flagged": 6,
+     "inflow_hits": 6,
      "inflow_precision": 1.0,
      "inflow_recall": 0.6,
      "truly_inflow": 10,
-     "outflow_flagged": 28,
+     "outflow_flagged": 27,
      "outflow_hits": 23,
-     "outflow_precision": 0.82,
+     "outflow_precision": 0.85,
      "outflow_recall": 0.95,
      "truly_outflow": 20,
      "flagged_in_names": [
@@ -594,8 +593,7 @@
       "安南區",
       "安平區",
       "新市區",
-      "永康區",
-      "西港區"
+      "永康區"
      ],
      "missed_in_names": [
       "安定區",
@@ -606,26 +604,24 @@
     },
     "2024": {
      "n": 37,
-     "points_used": 6,
-     "mae_model_pp": 0.97,
+     "points_used": 7,
+     "mae_model_pp": 0.95,
      "mae_last_pp": 0.85,
-     "mae_mean_pp": 0.86,
-     "inflow_flagged": 10,
-     "inflow_hits": 8,
-     "inflow_precision": 0.8,
-     "inflow_recall": 0.75,
+     "mae_mean_pp": 0.87,
+     "inflow_flagged": 8,
+     "inflow_hits": 7,
+     "inflow_precision": 0.88,
+     "inflow_recall": 0.62,
      "truly_inflow": 8,
-     "outflow_flagged": 22,
-     "outflow_hits": 22,
+     "outflow_flagged": 21,
+     "outflow_hits": 21,
      "outflow_precision": 1.0,
-     "outflow_recall": 0.9,
+     "outflow_recall": 0.86,
      "truly_outflow": 21,
      "flagged_in_names": [
       "仁德區",
-      "六甲區",
       "善化區",
       "安南區",
-      "安定區",
       "安平區",
       "新市區",
       "永康區",
@@ -633,6 +629,7 @@
       "麻豆區"
      ],
      "missed_in_names": [
+      "安定區",
       "歸仁區",
       "關廟區"
      ]
@@ -645,18 +642,18 @@
    "cutoffs": {
     "2022": {
      "n": 38,
-     "points_used": 4,
-     "mae_model_pp": 2.09,
+     "points_used": 5,
+     "mae_model_pp": 1.56,
      "mae_last_pp": 1.9,
-     "mae_mean_pp": 1.12,
+     "mae_mean_pp": 1.18,
      "inflow_flagged": 3,
      "inflow_hits": 3,
      "inflow_precision": 1.0,
      "inflow_recall": 0.27,
      "truly_inflow": 11,
-     "outflow_flagged": 28,
-     "outflow_hits": 21,
-     "outflow_precision": 0.75,
+     "outflow_flagged": 26,
+     "outflow_hits": 20,
+     "outflow_precision": 0.77,
      "outflow_recall": 0.82,
      "truly_outflow": 17,
      "flagged_in_names": [
@@ -677,12 +674,12 @@
     },
     "2023": {
      "n": 38,
-     "points_used": 5,
-     "mae_model_pp": 0.89,
+     "points_used": 6,
+     "mae_model_pp": 0.63,
      "mae_last_pp": 0.86,
-     "mae_mean_pp": 0.53,
-     "inflow_flagged": 5,
-     "inflow_hits": 5,
+     "mae_mean_pp": 0.62,
+     "inflow_flagged": 4,
+     "inflow_hits": 4,
      "inflow_precision": 1.0,
      "inflow_recall": 0.8,
      "truly_inflow": 5,
@@ -694,7 +691,6 @@
      "flagged_in_names": [
       "仁武區",
       "前金區",
-      "左營區",
       "楠梓區",
       "橋頭區"
      ],
@@ -704,26 +700,26 @@
     },
     "2024": {
      "n": 38,
-     "points_used": 6,
-     "mae_model_pp": 0.89,
+     "points_used": 7,
+     "mae_model_pp": 0.78,
      "mae_last_pp": 0.83,
-     "mae_mean_pp": 0.89,
+     "mae_mean_pp": 0.96,
      "inflow_flagged": 5,
-     "inflow_hits": 5,
-     "inflow_precision": 1.0,
+     "inflow_hits": 4,
+     "inflow_precision": 0.8,
      "inflow_recall": 0.67,
      "truly_inflow": 6,
-     "outflow_flagged": 25,
-     "outflow_hits": 21,
-     "outflow_precision": 0.84,
-     "outflow_recall": 0.86,
+     "outflow_flagged": 23,
+     "outflow_hits": 20,
+     "outflow_precision": 0.87,
+     "outflow_recall": 0.81,
      "truly_outflow": 21,
      "flagged_in_names": [
       "仁武區",
       "前金區",
-      "左營區",
       "楠梓區",
-      "橋頭區"
+      "橋頭區",
+      "苓雅區"
      ],
      "missed_in_names": [
       "新興區",
@@ -738,93 +734,93 @@
   "新北市新莊區": {
    "2022": {
     "signal": "方向不明",
-    "forecast": -1.37,
+    "forecast": -0.92,
     "actual_next": 0.82,
     "future_mean": 0.39,
-    "n": 4
+    "n": 5
    },
    "2023": {
     "signal": "持平",
-    "forecast": -0.33,
+    "forecast": -0.11,
     "actual_next": -0.04,
     "future_mean": -0.27,
-    "n": 4
+    "n": 5
    },
    "2024": {
     "signal": "持平",
-    "forecast": -0.19,
+    "forecast": -0.05,
     "actual_next": -0.5,
     "future_mean": -0.45,
-    "n": 5
+    "n": 6
    }
   },
   "新北市林口區": {
    "2022": {
-    "signal": "移入減速",
-    "forecast": 1.23,
+    "signal": "持續移入",
+    "forecast": 2.81,
     "actual_next": 4.62,
     "future_mean": 3.74,
-    "n": 4
+    "n": 5
    },
    "2023": {
     "signal": "持續移入",
-    "forecast": 2.61,
+    "forecast": 3.8,
     "actual_next": 2.87,
     "future_mean": 2.5,
-    "n": 4
+    "n": 5
    },
    "2024": {
-    "signal": "移入減速",
-    "forecast": 2.25,
+    "signal": "持續移入",
+    "forecast": 3.14,
     "actual_next": 2.12,
     "future_mean": 1.73,
-    "n": 5
+    "n": 6
    }
   },
   "新北市汐止區": {
    "2022": {
     "signal": "持續移入",
-    "forecast": 0.22,
+    "forecast": 0.83,
     "actual_next": 2.25,
     "future_mean": 1.76,
-    "n": 4
+    "n": 5
    },
    "2023": {
     "signal": "持續移入",
-    "forecast": 1.15,
+    "forecast": 1.54,
     "actual_next": 1.28,
     "future_mean": 1.65,
-    "n": 4
+    "n": 5
    },
    "2024": {
     "signal": "持續移入",
-    "forecast": 1.2,
+    "forecast": 1.49,
     "actual_next": 2.03,
     "future_mean": 1.12,
-    "n": 5
+    "n": 6
    }
   },
   "新北市淡水區": {
    "2022": {
     "signal": "持續移入",
-    "forecast": 1.06,
+    "forecast": 1.91,
     "actual_next": 3.69,
     "future_mean": 3.65,
-    "n": 4
+    "n": 5
    },
    "2023": {
     "signal": "持續移入",
-    "forecast": 2.2,
+    "forecast": 2.77,
     "actual_next": 3.61,
     "future_mean": 4.45,
-    "n": 4
+    "n": 5
    },
    "2024": {
     "signal": "持續移入",
-    "forecast": 3.14,
+    "forecast": 3.42,
     "actual_next": 5.28,
     "future_mean": 3.92,
-    "n": 5
+    "n": 6
    }
   }
  }

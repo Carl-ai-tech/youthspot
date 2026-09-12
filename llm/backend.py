@@ -23,7 +23,7 @@ from typing import Protocol
 # 早，所以寫在 .env 裡的設定會被整個略過，而且是靜靜地略過 ——
 # 你設了 haiku 卻跑出 opus，帳單和延遲都對不上，還很難查。
 # 改成在建構子裡讀，下面這三個只是「什麼都沒設定時」的備援值。
-FALLBACK_BEDROCK_MODEL = "anthropic.claude-opus-5"
+FALLBACK_BEDROCK_MODEL = ""
 FALLBACK_REGION = "us-east-1"
 FALLBACK_DEV_MODEL = "claude-opus-5"
 
@@ -74,11 +74,7 @@ class StubBackend:
 
 
 class BedrockBackend:
-    """正式後端：Amazon Bedrock 上的 Claude。
-
-    需要 `pip install anthropic` 與 AWS 憑證（環境變數或 ~/.aws/credentials）。
-    Bedrock 的模型 ID 要加 `anthropic.` 前綴。
-    """
+    """正式後端：AWS Bedrock Runtime Converse，模型由部署設定指定。"""
 
     name = "bedrock"
 
@@ -86,40 +82,41 @@ class BedrockBackend:
         model = model or _env("YOUTHLENS_BEDROCK_MODEL", FALLBACK_BEDROCK_MODEL)
         region = region or _env("YOUTHLENS_AWS_REGION", FALLBACK_REGION)
         try:
-            from anthropic import AnthropicBedrockMantle
+            import boto3
+            from botocore.config import Config
         except ImportError as exc:
-            raise RuntimeError(
-                "缺少 anthropic 套件。這是唯一需要安裝東西的一層：\n"
-                "    pip install anthropic\n"
-                "engine/ 與 data/ 不需要它，沒裝也能完整跑。"
-            ) from exc
+            raise RuntimeError("缺少 boto3：pip install boto3") from exc
+        if not model:
+            raise RuntimeError("請設定 YOUTHLENS_BEDROCK_MODEL 為競賽帳號可用模型")
         self.model = model
         self.region = region
-        self._client = AnthropicBedrockMantle(aws_region=region)
+        self._client = boto3.client(
+            "bedrock-runtime", region_name=region,
+            config=Config(retries={"total_max_attempts": 1},
+                          connect_timeout=5, read_timeout=120))
 
     def complete(self, prompt: str, image_path: str | Path | None = None) -> str:
+        from llm.rate_limit import acquire
         content: list[dict] = []
         if image_path:
             path = Path(image_path)
             media = MEDIA_TYPES.get(path.suffix.lower())
             if media is None:
                 raise ValueError(f"不支援的圖片格式：{path.suffix}（支援 {', '.join(MEDIA_TYPES)}）")
-            content.append({
-                "type": "image",
-                "source": {
-                    "type": "base64",
-                    "media_type": media,
-                    "data": base64.standard_b64encode(path.read_bytes()).decode("ascii"),
-                },
-            })
-        content.append({"type": "text", "text": prompt})
-
-        response = self._client.messages.create(
-            model=self.model,
-            max_tokens=8000,
-            messages=[{"role": "user", "content": content}],
-        )
-        return "".join(b.text for b in response.content if b.type == "text")
+            content.append({"image": {"format": media.split("/")[1],
+                                      "source": {"bytes": path.read_bytes()}}})
+        content.append({"text": prompt})
+        with acquire(self.region):
+            response = self._client.converse(
+                modelId=self.model, messages=[{"role": "user", "content": content}],
+                inferenceConfig={"maxTokens": 8000})
+        if response.get("stopReason") in {"guardrail_intervened", "content_filtered"}:
+            raise RuntimeError("模型拒絕了這個請求")
+        blocks = response.get("output", {}).get("message", {}).get("content", [])
+        text = "".join(b["text"] for b in blocks if "text" in b)
+        if not text:
+            raise RuntimeError("Bedrock 未回傳文字")
+        return text
 
 
 class AnthropicBackend:

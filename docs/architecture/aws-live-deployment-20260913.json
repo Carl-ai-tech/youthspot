@@ -1,0 +1,70 @@
+{
+  "stack": {
+    "Status": "UPDATE_COMPLETE",
+    "Outputs": [
+      {
+        "OutputKey": "FunctionName",
+        "OutputValue": "youthscope-magnifier-20260913-api"
+      },
+      {
+        "OutputKey": "ApiUrl",
+        "OutputValue": "https://d3mmoubox2tlbx.cloudfront.net/api"
+      },
+      {
+        "OutputKey": "LogGroup",
+        "OutputValue": "/aws/lambda/youthscope-magnifier-20260913-api"
+      },
+      {
+        "OutputKey": "DirectFunctionUrl",
+        "OutputValue": "https://32xitsms7hfuswzqi7vwjf3pfa0lpxkd.lambda-url.us-west-2.on.aws/",
+        "Description": "Public origin URL: direct calls are possible; not an authentication boundary."
+      },
+      {
+        "OutputKey": "RateTable",
+        "OutputValue": "youthscope-magnifier-20260913-RateTable-AMPXS51CIZV5"
+      },
+      {
+        "OutputKey": "DistributionId",
+        "OutputValue": "E8KJKZHJV64CR"
+      },
+      {
+        "OutputKey": "SiteUrl",
+        "OutputValue": "https://d3mmoubox2tlbx.cloudfront.net/"
+      },
+      {
+        "OutputKey": "SiteBucket",
+        "OutputValue": "youthscope-magnifier-20260913-sitebucket-mkgosfxlmjpp"
+      }
+    ]
+  },
+  "function": {
+    "State": "Active",
+    "Update": "Successful",
+    "SHA": "KLhaQZXOGHunaVwYUmKoVMDt6psLZID9vo+6KM+oy80=",
+    "Handler": "deploy.runtime.handler",
+    "Runtime": "python3.12",
+    "Role": "arn:aws:iam::629048311342:role/youthscope-magnifier-20260913-ApiRole-lqeDhB37eVBS",
+    "Timeout": 60
+  },
+  "distribution": {
+    "Status": "Deployed",
+    "Domain": "d3mmoubox2tlbx.cloudfront.net"
+  },
+  "public_access": {
+    "PublicAccessBlockConfiguration": {
+      "BlockPublicAcls": true,
+      "IgnorePublicAcls": true,
+      "BlockPublicPolicy": true,
+      "RestrictPublicBuckets": true
+    }
+  },
+  "policy_status": {
+    "PolicyStatus": {
+      "IsPublic": false
+    }
+  },
+  "old_stack": {
+    "Status": "CREATE_COMPLETE",
+    "LastUpdated": null
+  }
+}

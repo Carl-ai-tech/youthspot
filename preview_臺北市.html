@@ -5,7 +5,8 @@
      在繁中 Windows 上會猜成 Big5，整頁中文變亂碼。
      檔案一直都是合法 UTF-8，是「沒宣告」而不是「存錯編碼」。
      這條是離線 demo 的保命符，不要刪。 -->
-<title>YouthLens 青年數據透鏡</title>
+<title>YouthScope｜青年趨勢預測工具</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iMTQiIGZpbGw9IiNGRjVBMUYiLz48dGV4dCB4PSIyNCIgeT0iMzEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNGRkYiIGZvbnQtZmFtaWx5PSJBdmVuaXIgTmV4dCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNiIgZm9udC13ZWlnaHQ9IjcwMCIgbGV0dGVyLXNwYWNpbmc9Ii0xLjQiPnlzLjwvdGV4dD48L3N2Zz4K" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -1042,11 +1043,30 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 .srcs li b{color:var(--ink);}
 .answer.collapsed .cite{display:block;}
 .citeref.wide{display:block;text-align:left;margin:.25rem 0;padding:.25rem .6rem;font-family:var(--sans);font-weight:500;font-size:.8rem;}
+@media(max-width:40rem){.strip-wrap{margin-left:0;margin-right:0;padding:0;}}
+.topbar .brand .ys-logo{display:block;flex:0 0 37px;border-radius:11px;}
+
+/* Header references /Users/ayun/Projects/youthlens/app/index.html. */
+.topbar{background:rgba(249,248,246,.95);border-bottom:1px solid #e9e5dc;}
+.topbar-in{padding:16px 24px;}
+.topbar .brand{align-items:center;gap:10px;}
+.topbar .brand strong{font-size:18px;letter-spacing:.2px;}
+.topbar .brand span{color:#756f63;opacity:1;}
+.topbar .toc a{color:#5c5749;}
+.topbar .toc a:hover{background:#FFF0E8;color:#C43D12;}
+.topbar .export-btn{background:transparent;color:#5c5749;border:1px solid #ded7ca;box-shadow:none;border-radius:999px;}
+/* Centered magnifier hero restored from the original preview. */
+.hero44 :is(button,a,select,input):focus-visible,.topbar :is(button,a):focus-visible{outline:3px solid #FF5A1F;outline-offset:4px;}
+@media(max-width:40rem){
+ .topbar-in{padding:12px 16px;gap:12px;justify-content:space-between;}
+ .topbar .brand strong{font-size:17px;}
+ .topbar .export-btn{font-size:12px;padding:9px 13px;}
+}
 </style>
 
 <header class="topbar" id="topbar">
   <div class="topbar-in">
-    <a class="brand" href="#top"><i class="dot"></i><strong>YouthLens</strong><span id="brandsub">新北市</span></a>
+    <a class="brand" href="#top"><img class="ys-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iMTQiIGZpbGw9IiNGRjVBMUYiLz48dGV4dCB4PSIyNCIgeT0iMzEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNGRkYiIGZvbnQtZmFtaWx5PSJBdmVuaXIgTmV4dCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNiIgZm9udC13ZWlnaHQ9IjcwMCIgbGV0dGVyLXNwYWNpbmc9Ii0xLjQiPnlzLjwvdGV4dD48L3N2Zz4K" width="37" height="37" alt="YS"><strong>YouthScope</strong><span id="brandsub">新北市</span></a>
     <nav class="toc" id="toc" aria-label="頁面目錄">
       <a href="#ch-next">預測</a><a href="#ch-explore">發現</a><a href="#ch-advice">建議</a><a href="#ch-tools">工具</a><a href="#ch-methods">方法與驗證</a>
     </nav>
@@ -1058,8 +1078,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
 <div class="wrap" id="top">
   <section class="hero44" id="sec-hero">
-    <h1>YouthLens 青年放大鏡</h1>
-    <p class="lede">尋找青年數據，透過資料分析結合 AI 應用，給你最精確的趨勢預測與施政方向。</p>
+    <h1>YouthScope 青年放大鏡</h1>
+    <p class="lede">透過公開資料與 AI，看懂青年人口變化，探索城市趨勢與施政方向。</p>
 
     <section class="prompt" id="sec-ask">
       <div class="prompt-in">
@@ -1687,7 +1707,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         (a.gaps || []).forEach(function (g, i) { lines.push([a.aspect, a.law, WORD[a.status], g, a.candidates[i] || ''].map(function (x) { return '"' + String(x).replace(/"/g, '""') + '"'; }).join(',')); });
       });
       var blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
-      var a2 = document.createElement('a'); a2.href = URL.createObjectURL(blob); a2.download = 'youthlens_' + M.region + '_資料缺口清單.csv'; document.body.appendChild(a2); a2.click(); document.body.removeChild(a2);
+      var a2 = document.createElement('a'); a2.href = URL.createObjectURL(blob); a2.download = 'youthscope_' + M.region + '_資料缺口清單.csv'; document.body.appendChild(a2); a2.click(); document.body.removeChild(a2);
     });
     host.innerHTML = Rg.aspects.map(function (a) {
       var ind = a.indicators.map(function (m) { return '<span class="rchip">' + m + '</span>'; }).join('');
@@ -3348,7 +3368,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     var blob = new Blob([toCsv()], { type: 'text/csv;charset=utf-8' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'youthlens_' + M.region + '_18-35_' + DATA._generated + '.csv';
+    a.download = 'youthscope_' + M.region + '_18-35_' + DATA._generated + '.csv';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
   });
   if ($('dlDict')) $('dlDict').addEventListener('click', function () {
@@ -4494,7 +4514,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       head.innerHTML = '<h1>' + state.area + '　青年統計簡報</h1>'
         + '<p class="sub">' + bandLabel + '　·　' + M.period_label + '　·　'
         + M.areas + ' 個地區 × ' + M.age_groups.length + ' 個年齡層 × ' + M.metrics.length + ' 個指標</p>'
-        + '<p class="meta">YouthLens 青年數據透鏡　·　資料版本 ' + DATA._generated
+        + '<p class="meta">YouthScope｜青年趨勢預測工具　·　資料版本 ' + DATA._generated
         + '　·　列印 ' + stamp + '　·　每個數字都附推估信心度與來源，'
         + 'AI 只做看懂，數字一律由對齊引擎計算</p>';
     }

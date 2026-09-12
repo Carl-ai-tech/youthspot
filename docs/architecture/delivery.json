@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/Users/ayun/Documents/Project/youthspot/docs/architecture/youthscope.architecture.json",
+  "output": "/Users/ayun/Documents/Project/youthspot/docs/architecture/youthscope.html",
+  "specification": {
+    "sha256": "41a6722deef8bc9005138718c74ed20c22768e8607195ca31b99114e528155e3",
+    "bytes": 4329
+  },
+  "artifact": {
+    "sha256": "192f51ce4858df43c59d3cd9399a76852d6be9ffbeedeb8a72ea85da83e8c9a3",
+    "bytes": 808753
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

@@ -12,6 +12,7 @@ from __future__ import annotations
 import os
 import pathlib
 import unittest
+from unittest.mock import patch
 
 from llm import backend as B
 
@@ -68,13 +69,10 @@ class TestLoadBackend(unittest.TestCase):
         認不得會丟 ValueError；缺套件／缺金鑰是 RuntimeError。
         這裡只要求「名字有被註冊」，所以 RuntimeError 算通過。
         """
-        for kind in ("stub", "anthropic", "bedrock"):
-            try:
-                B.load_backend(kind)
-            except RuntimeError:
-                pass                      # 環境沒裝套件，但名字是認得的
-            except ValueError as exc:
-                self.fail(f"{kind} 應該要是認得的後端，卻被當成未知：{exc}")
+        with patch.object(B, "AnthropicBackend") as dev, patch.object(B, "BedrockBackend") as prod:
+            self.assertEqual(B.load_backend("stub").name, "stub")
+            self.assertIs(B.load_backend("anthropic"), dev.return_value)
+            self.assertIs(B.load_backend("bedrock"), prod.return_value)
 
     def test_unknown_kind_lists_the_valid_ones(self):
         """錯誤訊息要把可用選項列出來，不要只說『不認識』。"""
@@ -86,14 +84,16 @@ class TestLoadBackend(unittest.TestCase):
 
     def test_missing_package_says_how_to_fix_it(self):
         """缺套件時要給指令，不要丟 ImportError 讓人自己猜。"""
-        for kind in ("anthropic", "bedrock"):
-            try:
-                B.load_backend(kind)
-            except RuntimeError as exc:
-                self.assertIn("pip install", str(exc),
-                              f"{kind} 的錯誤訊息沒告訴人怎麼修：{exc}")
-            except Exception:
-                pass                      # 套件已安裝，這條就不適用
+        import builtins
+        original = builtins.__import__
+        def missing(name, *args, **kwargs):
+            if name in {"anthropic", "boto3"}:
+                raise ImportError("package unavailable")
+            return original(name, *args, **kwargs)
+        with patch("builtins.__import__", side_effect=missing), patch.object(B, "_load_dotenv"):
+            for kind in ("anthropic", "bedrock"):
+                with self.assertRaisesRegex(RuntimeError, "pip install"):
+                    B.load_backend(kind)
 
     def test_dev_backend_is_not_the_competition_path(self):
         """釘住一件容易忘的事：直連後端不能拿去交件。

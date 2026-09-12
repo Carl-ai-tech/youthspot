@@ -1,0 +1,88 @@
+{
+  "url": "https://d3mmoubox2tlbx.cloudfront.net/",
+  "time": "2026-09-12T16:35:29.539Z",
+  "browser": "Chromium Playwright; Browser plugin absent",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "title": "YouthScope｜青年趨勢預測工具",
+      "cities": [
+        {
+          "city": "臺北市",
+          "current": "臺北市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E8%87%BA%E5%8C%97%E5%B8%82.html"
+        },
+        {
+          "city": "桃園市",
+          "current": "桃園市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E6%A1%83%E5%9C%92%E5%B8%82.html"
+        },
+        {
+          "city": "臺中市",
+          "current": "臺中市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E8%87%BA%E4%B8%AD%E5%B8%82.html"
+        },
+        {
+          "city": "臺南市",
+          "current": "臺南市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E8%87%BA%E5%8D%97%E5%B8%82.html"
+        },
+        {
+          "city": "高雄市",
+          "current": "高雄市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E9%AB%98%E9%9B%84%E5%B8%82.html"
+        },
+        {
+          "city": "新北市",
+          "current": "新北市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview.html"
+        }
+      ],
+      "errors": [],
+      "warnings": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "height": 900,
+      "title": "YouthScope｜青年趨勢預測工具",
+      "cities": [
+        {
+          "city": "臺北市",
+          "current": "臺北市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E8%87%BA%E5%8C%97%E5%B8%82.html"
+        },
+        {
+          "city": "桃園市",
+          "current": "桃園市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E6%A1%83%E5%9C%92%E5%B8%82.html"
+        },
+        {
+          "city": "臺中市",
+          "current": "臺中市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E8%87%BA%E4%B8%AD%E5%B8%82.html"
+        },
+        {
+          "city": "臺南市",
+          "current": "臺南市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E8%87%BA%E5%8D%97%E5%B8%82.html"
+        },
+        {
+          "city": "高雄市",
+          "current": "高雄市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview_%E9%AB%98%E9%9B%84%E5%B8%82.html"
+        },
+        {
+          "city": "新北市",
+          "current": "新北市",
+          "url": "https://d3mmoubox2tlbx.cloudfront.net/preview.html"
+        }
+      ],
+      "errors": [],
+      "warnings": [],
+      "overflow": false
+    }
+  ],
+  "passed": true
+}

@@ -1,5 +1,5 @@
 {
- "_generated": "2026-09-12",
+ "_generated": "2026-09-13",
  "_schema": "YouthLens unified v1（Spec §7.3）",
  "meta": {
   "region": "新北市",
@@ -260,7 +260,7 @@
    {
     "agency": "內政部戶政司",
     "dataset": "內政部戶政司 ODRP014 村里戶數、單一年齡人口",
-    "url": "https://data.gov.tw/dataset/32973",
+    "url": "https://data.gov.tw/dataset/77132",
     "format": "JSON API",
     "auto": true,
     "cadence": "每月",
@@ -414,7 +414,7 @@
    {
     "agency": "內政部戶政司",
     "dataset": "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）",
-    "url": "https://data.gov.tw/dataset/77141",
+    "url": "https://www.ris.gov.tw/rs-opendata/api/Main/docs/v1",
     "format": "JSON API",
     "auto": true,
     "cadence": "每月",
@@ -501,7 +501,7 @@
   ],
   "validation_migration": {
    "source": "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）",
-   "url": "https://data.gov.tw/dataset/77141",
+   "url": "https://www.ris.gov.tw/rs-opendata/api/Main/docs/v1",
    "months": "11408–11507",
    "n": 29,
    "r": 0.952,
@@ -563,7 +563,7 @@
    "note": "官方遷入遷出是全年齡的登記數，我們的是 18–35 歲用單一年齡兩期相減算的；同一年、同一批區，兩者跨區相關 r 越接近 1，代表世代追蹤抓到的就是真實的搬遷。"
   },
   "backtest_migration": {
-   "method": "假裝現在是 T 年，只用 T 年以前的世代淨遷入率跑正式的線性外推＋訊號判定，對 T+1、T+2 的實際值。2022／2023 戶籍事件年兩點取平均互相抵銷（cutoff 2022 只有一點、抵銷不了）。",
+   "method": "假裝現在是 T 年，只用 T 年以前的世代淨遷入率跑正式的線性外推＋訊號判定，對 T+1、T+2 的實際值。2022／2023 戶籍事件年合併成一個時間點（t = 2022.5，值取平均；cutoff 2022 只有一點、合併不了）。",
    "hit_rate": 0.005,
    "pooled": {
     "2022": {
@@ -586,16 +586,16 @@
     "2023": {
      "n": 158,
      "points_used": 5,
-     "mae_model_pp": 0.9,
+     "mae_model_pp": 0.86,
      "mae_last_pp": 0.92,
      "mae_mean_pp": 0.61,
      "inflow_flagged": 37,
-     "inflow_hits": 35,
-     "inflow_precision": 0.95,
-     "inflow_recall": 0.71,
+     "inflow_hits": 37,
+     "inflow_precision": 1.0,
+     "inflow_recall": 0.76,
      "truly_inflow": 45,
-     "outflow_flagged": 105,
-     "outflow_hits": 89,
+     "outflow_flagged": 103,
+     "outflow_hits": 88,
      "outflow_precision": 0.85,
      "outflow_recall": 0.92,
      "truly_outflow": 79
@@ -603,18 +603,18 @@
     "2024": {
      "n": 158,
      "points_used": 6,
-     "mae_model_pp": 1.0,
+     "mae_model_pp": 0.96,
      "mae_last_pp": 0.95,
      "mae_mean_pp": 1.01,
-     "inflow_flagged": 42,
+     "inflow_flagged": 41,
      "inflow_hits": 37,
-     "inflow_precision": 0.88,
+     "inflow_precision": 0.9,
      "inflow_recall": 0.72,
      "truly_inflow": 43,
-     "outflow_flagged": 77,
-     "outflow_hits": 71,
-     "outflow_precision": 0.92,
-     "outflow_recall": 0.79,
+     "outflow_flagged": 79,
+     "outflow_hits": 72,
+     "outflow_precision": 0.91,
+     "outflow_recall": 0.81,
      "truly_outflow": 80
     }
    },
@@ -629,17 +629,17 @@
      },
      "2023": {
       "signal": "持平",
-      "forecast": -0.35,
+      "forecast": -0.33,
       "actual_next": -0.04,
       "future_mean": -0.27,
-      "n": 5
+      "n": 4
      },
      "2024": {
       "signal": "持平",
-      "forecast": -0.23,
+      "forecast": -0.19,
       "actual_next": -0.5,
       "future_mean": -0.45,
-      "n": 6
+      "n": 5
      }
     },
     "新北市林口區": {
@@ -651,18 +651,18 @@
       "n": 4
      },
      "2023": {
-      "signal": "移入減速",
-      "forecast": 2.51,
+      "signal": "持續移入",
+      "forecast": 2.61,
       "actual_next": 2.87,
       "future_mean": 2.5,
-      "n": 5
+      "n": 4
      },
      "2024": {
       "signal": "移入減速",
-      "forecast": 2.27,
+      "forecast": 2.25,
       "actual_next": 2.12,
       "future_mean": 1.73,
-      "n": 6
+      "n": 5
      }
     },
     "新北市汐止區": {
@@ -675,17 +675,17 @@
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 1.23,
+      "forecast": 1.15,
       "actual_next": 1.28,
       "future_mean": 1.65,
-      "n": 5
+      "n": 4
      },
      "2024": {
       "signal": "持續移入",
-      "forecast": 1.24,
+      "forecast": 1.2,
       "actual_next": 2.03,
       "future_mean": 1.12,
-      "n": 6
+      "n": 5
      }
     },
     "新北市淡水區": {
@@ -698,17 +698,17 @@
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 2.24,
+      "forecast": 2.2,
       "actual_next": 3.61,
       "future_mean": 4.45,
-      "n": 5
+      "n": 4
      },
      "2024": {
       "signal": "持續移入",
-      "forecast": 2.97,
+      "forecast": 3.14,
       "actual_next": 5.28,
       "future_mean": 3.92,
-      "n": 6
+      "n": 5
      }
     }
    },
@@ -749,13 +749,13 @@
     "2023": {
      "n": 29,
      "points_used": 5,
-     "mae_model_pp": 0.62,
+     "mae_model_pp": 0.58,
      "mae_last_pp": 0.9,
      "mae_mean_pp": 0.5,
-     "inflow_flagged": 6,
-     "inflow_hits": 6,
+     "inflow_flagged": 7,
+     "inflow_hits": 7,
      "inflow_precision": 1.0,
-     "inflow_recall": 0.67,
+     "inflow_recall": 0.78,
      "truly_inflow": 9,
      "outflow_flagged": 17,
      "outflow_hits": 15,
@@ -766,20 +766,20 @@
       "五股區",
       "八里區",
       "新店區",
+      "林口區",
       "汐止區",
       "淡水區",
       "鶯歌區"
      ],
      "missed_in_names": [
       "三重區",
-      "林口區",
       "泰山區"
      ]
     },
     "2024": {
      "n": 29,
      "points_used": 6,
-     "mae_model_pp": 0.93,
+     "mae_model_pp": 0.92,
      "mae_last_pp": 1.03,
      "mae_mean_pp": 1.28,
      "inflow_flagged": 6,
@@ -787,8 +787,8 @@
      "inflow_precision": 1.0,
      "inflow_recall": 0.5,
      "truly_inflow": 10,
-     "outflow_flagged": 15,
-     "outflow_hits": 14,
+     "outflow_flagged": 14,
+     "outflow_hits": 13,
      "outflow_precision": 0.93,
      "outflow_recall": 1.0,
      "truly_outflow": 12,
@@ -5254,21 +5254,23 @@
      ],
      "signal": "持續移入",
      "slope_pp": 0.004,
-     "slope_se_pp": 0.029,
-     "t": 0.14,
+     "slope_se_pp": 0.032,
+     "t": 0.13,
      "significant": false,
      "r2": 0.0,
-     "mean": 0.0018,
-     "sd": 0.0018,
-     "mean_ci": 0.0015,
-     "level_t": 2.94,
+     "mean": 0.0019,
+     "sd": 0.0019,
+     "mean_ci": 0.0018,
+     "level_t": 2.66,
      "level_significant": true,
+     "edge": true,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.002,
-     "margin": 0.0047,
-     "confidence": "medium",
+     "forecast": 0.0021,
+     "margin": 0.0068,
+     "confidence": "low",
      "positive_years": 6,
-     "n": 8
+     "n": 7
     },
     "新北市三峽區": {
      "net": [
@@ -5302,22 +5304,24 @@
       -459
      ],
      "signal": "持平",
-     "slope_pp": -0.075,
-     "slope_se_pp": 0.08,
+     "slope_pp": -0.076,
+     "slope_se_pp": 0.081,
      "t": -0.93,
      "significant": false,
-     "r2": 0.13,
-     "mean": -0.0043,
-     "sd": 0.0051,
-     "mean_ci": 0.0043,
-     "level_t": -2.36,
+     "r2": 0.15,
+     "mean": -0.0036,
+     "sd": 0.0052,
+     "mean_ci": 0.0048,
+     "level_t": -1.86,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0077,
-     "margin": 0.0129,
+     "forecast": -0.007,
+     "margin": 0.0172,
      "confidence": "medium",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "新北市三芝區": {
      "net": [
@@ -5351,22 +5355,24 @@
       -181
      ],
      "signal": "持續流出",
-     "slope_pp": 0.157,
-     "slope_se_pp": 0.08,
-     "t": 1.97,
+     "slope_pp": 0.159,
+     "slope_se_pp": 0.087,
+     "t": 1.83,
      "significant": false,
-     "r2": 0.39,
-     "mean": -0.013,
-     "sd": 0.0061,
-     "mean_ci": 0.0051,
-     "level_t": -6.0,
+     "r2": 0.4,
+     "mean": -0.0132,
+     "sd": 0.0066,
+     "mean_ci": 0.0061,
+     "level_t": -5.27,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
      "forecast": -0.006,
-     "margin": 0.0128,
+     "margin": 0.0184,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "新北市三重區": {
      "net": [
@@ -5400,22 +5406,24 @@
       -2149
      ],
      "signal": "轉為移入",
-     "slope_pp": 0.17,
-     "slope_se_pp": 0.045,
-     "t": 3.75,
+     "slope_pp": 0.172,
+     "slope_se_pp": 0.049,
+     "t": 3.49,
      "significant": true,
-     "r2": 0.7,
-     "mean": 0.0013,
-     "sd": 0.005,
-     "mean_ci": 0.0041,
-     "level_t": 0.72,
+     "r2": 0.71,
+     "mean": 0.0012,
+     "sd": 0.0054,
+     "mean_ci": 0.005,
+     "level_t": 0.61,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0089,
-     "margin": 0.0073,
+     "forecast": 0.009,
+     "margin": 0.0104,
      "confidence": "medium",
      "positive_years": 4,
-     "n": 8
+     "n": 7
     },
     "新北市中和區": {
      "net": [
@@ -5449,22 +5457,24 @@
       -2448
      ],
      "signal": "持平",
-     "slope_pp": 0.029,
-     "slope_se_pp": 0.04,
-     "t": 0.73,
+     "slope_pp": 0.03,
+     "slope_se_pp": 0.044,
+     "t": 0.67,
      "significant": false,
      "r2": 0.08,
      "mean": 0.0005,
-     "sd": 0.0025,
-     "mean_ci": 0.0021,
-     "level_t": 0.52,
+     "sd": 0.0027,
+     "mean_ci": 0.0025,
+     "level_t": 0.49,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
      "forecast": 0.0018,
-     "margin": 0.0065,
+     "margin": 0.0094,
      "confidence": "medium",
      "positive_years": 4,
-     "n": 8
+     "n": 7
     },
     "新北市五股區": {
      "net": [
@@ -5498,22 +5508,24 @@
       -425
      ],
      "signal": "持續移入",
-     "slope_pp": -0.121,
-     "slope_se_pp": 0.069,
-     "t": -1.74,
+     "slope_pp": -0.122,
+     "slope_se_pp": 0.076,
+     "t": -1.61,
      "significant": false,
      "r2": 0.34,
      "mean": 0.0182,
-     "sd": 0.0051,
-     "mean_ci": 0.0043,
-     "level_t": 10.09,
+     "sd": 0.0055,
+     "mean_ci": 0.0051,
+     "level_t": 8.77,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
      "forecast": 0.0128,
-     "margin": 0.0111,
+     "margin": 0.0161,
      "confidence": "medium",
      "positive_years": 8,
-     "n": 8
+     "n": 7
     },
     "新北市八里區": {
      "net": [
@@ -5547,22 +5559,24 @@
       -257
      ],
      "signal": "持續移入",
-     "slope_pp": 0.133,
+     "slope_pp": 0.134,
      "slope_se_pp": 0.187,
-     "t": 0.71,
+     "t": 0.72,
      "significant": false,
-     "r2": 0.08,
-     "mean": 0.016,
-     "sd": 0.0117,
-     "mean_ci": 0.0098,
-     "level_t": 3.88,
+     "r2": 0.09,
+     "mean": 0.0144,
+     "sd": 0.0115,
+     "mean_ci": 0.0107,
+     "level_t": 3.29,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.022,
-     "margin": 0.0301,
+     "forecast": 0.0204,
+     "margin": 0.0395,
      "confidence": "medium",
      "positive_years": 8,
-     "n": 8
+     "n": 7
     },
     "新北市土城區": {
      "net": [
@@ -5596,22 +5610,24 @@
       -1287
      ],
      "signal": "轉為移入",
-     "slope_pp": 0.153,
-     "slope_se_pp": 0.044,
-     "t": 3.52,
+     "slope_pp": 0.155,
+     "slope_se_pp": 0.046,
+     "t": 3.37,
      "significant": true,
-     "r2": 0.67,
-     "mean": 0.0008,
-     "sd": 0.0046,
-     "mean_ci": 0.0038,
-     "level_t": 0.49,
+     "r2": 0.69,
+     "mean": 0.0006,
+     "sd": 0.0049,
+     "mean_ci": 0.0045,
+     "level_t": 0.31,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0077,
-     "margin": 0.007,
+     "forecast": 0.0076,
+     "margin": 0.0097,
      "confidence": "medium",
      "positive_years": 5,
-     "n": 8
+     "n": 7
     },
     "新北市坪林區": {
      "net": [
@@ -5645,22 +5661,24 @@
       -63
      ],
      "signal": "轉為流出",
-     "slope_pp": -0.562,
-     "slope_se_pp": 0.109,
-     "t": -5.15,
+     "slope_pp": -0.569,
+     "slope_se_pp": 0.117,
+     "t": -4.86,
      "significant": true,
-     "r2": 0.82,
-     "mean": -0.0126,
-     "sd": 0.0152,
-     "mean_ci": 0.0127,
-     "level_t": -2.33,
+     "r2": 0.83,
+     "mean": -0.0127,
+     "sd": 0.0165,
+     "mean_ci": 0.0152,
+     "level_t": -2.03,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0379,
-     "margin": 0.0176,
+     "forecast": -0.0382,
+     "margin": 0.0247,
      "confidence": "medium",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "新北市平溪區": {
      "net": [
@@ -5694,22 +5712,24 @@
       -5
      ],
      "signal": "轉為移入",
-     "slope_pp": 0.495,
-     "slope_se_pp": 0.135,
-     "t": 3.67,
+     "slope_pp": 0.501,
+     "slope_se_pp": 0.146,
+     "t": 3.44,
      "significant": true,
-     "r2": 0.69,
-     "mean": -0.0111,
-     "sd": 0.0146,
-     "mean_ci": 0.0122,
-     "level_t": -2.15,
+     "r2": 0.7,
+     "mean": -0.0108,
+     "sd": 0.0157,
+     "mean_ci": 0.0145,
+     "level_t": -1.82,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0112,
-     "margin": 0.0217,
+     "forecast": 0.0118,
+     "margin": 0.0308,
      "confidence": "medium",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "新北市新店區": {
      "net": [
@@ -5744,21 +5764,23 @@
      ],
      "signal": "持平",
      "slope_pp": 0.029,
-     "slope_se_pp": 0.069,
-     "t": 0.42,
+     "slope_se_pp": 0.075,
+     "t": 0.39,
      "significant": false,
      "r2": 0.03,
-     "mean": 0.0042,
-     "sd": 0.0042,
-     "mean_ci": 0.0035,
-     "level_t": 2.83,
+     "mean": 0.0043,
+     "sd": 0.0045,
+     "mean_ci": 0.0042,
+     "level_t": 2.54,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0055,
-     "margin": 0.0111,
+     "forecast": 0.0056,
+     "margin": 0.016,
      "confidence": "medium",
      "positive_years": 5,
-     "n": 8
+     "n": 7
     },
     "新北市新莊區": {
      "net": [
@@ -5791,23 +5813,25 @@
       -3115,
       -2637
      ],
-     "signal": "轉為流出",
-     "slope_pp": -0.068,
-     "slope_se_pp": 0.024,
-     "t": -2.87,
+     "signal": "持平",
+     "slope_pp": -0.069,
+     "slope_se_pp": 0.026,
+     "t": -2.67,
      "significant": true,
-     "r2": 0.58,
+     "r2": 0.59,
      "mean": -0.0017,
-     "sd": 0.0022,
-     "mean_ci": 0.0018,
-     "level_t": -2.23,
+     "sd": 0.0024,
+     "mean_ci": 0.0022,
+     "level_t": -1.87,
      "level_significant": false,
+     "edge": true,
+     "level_t_crit": null,
      "forecast_year": 2027,
      "forecast": -0.0048,
-     "margin": 0.0038,
-     "confidence": "medium",
+     "margin": 0.0055,
+     "confidence": "low",
      "positive_years": 3,
-     "n": 8
+     "n": 7
     },
     "新北市板橋區": {
      "net": [
@@ -5842,21 +5866,23 @@
      ],
      "signal": "持平",
      "slope_pp": 0.008,
-     "slope_se_pp": 0.03,
-     "t": 0.27,
+     "slope_se_pp": 0.033,
+     "t": 0.25,
      "significant": false,
      "r2": 0.01,
-     "mean": -0.0013,
-     "sd": 0.0018,
-     "mean_ci": 0.0015,
-     "level_t": -1.97,
+     "mean": -0.0012,
+     "sd": 0.0019,
+     "mean_ci": 0.0018,
+     "level_t": -1.59,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0009,
-     "margin": 0.0049,
+     "forecast": -0.0008,
+     "margin": 0.007,
      "confidence": "medium",
      "positive_years": 3,
-     "n": 8
+     "n": 7
     },
     "新北市林口區": {
      "net": [
@@ -5890,22 +5916,24 @@
       -377
      ],
      "signal": "移入減速",
-     "slope_pp": -0.48,
-     "slope_se_pp": 0.048,
-     "t": -9.98,
+     "slope_pp": -0.486,
+     "slope_se_pp": 0.047,
+     "t": -10.25,
      "significant": true,
-     "r2": 0.94,
+     "r2": 0.95,
      "mean": 0.0326,
-     "sd": 0.0121,
-     "mean_ci": 0.0101,
-     "level_t": 7.62,
+     "sd": 0.0131,
+     "mean_ci": 0.0121,
+     "level_t": 6.59,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.011,
-     "margin": 0.0078,
+     "forecast": 0.0107,
+     "margin": 0.01,
      "confidence": "medium",
      "positive_years": 8,
-     "n": 8
+     "n": 7
     },
     "新北市樹林區": {
      "net": [
@@ -5939,22 +5967,24 @@
       -1144
      ],
      "signal": "持續流出",
-     "slope_pp": -0.13,
-     "slope_se_pp": 0.059,
-     "t": -2.19,
+     "slope_pp": -0.132,
+     "slope_se_pp": 0.065,
+     "t": -2.02,
      "significant": false,
-     "r2": 0.44,
-     "mean": -0.0091,
-     "sd": 0.0048,
-     "mean_ci": 0.004,
-     "level_t": -5.39,
+     "r2": 0.45,
+     "mean": -0.0092,
+     "sd": 0.0052,
+     "mean_ci": 0.0048,
+     "level_t": -4.69,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.015,
-     "margin": 0.0096,
+     "forecast": -0.0151,
+     "margin": 0.0138,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "新北市永和區": {
      "net": [
@@ -5989,21 +6019,23 @@
      ],
      "signal": "持續流出",
      "slope_pp": -0.06,
-     "slope_se_pp": 0.032,
-     "t": -1.87,
+     "slope_se_pp": 0.033,
+     "t": -1.8,
      "significant": false,
-     "r2": 0.37,
-     "mean": -0.0109,
-     "sd": 0.0024,
-     "mean_ci": 0.002,
-     "level_t": -12.83,
+     "r2": 0.39,
+     "mean": -0.0107,
+     "sd": 0.0025,
+     "mean_ci": 0.0023,
+     "level_t": -11.21,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0136,
-     "margin": 0.0051,
+     "forecast": -0.0134,
+     "margin": 0.0071,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "新北市汐止區": {
      "net": [
@@ -6037,22 +6069,24 @@
       -1105
      ],
      "signal": "持續移入",
-     "slope_pp": -0.056,
-     "slope_se_pp": 0.087,
-     "t": -0.64,
+     "slope_pp": -0.057,
+     "slope_se_pp": 0.096,
+     "t": -0.59,
      "significant": false,
-     "r2": 0.06,
-     "mean": 0.0126,
-     "sd": 0.0054,
-     "mean_ci": 0.0045,
-     "level_t": 6.6,
+     "r2": 0.07,
+     "mean": 0.0125,
+     "sd": 0.0058,
+     "mean_ci": 0.0054,
+     "level_t": 5.66,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0101,
-     "margin": 0.014,
+     "forecast": 0.0099,
+     "margin": 0.0203,
      "confidence": "medium",
      "positive_years": 8,
-     "n": 8
+     "n": 7
     },
     "新北市泰山區": {
      "net": [
@@ -6086,22 +6120,24 @@
       -116
      ],
      "signal": "轉為移入",
-     "slope_pp": 0.248,
-     "slope_se_pp": 0.085,
-     "t": 2.94,
+     "slope_pp": 0.251,
+     "slope_se_pp": 0.08,
+     "t": 3.14,
      "significant": true,
-     "r2": 0.59,
-     "mean": -0.0013,
-     "sd": 0.0079,
-     "mean_ci": 0.0066,
-     "level_t": -0.46,
+     "r2": 0.66,
+     "mean": -0.0004,
+     "sd": 0.0081,
+     "mean_ci": 0.0075,
+     "level_t": -0.13,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0099,
-     "margin": 0.0136,
+     "forecast": 0.0109,
+     "margin": 0.0169,
      "confidence": "medium",
      "positive_years": 4,
-     "n": 8
+     "n": 7
     },
     "新北市淡水區": {
      "net": [
@@ -6135,22 +6171,24 @@
       -275
      ],
      "signal": "持續移入",
-     "slope_pp": 0.118,
-     "slope_se_pp": 0.153,
-     "t": 0.78,
+     "slope_pp": 0.12,
+     "slope_se_pp": 0.163,
+     "t": 0.74,
      "significant": false,
-     "r2": 0.09,
-     "mean": 0.0317,
-     "sd": 0.0096,
-     "mean_ci": 0.008,
-     "level_t": 9.33,
+     "r2": 0.1,
+     "mean": 0.0325,
+     "sd": 0.0101,
+     "mean_ci": 0.0093,
+     "level_t": 8.55,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.037,
-     "margin": 0.0246,
+     "forecast": 0.0379,
+     "margin": 0.0344,
      "confidence": "medium",
      "positive_years": 8,
-     "n": 8
+     "n": 7
     },
     "新北市深坑區": {
      "net": [
@@ -6185,21 +6223,23 @@
      ],
      "signal": "持平",
      "slope_pp": -0.011,
-     "slope_se_pp": 0.047,
-     "t": -0.23,
+     "slope_se_pp": 0.052,
+     "t": -0.21,
      "significant": false,
      "r2": 0.01,
      "mean": -0.0005,
-     "sd": 0.0028,
-     "mean_ci": 0.0024,
-     "level_t": -0.46,
+     "sd": 0.003,
+     "mean_ci": 0.0028,
+     "level_t": -0.42,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
      "forecast": -0.001,
-     "margin": 0.0075,
+     "margin": 0.0109,
      "confidence": "medium",
      "positive_years": 4,
-     "n": 8
+     "n": 7
     },
     "新北市烏來區": {
      "net": [
@@ -6232,23 +6272,25 @@
       -65,
       -20
      ],
-     "signal": "持平",
-     "slope_pp": -0.127,
-     "slope_se_pp": 0.141,
-     "t": -0.91,
+     "signal": "方向不明",
+     "slope_pp": -0.129,
+     "slope_se_pp": 0.154,
+     "t": -0.84,
      "significant": false,
      "r2": 0.12,
-     "mean": -0.0021,
-     "sd": 0.009,
-     "mean_ci": 0.0075,
-     "level_t": -0.66,
+     "mean": -0.0019,
+     "sd": 0.0097,
+     "mean_ci": 0.009,
+     "level_t": -0.51,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0078,
-     "margin": 0.0226,
-     "confidence": "medium",
+     "forecast": -0.0077,
+     "margin": 0.0326,
+     "confidence": "low",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "新北市瑞芳區": {
      "net": [
@@ -6282,22 +6324,24 @@
       -356
      ],
      "signal": "持續流出",
-     "slope_pp": -0.092,
-     "slope_se_pp": 0.05,
-     "t": -1.83,
+     "slope_pp": -0.093,
+     "slope_se_pp": 0.053,
+     "t": -1.76,
      "significant": false,
-     "r2": 0.36,
-     "mean": -0.0158,
-     "sd": 0.0038,
-     "mean_ci": 0.0032,
-     "level_t": -11.82,
+     "r2": 0.38,
+     "mean": -0.0155,
+     "sd": 0.004,
+     "mean_ci": 0.0037,
+     "level_t": -10.31,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0199,
-     "margin": 0.0081,
+     "forecast": -0.0196,
+     "margin": 0.0112,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "新北市石碇區": {
      "net": [
@@ -6331,22 +6375,24 @@
       -29
      ],
      "signal": "持續流出",
-     "slope_pp": -0.178,
-     "slope_se_pp": 0.237,
-     "t": -0.75,
+     "slope_pp": -0.18,
+     "slope_se_pp": 0.255,
+     "t": -0.71,
      "significant": false,
      "r2": 0.09,
-     "mean": -0.0171,
-     "sd": 0.0149,
-     "mean_ci": 0.0124,
-     "level_t": -3.26,
+     "mean": -0.016,
+     "sd": 0.0157,
+     "mean_ci": 0.0145,
+     "level_t": -2.7,
      "level_significant": true,
+     "edge": true,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0251,
-     "margin": 0.0381,
-     "confidence": "medium",
+     "forecast": -0.0241,
+     "margin": 0.0539,
+     "confidence": "low",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "新北市石門區": {
      "net": [
@@ -6380,22 +6426,24 @@
       -82
      ],
      "signal": "持續流出",
-     "slope_pp": -0.245,
-     "slope_se_pp": 0.256,
-     "t": -0.96,
+     "slope_pp": -0.248,
+     "slope_se_pp": 0.28,
+     "t": -0.89,
      "significant": false,
-     "r2": 0.13,
-     "mean": -0.0315,
-     "sd": 0.0165,
-     "mean_ci": 0.0138,
-     "level_t": -5.41,
+     "r2": 0.14,
+     "mean": -0.0322,
+     "sd": 0.0177,
+     "mean_ci": 0.0164,
+     "level_t": -4.81,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0426,
-     "margin": 0.0412,
+     "forecast": -0.0434,
+     "margin": 0.0592,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "新北市萬里區": {
      "net": [
@@ -6429,22 +6477,24 @@
       -172
      ],
      "signal": "持續流出",
-     "slope_pp": -0.191,
-     "slope_se_pp": 0.086,
-     "t": -2.21,
+     "slope_pp": -0.193,
+     "slope_se_pp": 0.093,
+     "t": -2.07,
      "significant": false,
-     "r2": 0.45,
-     "mean": -0.0121,
-     "sd": 0.007,
-     "mean_ci": 0.0058,
-     "level_t": -4.91,
+     "r2": 0.46,
+     "mean": -0.0124,
+     "sd": 0.0075,
+     "mean_ci": 0.0069,
+     "level_t": -4.39,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0207,
-     "margin": 0.0139,
+     "forecast": -0.0211,
+     "margin": 0.0197,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "新北市蘆洲區": {
      "net": [
@@ -6478,22 +6528,24 @@
       -1550
      ],
      "signal": "流出加劇",
-     "slope_pp": -0.144,
-     "slope_se_pp": 0.042,
-     "t": -3.42,
+     "slope_pp": -0.146,
+     "slope_se_pp": 0.045,
+     "t": -3.24,
      "significant": true,
-     "r2": 0.66,
-     "mean": -0.0075,
-     "sd": 0.0043,
-     "mean_ci": 0.0036,
-     "level_t": -4.88,
+     "r2": 0.68,
+     "mean": -0.0073,
+     "sd": 0.0047,
+     "mean_ci": 0.0043,
+     "level_t": -4.16,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.014,
-     "margin": 0.0068,
+     "forecast": -0.0139,
+     "margin": 0.0095,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "新北市貢寮區": {
      "net": [
@@ -6526,23 +6578,25 @@
       -102,
       -97
      ],
-     "signal": "流出加劇",
-     "slope_pp": -0.125,
-     "slope_se_pp": 0.046,
-     "t": -2.68,
-     "significant": true,
-     "r2": 0.55,
-     "mean": -0.0224,
-     "sd": 0.0041,
-     "mean_ci": 0.0035,
-     "level_t": -15.33,
+     "signal": "持續流出",
+     "slope_pp": -0.126,
+     "slope_se_pp": 0.05,
+     "t": -2.51,
+     "significant": false,
+     "r2": 0.56,
+     "mean": -0.0223,
+     "sd": 0.0044,
+     "mean_ci": 0.0041,
+     "level_t": -13.25,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.028,
-     "margin": 0.0075,
+     "forecast": -0.0279,
+     "margin": 0.0106,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "新北市金山區": {
      "net": [
@@ -6576,22 +6630,24 @@
       -130
      ],
      "signal": "持續流出",
-     "slope_pp": -0.085,
-     "slope_se_pp": 0.131,
-     "t": -0.65,
+     "slope_pp": -0.086,
+     "slope_se_pp": 0.139,
+     "t": -0.62,
      "significant": false,
      "r2": 0.07,
-     "mean": -0.0146,
-     "sd": 0.0081,
-     "mean_ci": 0.0068,
-     "level_t": -5.08,
+     "mean": -0.0153,
+     "sd": 0.0085,
+     "mean_ci": 0.0078,
+     "level_t": -4.79,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0184,
-     "margin": 0.0211,
+     "forecast": -0.0192,
+     "margin": 0.0294,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "新北市雙溪區": {
      "net": [
@@ -6625,22 +6681,24 @@
       -9
      ],
      "signal": "方向不明",
-     "slope_pp": 0.168,
-     "slope_se_pp": 0.263,
-     "t": 0.64,
+     "slope_pp": 0.17,
+     "slope_se_pp": 0.276,
+     "t": 0.62,
      "significant": false,
-     "r2": 0.06,
-     "mean": -0.0256,
-     "sd": 0.0163,
-     "mean_ci": 0.0136,
-     "level_t": -4.46,
+     "r2": 0.07,
+     "mean": -0.0273,
+     "sd": 0.0168,
+     "mean_ci": 0.0156,
+     "level_t": -4.3,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0181,
-     "margin": 0.0423,
+     "forecast": -0.0197,
+     "margin": 0.0583,
      "confidence": "low",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "新北市鶯歌區": {
      "net": [
@@ -6675,29 +6733,31 @@
      ],
      "signal": "持續移入",
      "slope_pp": -0.027,
-     "slope_se_pp": 0.07,
-     "t": -0.38,
+     "slope_se_pp": 0.076,
+     "t": -0.35,
      "significant": false,
      "r2": 0.02,
-     "mean": 0.0065,
-     "sd": 0.0042,
-     "mean_ci": 0.0035,
-     "level_t": 4.31,
+     "mean": 0.0063,
+     "sd": 0.0046,
+     "mean_ci": 0.0042,
+     "level_t": 3.67,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0052,
-     "margin": 0.0112,
+     "forecast": 0.0051,
+     "margin": 0.0162,
      "confidence": "medium",
      "positive_years": 8,
-     "n": 8
+     "n": 7
     }
    },
-   "method": "世代追蹤淨遷入率 → 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；預測為線性外推＋95% 預測區間（forecast.py）",
+   "method": "世代追蹤淨遷入率 → 2022／2023 事件年合併成一點（n = 7）→ 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；|t| 在臨界值 ±20% 內標「邊緣」、信心低；預測為線性外推＋95% 預測區間（t 分布，forecast.py）",
    "shock_years": [
     2022,
     2023
    ],
-   "note": "世代追蹤：今年 a 歲 − 去年 a−1 歲，Σ 18–35 歲。扣掉了世代縮小與（可忽略的）死亡，剩下的就是淨遷徙。戶籍資料，量的是把戶籍遷來的青年，不含未遷籍的就學就業者。 2022／2023 兩期受疫情除籍與恢復戶籍影響，全市出現一負一正的大幅波動，是戶籍事件不是搬家：判定訊號與做檢定時把這兩點換成兩者平均（同一批人除籍再恢復，互相抵銷），圖上仍畫原始值；預測標 experimental。"
+   "note": "世代追蹤：今年 a 歲 − 去年 a−1 歲，Σ 18–35 歲。扣掉了世代縮小與（可忽略的）死亡，剩下的就是淨遷徙。戶籍資料，量的是把戶籍遷來的青年，不含未遷籍的就學就業者。 2022／2023 兩期受疫情除籍與恢復戶籍影響，全市出現一負一正的大幅波動，是戶籍事件不是搬家：判定訊號與做檢定時把這兩點合併成一個時間點（2022.5，取平均；同一批人除籍再恢復，互相抵銷），n 從 8 變 7，圖上仍畫原始值；預測標 experimental。"
   },
   "drivers": {
    "spec": "淨遷入率(區, 近三年平均) = β₀ + β₁ ln(工作機會密度) + β₂ ln(所得中位數) + β₃ ln(每坪月租) + β₄ ln(18–35 歲人口) + 縣市固定效果；OLS。模型 A 不含租金（全部行政區）、模型 B 含租金",
@@ -12106,15 +12166,13 @@
   },
   {
    "title": "優先投入這幾個領域的青年職訓與媒合",
-   "body": "這些行業的職缺成長趨勢在統計上顯著，而且平均薪資高於全體行業平均（68.8 萬）—— 缺人又待遇好，是投入資源最划算的地方。符合條件的共 4 個行業，依成長率列出前 3 個。",
+   "body": "這些行業的職缺成長趨勢在統計上顯著，而且平均薪資高於全體行業平均（68.8 萬）—— 缺人又待遇好，是投入資源最划算的地方。符合條件的共 2 個行業，依成長率列出前 2 個。",
    "detail": [
-    "電力及燃氣供應業（每年 +9.2%，2027 年預估 1,919 個職缺，平均年薪 112.9 萬）",
     "醫療保健及社會工作服務業（每年 +5.1%，2027 年預估 17,039 個職缺，平均年薪 77.4 萬）",
-    "專業科學及技術服務業（每年 +3.4%，2027 年預估 11,657 個職缺，平均年薪 76.2 萬）",
-    "其餘符合條件：出版影音及資通訊業"
+    "專業科學及技術服務業（每年 +3.4%，2027 年預估 11,657 個職缺，平均年薪 76.2 萬）"
    ],
    "confidence": "medium",
-   "basis": "職缺數趨勢（線性外推，斜率顯著）× 行業別平均年薪 ≥ 全體平均 68.8 萬；依成長率排序取前三"
+   "basis": "職缺數趨勢（線性外推，斜率顯著）× 行業別平均年薪 ≥ 全體平均 68.8 萬 × 職缺數 ≥ 全國各行業中位數（8,430 個）；依成長率排序取前三"
   },
   {
    "title": "及早為這些領域的青年準備轉職輔導",
@@ -12132,7 +12190,7 @@
     "教育業（職缺每年 +6.5%，就業人數下降）"
    ],
    "confidence": "medium",
-   "basis": "職缺趨勢 × 就業人數趨勢（2015–2025，兩者皆線性斜率 t 檢定）× 行業別平均年薪"
+   "basis": "職缺趨勢 × 就業人數趨勢（2015–2025，兩者皆線性斜率 t 檢定）× 行業別平均年薪；缺工擴大的行業職缺數都低於全國各行業中位數（8,430 個），改依職缺數排序"
   },
   {
    "title": "18–24 歲失業率明顯高於 30–35 歲",
@@ -12159,13 +12217,13 @@
    "title": "青年正在移入的區，需求會先到 —— 提前準備",
    "body": "世代追蹤（扣掉少子化）顯示這些區的 18–35 歲青年連續淨移入。青年搬進來之後，托育、租金補貼申請、公共運輸與青年服務據點的需求會跟著到；提前布局比事後補救便宜。",
    "detail": [
-    "淡水區　+2.6%／年（+1,069 人）　持續移入，2027 年預估 +3.7%（±2.5%）",
-    "平溪區　+2.1%／年（+11 人）　轉為移入，2027 年預估 +1.1%（±2.2%）",
-    "五股區　+1.3%／年（+282 人）　持續移入，2027 年預估 +1.3%（±1.1%）",
-    "土城區　+0.8%／年（+428 人）　轉為移入，2027 年預估 +0.8%（±0.7%）"
+    "淡水區　+2.6%／年（+1,069 人）　持續移入，2027 年預估 +3.8%（±3.4%）",
+    "平溪區　+2.1%／年（+11 人）　轉為移入，2027 年預估 +1.2%（±3.1%）",
+    "五股區　+1.3%／年（+282 人）　持續移入，2027 年預估 +1.3%（±1.6%）",
+    "土城區　+0.8%／年（+428 人）　轉為移入，2027 年預估 +0.8%（±1.0%）"
    ],
    "confidence": "medium",
-   "basis": "世代追蹤淨遷入率 → 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；預測為線性外推＋95% 預測區間（forecast.py）；2022–2023 為戶籍事件年"
+   "basis": "世代追蹤淨遷入率 → 2022／2023 事件年合併成一點（n = 7）→ 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；|t| 在臨界值 ±20% 內標「邊緣」、信心低；預測為線性外推＋95% 預測區間（t 分布，forecast.py）；2022–2023 為戶籍事件年"
   },
   {
    "title": "條件好但青年沒來的區 —— 先去問為什麼",
@@ -12213,13 +12271,13 @@
    "title": "青年持續流出的區 —— 在地工作機會與返鄉方案優先",
    "body": "這些區的青年連續淨流出，而且多半在地工作機會密度低。人數規則會讓它們永遠排最後；青年基本法第 11 條要求在地支持與返留鄉，這裡是巡迴據點、交通補貼與在地產業的優先對象。",
    "detail": [
-    "貢寮區　-2.6%／年（-46 人）　流出加劇",
+    "貢寮區　-2.6%／年（-46 人）　持續流出",
     "坪林區　-2.6%／年（-29 人）　轉為流出",
     "石門區　-2.1%／年（-46 人）　持續流出",
     "三芝區　-1.6%／年（-76 人）　持續流出"
    ],
    "confidence": "medium",
-   "basis": "世代追蹤淨遷入率 → 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；預測為線性外推＋95% 預測區間（forecast.py）"
+   "basis": "世代追蹤淨遷入率 → 2022／2023 事件年合併成一點（n = 7）→ 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；|t| 在臨界值 ±20% 內標「邊緣」、信心低；預測為線性外推＋95% 預測區間（t 分布，forecast.py）"
   },
   {
    "title": "青年流失最快的區，服務不能只看人數",
@@ -12261,19 +12319,6 @@
    "chart": "salary"
   },
   {
-   "_kind": "deviation",
-   "title": "30-34 歲勞參率在 2025 年偏離既有趨勢",
-   "body": "全國30-34 歲勞參率 2025 年實際為 92.23%，但用 2010–2024 年的趨勢外推應該落在 92.41%–96.93%：比點預測低 2.44 個百分點，比區間下限低 0.18 個百分點（接近邊界，已超出 95% 區間）。偏離的是趨勢本身，不只是漲跌。",
-   "detail": [
-    "趨勢外推預測　94.67%（95% 區間 ±2.26%）",
-    "實際觀測值　　92.23%",
-    "用來外推的年度　2010–2024，共 15 點"
-   ],
-   "confidence": "medium",
-   "basis": "行政院主計總處 人力資源調查－歷年年齡組別勞參率／失業率；最小平方外推 + 95% 預測區間（不含被檢驗的該年）",
-   "chart": "national-lfpr"
-  },
-  {
    "_kind": "shift",
    "title": "25-29 歲男性勞參率在 2021 年前後由下降轉為上升",
    "body": "全國25-29 歲男性勞參率 在 1978–2020 年每年下降 -0.07 個百分點，但 2021–2025 年變成每年上升 +0.27 個百分點。兩段的斜率各自都通過顯著性檢定，所以這是方向改變，不是雜訊。",
@@ -12311,6 +12356,19 @@
    "confidence": "low",
    "basis": "行政院主計總處 人力資源調查－歷年年齡組別勞參率／失業率；前後兩段分別做最小平方迴歸，兩段斜率都需通過雙尾 5% 檢定",
    "chart": "national-unemployment"
+  },
+  {
+   "_kind": "shift",
+   "title": "15-19 歲男性勞參率在 2021 年前後由下降轉為上升",
+   "body": "全國15-19 歲男性勞參率 在 1978–2020 年每年下降 -0.82 個百分點，但 2021–2025 年變成每年上升 +0.12 個百分點。兩段的斜率各自都通過顯著性檢定，所以這是方向改變，不是雜訊。",
+   "detail": [
+    "1978–2020　每年 -0.82 個百分點",
+    "2021–2025　每年 +0.12 個百分點",
+    "最新值　10.52%"
+   ],
+   "confidence": "low",
+   "basis": "主計總處 人力資源統計 歷年分齡（分性別）民間人口／勞動力／失業者；前後兩段分別做最小平方迴歸，兩段斜率都需通過雙尾 5% 檢定",
+   "chart": "national-lfpr"
   },
   {
    "_kind": "divergence",
@@ -25098,8 +25156,8 @@
    "value": 51,
    "unit": "個",
    "education": "礦業及土石採取業",
-   "_low": 22,
-   "_high": 80,
+   "_low": 17,
+   "_high": 85,
    "_r2": 0.1407,
    "_t": -1.145,
    "_direction": "flat",
@@ -25111,7 +25169,7 @@
     "method": "formula_d_t3",
     "weight": -0.0191,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 51 個，95% 區間 22–80 個。年變化 -1.9%，判定為「無明顯趨勢」（斜率 t=-1.14，R²=0.14）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 51 個，95% 區間 17–85 個。年變化 -1.9%，判定為「無明顯趨勢」（斜率 t=-1.14，R²=0.14）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -25161,8 +25219,8 @@
    "value": 89129,
    "unit": "個",
    "education": "製造業",
-   "_low": 69601,
-   "_high": 108658,
+   "_low": 66154,
+   "_high": 112105,
    "_r2": 0.0465,
    "_t": 0.625,
    "_direction": "flat",
@@ -25174,7 +25232,7 @@
     "method": "formula_d_t3",
     "weight": 0.0059,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 89,129 個，95% 區間 69,601–108,658 個。年變化 +0.6%，判定為「無明顯趨勢」（斜率 t=0.62，R²=0.05）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 89,129 個，95% 區間 66,154–112,105 個。年變化 +0.6%，判定為「無明顯趨勢」（斜率 t=0.62，R²=0.05）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -25224,8 +25282,8 @@
    "value": 1919,
    "unit": "個",
    "education": "電力及燃氣供應業",
-   "_low": 999,
-   "_high": 2839,
+   "_low": 836,
+   "_high": 3002,
    "_r2": 0.5694,
    "_t": 3.253,
    "_direction": "up",
@@ -25237,7 +25295,7 @@
     "method": "formula_d_t3",
     "weight": 0.0923,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 1,919 個，95% 區間 999–2,839 個。年變化 +9.2%，判定為「成長」（斜率 t=3.25，R²=0.57）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 1,919 個，95% 區間 836–3,002 個。年變化 +9.2%，判定為「成長」（斜率 t=3.25，R²=0.57）。趨勢在統計上顯著。"
    }
   },
   {
@@ -25287,8 +25345,8 @@
    "value": 1369,
    "unit": "個",
    "education": "用水供應及污染整治業",
-   "_low": 951,
-   "_high": 1787,
+   "_low": 877,
+   "_high": 1861,
    "_r2": 0.4539,
    "_t": 2.578,
    "_direction": "up",
@@ -25300,7 +25358,7 @@
     "method": "formula_d_t3",
     "weight": 0.0404,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 1,369 個，95% 區間 951–1,787 個。年變化 +4.0%，判定為「成長」（斜率 t=2.58，R²=0.45）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 1,369 個，95% 區間 877–1,861 個。年變化 +4.0%，判定為「成長」（斜率 t=2.58，R²=0.45）。趨勢在統計上顯著。"
    }
   },
   {
@@ -25350,8 +25408,8 @@
    "value": 23834,
    "unit": "個",
    "education": "營建工程業",
-   "_low": 11235,
-   "_high": 36434,
+   "_low": 9011,
+   "_high": 38658,
    "_r2": 0.3505,
    "_t": 2.078,
    "_direction": "flat",
@@ -25363,7 +25421,7 @@
     "method": "formula_d_t3",
     "weight": 0.0695,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 23,834 個，95% 區間 11,235–36,434 個。年變化 +6.9%，判定為「無明顯趨勢」（斜率 t=2.08，R²=0.35）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 23,834 個，95% 區間 9,011–38,658 個。年變化 +6.9%，判定為「無明顯趨勢」（斜率 t=2.08，R²=0.35）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -25413,8 +25471,8 @@
    "value": 35827,
    "unit": "個",
    "education": "批發及零售業",
-   "_low": 30717,
-   "_high": 40938,
+   "_low": 29814,
+   "_high": 41840,
    "_r2": 0.2707,
    "_t": -1.723,
    "_direction": "flat",
@@ -25426,7 +25484,7 @@
     "method": "formula_d_t3",
     "weight": -0.0095,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 35,827 個，95% 區間 30,717–40,938 個。年變化 -1.0%，判定為「無明顯趨勢」（斜率 t=-1.72，R²=0.27）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 35,827 個，95% 區間 29,814–41,840 個。年變化 -1.0%，判定為「無明顯趨勢」（斜率 t=-1.72，R²=0.27）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -25476,8 +25534,8 @@
    "value": 8933,
    "unit": "個",
    "education": "運輸及倉儲業",
-   "_low": 7602,
-   "_high": 10264,
+   "_low": 7368,
+   "_high": 10499,
    "_r2": 0.4854,
    "_t": 2.747,
    "_direction": "up",
@@ -25489,7 +25547,7 @@
     "method": "formula_d_t3",
     "weight": 0.0182,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 8,933 個，95% 區間 7,602–10,264 個。年變化 +1.8%，判定為「成長」（斜率 t=2.75，R²=0.49）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 8,933 個，95% 區間 7,368–10,499 個。年變化 +1.8%，判定為「成長」（斜率 t=2.75，R²=0.49）。趨勢在統計上顯著。"
    }
   },
   {
@@ -25539,8 +25597,8 @@
    "value": 19744,
    "unit": "個",
    "education": "住宿及餐飲業",
-   "_low": 16255,
-   "_high": 23232,
+   "_low": 15640,
+   "_high": 23848,
    "_r2": 0.0885,
    "_t": 0.881,
    "_direction": "flat",
@@ -25552,7 +25610,7 @@
     "method": "formula_d_t3",
     "weight": 0.0063,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 19,744 個，95% 區間 16,255–23,232 個。年變化 +0.6%，判定為「無明顯趨勢」（斜率 t=0.88，R²=0.09）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 19,744 個，95% 區間 15,640–23,848 個。年變化 +0.6%，判定為「無明顯趨勢」（斜率 t=0.88，R²=0.09）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -25602,8 +25660,8 @@
    "value": 9292,
    "unit": "個",
    "education": "出版影音及資通訊業",
-   "_low": 8267,
-   "_high": 10317,
+   "_low": 8086,
+   "_high": 10498,
    "_r2": 0.6993,
    "_t": 4.314,
    "_direction": "up",
@@ -25615,7 +25673,7 @@
     "method": "formula_d_t3",
     "weight": 0.0224,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 9,292 個，95% 區間 8,267–10,317 個。年變化 +2.2%，判定為「成長」（斜率 t=4.31，R²=0.70）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 9,292 個，95% 區間 8,086–10,498 個。年變化 +2.2%，判定為「成長」（斜率 t=4.31，R²=0.70）。趨勢在統計上顯著。"
    }
   },
   {
@@ -25665,8 +25723,8 @@
    "value": 11627,
    "unit": "個",
    "education": "金融及保險業",
-   "_low": 9963,
-   "_high": 13291,
+   "_low": 9669,
+   "_high": 13585,
    "_r2": 0.276,
    "_t": 1.746,
    "_direction": "flat",
@@ -25678,7 +25736,7 @@
     "method": "formula_d_t3",
     "weight": 0.0108,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 11,627 個，95% 區間 9,963–13,291 個。年變化 +1.1%，判定為「無明顯趨勢」（斜率 t=1.75，R²=0.28）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 11,627 個，95% 區間 9,669–13,585 個。年變化 +1.1%，判定為「無明顯趨勢」（斜率 t=1.75，R²=0.28）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -25728,8 +25786,8 @@
    "value": 4920,
    "unit": "個",
    "education": "不動產業",
-   "_low": 3051,
-   "_high": 6789,
+   "_low": 2721,
+   "_high": 7119,
    "_r2": 0.0878,
    "_t": -0.878,
    "_direction": "flat",
@@ -25741,7 +25799,7 @@
     "method": "formula_d_t3",
     "weight": -0.0158,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,920 個，95% 區間 3,051–6,789 個。年變化 -1.6%，判定為「無明顯趨勢」（斜率 t=-0.88，R²=0.09）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,920 個，95% 區間 2,721–7,119 個。年變化 -1.6%，判定為「無明顯趨勢」（斜率 t=-0.88，R²=0.09）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -25791,8 +25849,8 @@
    "value": 11657,
    "unit": "個",
    "education": "專業科學及技術服務業",
-   "_low": 10526,
-   "_high": 12789,
+   "_low": 10326,
+   "_high": 12989,
    "_r2": 0.8634,
    "_t": 7.112,
    "_direction": "up",
@@ -25804,7 +25862,7 @@
     "method": "formula_d_t3",
     "weight": 0.0336,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 11,657 個，95% 區間 10,526–12,789 個。年變化 +3.4%，判定為「成長」（斜率 t=7.11，R²=0.86）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 11,657 個，95% 區間 10,326–12,989 個。年變化 +3.4%，判定為「成長」（斜率 t=7.11，R²=0.86）。趨勢在統計上顯著。"
    }
   },
   {
@@ -25854,8 +25912,8 @@
    "value": 13164,
    "unit": "個",
    "education": "支援服務業",
-   "_low": 10701,
-   "_high": 15628,
+   "_low": 10266,
+   "_high": 16063,
    "_r2": 0.0002,
    "_t": 0.036,
    "_direction": "flat",
@@ -25867,7 +25925,7 @@
     "method": "formula_d_t3",
     "weight": 0.0003,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 13,164 個，95% 區間 10,701–15,628 個。年變化 +0.0%，判定為「無明顯趨勢」（斜率 t=0.04，R²=0.00）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 13,164 個，95% 區間 10,266–16,063 個。年變化 +0.0%，判定為「無明顯趨勢」（斜率 t=0.04，R²=0.00）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -25917,8 +25975,8 @@
    "value": 17039,
    "unit": "個",
    "education": "醫療保健及社會工作服務業",
-   "_low": 14609,
-   "_high": 19469,
+   "_low": 14180,
+   "_high": 19898,
    "_r2": 0.8718,
    "_t": 7.377,
    "_direction": "up",
@@ -25930,7 +25988,7 @@
     "method": "formula_d_t3",
     "weight": 0.0506,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 17,039 個，95% 區間 14,609–19,469 個。年變化 +5.1%，判定為「成長」（斜率 t=7.38，R²=0.87）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 17,039 個，95% 區間 14,180–19,898 個。年變化 +5.1%，判定為「成長」（斜率 t=7.38，R²=0.87）。趨勢在統計上顯著。"
    }
   },
   {
@@ -25980,8 +26038,8 @@
    "value": 2585,
    "unit": "個",
    "education": "藝術娛樂及休閒服務業",
-   "_low": 1923,
-   "_high": 3247,
+   "_low": 1806,
+   "_high": 3364,
    "_r2": 0.1009,
    "_t": 0.948,
    "_direction": "flat",
@@ -25993,7 +26051,7 @@
     "method": "formula_d_t3",
     "weight": 0.0104,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 2,585 個，95% 區間 1,923–3,247 個。年變化 +1.0%，判定為「無明顯趨勢」（斜率 t=0.95，R²=0.10）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 2,585 個，95% 區間 1,806–3,364 個。年變化 +1.0%，判定為「無明顯趨勢」（斜率 t=0.95，R²=0.10）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -26043,8 +26101,8 @@
    "value": 4173,
    "unit": "個",
    "education": "其他服務業",
-   "_low": 3246,
-   "_high": 5099,
+   "_low": 3083,
+   "_high": 5262,
    "_r2": 0.4947,
    "_t": -2.798,
    "_direction": "down",
@@ -26056,7 +26114,7 @@
     "method": "formula_d_t3",
     "weight": -0.0241,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,173 個，95% 區間 3,246–5,099 個。年變化 -2.4%，判定為「萎縮」（斜率 t=-2.80，R²=0.49）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,173 個，95% 區間 3,083–5,262 個。年變化 -2.4%，判定為「萎縮」（斜率 t=-2.80，R²=0.49）。趨勢在統計上顯著。"
    }
   },
   {
@@ -26106,8 +26164,8 @@
    "value": 4013,
    "unit": "個",
    "education": "教育業",
-   "_low": 2449,
-   "_high": 5576,
+   "_low": 2173,
+   "_high": 5852,
    "_r2": 0.5527,
    "_t": 3.144,
    "_direction": "up",
@@ -26119,7 +26177,7 @@
     "method": "formula_d_t3",
     "weight": 0.0646,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,013 個，95% 區間 2,449–5,576 個。年變化 +6.5%，判定為「成長」（斜率 t=3.14，R²=0.55）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,013 個，95% 區間 2,173–5,852 個。年變化 +6.5%，判定為「成長」（斜率 t=3.14，R²=0.55）。趨勢在統計上顯著。"
    }
   },
   {

@@ -879,6 +879,10 @@ html{overflow-x:hidden;}   /* 英雄區的點陣背景滿版出血、卡片列�
 .prompt-in input:focus{outline:none;}
 .ph-use{position:absolute;right:.2rem;bottom:.55rem;font:inherit;font-size:.7rem;color:var(--b44-mute);background:var(--sunk);border:0;border-radius:999px;padding:.2rem .6rem;cursor:pointer;}
 .ph-use:hover{background:var(--b44-ink);color:#fff;}
+.claims{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;margin:0 0 .6rem;}
+.claims .cl-l{font-size:.72rem;color:var(--b44-mute);margin-right:.1rem;}
+.claims button{font:inherit;font-size:.76rem;font-weight:600;color:var(--b44-ink);background:var(--sunk);border:0;border-radius:999px;padding:.32rem .75rem;cursor:pointer;}
+.claims button:hover{background:var(--b44-ink);color:#fff;}
 .prompt-bar{display:flex;align-items:center;justify-content:space-between;gap:.6rem;}
 .attach{font:inherit;font-size:1.25rem;line-height:1;color:var(--b44-ink);background:transparent;border:0;border-radius:999px;padding:.35rem .5rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;}
 .attach span{font-size:.8rem;font-weight:600;color:var(--b44-mute);}
@@ -1057,6 +1061,12 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
                aria-label="用中文問一個關於青年統計的問題" autocomplete="off">
         <button type="button" class="ph-use" id="phUse" hidden>用這個範例 ⇥</button>
       </div>
+      <div class="claims" id="claims" aria-label="外界丟過來的主張">
+          <span class="cl-l">有人這樣說：</span>
+          <button type="button" data-scn="claim1">青年局應該負責讓年輕人結婚生小孩</button>
+          <button type="button" data-scn="claim2">青年局應該降低青年失業率</button>
+          <button type="button" data-scn="claim3">新北青年都被房價逼走了</button>
+        </div>
       <div class="prompt-bar">
         <button type="button" class="attach" id="attachBtn" title="丟資料進來：統計表圖片或 CSV，補網路上沒有的公開資料">＋<span>丟資料</span></button>
         <div class="prompt-right">
@@ -2072,7 +2082,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         + '<div class="lc-tip" hidden></div></div>';
       var sig = top.concat(bottom).map(function (k) {
         var a = mig.areas[k];
-        return k.replace(M.region, '') + '：' + (a.signal || '—') + (a.forecast != null ? '（' + a.forecast_year + ' 年預估 ' + (a.forecast * 100).toFixed(1) + '%±' + (a.margin * 100).toFixed(1) + '，' + confLabel(a.confidence) + '）' : '');
+        return k.replace(M.region, '') + '：' + (a.signal || '—') + (a.edge ? '·邊緣' : '') + (a.forecast != null ? '（' + a.forecast_year + ' 年預估 ' + (a.forecast * 100).toFixed(1) + '%±' + (a.margin * 100).toFixed(1) + '，' + confLabel(a.confidence) + '）' : '');
       });
       figM.innerHTML += '<p class="cap">' + sig.join('；') + '。'
         + '訊號規則：連續正值＝持續移入、斜率顯著下降＝減速、連續負值＝持續流出、斜率顯著改變方向＝轉向、平均的 95% 信賴區間落在 ±1% 內＝持平、其餘＝方向不明；預測為線性外推＋95% 區間，experimental。</p>';
@@ -2272,7 +2282,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         limit: '戶籍資料：沒遷戶籍的就學就業者看不到，量到的是「願意定居」的青年。2022／2023 是疫情除籍與恢復戶籍的事件年，判訊號時兩點取平均抵銷。' },
       { t: '走勢與訊號', s: '會持續嗎、在減速嗎', where: '走勢圖圖說、預警摘要的「持續移入／流出加劇」',
         plain: '每一區 ' + (mig ? mig.years[0] + '–' + mig.years[mig.years.length - 1] : '2019–2026') + ' 共 8 個點，畫一條最貼合的直線（最小平方法）。看兩件事：<b>水準</b>（連續幾年正或負）和<b>方向</b>（斜率往上還是往下、而且不是巧合）。「不是巧合」用 t 檢定判斷：斜率除以它的不確定度，超過門檻才算數。預測值一定附 95% 區間，區間本身就是誠實度。',
-        code: '水準：t = 平均 ÷ (標準差 ÷ √n)（平均是不是 ≠ 0）　　斜率：t = b ÷ 標準誤(b)（有沒有在變）　　|t| ≥ 臨界值 → 顯著\n明年預估 = 直線延伸一年 ± 1.96 × 預測標準誤\n訊號：連續正值＝持續移入｜斜率顯著下降＝移入減速｜連續負值＝持續流出｜斜率顯著改變方向＝轉向｜平均的信賴區間在 ±1% 內＝持平｜其餘＝方向不明',
+        code: '水準：t = 平均 ÷ (標準差 ÷ √n)（平均是不是 ≠ 0）　　斜率：t = b ÷ 標準誤(b)（有沒有在變）　　|t| ≥ 臨界值 → 顯著\n明年預估 = 直線延伸一年 ± t(0.975, n−2) × 預測標準誤\n訊號：連續正值＝持續移入｜斜率顯著下降＝移入減速｜連續負值＝持續流出｜斜率顯著改變方向＝轉向｜平均的信賴區間在 ±1% 內＝持平｜其餘＝方向不明',
         limit: '8 個點的直線外推，區間寬；只用來排優先順序，不當單一年的預言。'
           + (M.validation_migration ? ' 驗證：跟戶政司登記的全年齡遷入−遷出跨區相關 r = ' + M.validation_migration.r + '。' : '')
           + (M.backtest_migration && M.backtest_migration.pooled && M.backtest_migration.pooled['2023'] ? ' 回測：2023 年標「移入」的區，隔兩年真的移入的比例 ' + Math.round(M.backtest_migration.pooled['2023'].inflow_precision * 100) + '%（六都 158 區）。' : '') },
@@ -2385,7 +2395,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       return '<tr class="' + ((a.level_significant || a.significant) ? 'sig' : 'nosig') + '"><td>' + r.name + '</td><td>' + a.n + '</td><td>' + pct(r.last) + '</td>'
         + '<td>' + pct(a.mean) + '</td><td>' + (a.level_t == null ? '∞' : fx(a.level_t, 1)) + '</td><td>' + (a.level_significant ? '<span class="ok">是</span>' : '否') + '</td>'
         + '<td>' + (a.slope_pp > 0 ? '+' : '') + fx(a.slope_pp) + '</td><td>' + (a.t == null ? '∞' : fx(a.t, 1)) + '</td><td>' + (a.significant ? '<span class="ok">是</span>' : '否') + '</td>'
-        + '<td>' + pct(a.forecast) + ' ± ' + (a.margin * 100).toFixed(1) + '</td><td>' + confLabel(a.confidence) + '</td><td>' + (a.signal || '—') + '</td></tr>';
+        + '<td>' + pct(a.forecast) + ' ± ' + (a.margin * 100).toFixed(1) + '</td><td>' + confLabel(a.confidence) + '</td><td>' + (a.signal || '—') + (a.edge ? '<small>·邊緣</small>' : '') + '</td></tr>';
     }).join('');
     $('mTrend').innerHTML = '<div class="mth">'
       + '<h4>模型：最小平方直線（OLS on time）</h4>'
@@ -2398,10 +2408,12 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       + '<code>t_斜率 = β̂ ÷ se(β̂)　　|t| ≥ t<sub>0.025, n−2</sub> → 顯著（n = 8：2.447）</code>'
       + '<p>「減速／加劇／轉向」的信心看這個。一個穩定移入的區斜率當然接近 0 —— <b>斜率不顯著不代表訊號不可信，代表它沒有在變</b>。用 t 分布不用常態 1.96：樣本小，常態會高估顯著性。意思是：如果真實值是 0，看到這麼大的統計量的機率不到 5%。</p>'
       + '<h4>預測區間：明年會落在哪裡（95%）</h4>'
-      + '<code>ŷ(t+1) ± 1.96 · se · √( 1 + 1/n + (t+1 − t̄)² ÷ Σ(t−t̄)² )</code>'
-      + '<p>這是<b>預測區間</b>（含明年那一點自己的隨機波動），不是趨勢線的信賴帶，所以比較寬。1.96 是常態近似，樣本小時會略低估寬度 —— 所以另外要求 n ≥ 6 且顯著才給「中信心」，否則一律「低信心」，外推永遠不給「高」。</p>'
+      + '<code>ŷ(t+1) ± t<sub>0.975, n−2</sub> · se · √( 1 + 1/n + (t+1 − t̄)² ÷ Σ(t−t̄)² )</code>'
+      + '<p>這是<b>預測區間</b>（含明年那一點自己的隨機波動），不是趨勢線的信賴帶，所以比較寬。乘數用 t 分布（n = 7 時 2.571）不用常態的 1.96 —— 1.96 會把區間低估約兩成。另外要求 n ≥ 6 且顯著才給「中信心」，否則一律「低信心」，外推永遠不給「高」。</p>'
       + '<h4>事件年怎麼處理</h4>'
-      + '<p>2022／2023 兩期是疫情<b>出境滿兩年除籍</b>與<b>恢復戶籍</b>：同一批人先被除籍再登記回來，全國每一區都出現一負一正的大幅波動。做檢定與判訊號前，把這兩點換成兩者的平均（互相抵銷），圖上仍畫原始值。臺北市 12 區原本 9 區「方向不明」，抵銷後 9 區「持續流出」—— 跟官方登記的全市淨流出 −3,685 人一致。回測的 2022 cutoff 只有 2022 那一點、抵銷不了，所以那一列表現較差，照實列出。</p>'
+      + '<p>2022／2023 兩期是疫情<b>出境滿兩年除籍</b>與<b>恢復戶籍</b>：同一批人先被除籍再登記回來，全國每一區都出現一負一正的大幅波動。做檢定與判訊號前，把這兩點<b>合併成一個時間點</b>（t = 2022.5，值取平均），n 從 8 變 7、臨界值跟著變（水準 2.447、斜率 2.571）；圖上仍畫原始值。之前的版本是兩點都換成平均但仍算兩個觀測 —— 兩個一模一樣的點會人為縮小殘差、放大 t 值，新莊因此被判成「顯著轉為流出」；合併成一點後它回到「持平」。臺北市 12 區原本 9 區「方向不明」，抵銷後多數是「持續流出」—— 跟官方登記的全市淨流出一致。回測的 2022 cutoff 只有 2022 那一點、合併不了，所以那一列表現較差，照實列出。</p>'
+      + '<h4>邊緣訊號</h4>'
+      + '<p>決定訊號的那個檢定，|t| 落在臨界值 ±20% 內的，標「邊緣」、信心一律低：換一種同樣合理的算法（合併或剔除事件年）它就可能翻。這不是缺點，是為什麼每個訊號都要帶信心。</p>'
       + '<h4>訊號規則（跟回測用同一個函式）</h4>'
       + '<code>連續正值（最多 1 年例外）且最新為正 → 持續移入；若斜率顯著向下 → 移入減速\n連續負值（最多 1 年例外）且最新為負 → 持續流出；若斜率顯著向下 → 流出加劇\n其餘：斜率顯著向上 → 轉為移入；顯著向下 → 轉為流出\n　　　平均的 95% 信賴區間（ȳ ± t·s/√n）整段落在 ±1% 內 → 持平（等價性檢定）\n　　　都不是 → 方向不明（波動太大，資料不夠說話）</code>'
       + '<h4>' + M.region + '每一區的統計細節（' + (Mg ? Mg.years[0] + '–' + Mg.years[Mg.years.length - 1] : '') + '）</h4>'
@@ -2445,7 +2457,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       xc = '<div class="kv"><div><b>r = ' + V.r + '</b><span>Pearson 相關，' + V.n + ' 個行政區</span></div><div><b>' + V.same_sign + ' / ' + V.n + '</b><span>方向一致的區</span></div><div><b>' + num(V.city_official) + ' vs ' + num(V.city_cohort) + '</b><span>全市：官方全年齡 vs 青年 18–35</span></div></div>'
         + '<p><b>比什麼</b>：同一年（' + V.months + '）、同一批區。X＝戶政司登記的全年齡「遷入 − 遷出 ＋ 初設 − 除籍 ＋ 其他」（' + V.source + '）；Y＝我們用單一年齡兩期相減算的 18–35 歲淨遷入。兩者口徑不同（全年齡 vs 青年），所以看的是<b>跨區的相對大小是否一致</b>，不是數字相等。</p>'
         + '<code>r = Σ(x−x̄)(y−ȳ) ÷ √( Σ(x−x̄)² · Σ(y−ȳ)² )</code>'
-        + '<p>r = ' + V.r + ' 代表世代追蹤抓到的就是真實的搬遷，不是兩期相減的算法假象。青年約占官方全年齡淨遷入的兩到三成，方向與排序一致。</p>'
+        + '<p>r = ' + V.r + ' 代表世代追蹤抓到的就是真實的搬遷，不是兩期相減的算法假象。各區的青年淨遷入約占官方全年齡淨遷入的兩到三成（全市層級因為少子化與跨區抵銷，占比更低），方向與排序一致。</p>'
         + '<div class="tw"><table><thead><tr><th>區</th><th>官方全年齡淨遷入</th><th>18–35 世代淨遷入</th></tr></thead><tbody>'
         + (V.pairs || []).map(function (q) { return '<tr><td>' + q.area + '</td><td>' + (q.official > 0 ? '+' : '') + num(q.official) + '</td><td>' + (q.cohort > 0 ? '+' : '') + num(q.cohort) + '</td></tr>'; }).join('')
         + '</tbody></table></div><p>' + V.note + '</p>';
@@ -2893,7 +2905,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (!mig || !mig.areas) { host.innerHTML = '<p class="watch-empty">這個城市還沒有世代淨遷入資料。</p>'; return; }
     // 小區幾十個人就是好幾個百分點，預警摘要只列一年至少 50 人進出的區
     var rows = Object.keys(mig.areas).filter(function (k) { var a = mig.areas[k]; return k !== M.region && a.rate && a.rate[a.rate.length - 1] != null && Math.abs((a.net || [0])[a.net.length - 1] || 0) >= 50; })
-      .map(function (k) { var a = mig.areas[k]; return { area: k, short: k.replace(M.region, ''), v: a.rate[a.rate.length - 1], signal: a.signal || '', forecast: a.forecast, fy: a.forecast_year }; });
+      .map(function (k) { var a = mig.areas[k]; return { area: k, short: k.replace(M.region, ''), v: a.rate[a.rate.length - 1], signal: (a.signal || '') + (a.edge ? '·邊緣' : ''), forecast: a.forecast, fy: a.forecast_year }; });
     var inflow = rows.filter(function (r) { return /移入/.test(r.signal); }).sort(function (a, b) { return b.v - a.v; }).slice(0, 3);
     var outflow = rows.filter(function (r) { return /流出/.test(r.signal); }).sort(function (a, b) { return a.v - b.v; }).slice(0, 3);
     // 下一個候選：本市內條件最像「移入最多的區」（新北＝淡水）、但近三年移入還沒起來的區
@@ -3007,6 +3019,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       return v === undefined || v === null ? null : { value: v, unit: unitOfMetric(metric), year: mapYear, series: true };
     }
     var r = findMap(areaFull, metric);
+    // 租金樣本不足（n < 30，記錄標低信心）的區不上色：烏來一筆 2,119 元／坪畫成最深色會誤導
+    if (r && metric.indexOf('租') >= 0 && r.provenance && r.provenance.confidence === 'low') return null;
     return r ? { value: r.value, unit: r.unit, year: r.year, rec: r } : null;
   }
   var mapMetric = MAP_METRICS[1];   // 主畫面預設看「青年往哪裡搬」；沒有這個指標的城市會自動退回人口數
@@ -4330,6 +4344,12 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     return best ? best.region : M.region;
   })();
   var SCENARIOS = {
+    claim1: { q: '青年局應該負責讓年輕人結婚生小孩嗎？這是青年局的權責嗎？', area: null,
+              tip: '答辯四段：真的嗎 → 多嚴重 → 是不是青年局的權責（婚育主責社會局／衛生局）→ 青年局能協作什麼；沒有資料的部分會列候選來源' },
+    claim2: { q: '有人說新北青年失業很嚴重，青年局應該降低青年失業率。真的嗎？有多嚴重？是青年局的事嗎？', area: null,
+              tip: '25–29 歲失業率是官方公布值（六都可比）；18–24 歲是拆組推估、回測失準所以標低信心，答案會講清楚' },
+    claim3: { q: '新北的青年都被房價逼走了，真的嗎？', area: null,
+              tip: '世代淨遷入是正的但房價所得比六都第 5：答案會用兩把尺一起講，並把「逼走」拆成流出區與移入區' },
     next:   { q: '哪一區可能成為下一個淡水？青年局該先準備什麼？', area: null,
               tip: '模型會拿到「條件最像的區」清單（租金、工作機會、所得、規模四維比對），答案是條件像但移入還沒起來的區，數字逐一驗證' },
     prepare:{ q: (WATCH_TOP ? WATCH_TOP.replace(M.region, '') : '移入最多的區') + '的青年持續移入，青年局要提前準備什麼？', area: WATCH_TOP,
@@ -4341,6 +4361,13 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     budget: { q: '職訓預算該怎麼分配到各行政區？', area: null,
               tip: '施政建議那一格是規則推出來的、可稽核；這句交給模型在那些建議之上做推理，數字一樣會驗' },
   };
+  if ($('claims')) $('claims').addEventListener('click', function (e) {
+    var t = e.target;
+    var sc = t && t.dataset && SCENARIOS[t.dataset.scn];
+    if (!sc) return;
+    fillAsk(sc.q);
+    showAnswer('', sc.tip, '→ 答辯入口：問題已填好，按送出');
+  });
   if ($('scenarios')) $('scenarios').addEventListener('click', function (e) {
     var t = e.target;
     var sc = t && t.dataset && SCENARIOS[t.dataset.scn];

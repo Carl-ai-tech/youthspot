@@ -35,7 +35,8 @@ class Trend:
     def predict(self, x: float) -> tuple[float, float]:
         """回傳 (預測值, 95% 區間半寬)。外推越遠區間越寬，這是它應有的行為。"""
         yhat = self.intercept + self.slope * x
-        margin = Z95 * self.se * sqrt(1 + 1 / self.n + (x - self.mean_x) ** 2 / self.sxx)
+        # 用 t 分布不用常態：n = 8 時 2.447 而不是 1.96，區間寬約兩成。小樣本用 1.96 是過度自信。
+        margin = _t_critical(self.n - 2) * self.se * sqrt(1 + 1 / self.n + (x - self.mean_x) ** 2 / self.sxx)
         return yhat, margin
 
     @property
@@ -58,6 +59,13 @@ class Trend:
         if self.slope_se == 0:
             return float("inf") if self.slope != 0 else 0.0
         return self.slope / self.slope_se
+
+    @property
+    def edge(self) -> bool:
+        """|t| 落在臨界值 ±20% 內：顯著與否只差一點點，換一種合理的算法就會翻。這種要標「邊緣」、信心降低。"""
+        crit = _t_critical(self.n - 2)
+        t = abs(self.t_stat)
+        return crit != float("inf") and t != float("inf") and 0.8 * crit <= t <= 1.2 * crit
 
     @property
     def significant(self) -> bool:

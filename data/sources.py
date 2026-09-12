@@ -56,7 +56,7 @@ TIMEOUT = 60
 
 POPULATION_API = "https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP014/{period}"
 POPULATION_DATASET = "內政部戶政司 ODRP014 村里戶數、單一年齡人口"
-POPULATION_LANDING = "https://data.gov.tw/dataset/32973"
+POPULATION_LANDING = "https://data.gov.tw/dataset/77132"   # 「新增區域代碼」版，跟程式打的 ODRP014 一致（32973 是無區域代碼的 ODRP005）
 
 _DGBAS = "https://ws.dgbas.gov.tw/001/Upload/461/relfile/11525/236096/{table}.xml"
 LFPR_XML = _DGBAS.format(table="mp04020")

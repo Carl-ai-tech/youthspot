@@ -1,5 +1,5 @@
 {
- "_generated": "2026-09-12",
+ "_generated": "2026-09-13",
  "_schema": "YouthLens unified v1（Spec §7.3）",
  "meta": {
   "region": "臺南市",
@@ -260,7 +260,7 @@
    {
     "agency": "內政部戶政司",
     "dataset": "內政部戶政司 ODRP014 村里戶數、單一年齡人口",
-    "url": "https://data.gov.tw/dataset/32973",
+    "url": "https://data.gov.tw/dataset/77132",
     "format": "JSON API",
     "auto": true,
     "cadence": "每月",
@@ -400,7 +400,7 @@
    {
     "agency": "內政部戶政司",
     "dataset": "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）",
-    "url": "https://data.gov.tw/dataset/77141",
+    "url": "https://www.ris.gov.tw/rs-opendata/api/Main/docs/v1",
     "format": "JSON API",
     "auto": true,
     "cadence": "每月",
@@ -487,7 +487,7 @@
   ],
   "validation_migration": {
    "source": "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）",
-   "url": "https://data.gov.tw/dataset/77141",
+   "url": "https://www.ris.gov.tw/rs-opendata/api/Main/docs/v1",
    "months": "11408–11507",
    "n": 37,
    "r": 0.838,
@@ -549,7 +549,7 @@
    "note": "官方遷入遷出是全年齡的登記數，我們的是 18–35 歲用單一年齡兩期相減算的；同一年、同一批區，兩者跨區相關 r 越接近 1，代表世代追蹤抓到的就是真實的搬遷。"
   },
   "backtest_migration": {
-   "method": "假裝現在是 T 年，只用 T 年以前的世代淨遷入率跑正式的線性外推＋訊號判定，對 T+1、T+2 的實際值。2022／2023 戶籍事件年兩點取平均互相抵銷（cutoff 2022 只有一點、抵銷不了）。",
+   "method": "假裝現在是 T 年，只用 T 年以前的世代淨遷入率跑正式的線性外推＋訊號判定，對 T+1、T+2 的實際值。2022／2023 戶籍事件年合併成一個時間點（t = 2022.5，值取平均；cutoff 2022 只有一點、合併不了）。",
    "hit_rate": 0.005,
    "pooled": {
     "2022": {
@@ -572,16 +572,16 @@
     "2023": {
      "n": 158,
      "points_used": 5,
-     "mae_model_pp": 0.9,
+     "mae_model_pp": 0.86,
      "mae_last_pp": 0.92,
      "mae_mean_pp": 0.61,
      "inflow_flagged": 37,
-     "inflow_hits": 35,
-     "inflow_precision": 0.95,
-     "inflow_recall": 0.71,
+     "inflow_hits": 37,
+     "inflow_precision": 1.0,
+     "inflow_recall": 0.76,
      "truly_inflow": 45,
-     "outflow_flagged": 105,
-     "outflow_hits": 89,
+     "outflow_flagged": 103,
+     "outflow_hits": 88,
      "outflow_precision": 0.85,
      "outflow_recall": 0.92,
      "truly_outflow": 79
@@ -589,18 +589,18 @@
     "2024": {
      "n": 158,
      "points_used": 6,
-     "mae_model_pp": 1.0,
+     "mae_model_pp": 0.96,
      "mae_last_pp": 0.95,
      "mae_mean_pp": 1.01,
-     "inflow_flagged": 42,
+     "inflow_flagged": 41,
      "inflow_hits": 37,
-     "inflow_precision": 0.88,
+     "inflow_precision": 0.9,
      "inflow_recall": 0.72,
      "truly_inflow": 43,
-     "outflow_flagged": 77,
-     "outflow_hits": 71,
-     "outflow_precision": 0.92,
-     "outflow_recall": 0.79,
+     "outflow_flagged": 79,
+     "outflow_hits": 72,
+     "outflow_precision": 0.91,
+     "outflow_recall": 0.81,
      "truly_outflow": 80
     }
    },
@@ -615,17 +615,17 @@
      },
      "2023": {
       "signal": "持平",
-      "forecast": -0.35,
+      "forecast": -0.33,
       "actual_next": -0.04,
       "future_mean": -0.27,
-      "n": 5
+      "n": 4
      },
      "2024": {
       "signal": "持平",
-      "forecast": -0.23,
+      "forecast": -0.19,
       "actual_next": -0.5,
       "future_mean": -0.45,
-      "n": 6
+      "n": 5
      }
     },
     "新北市林口區": {
@@ -637,18 +637,18 @@
       "n": 4
      },
      "2023": {
-      "signal": "移入減速",
-      "forecast": 2.51,
+      "signal": "持續移入",
+      "forecast": 2.61,
       "actual_next": 2.87,
       "future_mean": 2.5,
-      "n": 5
+      "n": 4
      },
      "2024": {
       "signal": "移入減速",
-      "forecast": 2.27,
+      "forecast": 2.25,
       "actual_next": 2.12,
       "future_mean": 1.73,
-      "n": 6
+      "n": 5
      }
     },
     "新北市汐止區": {
@@ -661,17 +661,17 @@
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 1.23,
+      "forecast": 1.15,
       "actual_next": 1.28,
       "future_mean": 1.65,
-      "n": 5
+      "n": 4
      },
      "2024": {
       "signal": "持續移入",
-      "forecast": 1.24,
+      "forecast": 1.2,
       "actual_next": 2.03,
       "future_mean": 1.12,
-      "n": 6
+      "n": 5
      }
     },
     "新北市淡水區": {
@@ -684,17 +684,17 @@
      },
      "2023": {
       "signal": "持續移入",
-      "forecast": 2.24,
+      "forecast": 2.2,
       "actual_next": 3.61,
       "future_mean": 4.45,
-      "n": 5
+      "n": 4
      },
      "2024": {
       "signal": "持續移入",
-      "forecast": 2.97,
+      "forecast": 3.14,
       "actual_next": 5.28,
       "future_mean": 3.92,
-      "n": 6
+      "n": 5
      }
     }
    },
@@ -735,13 +735,13 @@
     "2023": {
      "n": 37,
      "points_used": 5,
-     "mae_model_pp": 0.75,
+     "mae_model_pp": 0.69,
      "mae_last_pp": 0.83,
      "mae_mean_pp": 0.66,
-     "inflow_flagged": 6,
-     "inflow_hits": 6,
+     "inflow_flagged": 7,
+     "inflow_hits": 7,
      "inflow_precision": 1.0,
-     "inflow_recall": 0.5,
+     "inflow_recall": 0.6,
      "truly_inflow": 10,
      "outflow_flagged": 28,
      "outflow_hits": 23,
@@ -753,12 +753,12 @@
       "善化區",
       "安南區",
       "安平區",
+      "新市區",
       "永康區",
       "西港區"
      ],
      "missed_in_names": [
       "安定區",
-      "新市區",
       "歸仁區",
       "關廟區",
       "麻豆區"
@@ -767,18 +767,18 @@
     "2024": {
      "n": 37,
      "points_used": 6,
-     "mae_model_pp": 1.02,
+     "mae_model_pp": 0.97,
      "mae_last_pp": 0.85,
      "mae_mean_pp": 0.86,
-     "inflow_flagged": 11,
-     "inflow_hits": 9,
-     "inflow_precision": 0.82,
-     "inflow_recall": 0.88,
+     "inflow_flagged": 10,
+     "inflow_hits": 8,
+     "inflow_precision": 0.8,
+     "inflow_recall": 0.75,
      "truly_inflow": 8,
-     "outflow_flagged": 21,
-     "outflow_hits": 21,
+     "outflow_flagged": 22,
+     "outflow_hits": 22,
      "outflow_precision": 1.0,
-     "outflow_recall": 0.86,
+     "outflow_recall": 0.9,
      "truly_outflow": 21,
      "flagged_in_names": [
       "仁德區",
@@ -788,12 +788,12 @@
       "安定區",
       "安平區",
       "新市區",
-      "歸仁區",
       "永康區",
       "西港區",
       "麻豆區"
      ],
      "missed_in_names": [
+      "歸仁區",
       "關廟區"
      ]
     }
@@ -5306,22 +5306,24 @@
       -10306
      ],
      "signal": "持平",
-     "slope_pp": 0.067,
-     "slope_se_pp": 0.033,
-     "t": 2.03,
+     "slope_pp": 0.068,
+     "slope_se_pp": 0.036,
+     "t": 1.88,
      "significant": false,
      "r2": 0.41,
-     "mean": -0.0009,
-     "sd": 0.0026,
-     "mean_ci": 0.0021,
-     "level_t": -1.05,
+     "mean": -0.001,
+     "sd": 0.0028,
+     "mean_ci": 0.0026,
+     "level_t": -0.96,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0021,
-     "margin": 0.0053,
+     "forecast": 0.002,
+     "margin": 0.0076,
      "confidence": "medium",
      "positive_years": 3,
-     "n": 8
+     "n": 7
     },
     "臺南市七股區": {
      "net": [
@@ -5355,22 +5357,24 @@
       -203
      ],
      "signal": "持續流出",
-     "slope_pp": 0.073,
-     "slope_se_pp": 0.083,
+     "slope_pp": 0.074,
+     "slope_se_pp": 0.084,
      "t": 0.88,
      "significant": false,
-     "r2": 0.11,
-     "mean": -0.0094,
+     "r2": 0.13,
+     "mean": -0.0101,
      "sd": 0.0053,
-     "mean_ci": 0.0044,
-     "level_t": -5.02,
+     "mean_ci": 0.0049,
+     "level_t": -5.03,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0061,
-     "margin": 0.0134,
+     "forecast": -0.0068,
+     "margin": 0.0179,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "臺南市下營區": {
      "net": [
@@ -5405,21 +5409,23 @@
      ],
      "signal": "持續流出",
      "slope_pp": -0.004,
-     "slope_se_pp": 0.102,
+     "slope_se_pp": 0.108,
      "t": -0.04,
      "significant": false,
      "r2": 0.0,
-     "mean": -0.0151,
-     "sd": 0.0061,
-     "mean_ci": 0.0051,
-     "level_t": -6.99,
+     "mean": -0.0156,
+     "sd": 0.0064,
+     "mean_ci": 0.0059,
+     "level_t": -6.47,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0152,
-     "margin": 0.0164,
+     "forecast": -0.0158,
+     "margin": 0.0229,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市中西區": {
      "net": [
@@ -5453,22 +5459,24 @@
       -523
      ],
      "signal": "持續流出",
-     "slope_pp": -0.074,
-     "slope_se_pp": 0.052,
-     "t": -1.42,
+     "slope_pp": -0.075,
+     "slope_se_pp": 0.053,
+     "t": -1.43,
      "significant": false,
-     "r2": 0.25,
-     "mean": -0.0087,
-     "sd": 0.0036,
-     "mean_ci": 0.003,
-     "level_t": -6.76,
+     "r2": 0.29,
+     "mean": -0.0091,
+     "sd": 0.0037,
+     "mean_ci": 0.0034,
+     "level_t": -6.56,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.012,
-     "margin": 0.0084,
+     "forecast": -0.0125,
+     "margin": 0.0111,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "臺南市仁德區": {
      "net": [
@@ -5503,21 +5511,23 @@
      ],
      "signal": "持續移入",
      "slope_pp": 0.069,
-     "slope_se_pp": 0.072,
-     "t": 0.96,
+     "slope_se_pp": 0.069,
+     "t": 1.0,
      "significant": false,
-     "r2": 0.13,
-     "mean": 0.0094,
-     "sd": 0.0046,
-     "mean_ci": 0.0039,
-     "level_t": 5.77,
+     "r2": 0.17,
+     "mean": 0.0087,
+     "sd": 0.0045,
+     "mean_ci": 0.0041,
+     "level_t": 5.14,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0125,
-     "margin": 0.0115,
+     "forecast": 0.0118,
+     "margin": 0.0147,
      "confidence": "medium",
      "positive_years": 8,
-     "n": 8
+     "n": 7
     },
     "臺南市佳里區": {
      "net": [
@@ -5551,22 +5561,24 @@
       -366
      ],
      "signal": "持續流出",
-     "slope_pp": 0.1,
-     "slope_se_pp": 0.061,
-     "t": 1.64,
+     "slope_pp": 0.102,
+     "slope_se_pp": 0.065,
+     "t": 1.56,
      "significant": false,
-     "r2": 0.31,
-     "mean": -0.0032,
-     "sd": 0.0044,
-     "mean_ci": 0.0037,
-     "level_t": -2.06,
+     "r2": 0.33,
+     "mean": -0.0029,
+     "sd": 0.0047,
+     "mean_ci": 0.0043,
+     "level_t": -1.63,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0013,
-     "margin": 0.0099,
+     "forecast": 0.0017,
+     "margin": 0.0137,
      "confidence": "low",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "臺南市六甲區": {
      "net": [
@@ -5600,22 +5612,24 @@
       -195
      ],
      "signal": "持續流出",
-     "slope_pp": 0.122,
-     "slope_se_pp": 0.123,
-     "t": 0.99,
+     "slope_pp": 0.123,
+     "slope_se_pp": 0.133,
+     "t": 0.93,
      "significant": false,
-     "r2": 0.14,
-     "mean": -0.0099,
-     "sd": 0.008,
-     "mean_ci": 0.0067,
-     "level_t": -3.51,
+     "r2": 0.15,
+     "mean": -0.0104,
+     "sd": 0.0085,
+     "mean_ci": 0.0078,
+     "level_t": -3.23,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0044,
-     "margin": 0.0198,
+     "forecast": -0.0048,
+     "margin": 0.0282,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "臺南市北區": {
      "net": [
@@ -5649,22 +5663,24 @@
       -694
      ],
      "signal": "持續流出",
-     "slope_pp": 0.02,
-     "slope_se_pp": 0.066,
-     "t": 0.31,
+     "slope_pp": 0.021,
+     "slope_se_pp": 0.069,
+     "t": 0.3,
      "significant": false,
      "r2": 0.02,
-     "mean": -0.0049,
-     "sd": 0.004,
-     "mean_ci": 0.0033,
-     "level_t": -3.47,
+     "mean": -0.0044,
+     "sd": 0.0041,
+     "mean_ci": 0.0038,
+     "level_t": -2.88,
      "level_significant": true,
+     "edge": true,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.004,
-     "margin": 0.0107,
-     "confidence": "medium",
+     "forecast": -0.0035,
+     "margin": 0.0146,
+     "confidence": "low",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "臺南市北門區": {
      "net": [
@@ -5698,22 +5714,24 @@
       -73
      ],
      "signal": "持續流出",
-     "slope_pp": -0.069,
-     "slope_se_pp": 0.243,
-     "t": -0.29,
+     "slope_pp": -0.07,
+     "slope_se_pp": 0.254,
+     "t": -0.28,
      "significant": false,
      "r2": 0.01,
-     "mean": -0.0206,
-     "sd": 0.0147,
-     "mean_ci": 0.0123,
-     "level_t": -3.98,
+     "mean": -0.0222,
+     "sd": 0.0151,
+     "mean_ci": 0.0139,
+     "level_t": -3.91,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0238,
-     "margin": 0.0391,
+     "forecast": -0.0254,
+     "margin": 0.0538,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市南化區": {
      "net": [
@@ -5747,22 +5765,24 @@
       -78
      ],
      "signal": "持續流出",
-     "slope_pp": -0.233,
-     "slope_se_pp": 0.137,
-     "t": -1.71,
+     "slope_pp": -0.236,
+     "slope_se_pp": 0.13,
+     "t": -1.82,
      "significant": false,
-     "r2": 0.33,
-     "mean": -0.018,
-     "sd": 0.01,
-     "mean_ci": 0.0084,
-     "level_t": -5.09,
+     "r2": 0.4,
+     "mean": -0.0195,
+     "sd": 0.0098,
+     "mean_ci": 0.0091,
+     "level_t": -5.23,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0285,
-     "margin": 0.022,
+     "forecast": -0.0301,
+     "margin": 0.0275,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市南區": {
      "net": [
@@ -5796,22 +5816,24 @@
       -1015
      ],
      "signal": "持續流出",
-     "slope_pp": -0.083,
+     "slope_pp": -0.084,
      "slope_se_pp": 0.05,
-     "t": -1.67,
+     "t": -1.68,
      "significant": false,
-     "r2": 0.32,
-     "mean": -0.0049,
-     "sd": 0.0036,
-     "mean_ci": 0.003,
-     "level_t": -3.85,
+     "r2": 0.36,
+     "mean": -0.0045,
+     "sd": 0.0037,
+     "mean_ci": 0.0034,
+     "level_t": -3.24,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0086,
-     "margin": 0.008,
+     "forecast": -0.0083,
+     "margin": 0.0106,
      "confidence": "medium",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "臺南市善化區": {
      "net": [
@@ -5845,22 +5867,24 @@
       -97
      ],
      "signal": "持續移入",
-     "slope_pp": -0.07,
-     "slope_se_pp": 0.094,
-     "t": -0.74,
+     "slope_pp": -0.071,
+     "slope_se_pp": 0.103,
+     "t": -0.69,
      "significant": false,
-     "r2": 0.08,
-     "mean": 0.0287,
-     "sd": 0.0059,
-     "mean_ci": 0.0049,
-     "level_t": 13.76,
+     "r2": 0.09,
+     "mean": 0.0285,
+     "sd": 0.0063,
+     "mean_ci": 0.0059,
+     "level_t": 11.89,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0256,
-     "margin": 0.0152,
+     "forecast": 0.0253,
+     "margin": 0.0218,
      "confidence": "medium",
      "positive_years": 8,
-     "n": 8
+     "n": 7
     },
     "臺南市大內區": {
      "net": [
@@ -5899,17 +5923,19 @@
      "t": 0.14,
      "significant": false,
      "r2": 0.0,
-     "mean": -0.0161,
-     "sd": 0.0033,
-     "mean_ci": 0.0028,
-     "level_t": -13.73,
+     "mean": -0.0165,
+     "sd": 0.0032,
+     "mean_ci": 0.003,
+     "level_t": -13.51,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0157,
-     "margin": 0.0089,
+     "forecast": -0.0162,
+     "margin": 0.0116,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市學甲區": {
      "net": [
@@ -5943,22 +5969,24 @@
       -178
      ],
      "signal": "持續流出",
-     "slope_pp": 0.077,
-     "slope_se_pp": 0.057,
-     "t": 1.35,
+     "slope_pp": 0.078,
+     "slope_se_pp": 0.061,
+     "t": 1.29,
      "significant": false,
-     "r2": 0.23,
-     "mean": -0.0044,
-     "sd": 0.0039,
-     "mean_ci": 0.0033,
-     "level_t": -3.19,
+     "r2": 0.25,
+     "mean": -0.0048,
+     "sd": 0.0041,
+     "mean_ci": 0.0038,
+     "level_t": -3.06,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.001,
-     "margin": 0.0093,
+     "forecast": -0.0012,
+     "margin": 0.0129,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "臺南市安南區": {
      "net": [
@@ -5992,22 +6020,24 @@
       -931
      ],
      "signal": "持續移入",
-     "slope_pp": 0.141,
-     "slope_se_pp": 0.091,
-     "t": 1.55,
+     "slope_pp": 0.143,
+     "slope_se_pp": 0.089,
+     "t": 1.61,
      "significant": false,
-     "r2": 0.29,
-     "mean": 0.0109,
-     "sd": 0.0065,
-     "mean_ci": 0.0054,
-     "level_t": 4.78,
+     "r2": 0.34,
+     "mean": 0.01,
+     "sd": 0.0064,
+     "mean_ci": 0.0059,
+     "level_t": 4.13,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0173,
-     "margin": 0.0147,
+     "forecast": 0.0165,
+     "margin": 0.0187,
      "confidence": "medium",
      "positive_years": 8,
-     "n": 8
+     "n": 7
     },
     "臺南市安定區": {
      "net": [
@@ -6041,22 +6071,24 @@
       -139
      ],
      "signal": "轉為移入",
-     "slope_pp": 0.266,
-     "slope_se_pp": 0.038,
-     "t": 7.06,
+     "slope_pp": 0.269,
+     "slope_se_pp": 0.036,
+     "t": 7.53,
      "significant": true,
-     "r2": 0.89,
-     "mean": 0.0019,
-     "sd": 0.0069,
-     "mean_ci": 0.0058,
-     "level_t": 0.77,
+     "r2": 0.92,
+     "mean": 0.0022,
+     "sd": 0.0074,
+     "mean_ci": 0.0068,
+     "level_t": 0.79,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0138,
-     "margin": 0.0061,
+     "forecast": 0.0143,
+     "margin": 0.0075,
      "confidence": "medium",
      "positive_years": 4,
-     "n": 8
+     "n": 7
     },
     "臺南市安平區": {
      "net": [
@@ -6090,22 +6122,24 @@
       -59
      ],
      "signal": "持續移入",
-     "slope_pp": 0.232,
-     "slope_se_pp": 0.08,
-     "t": 2.91,
+     "slope_pp": 0.235,
+     "slope_se_pp": 0.084,
+     "t": 2.79,
      "significant": true,
-     "r2": 0.58,
-     "mean": 0.0109,
-     "sd": 0.0074,
-     "mean_ci": 0.0062,
-     "level_t": 4.14,
+     "r2": 0.61,
+     "mean": 0.0105,
+     "sd": 0.0079,
+     "mean_ci": 0.0073,
+     "level_t": 3.49,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0213,
-     "margin": 0.0129,
+     "forecast": 0.021,
+     "margin": 0.0179,
      "confidence": "medium",
      "positive_years": 7,
-     "n": 8
+     "n": 7
     },
     "臺南市官田區": {
      "net": [
@@ -6139,22 +6173,24 @@
       -168
      ],
      "signal": "持平",
-     "slope_pp": -0.068,
-     "slope_se_pp": 0.097,
-     "t": -0.71,
+     "slope_pp": -0.069,
+     "slope_se_pp": 0.105,
+     "t": -0.66,
      "significant": false,
      "r2": 0.08,
-     "mean": -0.0016,
-     "sd": 0.006,
-     "mean_ci": 0.005,
-     "level_t": -0.76,
+     "mean": -0.0013,
+     "sd": 0.0065,
+     "mean_ci": 0.006,
+     "level_t": -0.55,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0047,
-     "margin": 0.0155,
+     "forecast": -0.0044,
+     "margin": 0.0223,
      "confidence": "medium",
      "positive_years": 3,
-     "n": 8
+     "n": 7
     },
     "臺南市將軍區": {
      "net": [
@@ -6188,22 +6224,24 @@
       -156
      ],
      "signal": "持續流出",
-     "slope_pp": -0.076,
-     "slope_se_pp": 0.065,
-     "t": -1.16,
+     "slope_pp": -0.077,
+     "slope_se_pp": 0.067,
+     "t": -1.15,
      "significant": false,
-     "r2": 0.18,
-     "mean": -0.0097,
-     "sd": 0.0043,
-     "mean_ci": 0.0036,
-     "level_t": -6.34,
+     "r2": 0.21,
+     "mean": -0.0102,
+     "sd": 0.0044,
+     "mean_ci": 0.0041,
+     "level_t": -6.13,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0131,
-     "margin": 0.0105,
+     "forecast": -0.0137,
+     "margin": 0.0141,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市山上區": {
      "net": [
@@ -6236,23 +6274,25 @@
       -74,
       -58
      ],
-     "signal": "方向不明",
-     "slope_pp": -0.023,
-     "slope_se_pp": 0.21,
-     "t": -0.11,
+     "signal": "持續流出",
+     "slope_pp": -0.024,
+     "slope_se_pp": 0.183,
+     "t": -0.13,
      "significant": false,
      "r2": 0.0,
-     "mean": -0.003,
-     "sd": 0.0126,
-     "mean_ci": 0.0105,
-     "level_t": -0.67,
+     "mean": -0.0057,
+     "sd": 0.0108,
+     "mean_ci": 0.01,
+     "level_t": -1.39,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.004,
-     "margin": 0.0338,
+     "forecast": -0.0068,
+     "margin": 0.0388,
      "confidence": "low",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "臺南市左鎮區": {
      "net": [
@@ -6286,22 +6326,24 @@
       -2
      ],
      "signal": "方向不明",
-     "slope_pp": 0.268,
-     "slope_se_pp": 0.12,
-     "t": 2.24,
+     "slope_pp": 0.271,
+     "slope_se_pp": 0.131,
+     "t": 2.07,
      "significant": false,
      "r2": 0.46,
-     "mean": -0.0095,
-     "sd": 0.0097,
-     "mean_ci": 0.0081,
-     "level_t": -2.75,
-     "level_significant": true,
+     "mean": -0.0094,
+     "sd": 0.0105,
+     "mean_ci": 0.0097,
+     "level_t": -2.37,
+     "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0026,
-     "margin": 0.0192,
+     "forecast": 0.0028,
+     "margin": 0.0277,
      "confidence": "low",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "臺南市後壁區": {
      "net": [
@@ -6335,22 +6377,24 @@
       -118
      ],
      "signal": "持續流出",
-     "slope_pp": -0.104,
-     "slope_se_pp": 0.077,
-     "t": -1.35,
+     "slope_pp": -0.105,
+     "slope_se_pp": 0.082,
+     "t": -1.29,
      "significant": false,
-     "r2": 0.23,
-     "mean": -0.0135,
-     "sd": 0.0053,
-     "mean_ci": 0.0044,
-     "level_t": -7.21,
+     "r2": 0.25,
+     "mean": -0.013,
+     "sd": 0.0056,
+     "mean_ci": 0.0051,
+     "level_t": -6.21,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0182,
-     "margin": 0.0124,
+     "forecast": -0.0178,
+     "margin": 0.0173,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市新化區": {
      "net": [
@@ -6384,22 +6428,24 @@
       -302
      ],
      "signal": "持續流出",
-     "slope_pp": -0.131,
-     "slope_se_pp": 0.083,
-     "t": -1.57,
+     "slope_pp": -0.133,
+     "slope_se_pp": 0.091,
+     "t": -1.45,
      "significant": false,
-     "r2": 0.29,
-     "mean": -0.0042,
-     "sd": 0.0059,
-     "mean_ci": 0.005,
-     "level_t": -1.98,
+     "r2": 0.3,
+     "mean": -0.0043,
+     "sd": 0.0064,
+     "mean_ci": 0.0059,
+     "level_t": -1.76,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0101,
-     "margin": 0.0134,
+     "forecast": -0.0102,
+     "margin": 0.0194,
      "confidence": "low",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "臺南市新市區": {
      "net": [
@@ -6433,22 +6479,24 @@
       -263
      ],
      "signal": "持續移入",
-     "slope_pp": 0.069,
-     "slope_se_pp": 0.186,
-     "t": 0.37,
+     "slope_pp": 0.07,
+     "slope_se_pp": 0.183,
+     "t": 0.38,
      "significant": false,
-     "r2": 0.02,
-     "mean": 0.0141,
-     "sd": 0.0113,
-     "mean_ci": 0.0094,
-     "level_t": 3.54,
+     "r2": 0.03,
+     "mean": 0.0159,
+     "sd": 0.0109,
+     "mean_ci": 0.0101,
+     "level_t": 3.84,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0172,
-     "margin": 0.0299,
+     "forecast": 0.019,
+     "margin": 0.0387,
      "confidence": "medium",
      "positive_years": 7,
-     "n": 8
+     "n": 7
     },
     "臺南市新營區": {
      "net": [
@@ -6482,22 +6530,24 @@
       -504
      ],
      "signal": "持續流出",
-     "slope_pp": 0.113,
-     "slope_se_pp": 0.048,
-     "t": 2.35,
+     "slope_pp": 0.114,
+     "slope_se_pp": 0.053,
+     "t": 2.17,
      "significant": false,
-     "r2": 0.48,
+     "r2": 0.49,
      "mean": -0.0123,
-     "sd": 0.004,
-     "mean_ci": 0.0033,
-     "level_t": -8.7,
+     "sd": 0.0043,
+     "mean_ci": 0.004,
+     "level_t": -7.52,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0072,
-     "margin": 0.0077,
+     "forecast": -0.0071,
+     "margin": 0.0111,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市東區": {
      "net": [
@@ -6532,21 +6582,23 @@
      ],
      "signal": "持續流出",
      "slope_pp": 0.005,
-     "slope_se_pp": 0.065,
+     "slope_se_pp": 0.07,
      "t": 0.08,
      "significant": false,
      "r2": 0.0,
-     "mean": -0.0137,
-     "sd": 0.0039,
-     "mean_ci": 0.0032,
-     "level_t": -9.96,
+     "mean": -0.0135,
+     "sd": 0.0041,
+     "mean_ci": 0.0038,
+     "level_t": -8.59,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0134,
-     "margin": 0.0104,
+     "forecast": -0.0132,
+     "margin": 0.0149,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "臺南市東山區": {
      "net": [
@@ -6581,21 +6633,23 @@
      ],
      "signal": "持續流出",
      "slope_pp": -0.021,
-     "slope_se_pp": 0.062,
+     "slope_se_pp": 0.063,
      "t": -0.34,
      "significant": false,
      "r2": 0.02,
-     "mean": -0.0152,
-     "sd": 0.0037,
-     "mean_ci": 0.0031,
-     "level_t": -11.49,
+     "mean": -0.0156,
+     "sd": 0.0038,
+     "mean_ci": 0.0035,
+     "level_t": -11.01,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0161,
-     "margin": 0.0099,
+     "forecast": -0.0166,
+     "margin": 0.0134,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市柳營區": {
      "net": [
@@ -6629,22 +6683,24 @@
       -141
      ],
      "signal": "持續流出",
-     "slope_pp": -0.078,
-     "slope_se_pp": 0.082,
-     "t": -0.95,
+     "slope_pp": -0.079,
+     "slope_se_pp": 0.087,
+     "t": -0.9,
      "significant": false,
-     "r2": 0.13,
-     "mean": -0.007,
-     "sd": 0.0053,
-     "mean_ci": 0.0044,
-     "level_t": -3.73,
+     "r2": 0.14,
+     "mean": -0.0074,
+     "sd": 0.0055,
+     "mean_ci": 0.0051,
+     "level_t": -3.53,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0104,
-     "margin": 0.0132,
+     "forecast": -0.0109,
+     "margin": 0.0185,
      "confidence": "medium",
      "positive_years": 2,
-     "n": 8
+     "n": 7
     },
     "臺南市楠西區": {
      "net": [
@@ -6678,22 +6734,24 @@
       -58
      ],
      "signal": "持續流出",
-     "slope_pp": 0.017,
-     "slope_se_pp": 0.182,
-     "t": 0.1,
+     "slope_pp": 0.018,
+     "slope_se_pp": 0.189,
+     "t": 0.09,
      "significant": false,
      "r2": 0.0,
-     "mean": -0.0176,
-     "sd": 0.0109,
-     "mean_ci": 0.0091,
-     "level_t": -4.57,
+     "mean": -0.0189,
+     "sd": 0.0111,
+     "mean_ci": 0.0103,
+     "level_t": -4.5,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0169,
-     "margin": 0.0293,
+     "forecast": -0.0181,
+     "margin": 0.0399,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市歸仁區": {
      "net": [
@@ -6727,22 +6785,24 @@
       -201
      ],
      "signal": "轉為移入",
-     "slope_pp": 0.397,
-     "slope_se_pp": 0.069,
-     "t": 5.75,
+     "slope_pp": 0.402,
+     "slope_se_pp": 0.073,
+     "t": 5.5,
      "significant": true,
-     "r2": 0.85,
-     "mean": 0.0051,
-     "sd": 0.0106,
-     "mean_ci": 0.0088,
-     "level_t": 1.37,
+     "r2": 0.86,
+     "mean": 0.0053,
+     "sd": 0.0114,
+     "mean_ci": 0.0106,
+     "level_t": 1.23,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.023,
-     "margin": 0.0111,
+     "forecast": 0.0234,
+     "margin": 0.0155,
      "confidence": "medium",
      "positive_years": 4,
-     "n": 8
+     "n": 7
     },
     "臺南市永康區": {
      "net": [
@@ -6777,21 +6837,23 @@
      ],
      "signal": "持續移入",
      "slope_pp": 0.048,
-     "slope_se_pp": 0.039,
-     "t": 1.23,
+     "slope_se_pp": 0.041,
+     "t": 1.17,
      "significant": false,
-     "r2": 0.2,
-     "mean": 0.0029,
-     "sd": 0.0026,
-     "mean_ci": 0.0022,
-     "level_t": 3.21,
+     "r2": 0.21,
+     "mean": 0.0032,
+     "sd": 0.0027,
+     "mean_ci": 0.0025,
+     "level_t": 3.07,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0051,
-     "margin": 0.0062,
+     "forecast": 0.0053,
+     "margin": 0.0087,
      "confidence": "medium",
      "positive_years": 6,
-     "n": 8
+     "n": 7
     },
     "臺南市玉井區": {
      "net": [
@@ -6825,22 +6887,24 @@
       -98
      ],
      "signal": "持續流出",
-     "slope_pp": 0.088,
-     "slope_se_pp": 0.06,
-     "t": 1.47,
+     "slope_pp": 0.089,
+     "slope_se_pp": 0.066,
+     "t": 1.35,
      "significant": false,
-     "r2": 0.26,
-     "mean": -0.0145,
-     "sd": 0.0042,
-     "mean_ci": 0.0035,
-     "level_t": -9.79,
+     "r2": 0.27,
+     "mean": -0.0144,
+     "sd": 0.0045,
+     "mean_ci": 0.0042,
+     "level_t": -8.46,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0105,
-     "margin": 0.0096,
+     "forecast": -0.0104,
+     "margin": 0.0139,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市白河區": {
      "net": [
@@ -6874,22 +6938,24 @@
       -120
      ],
      "signal": "持續流出",
-     "slope_pp": 0.133,
-     "slope_se_pp": 0.037,
-     "t": 3.59,
+     "slope_pp": 0.134,
+     "slope_se_pp": 0.039,
+     "t": 3.43,
      "significant": true,
-     "r2": 0.68,
-     "mean": -0.0134,
-     "sd": 0.0039,
-     "mean_ci": 0.0033,
-     "level_t": -9.65,
+     "r2": 0.7,
+     "mean": -0.0133,
+     "sd": 0.0042,
+     "mean_ci": 0.0039,
+     "level_t": -8.31,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0075,
-     "margin": 0.006,
+     "forecast": -0.0072,
+     "margin": 0.0083,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     },
     "臺南市西港區": {
      "net": [
@@ -6923,22 +6989,24 @@
       -174
      ],
      "signal": "持平",
-     "slope_pp": 0.17,
-     "slope_se_pp": 0.149,
-     "t": 1.14,
+     "slope_pp": 0.172,
+     "slope_se_pp": 0.147,
+     "t": 1.17,
      "significant": false,
-     "r2": 0.18,
-     "mean": 0.0009,
-     "sd": 0.0099,
-     "mean_ci": 0.0082,
-     "level_t": 0.26,
+     "r2": 0.22,
+     "mean": -0.0005,
+     "sd": 0.0097,
+     "mean_ci": 0.009,
+     "level_t": -0.13,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0086,
-     "margin": 0.024,
+     "forecast": 0.0073,
+     "margin": 0.031,
      "confidence": "medium",
      "positive_years": 5,
-     "n": 8
+     "n": 7
     },
     "臺南市關廟區": {
      "net": [
@@ -6972,22 +7040,24 @@
       -239
      ],
      "signal": "持平",
-     "slope_pp": 0.152,
-     "slope_se_pp": 0.098,
-     "t": 1.55,
+     "slope_pp": 0.153,
+     "slope_se_pp": 0.102,
+     "t": 1.5,
      "significant": false,
-     "r2": 0.29,
-     "mean": -0.0006,
-     "sd": 0.0069,
-     "mean_ci": 0.0058,
-     "level_t": -0.24,
+     "r2": 0.31,
+     "mean": 0.0001,
+     "sd": 0.0072,
+     "mean_ci": 0.0067,
+     "level_t": 0.02,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0062,
-     "margin": 0.0158,
+     "forecast": 0.007,
+     "margin": 0.0216,
      "confidence": "medium",
      "positive_years": 3,
-     "n": 8
+     "n": 7
     },
     "臺南市鹽水區": {
      "net": [
@@ -7021,22 +7091,24 @@
       -244
      ],
      "signal": "持續流出",
-     "slope_pp": -0.084,
-     "slope_se_pp": 0.099,
-     "t": -0.85,
+     "slope_pp": -0.085,
+     "slope_se_pp": 0.109,
+     "t": -0.78,
      "significant": false,
      "r2": 0.11,
      "mean": -0.0082,
-     "sd": 0.0063,
-     "mean_ci": 0.0053,
-     "level_t": -3.7,
+     "sd": 0.0068,
+     "mean_ci": 0.0063,
+     "level_t": -3.17,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
      "forecast": -0.012,
-     "margin": 0.016,
+     "margin": 0.0231,
      "confidence": "medium",
      "positive_years": 1,
-     "n": 8
+     "n": 7
     },
     "臺南市麻豆區": {
      "net": [
@@ -7070,22 +7142,24 @@
       -289
      ],
      "signal": "持平",
-     "slope_pp": 0.208,
-     "slope_se_pp": 0.097,
-     "t": 2.14,
+     "slope_pp": 0.211,
+     "slope_se_pp": 0.105,
+     "t": 2.0,
      "significant": false,
-     "r2": 0.43,
-     "mean": -0.0015,
-     "sd": 0.0077,
-     "mean_ci": 0.0065,
-     "level_t": -0.55,
+     "r2": 0.44,
+     "mean": -0.0012,
+     "sd": 0.0083,
+     "mean_ci": 0.0077,
+     "level_t": -0.38,
      "level_significant": false,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": 0.0079,
-     "margin": 0.0157,
+     "forecast": 0.0083,
+     "margin": 0.0223,
      "confidence": "medium",
      "positive_years": 3,
-     "n": 8
+     "n": 7
     },
     "臺南市龍崎區": {
      "net": [
@@ -7119,30 +7193,32 @@
       -41
      ],
      "signal": "持續流出",
-     "slope_pp": -0.372,
-     "slope_se_pp": 0.228,
-     "t": -1.63,
+     "slope_pp": -0.376,
+     "slope_se_pp": 0.247,
+     "t": -1.52,
      "significant": false,
-     "r2": 0.31,
-     "mean": -0.0289,
-     "sd": 0.0164,
-     "mean_ci": 0.0137,
-     "level_t": -4.98,
+     "r2": 0.32,
+     "mean": -0.0296,
+     "sd": 0.0176,
+     "mean_ci": 0.0163,
+     "level_t": -4.46,
      "level_significant": true,
+     "edge": false,
+     "level_t_crit": null,
      "forecast_year": 2027,
-     "forecast": -0.0456,
-     "margin": 0.0366,
+     "forecast": -0.0466,
+     "margin": 0.0523,
      "confidence": "medium",
      "positive_years": 0,
-     "n": 8
+     "n": 7
     }
    },
-   "method": "世代追蹤淨遷入率 → 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；預測為線性外推＋95% 預測區間（forecast.py）",
+   "method": "世代追蹤淨遷入率 → 2022／2023 事件年合併成一點（n = 7）→ 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；|t| 在臨界值 ±20% 內標「邊緣」、信心低；預測為線性外推＋95% 預測區間（t 分布，forecast.py）",
    "shock_years": [
     2022,
     2023
    ],
-   "note": "世代追蹤：今年 a 歲 − 去年 a−1 歲，Σ 18–35 歲。扣掉了世代縮小與（可忽略的）死亡，剩下的就是淨遷徙。戶籍資料，量的是把戶籍遷來的青年，不含未遷籍的就學就業者。 2022／2023 兩期受疫情除籍與恢復戶籍影響，全市出現一負一正的大幅波動，是戶籍事件不是搬家：判定訊號與做檢定時把這兩點換成兩者平均（同一批人除籍再恢復，互相抵銷），圖上仍畫原始值；預測標 experimental。"
+   "note": "世代追蹤：今年 a 歲 − 去年 a−1 歲，Σ 18–35 歲。扣掉了世代縮小與（可忽略的）死亡，剩下的就是淨遷徙。戶籍資料，量的是把戶籍遷來的青年，不含未遷籍的就學就業者。 2022／2023 兩期受疫情除籍與恢復戶籍影響，全市出現一負一正的大幅波動，是戶籍事件不是搬家：判定訊號與做檢定時把這兩點合併成一個時間點（2022.5，取平均；同一批人除籍再恢復，互相抵銷），n 從 8 變 7，圖上仍畫原始值；預測標 experimental。"
   },
   "drivers": {
    "spec": "淨遷入率(區, 近三年平均) = β₀ + β₁ ln(工作機會密度) + β₂ ln(所得中位數) + β₃ ln(每坪月租) + β₄ ln(18–35 歲人口) + 縣市固定效果；OLS。模型 A 不含租金（全部行政區）、模型 B 含租金",
@@ -12551,15 +12627,13 @@
   },
   {
    "title": "優先投入這幾個領域的青年職訓與媒合",
-   "body": "這些行業的職缺成長趨勢在統計上顯著，而且平均薪資高於全體行業平均（68.8 萬）—— 缺人又待遇好，是投入資源最划算的地方。符合條件的共 4 個行業，依成長率列出前 3 個。",
+   "body": "這些行業的職缺成長趨勢在統計上顯著，而且平均薪資高於全體行業平均（68.8 萬）—— 缺人又待遇好，是投入資源最划算的地方。符合條件的共 2 個行業，依成長率列出前 2 個。",
    "detail": [
-    "電力及燃氣供應業（每年 +9.2%，2027 年預估 1,919 個職缺，平均年薪 112.9 萬）",
     "醫療保健及社會工作服務業（每年 +5.1%，2027 年預估 17,039 個職缺，平均年薪 77.4 萬）",
-    "專業科學及技術服務業（每年 +3.4%，2027 年預估 11,657 個職缺，平均年薪 76.2 萬）",
-    "其餘符合條件：出版影音及資通訊業"
+    "專業科學及技術服務業（每年 +3.4%，2027 年預估 11,657 個職缺，平均年薪 76.2 萬）"
    ],
    "confidence": "medium",
-   "basis": "職缺數趨勢（線性外推，斜率顯著）× 行業別平均年薪 ≥ 全體平均 68.8 萬；依成長率排序取前三"
+   "basis": "職缺數趨勢（線性外推，斜率顯著）× 行業別平均年薪 ≥ 全體平均 68.8 萬 × 職缺數 ≥ 全國各行業中位數（8,430 個）；依成長率排序取前三"
   },
   {
    "title": "及早為這些領域的青年準備轉職輔導",
@@ -12577,7 +12651,7 @@
     "教育業（職缺每年 +6.5%，就業人數下降）"
    ],
    "confidence": "medium",
-   "basis": "職缺趨勢 × 就業人數趨勢（2015–2025，兩者皆線性斜率 t 檢定）× 行業別平均年薪"
+   "basis": "職缺趨勢 × 就業人數趨勢（2015–2025，兩者皆線性斜率 t 檢定）× 行業別平均年薪；缺工擴大的行業職缺數都低於全國各行業中位數（8,430 個），改依職缺數排序"
   },
   {
    "title": "18–24 歲失業率明顯高於 30–35 歲",
@@ -12604,13 +12678,13 @@
    "title": "青年正在移入的區，需求會先到 —— 提前準備",
    "body": "世代追蹤（扣掉少子化）顯示這些區的 18–35 歲青年連續淨移入。青年搬進來之後，托育、租金補貼申請、公共運輸與青年服務據點的需求會跟著到；提前布局比事後補救便宜。",
    "detail": [
-    "善化區　+2.0%／年（+215 人）　持續移入，2027 年預估 +2.6%（±1.5%）",
-    "歸仁區　+1.7%／年（+256 人）　轉為移入，2027 年預估 +2.3%（±1.1%）",
-    "安平區　+1.2%／年（+196 人）　持續移入，2027 年預估 +2.1%（±1.3%）",
-    "仁德區　+1.0%／年（+155 人）　持續移入，2027 年預估 +1.2%（±1.1%）"
+    "善化區　+2.0%／年（+215 人）　持續移入，2027 年預估 +2.5%（±2.2%）",
+    "歸仁區　+1.7%／年（+256 人）　轉為移入，2027 年預估 +2.3%（±1.6%）",
+    "安平區　+1.2%／年（+196 人）　持續移入，2027 年預估 +2.1%（±1.8%）",
+    "仁德區　+1.0%／年（+155 人）　持續移入，2027 年預估 +1.2%（±1.5%）"
    ],
    "confidence": "medium",
-   "basis": "世代追蹤淨遷入率 → 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；預測為線性外推＋95% 預測區間（forecast.py）；2022–2023 為戶籍事件年"
+   "basis": "世代追蹤淨遷入率 → 2022／2023 事件年合併成一點（n = 7）→ 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；|t| 在臨界值 ±20% 內標「邊緣」、信心低；預測為線性外推＋95% 預測區間（t 分布，forecast.py）；2022–2023 為戶籍事件年"
   },
   {
    "title": "條件好但青年沒來的區 —— 先去問為什麼",
@@ -12664,7 +12738,7 @@
     "大內區　-1.8%／年（-28 人）　持續流出"
    ],
    "confidence": "medium",
-   "basis": "世代追蹤淨遷入率 → 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；預測為線性外推＋95% 預測區間（forecast.py）"
+   "basis": "世代追蹤淨遷入率 → 2022／2023 事件年合併成一點（n = 7）→ 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；|t| 在臨界值 ±20% 內標「邊緣」、信心低；預測為線性外推＋95% 預測區間（t 分布，forecast.py）"
   },
   {
    "title": "青年流失最快的區，服務不能只看人數",
@@ -12694,29 +12768,15 @@
  "insights": [
   {
    "_kind": "deviation",
-   "title": "3 個年齡組的中位數年薪在 2024 年同時高於既有趨勢",
-   "body": "臺南市50-64 歲中位數年薪、30-39 歲中位數年薪、40-49 歲中位數年薪 的 2024 年實際值，全部落在各自趨勢外推的 95% 預測區間之外，而且方向一致（都高於）。同一個指標的多個年齡組同時往同一個方向偏離，通常指向影響整體的外部因素，而不是各年齡層各自的變化。",
+   "title": "2 個年齡組的中位數年薪在 2024 年同時高於既有趨勢",
+   "body": "臺南市50-64 歲中位數年薪、30-39 歲中位數年薪 的 2024 年實際值，全部落在各自趨勢外推的 95% 預測區間之外，而且方向一致（都高於）。同一個指標的多個年齡組同時往同一個方向偏離，通常指向影響整體的外部因素，而不是各年齡層各自的變化。",
    "detail": [
     "50-64 歲中位數年薪　實際 54.1 萬　趨勢外推應為 52.1 萬（+2.0 萬）",
-    "30-39 歲中位數年薪　實際 55.9 萬　趨勢外推應為 53.5 萬（+2.4 萬）",
-    "40-49 歲中位數年薪　實際 59.3 萬　趨勢外推應為 57.8 萬（+1.5 萬）"
+    "30-39 歲中位數年薪　實際 55.9 萬　趨勢外推應為 53.5 萬（+2.4 萬）"
    ],
-   "confidence": "medium",
-   "basis": "行政院主計總處 工業及服務業全年總薪資統計－表6；最小平方外推 + 95% 預測區間（不含被檢驗的該年）；3 條序列獨立檢定後方向一致",
+   "confidence": "low",
+   "basis": "行政院主計總處 工業及服務業全年總薪資統計－表6；最小平方外推 + 95% 預測區間（不含被檢驗的該年）；2 條序列獨立檢定後方向一致",
    "chart": "salary"
-  },
-  {
-   "_kind": "deviation",
-   "title": "30-34 歲勞參率在 2025 年偏離既有趨勢",
-   "body": "全國30-34 歲勞參率 2025 年實際為 92.23%，但用 2010–2024 年的趨勢外推應該落在 92.41%–96.93%：比點預測低 2.44 個百分點，比區間下限低 0.18 個百分點（接近邊界，已超出 95% 區間）。偏離的是趨勢本身，不只是漲跌。",
-   "detail": [
-    "趨勢外推預測　94.67%（95% 區間 ±2.26%）",
-    "實際觀測值　　92.23%",
-    "用來外推的年度　2010–2024，共 15 點"
-   ],
-   "confidence": "medium",
-   "basis": "行政院主計總處 人力資源調查－歷年年齡組別勞參率／失業率；最小平方外推 + 95% 預測區間（不含被檢驗的該年）",
-   "chart": "national-lfpr"
   },
   {
    "_kind": "shift",
@@ -12756,6 +12816,19 @@
    "confidence": "low",
    "basis": "行政院主計總處 人力資源調查－歷年年齡組別勞參率／失業率；前後兩段分別做最小平方迴歸，兩段斜率都需通過雙尾 5% 檢定",
    "chart": "national-unemployment"
+  },
+  {
+   "_kind": "shift",
+   "title": "15-19 歲男性勞參率在 2021 年前後由下降轉為上升",
+   "body": "全國15-19 歲男性勞參率 在 1978–2020 年每年下降 -0.82 個百分點，但 2021–2025 年變成每年上升 +0.12 個百分點。兩段的斜率各自都通過顯著性檢定，所以這是方向改變，不是雜訊。",
+   "detail": [
+    "1978–2020　每年 -0.82 個百分點",
+    "2021–2025　每年 +0.12 個百分點",
+    "最新值　10.52%"
+   ],
+   "confidence": "low",
+   "basis": "主計總處 人力資源統計 歷年分齡（分性別）民間人口／勞動力／失業者；前後兩段分別做最小平方迴歸，兩段斜率都需通過雙尾 5% 檢定",
+   "chart": "national-lfpr"
   },
   {
    "_kind": "divergence",
@@ -28735,8 +28808,8 @@
    "value": 51,
    "unit": "個",
    "education": "礦業及土石採取業",
-   "_low": 22,
-   "_high": 80,
+   "_low": 17,
+   "_high": 85,
    "_r2": 0.1407,
    "_t": -1.145,
    "_direction": "flat",
@@ -28748,7 +28821,7 @@
     "method": "formula_d_t3",
     "weight": -0.0191,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 51 個，95% 區間 22–80 個。年變化 -1.9%，判定為「無明顯趨勢」（斜率 t=-1.14，R²=0.14）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 51 個，95% 區間 17–85 個。年變化 -1.9%，判定為「無明顯趨勢」（斜率 t=-1.14，R²=0.14）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -28798,8 +28871,8 @@
    "value": 89129,
    "unit": "個",
    "education": "製造業",
-   "_low": 69601,
-   "_high": 108658,
+   "_low": 66154,
+   "_high": 112105,
    "_r2": 0.0465,
    "_t": 0.625,
    "_direction": "flat",
@@ -28811,7 +28884,7 @@
     "method": "formula_d_t3",
     "weight": 0.0059,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 89,129 個，95% 區間 69,601–108,658 個。年變化 +0.6%，判定為「無明顯趨勢」（斜率 t=0.62，R²=0.05）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 89,129 個，95% 區間 66,154–112,105 個。年變化 +0.6%，判定為「無明顯趨勢」（斜率 t=0.62，R²=0.05）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -28861,8 +28934,8 @@
    "value": 1919,
    "unit": "個",
    "education": "電力及燃氣供應業",
-   "_low": 999,
-   "_high": 2839,
+   "_low": 836,
+   "_high": 3002,
    "_r2": 0.5694,
    "_t": 3.253,
    "_direction": "up",
@@ -28874,7 +28947,7 @@
     "method": "formula_d_t3",
     "weight": 0.0923,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 1,919 個，95% 區間 999–2,839 個。年變化 +9.2%，判定為「成長」（斜率 t=3.25，R²=0.57）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 1,919 個，95% 區間 836–3,002 個。年變化 +9.2%，判定為「成長」（斜率 t=3.25，R²=0.57）。趨勢在統計上顯著。"
    }
   },
   {
@@ -28924,8 +28997,8 @@
    "value": 1369,
    "unit": "個",
    "education": "用水供應及污染整治業",
-   "_low": 951,
-   "_high": 1787,
+   "_low": 877,
+   "_high": 1861,
    "_r2": 0.4539,
    "_t": 2.578,
    "_direction": "up",
@@ -28937,7 +29010,7 @@
     "method": "formula_d_t3",
     "weight": 0.0404,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 1,369 個，95% 區間 951–1,787 個。年變化 +4.0%，判定為「成長」（斜率 t=2.58，R²=0.45）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 1,369 個，95% 區間 877–1,861 個。年變化 +4.0%，判定為「成長」（斜率 t=2.58，R²=0.45）。趨勢在統計上顯著。"
    }
   },
   {
@@ -28987,8 +29060,8 @@
    "value": 23834,
    "unit": "個",
    "education": "營建工程業",
-   "_low": 11235,
-   "_high": 36434,
+   "_low": 9011,
+   "_high": 38658,
    "_r2": 0.3505,
    "_t": 2.078,
    "_direction": "flat",
@@ -29000,7 +29073,7 @@
     "method": "formula_d_t3",
     "weight": 0.0695,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 23,834 個，95% 區間 11,235–36,434 個。年變化 +6.9%，判定為「無明顯趨勢」（斜率 t=2.08，R²=0.35）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 23,834 個，95% 區間 9,011–38,658 個。年變化 +6.9%，判定為「無明顯趨勢」（斜率 t=2.08，R²=0.35）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -29050,8 +29123,8 @@
    "value": 35827,
    "unit": "個",
    "education": "批發及零售業",
-   "_low": 30717,
-   "_high": 40938,
+   "_low": 29814,
+   "_high": 41840,
    "_r2": 0.2707,
    "_t": -1.723,
    "_direction": "flat",
@@ -29063,7 +29136,7 @@
     "method": "formula_d_t3",
     "weight": -0.0095,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 35,827 個，95% 區間 30,717–40,938 個。年變化 -1.0%，判定為「無明顯趨勢」（斜率 t=-1.72，R²=0.27）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 35,827 個，95% 區間 29,814–41,840 個。年變化 -1.0%，判定為「無明顯趨勢」（斜率 t=-1.72，R²=0.27）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -29113,8 +29186,8 @@
    "value": 8933,
    "unit": "個",
    "education": "運輸及倉儲業",
-   "_low": 7602,
-   "_high": 10264,
+   "_low": 7368,
+   "_high": 10499,
    "_r2": 0.4854,
    "_t": 2.747,
    "_direction": "up",
@@ -29126,7 +29199,7 @@
     "method": "formula_d_t3",
     "weight": 0.0182,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 8,933 個，95% 區間 7,602–10,264 個。年變化 +1.8%，判定為「成長」（斜率 t=2.75，R²=0.49）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 8,933 個，95% 區間 7,368–10,499 個。年變化 +1.8%，判定為「成長」（斜率 t=2.75，R²=0.49）。趨勢在統計上顯著。"
    }
   },
   {
@@ -29176,8 +29249,8 @@
    "value": 19744,
    "unit": "個",
    "education": "住宿及餐飲業",
-   "_low": 16255,
-   "_high": 23232,
+   "_low": 15640,
+   "_high": 23848,
    "_r2": 0.0885,
    "_t": 0.881,
    "_direction": "flat",
@@ -29189,7 +29262,7 @@
     "method": "formula_d_t3",
     "weight": 0.0063,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 19,744 個，95% 區間 16,255–23,232 個。年變化 +0.6%，判定為「無明顯趨勢」（斜率 t=0.88，R²=0.09）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 19,744 個，95% 區間 15,640–23,848 個。年變化 +0.6%，判定為「無明顯趨勢」（斜率 t=0.88，R²=0.09）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -29239,8 +29312,8 @@
    "value": 9292,
    "unit": "個",
    "education": "出版影音及資通訊業",
-   "_low": 8267,
-   "_high": 10317,
+   "_low": 8086,
+   "_high": 10498,
    "_r2": 0.6993,
    "_t": 4.314,
    "_direction": "up",
@@ -29252,7 +29325,7 @@
     "method": "formula_d_t3",
     "weight": 0.0224,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 9,292 個，95% 區間 8,267–10,317 個。年變化 +2.2%，判定為「成長」（斜率 t=4.31，R²=0.70）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 9,292 個，95% 區間 8,086–10,498 個。年變化 +2.2%，判定為「成長」（斜率 t=4.31，R²=0.70）。趨勢在統計上顯著。"
    }
   },
   {
@@ -29302,8 +29375,8 @@
    "value": 11627,
    "unit": "個",
    "education": "金融及保險業",
-   "_low": 9963,
-   "_high": 13291,
+   "_low": 9669,
+   "_high": 13585,
    "_r2": 0.276,
    "_t": 1.746,
    "_direction": "flat",
@@ -29315,7 +29388,7 @@
     "method": "formula_d_t3",
     "weight": 0.0108,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 11,627 個，95% 區間 9,963–13,291 個。年變化 +1.1%，判定為「無明顯趨勢」（斜率 t=1.75，R²=0.28）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 11,627 個，95% 區間 9,669–13,585 個。年變化 +1.1%，判定為「無明顯趨勢」（斜率 t=1.75，R²=0.28）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -29365,8 +29438,8 @@
    "value": 4920,
    "unit": "個",
    "education": "不動產業",
-   "_low": 3051,
-   "_high": 6789,
+   "_low": 2721,
+   "_high": 7119,
    "_r2": 0.0878,
    "_t": -0.878,
    "_direction": "flat",
@@ -29378,7 +29451,7 @@
     "method": "formula_d_t3",
     "weight": -0.0158,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,920 個，95% 區間 3,051–6,789 個。年變化 -1.6%，判定為「無明顯趨勢」（斜率 t=-0.88，R²=0.09）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,920 個，95% 區間 2,721–7,119 個。年變化 -1.6%，判定為「無明顯趨勢」（斜率 t=-0.88，R²=0.09）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -29428,8 +29501,8 @@
    "value": 11657,
    "unit": "個",
    "education": "專業科學及技術服務業",
-   "_low": 10526,
-   "_high": 12789,
+   "_low": 10326,
+   "_high": 12989,
    "_r2": 0.8634,
    "_t": 7.112,
    "_direction": "up",
@@ -29441,7 +29514,7 @@
     "method": "formula_d_t3",
     "weight": 0.0336,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 11,657 個，95% 區間 10,526–12,789 個。年變化 +3.4%，判定為「成長」（斜率 t=7.11，R²=0.86）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 11,657 個，95% 區間 10,326–12,989 個。年變化 +3.4%，判定為「成長」（斜率 t=7.11，R²=0.86）。趨勢在統計上顯著。"
    }
   },
   {
@@ -29491,8 +29564,8 @@
    "value": 13164,
    "unit": "個",
    "education": "支援服務業",
-   "_low": 10701,
-   "_high": 15628,
+   "_low": 10266,
+   "_high": 16063,
    "_r2": 0.0002,
    "_t": 0.036,
    "_direction": "flat",
@@ -29504,7 +29577,7 @@
     "method": "formula_d_t3",
     "weight": 0.0003,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 13,164 個，95% 區間 10,701–15,628 個。年變化 +0.0%，判定為「無明顯趨勢」（斜率 t=0.04，R²=0.00）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 13,164 個，95% 區間 10,266–16,063 個。年變化 +0.0%，判定為「無明顯趨勢」（斜率 t=0.04，R²=0.00）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -29554,8 +29627,8 @@
    "value": 17039,
    "unit": "個",
    "education": "醫療保健及社會工作服務業",
-   "_low": 14609,
-   "_high": 19469,
+   "_low": 14180,
+   "_high": 19898,
    "_r2": 0.8718,
    "_t": 7.377,
    "_direction": "up",
@@ -29567,7 +29640,7 @@
     "method": "formula_d_t3",
     "weight": 0.0506,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 17,039 個，95% 區間 14,609–19,469 個。年變化 +5.1%，判定為「成長」（斜率 t=7.38，R²=0.87）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 17,039 個，95% 區間 14,180–19,898 個。年變化 +5.1%，判定為「成長」（斜率 t=7.38，R²=0.87）。趨勢在統計上顯著。"
    }
   },
   {
@@ -29617,8 +29690,8 @@
    "value": 2585,
    "unit": "個",
    "education": "藝術娛樂及休閒服務業",
-   "_low": 1923,
-   "_high": 3247,
+   "_low": 1806,
+   "_high": 3364,
    "_r2": 0.1009,
    "_t": 0.948,
    "_direction": "flat",
@@ -29630,7 +29703,7 @@
     "method": "formula_d_t3",
     "weight": 0.0104,
     "confidence": "low",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 2,585 個，95% 區間 1,923–3,247 個。年變化 +1.0%，判定為「無明顯趨勢」（斜率 t=0.95，R²=0.10）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 2,585 個，95% 區間 1,806–3,364 個。年變化 +1.0%，判定為「無明顯趨勢」（斜率 t=0.95，R²=0.10）。⚠️ 斜率未達統計顯著，看不出明確方向，這個預估值只能當參考。"
    }
   },
   {
@@ -29680,8 +29753,8 @@
    "value": 4173,
    "unit": "個",
    "education": "其他服務業",
-   "_low": 3246,
-   "_high": 5099,
+   "_low": 3083,
+   "_high": 5262,
    "_r2": 0.4947,
    "_t": -2.798,
    "_direction": "down",
@@ -29693,7 +29766,7 @@
     "method": "formula_d_t3",
     "weight": -0.0241,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,173 個，95% 區間 3,246–5,099 個。年變化 -2.4%，判定為「萎縮」（斜率 t=-2.80，R²=0.49）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,173 個，95% 區間 3,083–5,262 個。年變化 -2.4%，判定為「萎縮」（斜率 t=-2.80，R²=0.49）。趨勢在統計上顯著。"
    }
   },
   {
@@ -29743,8 +29816,8 @@
    "value": 4013,
    "unit": "個",
    "education": "教育業",
-   "_low": 2449,
-   "_high": 5576,
+   "_low": 2173,
+   "_high": 5852,
    "_r2": 0.5527,
    "_t": 3.144,
    "_direction": "up",
@@ -29756,7 +29829,7 @@
     "method": "formula_d_t3",
     "weight": 0.0646,
     "confidence": "medium",
-    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,013 個，95% 區間 2,449–5,576 個。年變化 +6.5%，判定為「成長」（斜率 t=3.14，R²=0.55）。趨勢在統計上顯著。"
+    "note": "線性外推，非機器學習模型（資料點僅 10 個，訓練模型不可信）。2027 年預估 4,013 個，95% 區間 2,173–5,852 個。年變化 +6.5%，判定為「成長」（斜率 t=3.14，R²=0.55）。趨勢在統計上顯著。"
    }
   },
   {

@@ -180,19 +180,21 @@ def _migration_trend(mig: dict, region: str) -> dict:
                 "significant": tr.significant, "r2": round(tr.r2, 2),
                 "mean": round(c["mean"], 4), "sd": round(c["sd"], 4), "mean_ci": round(c["mean_ci"], 4),
                 "level_t": round(c["level_t"], 2) if c["level_t"] not in (float("inf"), float("-inf")) else None,
-                "level_significant": c["level_significant"],
+                "level_significant": c["level_significant"], "edge": c["edge"],
+                "level_t_crit": None,
                 "forecast_year": years[-1] + 1, "forecast": round(c["forecast"], 4), "margin": round(c["margin"], 4),
-                "confidence": c["confidence"], "positive_years": sum(1 for _, r in pts if r > 0), "n": len(pts),
+                "confidence": c["confidence"], "positive_years": sum(1 for _, r in pts if r > 0), "n": c["n"],
             })
         out_areas[area] = entry
     return {
         "source": mig["source"], "url": mig["url"], "years": years, "areas": out_areas,
-        "method": ("世代追蹤淨遷入率 → 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判「持續移入／流出」的信心，"
-                   "斜率（最小平方＋雙尾 5% t）判「減速／轉向」；預測為線性外推＋95% 預測區間（forecast.py）"),
+        "method": ("世代追蹤淨遷入率 → 2022／2023 事件年合併成一點（n = 7）→ 兩個檢定：水準（單樣本 t，平均是否 ≠ 0）判"
+                   "「持續移入／流出」的信心，斜率（最小平方＋雙尾 5% t）判「減速／轉向」；|t| 在臨界值 ±20% 內標「邊緣」、信心低；"
+                   "預測為線性外推＋95% 預測區間（t 分布，forecast.py）"),
         "shock_years": list(REGISTRY_SHOCK_YEARS),
         "note": (mig["note"] + " 2022／2023 兩期受疫情除籍與恢復戶籍影響，全市出現一負一正的大幅波動，"
-                 "是戶籍事件不是搬家：判定訊號與做檢定時把這兩點換成兩者平均（同一批人除籍再恢復，互相抵銷），"
-                 "圖上仍畫原始值；預測標 experimental。"),
+                 "是戶籍事件不是搬家：判定訊號與做檢定時把這兩點合併成一個時間點（2022.5，取平均；同一批人除籍再恢復，互相抵銷），"
+                 "n 從 8 變 7，圖上仍畫原始值；預測標 experimental。"),
     }
 
 
@@ -808,7 +810,11 @@ def _policy_notes(records: list[AlignedRecord], region: str) -> list[dict]:
             shrink.append(r)
     grow.sort(key=lambda r: -(r.extras.get("_annual_pct") or 0))
 
-    worth_all = [r for r in grow if pay_all.get(r.education, 0) >= avg_pay]
+    # 職缺數門檻：≥ 全國各行業的中位數。電力及燃氣業一千多個職缺、成長率再高也不該排第一 —— 純規則排序的副作用
+    sizes = sorted(r.value for r in by.get("職缺數", []) if r.value is not None)
+    median_vac = sizes[len(sizes) // 2] if sizes else 0
+    now_vac = {r.education: r.value for r in by.get("職缺數", [])}
+    worth_all = [r for r in grow if pay_all.get(r.education, 0) >= avg_pay and now_vac.get(r.education, 0) >= median_vac]
     worth = worth_all[:3]
     if worth:
         lines = [f"{r.education}（每年 {r.extras['_annual_pct']:+.1%}，"
@@ -822,7 +828,7 @@ def _policy_notes(records: list[AlignedRecord], region: str) -> list[dict]:
             "detail": lines + ([f"其餘符合條件：{'、'.join(r.education for r in worth_all[3:])}"]
                                if len(worth_all) > 3 else []),
             "confidence": "medium",
-            "basis": f"職缺數趨勢（線性外推，斜率顯著）× 行業別平均年薪 ≥ 全體平均 {avg_pay:.1f} 萬；依成長率排序取前三",
+            "basis": f"職缺數趨勢（線性外推，斜率顯著）× 行業別平均年薪 ≥ 全體平均 {avg_pay:.1f} 萬 × 職缺數 ≥ 全國各行業中位數（{median_vac:,.0f} 個）；依成長率排序取前三",
         })
 
     if shrink:
@@ -969,7 +975,16 @@ def _mismatch(records: list[AlignedRecord], refresh: bool) -> dict:
 
 def _mismatch_note(mm: dict) -> dict | None:
     """錯配訊號 → 一條施政建議。只講 priority 0（缺工擴大但人沒進去）。"""
-    top = [r for r in mm.get("rows", []) if r["priority"] == 0][:3]
+    rows_all = mm.get("rows", [])
+    sizes = sorted(r["vacancy_now"] for r in rows_all if r.get("vacancy_now") is not None)
+    median_vac = sizes[len(sizes) // 2] if sizes else 0
+    # 職缺數要 ≥ 全國各行業中位數：基數極小的行業（電力燃氣業一千多個職缺）成長率再高也不該排第一
+    top = [r for r in rows_all if r["priority"] == 0 and (r.get("vacancy_now") or 0) >= median_vac][:3]
+    fallback = False
+    if not top:
+        # 門檻下一個都沒有：改用職缺數（絕對量）排，並在依據寫明
+        top = sorted([r for r in rows_all if r["priority"] == 0], key=lambda r: -(r.get("vacancy_now") or 0))[:3]
+        fallback = True
     if not top:
         return None
     lines = []
@@ -986,7 +1001,9 @@ def _mismatch_note(mm: dict) -> dict | None:
                 "⚠ 全國、全年齡的訊號 —— 官方沒有行業 × 年齡的表。",
         "detail": lines,
         "confidence": "medium",
-        "basis": f"職缺趨勢 × 就業人數趨勢（{mm['window'][0]}–{mm['window'][1]}，兩者皆線性斜率 t 檢定）× 行業別平均年薪",
+        "basis": f"職缺趨勢 × 就業人數趨勢（{mm['window'][0]}–{mm['window'][1]}，兩者皆線性斜率 t 檢定）× 行業別平均年薪；"
+                 + (f"缺工擴大的行業職缺數都低於全國各行業中位數（{median_vac:,.0f} 個），改依職缺數排序" if fallback
+                    else f"只列職缺數 ≥ 全國各行業中位數（{median_vac:,.0f} 個）的行業"),
     }
 
 

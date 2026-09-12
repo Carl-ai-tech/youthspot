@@ -30,7 +30,7 @@ from data.sources import CACHE_DIR, TIMEOUT, USER_AGENT  # noqa: E402
 
 API = "https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP011/{yyymm}?PAGE={page}&COUNTY={county}"
 DATASET = "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）"
-LANDING = "https://data.gov.tw/dataset/77141"
+LANDING = "https://www.ris.gov.tw/rs-opendata/api/Main/docs/v1"   # 戶政司開放資料 API 文件（ODRP011 在列表裡）；data.gov.tw 的 77141 是別的資料集
 
 
 def _month_rows(region: str, yyymm: str, *, refresh: bool = False) -> list[dict]:

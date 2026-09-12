@@ -1,15 +1,15 @@
 {
   "_status": "OFFICIAL",
-  "_note": "由 data/build_reference.py 於 2026-09-12 產生。人口為月底數、勞動統計為年平均，兩者時點不同。",
+  "_note": "由 data/build_reference.py 於 2026-09-13 產生。人口為月底數、勞動統計為年平均，兩者時點不同。",
   "region": "臺北市",
   "year": 2026,
   "population": {
     "source": "內政部戶政司 ODRP014 村里戶數、單一年齡人口（民國 115 年 7 月）",
-    "source_url": "https://data.gov.tw/dataset/32973",
+    "source_url": "https://data.gov.tw/dataset/77132",
     "api_url": "https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP014/11507",
     "unit": "人",
     "villages_aggregated": 456,
-    "retrieved": "2026-09-12",
+    "retrieved": "2026-09-13",
     "by_age": {
       "15": 20002,
       "16": 19015,
@@ -80,7 +80,7 @@
         "55-59": 0.615,
         "60-64": 0.401
       },
-      "retrieved": "2026-09-12",
+      "retrieved": "2026-09-13",
       "by_age": {
         "15": 0.0,
         "16": 0.0,
@@ -150,7 +150,7 @@
         "55-59": 0.020099999999999996,
         "60-64": 0.018000000000000002
       },
-      "retrieved": "2026-09-12",
+      "retrieved": "2026-09-13",
       "by_age": {
         "15": 0.0921,
         "16": 0.0921,

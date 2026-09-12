@@ -39,14 +39,17 @@ NAMED = ["新北市淡水區", "新北市林口區", "新北市汐止區", "新�
 SHOCK_PAIR = (2022, 2023)   # 疫情出境滿兩年除籍（2022/7 期）與恢復戶籍（2023/7 期）：一負一正，互相抵銷
 
 
-def neutralize_shock(pts: list[tuple[int, float]]) -> list[tuple[int, float]]:
-    """兩個事件年都在序列裡時，兩點都換成兩者平均。除籍與恢復是同一批人，平均掉之後剩下的才是搬遷。
+def neutralize_shock(pts: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    """兩個事件年都在序列裡時，**合併成一個時間點** t = 2022.5、值取兩者平均，n 從 8 變 7。
+    除籍與恢復是同一批人，平均掉之後剩下的才是搬遷。先前的做法是兩點都換成平均但仍當兩個觀測 ——
+    兩個一模一樣的點會人為縮小殘差、放大 t 值（評估報告 2-1 抓到：新莊因此被判成顯著轉為流出）。
     只有其中一年（回測 cutoff 2022）就不動 —— 那是誠實的限制，回測結果也會反映。"""
     d = dict(pts)
     if all(y in d for y in SHOCK_PAIR):
         m = sum(d[y] for y in SHOCK_PAIR) / len(SHOCK_PAIR)
         for y in SHOCK_PAIR:
-            d[y] = m
+            del d[y]
+        d[sum(SHOCK_PAIR) / len(SHOCK_PAIR)] = m
     return sorted(d.items())
 
 
@@ -82,23 +85,34 @@ def classify(pts: list[tuple[int, float]]) -> dict | None:
     mean = sum(ys) / n
     sd = sqrt(sum((y - mean) ** 2 for y in ys) / (n - 1)) if n > 1 else 0.0
     level_t = (mean / (sd / sqrt(n))) if sd > 0 else (float("inf") if mean else 0.0)
-    level_sig = abs(level_t) >= _t_critical(n - 1)
+    level_crit = _t_critical(n - 1)
+    level_sig = abs(level_t) >= level_crit
+    level_edge = level_t not in (float("inf"), float("-inf")) and 0.8 * level_crit <= abs(level_t) <= 1.2 * level_crit
     # 持平：不是沒訊號，是「平均在 0 附近而且我們很確定」—— 平均的 95% 信賴區間整段落在 ±FLAT_BAND 內
     # （等價性檢定的做法）。新莊、板橋、中和都是這種：青年沒有在走，也沒有在來。
     ci = _t_critical(n - 1) * sd / sqrt(n) if sd > 0 else 0.0
-    if signal == "方向不明" and abs(mean) + ci <= FLAT_BAND:
+    # 方向訊號只是邊緣顯著、而平均又確定在 0 附近 → 那個「轉向」站不住，改判持平（仍標邊緣）
+    dir_edge = signal in ("轉為移入", "轉為流出", "移入減速", "流出加劇") and tr.edge
+    if (signal == "方向不明" or dir_edge) and abs(mean) + ci <= FLAT_BAND:
         signal = "持平"
+    # 邊緣：決定這個訊號的那個檢定，|t| 落在臨界值 ±20% 內。換一種合理的算法（合併／剔除事件年）就可能翻，
+    # 所以信心一律低、訊號標「邊緣」—— 這是誠實地說「我們的方法裡有不確定」。
+    edge = False
     if signal in ("持續移入", "持續流出"):
-        confidence = "medium" if level_sig and n >= MIN_POINTS else "low"
+        edge = level_edge
+        confidence = "medium" if level_sig and n >= MIN_POINTS and not edge else "low"
     elif signal == "持平":
-        confidence = "medium" if n >= MIN_POINTS else "low"
+        edge = dir_edge
+        confidence = "medium" if n >= MIN_POINTS and not edge else "low"
     elif signal in ("移入減速", "流出加劇", "轉為移入", "轉為流出"):
-        confidence = tr.confidence            # 方向的訊號看斜率
+        edge = tr.edge
+        confidence = "low" if edge else tr.confidence            # 方向的訊號看斜率
     else:
         confidence = "low"
     return {"signal": signal, "forecast": yhat, "margin": margin, "slope": tr.slope,
             "significant": tr.significant, "confidence": confidence, "n": n, "trend": tr,
-            "mean": mean, "sd": sd, "level_t": level_t, "level_significant": level_sig, "mean_ci": ci}
+            "mean": mean, "sd": sd, "level_t": level_t, "level_significant": level_sig, "mean_ci": ci,
+            "edge": edge, "points": pts}
 
 
 def _hindcast_city(region: str, period: str | None) -> dict:
@@ -181,7 +195,7 @@ def build(regions: list[str] | None = None, *, period: str | None = None) -> dic
                      "outflow_recall": round(ro / to, 2) if to else None, "truly_outflow": to}
     return {
         "method": ("假裝現在是 T 年，只用 T 年以前的世代淨遷入率跑正式的線性外推＋訊號判定，對 T+1、T+2 的實際值。"
-                   "2022／2023 戶籍事件年兩點取平均互相抵銷（cutoff 2022 只有一點、抵銷不了）。"),
+                   "2022／2023 戶籍事件年合併成一個時間點（t = 2022.5，值取平均；cutoff 2022 只有一點、合併不了）。"),
         "hit_rate": HIT_RATE, "cutoffs": list(CUTOFFS), "pooled": pooled, "cities": cities,
         "named": {k: v for c in cities.values() for k, v in c["named"].items()},
     }

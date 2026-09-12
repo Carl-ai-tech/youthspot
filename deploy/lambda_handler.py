@@ -54,6 +54,15 @@ def _load_city(city: str) -> dict | None:
     return json.loads(local.read_text(encoding="utf-8")) if local.exists() else None
 
 
+# 使用者打字常見的異體字：「内湖區」（内 U+5185）對不上資料裡的「內湖區」（內 U+5167），
+# 「台北」對不上「臺北」。比對前先正規化，不然整個城市的資料都不會併進來。
+_ZH_VARIANTS = str.maketrans({"内": "內", "台": "臺", "峯": "峰", "裏": "裡", "𡘙": "太"})
+
+
+def _norm_zh(text: str | None) -> str:
+    return (text or "").translate(_ZH_VARIANTS)
+
+
 def _merge_mentioned(payload: dict, question: str, region: str) -> dict:
     """問題提到其他城市（或其他城市的行政區）時，把那些城市的記錄併進 payload。
 
@@ -61,7 +70,7 @@ def _merge_mentioned(payload: dict, question: str, region: str) -> dict:
     就只能說回答不了。六都的資料都在本機，沒有理由不給。
     併進來的：被提到的城市的市層級記錄（18–35 與全體）、被提到的行政區的所有記錄。
     """
-    q = (question or "").replace("台", "臺")
+    q = _norm_zh(question)
     if not q:
         return payload
     home = _city_of(region)
@@ -261,8 +270,9 @@ def _ai(action: str, body: dict, backend=None) -> dict:
         # 儀表板的問答框只有在**前端規則認不得**的問題才會打到這裡 ——
         # 查數字、排名、比較那些引擎自己就答得出來，不需要模型。
         from llm.advise import advise
-        payload = _merge_mentioned(_load_unified(body.get("region")), body.get("question", ""), body.get("region", "新北市"))
-        g = advise(body.get("question", ""), payload, backend,
+        question = _norm_zh(body.get("question", ""))
+        payload = _merge_mentioned(_load_unified(body.get("region")), question, body.get("region", "新北市"))
+        g = advise(question, payload, backend,
                    region=body.get("region", "新北市"),
                    band=body.get("band", "18-35"))
         # 模型說「建議補蒐集 X」時，系統對照資料目錄回答 X 有沒有、在哪、接了沒

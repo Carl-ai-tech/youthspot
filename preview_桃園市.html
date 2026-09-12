@@ -2310,6 +2310,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   }
 
   function parseQuestion(raw) {
+    raw = String(raw || '').replace(/内/g, '內').replace(/台/g, '臺');   // 異體字：内湖→內湖、台北→臺北
     var q = normQ(raw);
     var it = { kind: 'lookup', region: null, regions: [], age_group: null,
                metric: null, education: null, askedAge: null, raw: raw };
@@ -2526,7 +2527,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   var SIX = ['新北市', '臺北市', '桃園市', '臺中市', '臺南市', '高雄市'];
   function mentionsOtherCity(q) {
-    q = (q || '').replace(/台/g, '臺');
+    q = (q || '').replace(/台/g, '臺').replace(/内/g, '內');
     for (var i = 0; i < SIX.length; i++) if (SIX[i] !== M.region && q.indexOf(SIX[i]) >= 0) return SIX[i];
     // 「內湖區」這種別的城市的區名：用六都行政區名清單比對。先把本市的區名從句子裡挖掉，
     // 不然臺南的「中西區」會被臺中的「西區」誤中。

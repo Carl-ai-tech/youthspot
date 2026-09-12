@@ -107,7 +107,8 @@ def build_prompt(payload: dict, records: list[dict], question: str,
 分齡的行業表。問到行業時就用這些回答，講明「全國訊號」即可，不要因為不是{region}或不是青年
 就說回答不了。施政建議卡片底下的「·」細項就是具體行業與數字，可以直接引用。
 
-**可用的數字（{region}．{band} 歲為主{"；另含問題點名的其他城市／行政區" if payload.get("_cross_city") else ""}）**
+**可用的數字（{region}．{band} 歲為主{"；問題點名的其他城市／行政區排在最前面" if payload.get("_cross_city") else ""}）**
+{("⚠ 這是跨城市的問題：問到的地區是 " + "、".join(payload["_cross_city"]) + "，請用它們各自的數字比較，不要拿" + region + "當替身。") if payload.get("_cross_city") else ""}
 {chr(10).join(lines)}
 {bench_text}{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
 {block("**通過統計檢定的變化（已附依據，可直接引用）**", insights, ("title", "body"))}
@@ -126,7 +127,7 @@ def _mentioned_records(payload: dict, question: str, have: list[dict]) -> list[d
 
     lambda_handler 會把被點名城市的資料併進 payload；這裡負責把它們挑出來給模型。
     """
-    q = (question or "").replace("台", "臺")
+    q = (question or "").replace("台", "臺").replace("内", "內")
     if not q:
         return []
     seen = {(r["region"], r["age_group"], r["metric"], r.get("education")) for r in have}
@@ -184,7 +185,9 @@ def advise(question: str, payload: dict, backend: Backend, *,
     """
     records = retrieve(payload, region, band, limit=RECORD_LIMIT)
     records += _district_records(payload, region, band)
-    records += _mentioned_records(payload, question, records)
+    # 問題點名的地區（含其他城市）排到最前面：模型讀清單是從頭讀的，
+    # 放在第 200 筆之後它會拿本市當替身來比（實測：問內湖 vs 林口，它拿臺南市比林口）
+    records = _mentioned_records(payload, question, records) + records
     raw = backend.complete(build_prompt(payload, records, question, region, band))
     text = raw.strip()
     ok, bad = verify(text, records, payload)

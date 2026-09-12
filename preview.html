@@ -2565,11 +2565,12 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     '人口數': '滑過看數字，點一下鎖定該區',
     '勞動力參與率': '滑過看數字，點一下鎖定該區',
     '青年淨遷入率': '世代追蹤：今年 a 歲 − 去年 a−1 歲，扣掉少子化與死亡，剩下的就是青年搬進搬出 · 正＝淨移入',
-    '青年人口年變化率': '過去一年這個年齡層的人口增減（含少子化）· 要看搬家請用「青年淨遷入率」',
+    '青年人口年變化率': '過去一年這個年齡層的人口增減（含少子化）· 紅＝減少最多、綠＝增加 · 要看搬家請用「青年淨遷入率」',
     '綜合所得中位數': '全體申報戶的綜合所得中位數（財政部稅籍，非抽樣）· 不是青年、不是薪資',
     '工作機會密度': '區內從業員工（110 年普查）÷ 區內 15–64 歲人口 · 遠低於 1 的是通勤外出的住宅區',
     '住宅每坪月租中位數': '實價登錄租賃案件近四季中位數（元／坪／月）· 全體案件非青年 · 樣本偏向代管／包租物件'
   };
+  var MAP_INVERT = ['青年淨遷入率', '青年人口年變化率'];   // 值越低越紅（流出／減少是壞事）
   var mapMetric = MAP_METRICS[1];   // 主畫面預設看「青年往哪裡搬」；沒有這個指標的城市會自動退回人口數
 
   // 人口在 29 個區之間極度偏斜（板橋 vs 平溪差兩個數量級）。
@@ -2617,8 +2618,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
     svg.innerHTML = names.map(function (n) {
       var v = vals[n];
-      // 淨遷入率：紅要給流出、綠給移入 —— 跟其他指標「值越大越紅」相反
-      var invert = (mapMetric === '青年淨遷入率');
+      // 淨遷入率、人口年變化率：紅要給流出／減少、綠給移入／增加 —— 跟其他指標「值越大越紅」相反。
+      // 人口變化率幾乎全區都是負的（少子化），不反轉的話「減少最多」反而最淺，讀圖會讀反。
+      var invert = MAP_INVERT.indexOf(mapMetric) >= 0;
       var bin = binOf(v, cuts) + 1;
       var fill = (v === undefined) ? 'var(--sunk)' : 'var(--seq-' + (invert ? 7 - bin : bin) + ')';
       var isSel = (M.region + n) === state.area;
@@ -2635,7 +2637,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (host && list.length) {
       var lo = Math.min.apply(null, list), hi = Math.max.apply(null, list);
       var u = unitOfMetric(mapMetric);
-      var rampIdx = (mapMetric === '青年淨遷入率') ? [6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6];
+      var rampIdx = MAP_INVERT.indexOf(mapMetric) >= 0 ? [6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6];
       host.innerHTML = '<span>' + show({ value: lo, unit: u }) + '</span>'
         + '<span class="ramp">' + rampIdx.map(function (i) {
           return '<i style="background:var(--seq-' + i + ')"></i>';

@@ -1784,6 +1784,41 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     host.appendChild(box2);
     bindLineHover(box2);
 
+    // ── 世代淨遷入：青年局要的「預測」。移入最多與流出最多的區各幾條，加全市。
+    var mig = T2.migration;
+    if (mig && mig.years && mig.areas) {
+      var names = Object.keys(mig.areas).filter(function (k) { return k !== M.region && mig.areas[k].rate && mig.areas[k].rate[mig.areas[k].rate.length - 1] != null; });
+      names.sort(function (a, b) { return mig.areas[b].rate[mig.areas[b].rate.length - 1] - mig.areas[a].rate[mig.areas[a].rate.length - 1]; });
+      var top = names.slice(0, 4), bottom = names.slice(-3);
+      var MC = ['var(--ord-1)', 'var(--ord-2)', 'var(--ord-3)', 'var(--ord-4)', 'var(--deep)', 'var(--ink-3)', 'var(--low)'];
+      var series = top.concat(bottom).map(function (k, i) {
+        return { label: k.replace(M.region, ''), color: MC[i % MC.length], values: mig.areas[k].rate };
+      });
+      var figM = document.createElement('figure');
+      figM.className = 'figbox';
+      figM.setAttribute('data-chart', 'migration');
+      figM.innerHTML =
+        '<p class="fig-title">各區 18–35 歲青年淨遷入率<span class="scopetag">' + LOCAL + ' · 世代追蹤</span></p>'
+        + '<p class="fig-sub">' + mig.years[0] + '–' + mig.years[mig.years.length - 1] + '　今年 a 歲 − 去年 a−1 歲，扣掉少子化與死亡；正＝青年搬進來。'
+        + '移入前 ' + top.length + ' 區與流出前 ' + bottom.length + ' 區。' + (mig.shock_years ? '⚠ ' + mig.shock_years.join('／') + ' 年為疫情除籍／恢復戶籍的戶籍事件，不是搬家' : '') + '</p>'
+        + '<div class="lc-wrap">'
+        + lineChart({
+            years: mig.years,
+            alt: M.region + '各區青年淨遷入率 ' + mig.years[0] + ' 到 ' + mig.years[mig.years.length - 1] + ' 年',
+            fmt: function (v) { return (v * 100).toFixed(1) + '%'; },
+            series: series
+          })
+        + '<div class="lc-tip" hidden></div></div>';
+      var sig = top.concat(bottom).map(function (k) {
+        var a = mig.areas[k];
+        return k.replace(M.region, '') + '：' + (a.signal || '—') + (a.forecast != null ? '（' + a.forecast_year + ' 年預估 ' + (a.forecast * 100).toFixed(1) + '%±' + (a.margin * 100).toFixed(1) + '，' + confLabel(a.confidence) + '）' : '');
+      });
+      figM.innerHTML += '<p class="cap">' + sig.join('；') + '。'
+        + '訊號規則：連續正值＝持續移入、斜率顯著下降＝減速、連續負值＝持續流出、斜率顯著改變方向＝轉向；預測為線性外推＋95% 區間，experimental。</p>';
+      host.appendChild(figM);
+      bindLineHover(figM);
+    }
+
     // ── 男女勞參率（全年齡）。這是手上唯一帶性別的時間序列。
     if (lab.lfpr_f && lab.lfpr_m && lab.lfpr_f.some(function (v) { return v; })) {
       var box3 = document.createElement('figure');
@@ -1981,7 +2016,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // ── 地圖 ───────────────────────────────────────────────
   // 界線是 build 時在 Python 端解好的 SVG 路徑，這裡不需要任何地圖函式庫。
-  var MAP_METRICS = ['人口數', '青年人口年變化率', '勞動力參與率', '綜合所得中位數', '工作機會密度'];
+  var MAP_METRICS = ['人口數', '青年淨遷入率', '青年人口年變化率', '勞動力參與率', '綜合所得中位數', '工作機會密度'];
   // 全體層級的指標（財政部所得、普查工作機會）沒有分齡：先照年齡層找，找不到退到「全體」
   function findMap(area, metric) {
     return find(area, state.band, metric) || find(area, '全體', metric);
@@ -1989,7 +2024,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   var MAP_SUB = {
     '人口數': '滑過看數字，點一下鎖定該區',
     '勞動力參與率': '滑過看數字，點一下鎖定該區',
-    '青年人口年變化率': '過去一年這個年齡層的人口增減（戶政兩期相減）· 整體世代在縮小，看的是各區相對快慢',
+    '青年淨遷入率': '世代追蹤：今年 a 歲 − 去年 a−1 歲，扣掉少子化與死亡，剩下的就是青年搬進搬出 · 正＝淨移入',
+    '青年人口年變化率': '過去一年這個年齡層的人口增減（含少子化）· 要看搬家請用「青年淨遷入率」',
     '綜合所得中位數': '全體申報戶的綜合所得中位數（財政部稅籍，非抽樣）· 不是青年、不是薪資',
     '工作機會密度': '區內從業員工（110 年普查）÷ 區內 15–64 歲人口 · 遠低於 1 的是通勤外出的住宅區'
   };
@@ -2040,7 +2076,10 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
     svg.innerHTML = names.map(function (n) {
       var v = vals[n];
-      var fill = (v === undefined) ? 'var(--sunk)' : 'var(--seq-' + (binOf(v, cuts) + 1) + ')';
+      // 淨遷入率：紅要給流出、綠給移入 —— 跟其他指標「值越大越紅」相反
+      var invert = (mapMetric === '青年淨遷入率');
+      var bin = binOf(v, cuts) + 1;
+      var fill = (v === undefined) ? 'var(--sunk)' : 'var(--seq-' + (invert ? 7 - bin : bin) + ')';
       var isSel = (M.region + n) === state.area;
       // fill 一定要走 style，不能寫成 fill="var(--seq-3)"。
       // SVG 的呈現屬性不是 CSS 宣告，Chrome 不會在裡面解析 var() ——
@@ -2055,8 +2094,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (host && list.length) {
       var lo = Math.min.apply(null, list), hi = Math.max.apply(null, list);
       var u = unitOfMetric(mapMetric);
+      var rampIdx = (mapMetric === '青年淨遷入率') ? [6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6];
       host.innerHTML = '<span>' + show({ value: lo, unit: u }) + '</span>'
-        + '<span class="ramp">' + [1, 2, 3, 4, 5, 6].map(function (i) {
+        + '<span class="ramp">' + rampIdx.map(function (i) {
           return '<i style="background:var(--seq-' + i + ')"></i>';
         }).join('') + '</span>'
         + '<span>' + show({ value: hi, unit: u }) + '</span>'
@@ -2277,6 +2317,11 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     ['參與率', '勞動力參與率'],
     ['勞動力', '勞動力人數'],
     ['就業', '就業者人數'],
+    ['淨遷入', '青年淨遷入率'],
+    ['移入', '青年淨遷入率'],
+    ['遷入', '青年淨遷入率'],
+    ['搬進', '青年淨遷入率'],
+    ['遷徙', '青年淨遷入率'],
     ['工作機會', '工作機會密度'],
     ['就業機會', '工作機會密度'],
     ['通勤', '工作機會密度'],

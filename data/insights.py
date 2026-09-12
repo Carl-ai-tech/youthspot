@@ -385,6 +385,14 @@ def _series_from_trends(trends: dict, region: str) -> tuple[list[Series], list[S
                     scope="全國", youth=True, metric=f"{word}{label}", chart=f"national-{key}",
                 ))
 
+    # 世代淨遷入（全市）：8 個點，夠 deviation／trend 用
+    mig = trends.get("migration") or {}
+    city_key = region
+    if mig.get("areas", {}).get(city_key):
+        all_series.append(Series("青年淨遷入率", "rate", mig["years"], mig["areas"][city_key]["rate"],
+                                 mig.get("source", ""), f"{region}（18–35 歲世代追蹤）", youth=True,
+                                 metric="青年淨遷入率", chart="migration"))
+
     lab = trends.get("labour") or {}
     lyears = lab.get("years") or []
     lsrc = lab.get("source", "")

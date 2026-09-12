@@ -36,6 +36,7 @@ from data.fetch_employment_industry import DATASET as IND_DATASET, LANDING as IN
 from data.fetch_district_income import DATASET as FIA_DATASET, LANDING as FIA_LANDING, fetch_district_income  # noqa: E402
 from data.fetch_district_jobs import DATASET as CEN_DATASET, LANDING as CEN_LANDING, fetch_district_jobs  # noqa: E402
 from data.fetch_population import fetch_population_by_district, fetch_population_by_sex  # noqa: E402
+from data.fetch_migration import DATASET as MIG_DATASET, LANDING as MIG_LANDING, fetch_migration  # noqa: E402
 from data.fetch_labour import (  # noqa: E402
     labour_force_participation,
     latest,
@@ -123,6 +124,109 @@ def _population_change_records(period: str, areas: dict, region: str, refresh: b
                 ),
             ))
     return out
+
+
+# 已知的戶籍事件：2022/7 那一期全國青年世代淨遷入大幅為負、2023/7 大幅為正 ——
+# 出境滿兩年除籍（疫情期間）與回國恢復戶籍造成的戶籍波動，不是真的搬家。
+# 訊號判定時把這兩點當已知擾動，卡片上要寫。
+REGISTRY_SHOCK_YEARS = (2022, 2023)
+
+
+def _migration_records(mig: dict, region: str) -> list[AlignedRecord]:
+    """各區（含全市）最新一年的青年淨遷入率與人數。"""
+    out = []
+    y = mig["years"][-1]
+    prev_label = f"民國 {mig['periods'][-2][:3]} 年 {int(mig['periods'][-2][3:])} 月"
+    cur_label = f"民國 {mig['periods'][-1][:3]} 年 {int(mig['periods'][-1][3:])} 月"
+    for area, a in mig["areas"].items():
+        net, rate, base = a["net"][-1], a["rate"][-1], a["base"][-1]
+        if net is None or rate is None:
+            continue
+        prov = Provenance(
+            source_agency="內政部戶政司",
+            source_dataset=f"{MIG_DATASET}（{prev_label} → {cur_label}）",
+            source_age_group="18-35（世代追蹤：今年 a 歲 − 去年 a−1 歲）",
+            method=Method.EXACT_MATCH, weight=1.0, confidence=Confidence.HIGH,
+            note=(f"一年前 17–34 歲 {base:,} 人，今年 18–35 歲扣掉同世代後淨增 {net:+,} 人。"
+                  "扣掉了世代縮小與可忽略的死亡（18–35 歲年死亡率約 0.05%），剩下的是淨遷徙。"
+                  "戶籍資料：量的是把戶籍遷來的青年，未遷籍的就學就業者看不到。"),
+        )
+        out.append(AlignedRecord(region=area, year=y, age_group="18-35", gender="total",
+                                 metric="青年淨遷入率", value=rate, unit="%", provenance=prov))
+        out.append(AlignedRecord(region=area, year=y, age_group="18-35", gender="total",
+                                 metric="青年淨遷入人數", value=float(net), unit="人", provenance=prov))
+    return out
+
+
+def _migration_trend(mig: dict, region: str) -> dict:
+    """每區的 8 年序列 + 線性外推 + 訊號。跟職缺預測同一套 forecast.fit。"""
+    years = mig["years"]
+    out_areas = {}
+    for area, a in mig["areas"].items():
+        pts = [(y, r) for y, r in zip(years, a["rate"]) if r is not None]
+        tr = fit(pts) if len(pts) >= 3 else None
+        entry = {"net": a["net"], "rate": a["rate"], "naive": a["naive"]}
+        if tr is not None:
+            yhat, margin = tr.predict(years[-1] + 1)
+            pos_years = sum(1 for _, r in pts if r > 0)
+            last = pts[-1][1]
+            d = tr.direction()
+            # 訊號：看「水準」（連續正／負）與「方向」（斜率顯著）
+            if pos_years >= len(pts) - 1 and last > 0:
+                signal = "持續移入" if d != "down" else "移入減速"
+            elif pos_years <= 1 and last < 0:
+                signal = "流出加劇" if d == "down" else "持續流出"
+            elif d == "up":
+                signal = "轉為移入"
+            elif d == "down":
+                signal = "轉為流出"
+            else:
+                signal = "方向不明"
+            entry.update({
+                "signal": signal,
+                "slope_pp": round(tr.slope * 100, 3), "significant": tr.significant, "r2": round(tr.r2, 2),
+                "forecast_year": years[-1] + 1, "forecast": round(yhat, 4), "margin": round(margin, 4),
+                "confidence": tr.confidence, "positive_years": pos_years, "n": len(pts),
+            })
+        out_areas[area] = entry
+    return {
+        "source": mig["source"], "url": mig["url"], "years": years, "areas": out_areas,
+        "method": "世代追蹤淨遷入率 → 最小平方線性外推 + 雙尾 5% t 檢定 + 95% 預測區間（forecast.py，與職缺預測同一套）",
+        "shock_years": list(REGISTRY_SHOCK_YEARS),
+        "note": (mig["note"] + " 2022／2023 兩期受疫情除籍與恢復戶籍影響，全市出現一負一正的大幅波動，"
+                 "是戶籍事件不是搬家；預測標 experimental。"),
+    }
+
+
+def _migration_notes(mt: dict, region: str) -> list[dict]:
+    """兩條規則：移入區先準備、流出區要挽留。只列訊號明確的區。"""
+    areas = {k: v for k, v in mt["areas"].items() if k != region and v.get("signal")}
+    inflow = sorted([(k, v) for k, v in areas.items() if v["signal"] in ("持續移入", "轉為移入")],
+                    key=lambda kv: -(kv[1]["rate"][-1] or 0))[:4]
+    outflow = sorted([(k, v) for k, v in areas.items() if v["signal"] in ("流出加劇", "持續流出", "轉為流出")],
+                     key=lambda kv: (kv[1]["rate"][-1] or 0))[:4]
+    notes = []
+    if inflow:
+        notes.append({
+            "title": "青年正在移入的區，需求會先到 —— 提前準備",
+            "body": "世代追蹤（扣掉少子化）顯示這些區的 18–35 歲青年連續淨移入。青年搬進來之後，托育、租金補貼申請、"
+                    "公共運輸與青年服務據點的需求會跟著到；提前布局比事後補救便宜。",
+            "detail": [f"{k.replace(region, '')}　{v['rate'][-1]:+.1%}／年（{v['net'][-1]:+,} 人）　{v['signal']}"
+                       + (f"，{v['forecast_year']} 年預估 {v['forecast']:+.1%}（±{v['margin']:.1%}）" if v.get("forecast") is not None else "")
+                       for k, v in inflow],
+            "confidence": "medium",
+            "basis": mt["method"] + "；2022–2023 為戶籍事件年",
+        })
+    if outflow:
+        notes.append({
+            "title": "青年持續流出的區 —— 在地工作機會與返鄉方案優先",
+            "body": "這些區的青年連續淨流出，而且多半在地工作機會密度低。人數規則會讓它們永遠排最後；"
+                    "青年基本法第 11 條要求在地支持與返留鄉，這裡是巡迴據點、交通補貼與在地產業的優先對象。",
+            "detail": [f"{k.replace(region, '')}　{v['rate'][-1]:+.1%}／年（{v['net'][-1]:+,} 人）　{v['signal']}" for k, v in outflow],
+            "confidence": "medium",
+            "basis": mt["method"],
+        })
+    return notes
 
 
 def _labour_records(ref, region, year, band, counts, period_label) -> list[AlignedRecord]:
@@ -949,8 +1053,8 @@ def _pipeline_status(records: list[AlignedRecord], meta: dict) -> list[dict]:
     return [
         {"agency": "內政部戶政司", "dataset": sources.POPULATION_DATASET, "url": sources.POPULATION_LANDING,
          "format": "JSON API", "auto": True, "cadence": "每月",
-         "records": n_records(lambda r: r.metric in ("人口數", "勞動力人數", "勞動力參與率", "青年人口年變化率")),
-         "check": "村里 × 單一年齡加總 = 全市；男 + 女 = 合計；本期與前期同月相減",
+         "records": n_records(lambda r: r.metric in ("人口數", "勞動力人數", "勞動力參與率", "青年人口年變化率", "青年淨遷入率", "青年淨遷入人數")),
+         "check": "村里 × 單一年齡加總 = 全市；男 + 女 = 合計；世代淨遷入 Σ 各區 = 全市（2018– 共 9 期）",
          "coverage": meta["roc_period_label"], **_cache_info("odrp014_*.json")},
         {"agency": "行政院主計總處", "dataset": sources.LFPR_DATASET, "url": sources.LFPR_XML,
          "format": "XML（固定網址）", "auto": True, "cadence": "每年",
@@ -1036,10 +1140,9 @@ RIGHTS_ASPECTS = [
      "gaps": ["青年創業貸款核貸件數與金額", "新設公司負責人年齡分布"],
      "candidates": ["經濟部 中小及新創企業署 青年創業及啟動金貸款", "經濟部 商業發展署 公司登記"]},
     {"aspect": "在地支持與返留鄉", "law": "第 11 條",
-     "metrics": ["青年人口年變化率", "在地工作機會", "綜合所得中位數"], "trend_keys": [],
-     "have_note": "各區 18–35 歲人口年變化（戶政兩期相減）、在地工作機會（普查）、所得中位數（財政部）",
-     "gaps": ["青年遷入遷出（純遷徙，分區）"],
-     "candidates": ["內政部戶政司 各鄉鎮市區遷入遷出（未分齡）"]},
+     "metrics": ["青年淨遷入率", "青年人口年變化率", "在地工作機會", "綜合所得中位數"], "trend_keys": ["migration"],
+     "have_note": "各區 18–35 歲世代淨遷入（2019– 八年序列＋預測）、在地工作機會（普查）、所得中位數（財政部）",
+     "gaps": [], "candidates": []},
     {"aspect": "居住", "law": "第 12 條",
      "metrics": ["房價所得比", "貸款負擔率"], "trend_keys": ["housing"],
      "have_note": "家戶層級（非青年）",
@@ -1380,6 +1483,15 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     except Exception as exc:  # noqa: BLE001
         print(f"  ⚠ 青年人口年變化未載入：{exc}")
 
+    # 世代淨遷徙：人口差扣掉少子化與死亡，剩下的才是青年搬進搬出。2019– 每年一點，
+    # 每區一條序列 → 線性外推 + t 檢定 → 移入／流出訊號。局長要的「預測」就是這條。
+    migration = None
+    try:
+        migration = fetch_migration(region, period=meta["period"], refresh=refresh)
+        records.extend(_migration_records(migration, region))
+    except Exception as exc:  # noqa: BLE001
+        print(f"  ⚠ 世代淨遷徙未載入：{exc}")
+
     # 就業與薪資只有縣市層級，沒有行政區細分 —— 只掛在全市那一層
     records.extend(_employment_records(ref, region, refresh))
     records.extend(_salary_records(ref, region, refresh))
@@ -1433,6 +1545,14 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
         records.extend(_district_job_records(jobs, areas, region))
     except Exception as exc:  # noqa: BLE001
         print(f"  ⚠ 行政區工作機會未載入：{exc}")
+
+    if migration:
+        trends["migration"] = _migration_trend(migration, region)
+        mig_notes = _migration_notes(trends["migration"], region)
+        # 排在「服務據點」那條後面
+        idx = next((i for i, n in enumerate(notes) if "服務據點" in n["title"]), len(notes) - 1)
+        for k, n in enumerate(mig_notes):
+            notes.insert(idx + 1 + k, n)
 
     # 供需錯配：職缺（需求）× 就業人數（供給）。全國、全年齡 —— 官方沒有行業 × 年齡。
     try:

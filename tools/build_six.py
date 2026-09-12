@@ -31,6 +31,9 @@ def main(argv: list[str]) -> int:
     refresh = ["--refresh"] if "--refresh" in argv else []
     cities = [a for a in argv if a in SIX_CITIES] or SIX_CITIES
     results = {}
+    # 驅動模型要六都的資料一起算，所以先跑一次（它會順便把六都的快取抓齊）
+    ok, tail = run(["data/drivers.py", *refresh])
+    print(f"  drivers   {'✓' if ok else '✗'}  {tail[-160:]}\n")
     for city in cities:
         t0 = time.time()
         steps = [

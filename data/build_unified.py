@@ -35,6 +35,8 @@ from data.fetch_labour_sex import DATASET as SEX_DATASET, LANDING as SEX_LANDING
 from data.fetch_employment_industry import DATASET as IND_DATASET, LANDING as IND_LANDING, fetch_employment_by_industry  # noqa: E402
 from data.fetch_district_income import DATASET as FIA_DATASET, LANDING as FIA_LANDING, fetch_district_income  # noqa: E402
 from data.fetch_district_jobs import DATASET as CEN_DATASET, LANDING as CEN_LANDING, fetch_district_jobs  # noqa: E402
+from data.fetch_rent import DATASET as RENT_DATASET, LANDING as RENT_LANDING, fetch_rent  # noqa: E402
+from data.drivers import OUT as DRIVERS_JSON  # noqa: E402
 from data.fetch_population import fetch_population_by_district, fetch_population_by_sex  # noqa: E402
 from data.fetch_migration import DATASET as MIG_DATASET, LANDING as MIG_LANDING, fetch_migration  # noqa: E402
 from data.fetch_labour import (  # noqa: E402
@@ -227,6 +229,27 @@ def _migration_notes(mt: dict, region: str) -> list[dict]:
             "basis": mt["method"],
         })
     return notes
+
+
+def _drivers_note(drivers: dict, region: str) -> dict | None:
+    """一張卡：本市「條件好但青年沒來」的區（負殘差最大）。條件之外的原因是青年局能去問的。"""
+    ds = [d for d in drivers["districts"] if d["city"] == region and d.get("resid") is not None]
+    if len(ds) < 5:
+        return None
+    m = drivers["models"]["base"]
+    sig = [m["coef"][f]["label"] for f in m["features"] if m["coef"][f]["significant"]]
+    lag = sorted(ds, key=lambda d: d["resid"])[:3]
+    lead = sorted(ds, key=lambda d: -d["resid"])[:3]
+    return {
+        "title": "條件好但青年沒來的區 —— 先去問為什麼",
+        "body": (f"六都 {m['n']} 區的迴歸顯示{'、'.join(sig)}高的區青年淨移入多（R² {m['r2']}）。"
+                 "拿每區的條件算「該有的移入」再跟實際比：低於條件的區有模型看不到的阻力（交通、住宅供給、"
+                 "生活機能），高於條件的區有模型看不到的拉力（新市鎮、社宅、捷運）。這是青年局實地訪查的優先名單。"),
+        "detail": [f"{d['short']}　實際 {d['y']:+.1f}% vs 條件解釋 {d['fitted']:+.1f}%（低 {-d['resid']:.1f} 個百分點）" for d in lag]
+                  + [f"{d['short']}　實際 {d['y']:+.1f}% vs 條件解釋 {d['fitted']:+.1f}%（高 {d['resid']:.1f} 個百分點，條件之外的拉力）" for d in lead],
+        "confidence": "low",
+        "basis": drivers["spec"] + "；係數是相關不是因果；工作機會為 110 年普查",
+    }
 
 
 def _labour_records(ref, region, year, band, counts, period_label) -> list[AlignedRecord]:
@@ -926,6 +949,33 @@ def _district_income_records(inc: dict, region: str) -> list[AlignedRecord]:
     return out
 
 
+def _district_rent_records(rent: dict, region: str) -> list[AlignedRecord]:
+    """各區住宅每坪月租中位數與月租金中位數。實價登錄租賃案件，全體非青年。"""
+    out = []
+    year = int(rent["seasons"][-1][:3]) + 1911
+    for area, v in rent["latest"].items():
+        if not v or v.get("median") is None:
+            continue
+        enough = v["n"] >= rent["min_n"]
+        prov = Provenance(
+            source_agency="內政部地政司",
+            source_dataset=f"{RENT_DATASET}（{rent['window']}）",
+            source_age_group="全體租賃案件",
+            method=Method.EXACT_MATCH, weight=1.0,
+            confidence=Confidence.MEDIUM if enough else Confidence.LOW,
+            note=(f"最近四季 {v['n']:,} 筆住宅租賃案件的中位數。篩選：{rent['filters']}。"
+                  "⚠ 110 年 7 月起只強制租賃住宅服務業與社宅申報，一般房東自行成交不用登錄，"
+                  "樣本偏向代管／包租物件；小坪數套房每坪較高，大學周邊會偏高。"
+                  + ("" if enough else f" 樣本不足 {rent['min_n']} 筆，只供參考。")),
+        )
+        out.append(AlignedRecord(region=area, year=year, age_group="全體", gender="total",
+                                 metric="住宅每坪月租中位數", value=float(v["median"]), unit="元/坪/月", provenance=prov))
+        if v.get("rent_median"):
+            out.append(AlignedRecord(region=area, year=year, age_group="全體", gender="total",
+                                     metric="住宅月租金中位數", value=float(v["rent_median"]), unit="元/月", provenance=prov))
+    return out
+
+
 def _district_job_records(jobs: dict, areas: dict, region: str) -> list[AlignedRecord]:
     """各區在地工作機會（普查從業員工）與密度（÷ 區內 15–64 歲人口）。"""
     out = []
@@ -1106,6 +1156,11 @@ def _pipeline_status(records: list[AlignedRecord], meta: dict) -> list[dict]:
          "records": n_records(lambda r: r.metric in ("在地工作機會", "場所單位數", "工作機會密度")),
          "check": "各區加總 = 總計（場所數、從業員工）", "coverage": "110 年底 各行政區",
          **_cache_info("dgbas_census_110.xml")},
+        {"agency": "內政部地政司", "dataset": RENT_DATASET, "url": RENT_LANDING,
+         "format": "ZIP／CSV（固定網址，每季）", "auto": True, "cadence": "每季",
+         "records": n_records(lambda r: r.metric in ("住宅每坪月租中位數", "住宅月租金中位數")),
+         "check": "鄉鎮市區必須全是本市行政區；每坪月租中位數 200–5,000 元；n < 30 標 low",
+         "coverage": "108S1– 六都各行政區", **_cache_info("lvr_*_c.csv")},
         {"agency": "內政部", "dataset": HOUSING_DATASET, "url": HOUSING_LANDING,
          "format": "CSV（人工下載，防火牆擋自動化）", "auto": False, "cadence": "每季",
          "records": n_records(lambda r: r.metric in ("房價所得比", "貸款負擔率")),
@@ -1246,8 +1301,8 @@ def _scale(records: list[AlignedRecord], trends: dict) -> dict:
     for r in records:
         years.append(r.year)
     return {
-        "agencies": 5,                       # 戶政司、主計總處、新北市政府主計處、內政部、財政部
-        "datasets": 12,
+        "agencies": 6,                       # 戶政司、主計總處、新北市政府主計處、內政部、財政部、地政司
+        "datasets": 13,
         "metrics": len({r.metric for r in records}),
         "records": len(records),
         "year_min": min(years) if years else None,
@@ -1545,6 +1600,19 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
         records.extend(_district_job_records(jobs, areas, region))
     except Exception as exc:  # noqa: BLE001
         print(f"  ⚠ 行政區工作機會未載入：{exc}")
+    # 行政區租金：實價登錄租賃案件（官方、免金鑰、每季）。「下一個淡水」的推力變數。
+    try:
+        rent = fetch_rent(region, refresh=refresh, districts=list(areas))
+        records.extend(_district_rent_records(rent, region))
+        trends["rent"] = {
+            "source": rent["source"], "url": rent["url"], "years": rent["years"], "window": rent["window"],
+            "min_n": rent["min_n"], "filters": rent["filters"],
+            "series": {a: [ (v.get(y) or {}).get("median") for y in rent["years"]] for a, v in rent["yearly"].items()},
+            "n": {a: [ (v.get(y) or {}).get("n", 0) for y in rent["years"]] for a, v in rent["yearly"].items()},
+            "note": rent["note"],
+        }
+    except Exception as exc:  # noqa: BLE001
+        print(f"  ⚠ 行政區租金未載入：{exc}")
 
     if migration:
         trends["migration"] = _migration_trend(migration, region)
@@ -1553,6 +1621,18 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
         idx = next((i for i, n in enumerate(notes) if "服務據點" in n["title"]), len(notes) - 1)
         for k, n in enumerate(mig_notes):
             notes.insert(idx + 1 + k, n)
+
+    # 驅動模型：六都 158 區的橫斷面迴歸（data/drivers.py 先跑，產 drivers.json）。
+    # 掛整份（含六都所有區），前端才能跨市比對「哪些區的條件像淡水」。
+    if DRIVERS_JSON.exists():
+        drivers = json.loads(DRIVERS_JSON.read_text(encoding="utf-8"))
+        trends["drivers"] = drivers
+        dn = _drivers_note(drivers, region)
+        if dn:
+            idx = next((i for i, n in enumerate(notes) if "移入的區" in n["title"]), len(notes) - 1)
+            notes.insert(idx + 1, dn)
+    else:
+        print("  ⚠ 沒有 data/drivers.json（先跑 python data/drivers.py），略過驅動模型")
 
     # 供需錯配：職缺（需求）× 就業人數（供給）。全國、全年齡 —— 官方沒有行業 × 年齡。
     try:

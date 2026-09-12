@@ -401,6 +401,38 @@ body{
 
 
 .lc-wrap{position:relative;}
+.drv-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin:.2rem 0 .6rem;}
+.drv-tabs .chip{padding:.3rem .7rem;font-size:.74rem;}
+.drv-grid{display:grid;grid-template-columns:1fr;gap:1.2rem;}
+.sc-wrap{position:relative;}
+.sc-wrap svg{width:100%;height:auto;display:block;}
+.sc-dot{cursor:pointer;transition:r .15s ease;}
+.sc-dot.other{opacity:.35;}
+.sc-dot.me{stroke:var(--deep);stroke-width:1.2;}
+.sc-lab{font-size:9.5px;fill:var(--ink-2);pointer-events:none;}
+.sc-ax{font-size:10px;fill:var(--ink-3);}
+.sc-tip{position:absolute;pointer-events:none;background:var(--deep);color:#fff;font-size:.72rem;line-height:1.35;padding:.35rem .55rem;border-radius:6px;white-space:nowrap;transform:translate(-50%,-115%);z-index:3;}
+.coef{display:grid;grid-template-columns:6.5rem minmax(90px,1fr) 7.6rem;align-items:center;gap:.6rem;padding:.22rem 0;font-size:.82rem;}
+.coef .k{color:var(--ink-2);}
+.coef .tr{position:relative;height:14px;background:var(--sunk);border-radius:2px;}
+.coef .tr i{position:absolute;top:0;height:100%;border-radius:2px;background:var(--accent);}
+.coef .tr i.neg{background:var(--low);}
+.coef .tr b{position:absolute;left:50%;top:-2px;width:1px;height:18px;background:var(--ink-3);}
+.coef .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.78rem;white-space:nowrap;}
+.coef .v small{color:var(--ink-3);display:block;font-size:.66rem;}
+.sim{display:grid;grid-template-columns:1fr;gap:.35rem;}
+.sim-row{display:grid;grid-template-columns:10.5rem minmax(120px,1fr) 6.4rem 5.2rem;gap:.7rem;align-items:center;padding:.3rem .5rem;border-radius:6px;background:var(--sunk);font-size:.8rem;}
+.sim-row.ref{background:var(--accent-soft);}
+.sim-row .nm{font-weight:600;min-width:0;}
+.sim-row .nm small{display:block;font-weight:400;color:var(--ink-3);font-family:var(--mono);font-size:.64rem;line-height:1.35;white-space:normal;}
+.sim-prof{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;}
+.sim-prof span{display:block;font-size:.62rem;color:var(--ink-3);text-align:center;line-height:1.2;}
+.sim-prof span i{display:block;height:6px;border-radius:2px;background:var(--rule);position:relative;margin-bottom:2px;overflow:hidden;}
+.sim-prof span i em{position:absolute;top:0;height:100%;background:var(--accent);}
+.sim-spark{width:100%;height:26px;display:block;}
+.sim-row .sg{font-family:var(--mono);font-size:.72rem;white-space:nowrap;text-align:right;}
+.sim-row .sg.in{color:#2b7a2b;} .sim-row .sg.out{color:var(--low);}
+@media (max-width:640px){.sim-row{grid-template-columns:1fr 1fr;} .sim-prof{grid-column:1/-1;} .coef{grid-template-columns:5rem 1fr auto;}}
 .lc-tip{position:absolute;top:6px;transform:translateX(-50%);pointer-events:none;
   background:var(--deep);color:var(--on-deep);border-radius:10px;padding:.5rem .7rem;
   font-size:.74rem;line-height:1.5;box-shadow:0 6px 20px rgba(0,0,0,.28);
@@ -797,7 +829,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     <nav class="toc" id="toc" aria-label="頁面目錄">
       <a href="#sec-map">地圖</a><a href="#sec-ask">問答</a><a href="#sec-scan">掃描</a>
       <a href="#sec-policy" data-open>建議</a><a href="#sec-insights" data-open>洞察</a><a href="#sec-rights" data-open>權益覆蓋</a>
-      <a href="#sec-vac" data-open>供需</a><a href="#sec-bench" data-open>六都</a><a href="#sec-trend" data-open>動態</a><a href="#pipeline">pipeline</a>
+      <a href="#sec-vac" data-open>供需</a><a href="#sec-bench" data-open>六都</a><a href="#sec-trend" data-open>動態</a><a href="#sec-drivers" data-open>下一個淡水</a><a href="#pipeline">pipeline</a>
     </nav>
   </div>
 </div>
@@ -1025,6 +1057,21 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
           勞動力來自新北市資料開放平臺（全年齡，但序列最長）。
         </p>
         <div class="trend" id="trendBox"></div>
+      </section>
+        </div>
+      </details>
+
+      <details class="fold" id="sec-drivers">
+        <summary><span class="st"><b>下一個淡水 · 條件比對<span class="badge ntpc" data-local>在地實測</span><span class="badge nat">六都 158 區</span><span class="badge est">experimental</span></b><small>什麼條件的區在吸青年、哪些區的條件像高移入區、哪些區條件好但青年沒來</small></span><span class="aspect">預測</span></summary>
+        <div class="foldbody">
+      <section class="panel">
+        <div class="panel-head"><h2>下一個淡水 · 條件比對</h2><span class="aspect">預測</span></div>
+        <p class="note">
+          「青年動態」看的是每一區<b>自己的</b>時間序列。這一段把六都 158 個行政區放在一起看：
+          青年往什麼條件的區搬（迴歸）、哪些區的條件跟你選的區最像（比對）、哪些區的移入跟條件不符（殘差）。
+          所得與工作機會來自財政部稅籍與主計總處普查，租金來自實價登錄租賃案件，全部是行政區層級的官方全面資料。
+        </p>
+        <div id="driversBox"></div>
       </section>
         </div>
       </details>
@@ -1639,6 +1686,202 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     });
   }
 
+  // ── 下一個淡水：六都 158 區的條件比對。三塊：散佈圖、係數、相似區。全部純 SVG／DOM，沒有套件。
+  var drvState = { x: 'income', ref: null };
+  var DRV_X = {
+    income: { label: '所得中位數', unit: '萬元/年', fmt: function (v) { return v.toFixed(1) + ' 萬'; } },
+    jobs_density: { label: '工作機會密度', unit: '倍', fmt: function (v) { return v.toFixed(2) + ' 倍'; }, log: true },
+    rent: { label: '每坪月租', unit: '元/坪/月', fmt: function (v) { return Math.round(v).toLocaleString('en-US') + ' 元/坪'; } },
+    youth: { label: '18–35 歲人口', unit: '人', fmt: function (v) { return Math.round(v).toLocaleString('en-US') + ' 人'; }, log: true }
+  };
+  function drvSignal(d) {
+    var mig = DATA.trends && DATA.trends.migration;
+    var a = mig && mig.areas && mig.areas[d.area];
+    return a && a.signal ? a.signal : null;
+  }
+  function renderDrivers() {
+    var host = $('driversBox');
+    if (!host) return;
+    var D = DATA.trends && DATA.trends.drivers;
+    if (!D) { host.innerHTML = '<p class="note">尚未建立驅動模型（python data/drivers.py）。</p>'; return; }
+    var all = D.districts.filter(function (d) { return d.y != null; });
+    var mine = all.filter(function (d) { return d.city === M.region; });
+    if (!drvState.ref || !all.some(function (d) { return d.area === drvState.ref; })) {
+      // 預設參考區：新北是淡水；其他城市取本市近三年移入最高的區
+      var pref = all.filter(function (d) { return d.area === '新北市淡水區'; })[0];
+      var top = mine.slice().sort(function (a, b) { return b.y - a.y; })[0];
+      drvState.ref = (M.region === '新北市' && pref) ? pref.area : (top ? top.area : all[0].area);
+    }
+    host.innerHTML = '';
+
+    // ① 散佈圖：條件 × 近三年淨遷入率
+    var fig = document.createElement('figure'); fig.className = 'figbox'; fig.setAttribute('data-chart', 'drivers');
+    var tabs = Object.keys(DRV_X).map(function (k) {
+      return '<button type="button" class="chip" data-x="' + k + '" aria-pressed="' + (drvState.x === k) + '">' + DRV_X[k].label + '</button>';
+    }).join('');
+    fig.innerHTML = '<p class="fig-title">六都 158 區：青年往什麼條件的區搬<span class="scopetag">六都 · 行政區</span></p>'
+      + '<p class="fig-sub">橫軸是條件，縱軸是 ' + D.y + '。實心＝' + M.region + '，淡色＝其他五都。滑過看數字，點一下把它當參考區。</p>'
+      + '<div class="drv-tabs">' + tabs + '</div><div class="sc-wrap"></div>';
+    host.appendChild(fig);
+    fig.querySelectorAll('.chip').forEach(function (b) {
+      b.addEventListener('click', function () { drvState.x = b.getAttribute('data-x'); renderDrivers(); });
+    });
+    drawScatter(fig.querySelector('.sc-wrap'), all, D);
+
+    // ② 係數：什麼條件在吸青年
+    var mb = D.models.base, mf = D.models.full;
+    var cf = document.createElement('figure'); cf.className = 'figbox'; cf.setAttribute('data-chart', 'drivers-coef');
+    var maxb = 0.01;
+    [mb, mf].forEach(function (m) { m.features.forEach(function (f) { maxb = Math.max(maxb, Math.abs(m.coef[f].beta_std)); }); });
+    function coefRows(m) {
+      return m.features.map(function (f) {
+        var c = m.coef[f], w = Math.abs(c.beta_std) / maxb * 50;
+        return '<div class="coef"><span class="k">' + c.label + (c.significant ? ' ★' : '') + '</span>'
+          + '<span class="tr"><b></b><i class="' + (c.b < 0 ? 'neg' : '') + '" style="left:' + (c.b < 0 ? 50 - w : 50) + '%;width:' + w + '%"></i></span>'
+          + '<span class="v">' + (c.per_10pct >= 0 ? '+' : '') + c.per_10pct.toFixed(2) + ' pp<small>t = ' + c.t.toFixed(1) + (c.significant ? '　顯著' : '') + '</small></span></div>';
+      }).join('');
+    }
+    cf.innerHTML = '<p class="fig-title">什麼條件的區在吸青年<span class="scopetag">迴歸係數 · 標準化</span></p>'
+      + '<p class="fig-sub">同一個都會區裡（縣市固定效果），條件高 10% 的區，近三年淨遷入率差幾個百分點（pp）。條長＝標準化係數（哪個因子影響大）；★＝5% 顯著。</p>'
+      + '<div class="drv-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">'
+      + '<div><p class="cap" style="margin:.2rem 0 .3rem"><b>模型 A</b>　不含租金 · n=' + mb.n + ' · R²=' + mb.r2 + '</p>' + coefRows(mb) + '</div>'
+      + '<div><p class="cap" style="margin:.2rem 0 .3rem"><b>模型 B</b>　含租金 · n=' + mf.n + '（租金樣本 ≥ 30 的區）· R²=' + mf.r2 + '</p>' + coefRows(mf) + '</div>'
+      + '</div><p class="cap">' + D.spec + '。臺北市固定效果 ' + mb.coef['fe_臺北市'].b.toFixed(1) + ' pp（★）：同樣條件下臺北的區青年淨流出得多 —— 模型裡沒有房價，這就是它的影子。'
+      + '係數是相關不是因果；工作機會為 110 年普查。</p>';
+    host.appendChild(cf);
+
+    // ③ 相似區：跟參考區條件最像的區，以及它們現在的移入狀況
+    var ref = all.filter(function (d) { return d.area === drvState.ref; })[0];
+    var sf = document.createElement('figure'); sf.className = 'figbox'; sf.setAttribute('data-chart', 'drivers-similar');
+    var opts = all.filter(function (d) { return d.z; }).sort(function (a, b) { return a.area.localeCompare(b.area, 'zh-Hant'); })
+      .map(function (d) { return '<option value="' + d.area + '"' + (d.area === drvState.ref ? ' selected' : '') + '>' + d.area + '</option>'; }).join('');
+    sf.innerHTML = '<p class="fig-title">條件最像 <select id="drvRef" class="sel" style="font:inherit;font-size:.9rem">' + opts + '</select> 的區<span class="scopetag">z 分數距離 · 4 個維度</span></p>'
+      + '<p class="fig-sub">相對本市的租金、工作機會密度、所得中位數、青年人口規模四個維度標準化後算距離。'
+      + '條件像、但移入還沒起來的區，是「下一個」的候選；條件像、已經在移入的區，驗證這組條件有效。</p><div class="sim"></div>';
+    host.appendChild(sf);
+    sf.querySelector('#drvRef').addEventListener('change', function (e) { drvState.ref = e.target.value; renderDrivers(); });
+    var simHost = sf.querySelector('.sim');
+    if (!ref || !ref.z) { simHost.innerHTML = '<p class="cap">這個區缺租金樣本，算不了相似度。</p>'; }
+    else {
+      var keys = D.similarity, kl = { rel_rent: '相對租金', ln_jobs_density: '工作機會', ln_income: '所得', ln_youth: '規模' };
+      var sims = all.filter(function (d) { return d.z && d.area !== ref.area; }).map(function (d) {
+        var s2 = 0; keys.forEach(function (k) { s2 += Math.pow(d.z[k] - ref.z[k], 2); });
+        return { d: d, dist: Math.sqrt(s2) };
+      }).sort(function (a, b) { return a.dist - b.dist; }).slice(0, 8);
+      function prof(d) {
+        return '<span class="sim-prof">' + keys.map(function (k) {
+          var z = Math.max(-2.5, Math.min(2.5, d.z[k])), w = Math.abs(z) / 2.5 * 50;
+          return '<span><i><em style="left:' + (z < 0 ? 50 - w : 50) + '%;width:' + w + '%"></em></i>' + kl[k] + '</span>';
+        }).join('') + '</span>';
+      }
+      function spark(d) {
+        var vs = d.rate_series.map(function (v) { return v == null ? null : v * 100; });
+        var lo = Math.min.apply(null, vs.filter(function (v) { return v != null; }).concat([0]));
+        var hi = Math.max.apply(null, vs.filter(function (v) { return v != null; }).concat([0]));
+        var W = 100, H = 26, sy = function (v) { return H - 2 - (v - lo) / ((hi - lo) || 1) * (H - 4); };
+        var pts = vs.map(function (v, i) { return v == null ? null : (i / (vs.length - 1) * W).toFixed(1) + ',' + sy(v).toFixed(1); }).filter(Boolean);
+        return '<svg class="sim-spark" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true"><line x1="0" x2="' + W + '" y1="' + sy(0).toFixed(1) + '" y2="' + sy(0).toFixed(1) + '" style="stroke:var(--rule)"/>'
+          + '<polyline style="fill:none;stroke:var(--accent);stroke-width:1.5" points="' + pts.join(' ') + '"/></svg>';
+      }
+      function row(d, dist, isRef) {
+        var sig = drvSignal(d) || (d.y > 0 ? '近三年淨移入' : '近三年淨流出');
+        return '<div class="sim-row' + (isRef ? ' ref' : '') + '"><span class="nm">' + d.area
+          + '<small>' + (isRef ? '參考區' : '距離 ' + dist.toFixed(2)) + ' · 租 ' + (d.rent ? d.rent : '—') + ' 元/坪 · 密度 ' + d.jobs_density + '<br>所得 ' + d.income + ' 萬 · 青年 ' + num(d.youth || 0) + ' 人</small></span>'
+          + prof(d) + spark(d) + '<span class="sg ' + (d.y > 0 ? 'in' : 'out') + '">' + (d.y > 0 ? '+' : '') + d.y.toFixed(1) + '%<br><small>' + sig + '</small></span></div>';
+      }
+      simHost.innerHTML = row(ref, 0, true) + sims.map(function (s) { return row(s.d, s.dist, false); }).join('');
+      simHost.insertAdjacentHTML('beforeend', '<p class="cap">每列：四維條件（中線＝六都平均）、' + D.years[0] + '–' + D.years[D.years.length - 1] + ' 淨遷入率走勢（灰線＝0）、近三年平均與訊號。</p>');
+    }
+
+    // ④ 殘差：本市哪些區的移入跟條件不符
+    var rs = mine.filter(function (d) { return d.resid != null; });
+    if (rs.length >= 5) {
+      var rf = document.createElement('figure'); rf.className = 'figbox'; rf.setAttribute('data-chart', 'drivers-resid');
+      var sorted = rs.slice().sort(function (a, b) { return b.resid - a.resid; });
+      var maxr = Math.max.apply(null, sorted.map(function (d) { return Math.abs(d.resid); })) || 1;
+      rf.innerHTML = '<p class="fig-title">' + M.region + '各區：實際移入 − 條件解釋的移入<span class="scopetag">' + LOCAL + ' · 殘差</span></p>'
+        + '<p class="fig-sub">正＝條件之外還有拉力（新市鎮、社宅、捷運通車）；負＝條件好但青年沒來（交通、住宅供給、生活機能）。兩端都是實地訪查的名單。</p>'
+        + '<div class="drv-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">'
+        + [sorted.slice(0, 6), sorted.slice(-6).reverse()].map(function (grp, gi) {
+          return '<div><p class="cap" style="margin:.2rem 0 .3rem"><b>' + (gi ? '低於條件' : '高於條件') + '</b></p>' + grp.map(function (d) {
+            var w = Math.abs(d.resid) / maxr * 50;
+            return '<div class="coef"><span class="k">' + d.short + '</span><span class="tr"><b></b><i class="' + (d.resid < 0 ? 'neg' : '') + '" style="left:' + (d.resid < 0 ? 50 - w : 50) + '%;width:' + w + '%"></i></span>'
+              + '<span class="v">' + (d.resid >= 0 ? '+' : '') + d.resid.toFixed(1) + ' pp<small>實際 ' + (d.y >= 0 ? '+' : '') + d.y.toFixed(1) + '%<br>解釋 ' + (d.fitted >= 0 ? '+' : '') + d.fitted.toFixed(1) + '%</small></span></div>';
+          }).join('') + '</div>';
+        }).join('') + '</div>';
+      host.appendChild(rf);
+    }
+  }
+
+  function drawScatter(wrap, all, D) {
+    var xk = drvState.x, cfg = DRV_X[xk];
+    var pts = all.filter(function (d) { return d[xk] != null && d[xk] > 0; });
+    var W = 720, H = 340, L = 52, R2 = 14, T = 14, B = 36;
+    var tx = function (v) { return cfg.log ? Math.log(v) : v; };
+    var xs = pts.map(function (d) { return tx(d[xk]); }), ys = pts.map(function (d) { return d.y; });
+    var xlo = Math.min.apply(null, xs), xhi = Math.max.apply(null, xs), ylo = Math.min.apply(null, ys), yhi = Math.max.apply(null, ys);
+    var xpad = (xhi - xlo) * 0.05 || 1, ypad = (yhi - ylo) * 0.08 || 1;
+    xlo -= xpad; xhi += xpad; ylo -= ypad; yhi += ypad;
+    var px = function (v) { return L + (tx(v) - xlo) / (xhi - xlo) * (W - L - R2); };
+    var py = function (v) { return T + (1 - (v - ylo) / (yhi - ylo)) * (H - T - B); };
+    var ymax = Math.max.apply(null, pts.map(function (d) { return d.youth || 0; })) || 1;
+    var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="六都各區 ' + cfg.label + ' 與青年淨遷入率">';
+    // y 軸格線與 0 線
+    var yt = niceTicks(ylo, yhi, 5);
+    yt.forEach(function (v) {
+      out += '<line x1="' + L + '" x2="' + (W - R2) + '" y1="' + py(v).toFixed(1) + '" y2="' + py(v).toFixed(1) + '" style="stroke:' + (v === 0 ? 'var(--ink-3)' : 'var(--rule)') + ';stroke-width:' + (v === 0 ? 1.2 : 1) + '"/>'
+        + '<text class="sc-ax" x="' + (L - 6) + '" y="' + (py(v) + 3.5).toFixed(1) + '" text-anchor="end">' + (v > 0 ? '+' : '') + v + '%</text>';
+    });
+    // x 軸刻度（log 軸用原值標）
+    var xt = cfg.log ? niceLogTicks(Math.exp(xlo), Math.exp(xhi)) : niceTicks(xlo, xhi, 6);
+    xt.forEach(function (v) {
+      var x = px(v); if (x < L || x > W - R2) return;
+      out += '<line x1="' + x.toFixed(1) + '" x2="' + x.toFixed(1) + '" y1="' + T + '" y2="' + (H - B) + '" style="stroke:var(--rule)"/>'
+        + '<text class="sc-ax" x="' + x.toFixed(1) + '" y="' + (H - B + 14) + '" text-anchor="middle">' + (cfg.log ? cfg.fmt(v) : (Math.round(v * 10) / 10)) + '</text>';
+    });
+    out += '<text class="sc-ax" x="' + (W - R2) + '" y="' + (H - 4) + '" text-anchor="end">' + cfg.label + '（' + cfg.unit + (cfg.log ? '，對數尺度' : '') + '）</text>';
+    // 其他城市先畫（在下面），本市後畫
+    var order = pts.slice().sort(function (a, b) { return (a.city === M.region) - (b.city === M.region); });
+    order.forEach(function (d, i) {
+      var r = 3 + Math.sqrt((d.youth || 0) / ymax) * 9;
+      var me = d.city === M.region, isRef = d.area === drvState.ref;
+      out += '<circle class="sc-dot ' + (me ? 'me' : 'other') + '" data-i="' + pts.indexOf(d) + '" cx="' + px(d[xk]).toFixed(1) + '" cy="' + py(d.y).toFixed(1) + '" r="' + r.toFixed(1)
+        + '" style="fill:' + (isRef ? 'var(--deep)' : (me ? 'var(--accent)' : 'var(--ink-3)')) + (isRef ? ';stroke:var(--accent);stroke-width:2.5' : '') + '"/>';
+    });
+    // 標籤：本市移入前 3、流出前 2、參考區
+    var lab = order.filter(function (d) { return d.city === M.region; }).sort(function (a, b) { return b.y - a.y; });
+    var labs = lab.slice(0, 3).concat(lab.slice(-2)).concat(pts.filter(function (d) { return d.area === drvState.ref; }));
+    labs.forEach(function (d) {
+      out += '<text class="sc-lab" x="' + (px(d[xk]) + 7).toFixed(1) + '" y="' + (py(d.y) + 3.5).toFixed(1) + '">' + (d.city === M.region ? d.short : d.area) + '</text>';
+    });
+    out += '</svg><div class="sc-tip" hidden></div>';
+    wrap.innerHTML = out;
+    var tip = wrap.querySelector('.sc-tip');
+    wrap.querySelectorAll('.sc-dot').forEach(function (c) {
+      var d = pts[+c.getAttribute('data-i')];
+      c.addEventListener('mouseenter', function () {
+        var svg = wrap.querySelector('svg'), bb = svg.getBoundingClientRect(), sc = bb.width / W;
+        tip.innerHTML = '<b>' + d.area + '</b><br>' + cfg.label + ' ' + cfg.fmt(d[xk]) + '<br>近三年淨遷入 ' + (d.y > 0 ? '+' : '') + d.y.toFixed(2) + '%'
+          + (d.fitted != null ? '（條件解釋 ' + (d.fitted > 0 ? '+' : '') + d.fitted.toFixed(2) + '%）' : '') + '<br>18–35 歲 ' + num(d.youth || 0) + ' 人';
+        tip.style.left = (+c.getAttribute('cx') * sc) + 'px'; tip.style.top = (+c.getAttribute('cy') * sc) + 'px'; tip.hidden = false;
+      });
+      c.addEventListener('mouseleave', function () { tip.hidden = true; });
+      c.addEventListener('click', function () { drvState.ref = d.area; renderDrivers(); });
+    });
+  }
+  function niceTicks(lo, hi, n) {
+    var span = hi - lo, step = Math.pow(10, Math.floor(Math.log(span / n) / Math.LN10));
+    var err = span / n / step; step *= err >= 7.5 ? 10 : err >= 3.5 ? 5 : err >= 1.5 ? 2 : 1;
+    var out = [], v = Math.ceil(lo / step) * step;
+    for (; v <= hi + 1e-9; v += step) out.push(Math.round(v * 1000) / 1000);
+    return out;
+  }
+  function niceLogTicks(lo, hi) {
+    var out = [], base = Math.pow(10, Math.floor(Math.log(lo) / Math.LN10));
+    for (var b = base; b <= hi * 10; b *= 10) [1, 2, 5].forEach(function (m) { if (b * m >= lo && b * m <= hi) out.push(b * m); });
+    return out;
+  }
+
   function renderTrends() {
     var host = $('trendBox');
     if (!host) return;
@@ -2016,7 +2259,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // ── 地圖 ───────────────────────────────────────────────
   // 界線是 build 時在 Python 端解好的 SVG 路徑，這裡不需要任何地圖函式庫。
-  var MAP_METRICS = ['人口數', '青年淨遷入率', '青年人口年變化率', '勞動力參與率', '綜合所得中位數', '工作機會密度'];
+  var MAP_METRICS = ['人口數', '青年淨遷入率', '青年人口年變化率', '勞動力參與率', '綜合所得中位數', '工作機會密度', '住宅每坪月租中位數'];
   // 全體層級的指標（財政部所得、普查工作機會）沒有分齡：先照年齡層找，找不到退到「全體」
   function findMap(area, metric) {
     return find(area, state.band, metric) || find(area, '全體', metric);
@@ -2027,7 +2270,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     '青年淨遷入率': '世代追蹤：今年 a 歲 − 去年 a−1 歲，扣掉少子化與死亡，剩下的就是青年搬進搬出 · 正＝淨移入',
     '青年人口年變化率': '過去一年這個年齡層的人口增減（含少子化）· 要看搬家請用「青年淨遷入率」',
     '綜合所得中位數': '全體申報戶的綜合所得中位數（財政部稅籍，非抽樣）· 不是青年、不是薪資',
-    '工作機會密度': '區內從業員工（110 年普查）÷ 區內 15–64 歲人口 · 遠低於 1 的是通勤外出的住宅區'
+    '工作機會密度': '區內從業員工（110 年普查）÷ 區內 15–64 歲人口 · 遠低於 1 的是通勤外出的住宅區',
+    '住宅每坪月租中位數': '實價登錄租賃案件近四季中位數（元／坪／月）· 全體案件非青年 · 樣本偏向代管／包租物件'
   };
   var mapMetric = MAP_METRICS[0];
 
@@ -2151,7 +2395,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     document.querySelectorAll('.chip').forEach(function (c) {
       c.setAttribute('aria-pressed', c.dataset.band === state.band ? 'true' : 'false');
     });
-    renderHero(); renderMap(); renderPolicy(); renderInsights(); renderRights(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderMismatch(); renderBench(); renderTrends(); renderRank();
+    renderHero(); renderMap(); renderPolicy(); renderInsights(); renderRights(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderMismatch(); renderBench(); renderTrends(); renderDrivers(); renderRank();
     var keep = state.sel;
     select((keep && find(state.area, keep.age_group, keep.metric, keep.education))
       || find(state.area, state.band, '人口數'));
@@ -2317,6 +2561,10 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     ['參與率', '勞動力參與率'],
     ['勞動力', '勞動力人數'],
     ['就業', '就業者人數'],
+    ['租金', '住宅每坪月租中位數'],
+    ['每坪', '住宅每坪月租中位數'],
+    ['房租', '住宅每坪月租中位數'],
+    ['月租', '住宅月租金中位數'],
     ['淨遷入', '青年淨遷入率'],
     ['移入', '青年淨遷入率'],
     ['遷入', '青年淨遷入率'],
@@ -2548,7 +2796,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   // 問題是在「查一個數字」還是在「問情況／要建議」？後者交給模型。
   // 本機規則只會查表。凡是在問「分析、預測、原因、建議、判斷」的，都交給模型 ——
   // 寧可多打一次模型，也不要把「推測臺南哪區人口流失會越來越嚴重」答成「臺南市人口 376,751 人」。
-  var DISCUSS_CUE = /問題|情況|狀況|現況|怎麼|怎樣|如何|為什麼|為何|建議|該|應該|嗎|好不好|供需|政策|分析|趨勢|落差|困境|挑戰|流失|嚴重|哪個比較|那個比較|比較嚴重|外流|推測|預測|預估|推估|估計|會不會|越來越|未來|可能|是否|評估|解讀|意義|差別|差異|原因|影響|優先|投入|資源|策略|方案|措施|對策|改善|因應|值得|風險|警訊|要注意/;
+  var DISCUSS_CUE = /下一個|潛力|候選|相似|類似|像|問題|情況|狀況|現況|怎麼|怎樣|如何|為什麼|為何|建議|該|應該|嗎|好不好|供需|政策|分析|趨勢|落差|困境|挑戰|流失|嚴重|哪個比較|那個比較|比較嚴重|外流|推測|預測|預估|推估|估計|會不會|越來越|未來|可能|是否|評估|解讀|意義|差別|差異|原因|影響|優先|投入|資源|策略|方案|措施|對策|改善|因應|值得|風險|警訊|要注意/;
   function isDiscussion(q) { return DISCUSS_CUE.test(q || ''); }
 
   function scopeGap(it) {
@@ -3261,7 +3509,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     return list;
   })();
   if ($('askInput') && DIST.length) $('askInput').placeholder = '任何年齡區間都可以，例如：' + M.region + ' 26-28 歲有多少人？';
-  ['職訓預算該怎麼分配到各行政區？',
+  ['哪一區可能成為下一個淡水？青年局該先準備什麼？',
+   '職訓預算該怎麼分配到各行政區？',
    '青年薪資成長跟中壯年差在哪？',
    '哪些行業值得投職訓資源？',
    M.region + ' 25-29 歲的平均年薪是多少？',

@@ -30,6 +30,83 @@ from .synthesize import Grounded, _fmt, retrieve, verify
 RECORD_LIMIT = 32
 
 
+SIMILAR_CUE = ("下一個", "潛力", "候選", "相似", "類似", "像", "條件")
+
+
+def _drivers_lines(payload: dict, region: str, question: str) -> list[str]:
+    return _drivers_block(payload, region, question)[0]
+
+
+def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str], str]:
+    """六都驅動模型（data/drivers.py）給模型看的摘要：係數、本市殘差、跟某區條件最像的區。
+    全部是程式算好的數字，模型只能引用；查核池也認得這些行。
+    第二個回傳值是「這題怎麼答」的提示：問「下一個 X」時直接點名候選區，模型才不會把 X 本身當答案。"""
+    D = (payload.get("trends") or {}).get("drivers")
+    hint = ""
+    if not D or not D.get("models"):
+        return [], hint
+    mb, mf = D["models"]["base"], D["models"]["full"]
+    sig = lambda c: "顯著" if c["significant"] else "不顯著"
+    lines = [f"六都 {mb['n']} 個行政區的迴歸（近三年青年淨遷入率 vs 條件，縣市固定效果，R² {mb['r2']}；係數是相關不是因果）："]
+    for f in mb["features"]:
+        c = mb["coef"][f]
+        lines.append(f"  - {c['label']}高 10% 的區，淨遷入率高 {c['per_10pct']:+.2f} 個百分點（t {c['t']}，{sig(c)}）")
+    c = mf["coef"]["ln_rent"]
+    lines.append(f"  - 每坪月租高 10% → {c['per_10pct']:+.2f} 個百分點（模型 B，只含租金樣本足的 {mf['n']} 區，{sig(c)}）")
+    fe = mb["coef"].get("fe_臺北市")
+    if fe:
+        lines.append(f"  - 臺北市固定效果 {fe['b']:+.1f} 個百分點：同樣條件下臺北的區青年淨流出較多（模型沒有房價變數）")
+    mine = [d for d in D["districts"] if d["city"] == region and d.get("resid") is not None]
+    if len(mine) >= 5:
+        hi = sorted(mine, key=lambda d: -d["resid"])[:3]
+        lo = sorted(mine, key=lambda d: d["resid"])[:3]
+        lines.append(f"{region}各區「實際移入 − 條件解釋的移入」（正＝條件之外還有拉力；負＝條件好但青年沒來）：")
+        lines.append("  - 高於條件：" + "、".join(f"{d['short']} {d['resid']:+.1f} 個百分點（實際 {d['y']:+.1f}%）" for d in hi))
+        lines.append("  - 低於條件：" + "、".join(f"{d['short']} {d['resid']:+.1f} 個百分點（實際 {d['y']:+.1f}%）" for d in lo))
+    # 條件最像的區：問題點到的區優先（本市先），否則問到「下一個／潛力／像」時用淡水當參考
+    q = question.replace("台", "臺")
+    ref = None
+    for d in sorted(D["districts"], key=lambda d: d["city"] != region):
+        if d.get("z") and d["short"] and d["short"] in q:
+            ref = d; break
+    if ref is None and any(k in q for k in SIMILAR_CUE):
+        ref = next((d for d in D["districts"] if d["area"] == "新北市淡水區" and d.get("z")), None)
+    if ref:
+        keys = D["similarity"]
+        mig = ((payload.get("trends") or {}).get("migration") or {}).get("areas") or {}
+        cands = []
+        for d in D["districts"]:
+            if d is ref or not d.get("z") or d.get("y") is None:
+                continue
+            dist = sum((d["z"][k] - ref["z"][k]) ** 2 for k in keys) ** 0.5
+            cands.append((dist, d))
+        cands.sort(key=lambda t: t[0])
+
+        def _line(dist, d):
+            s = (mig.get(d["area"]) or {}).get("signal") or ("近三年淨移入" if d["y"] > 0 else "近三年淨流出")
+            stage = "已經在移入" if d["y"] > 0.5 else ("條件像但移入還沒起來" if d["y"] > -1 else "條件像但仍在流出")
+            return (f"  - {d['area']}：距離 {dist:.2f}，近三年淨遷入 {d['y']:+.1f}%（{s}；{stage}），"
+                    f"租 {d['rent']} 元/坪、密度 {d['jobs_density']}、所得 {d['income']} 萬")
+
+        head = (f"{ref['area']}（近三年淨遷入 {ref['y']:+.1f}%，租 {ref['rent']} 元/坪、工作機會密度 {ref['jobs_density']}、"
+                f"所得中位數 {ref['income']} 萬）")
+        local = [(dist, d) for dist, d in cands if d["city"] == region][:5]
+        if local:
+            lines.append(f"{region}內條件最像 {head} 的區（相對本市租金、工作機會密度、所得、青年人口規模四維標準化距離）：")
+            lines += [_line(dist, d) for dist, d in local]
+        lines.append(f"六都內條件最像 {ref['area']} 的區：")
+        lines += [_line(dist, d) for dist, d in cands[:6]]
+        if any(k in q for k in SIMILAR_CUE):
+            nxt = [d["short"] for _, d in local if -1 < d["y"] <= 0.5] or [d["short"] for _, d in local if d["y"] <= 0.5]
+            already = [d["short"] for _, d in local if d["y"] > 0.5]
+            hint = (f"這題問的是「下一個」：答案要從「{region}內條件最像 {ref['short']}」清單裡挑"
+                    f"**條件像但移入還沒起來**的區（{'、'.join(nxt) if nxt else '清單裡沒有，就照實說'}），"
+                    f"不要回答 {ref['short']} 本身，也不要回答現在移入最多的區。"
+                    + (f"{'、'.join(already)} 已經在移入，可以拿來驗證這組條件有效。" if already else "")
+                    + (f" 並提醒：{ref['short']} 實際移入比這四個條件解釋的高 {ref['resid']:+.1f} 個百分點，多出來的可能來自住宅供給與交通建設（模型沒有這兩個變數），所以條件像只是必要條件。" if ref.get("resid") is not None else ""))
+    return lines, hint
+
+
 def build_prompt(payload: dict, records: list[dict], question: str,
                  region: str, band: str) -> str:
     """組出提示詞。**可用的數字全部列進去，模型只能挑，不能算也不能編。**
@@ -69,6 +146,10 @@ def build_prompt(payload: dict, records: list[dict], question: str,
                       + " 歲官方公布值；房價所得比、貸款負擔率為全體家戶）**\n"
                       + "\n".join(rows) + "\n")
 
+    drv, drv_hint = _drivers_block(payload, region, question)
+    drv_hint = f"\n**這題怎麼答**\n{drv_hint}\n" if drv_hint else ""
+    drivers_text = ("\n**六都驅動模型與條件比對（程式算好的迴歸結果，可直接引用）**\n" + "\n".join(drv) + "\n") if drv else ""
+
     def block(title: str, items: list[dict], keys: tuple[str, str]) -> str:
         if not items:
             return ""
@@ -87,7 +168,7 @@ def build_prompt(payload: dict, records: list[dict], question: str,
 
 **使用者的問題**
 {question}
-
+{drv_hint}
 **最重要的規則：你只能使用下面列出的數字。**
 不可以自己計算、不可以推估、不可以寫出清單裡沒有的數字。
 需要比較大小、講趨勢方向、給出行動建議都可以，
@@ -112,8 +193,14 @@ def build_prompt(payload: dict, records: list[dict], question: str,
 **可用的數字（{region}．{band} 歲為主{"；問題點名的其他城市／行政區排在最前面" if payload.get("_cross_city") else ""}）**
 {("⚠ 這是跨城市的問題：問到的地區是 " + "、".join(payload["_cross_city"]) + "，請用它們各自的數字比較，不要拿" + region + "當替身。") if payload.get("_cross_city") else ""}
 {chr(10).join(lines)}
-{bench_text}{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
+{bench_text}{drivers_text}{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
 {block("**通過統計檢定的變化（已附依據，可直接引用）**", insights, ("title", "body"))}
+問「下一個淡水」「哪區有潛力」「哪區條件像 X」時，**答案是「條件最像」清單裡標「條件像但移入還沒起來」的區**，
+不是現在移入最多的區（那是「現在的淡水」，不是「下一個」）。先講本市內的候選，再補六都的對照；
+「已經在移入」的區用來驗證這組條件有效。每個區附它的條件數字與近三年淨遷入率；
+迴歸係數說「相關」不說「因為」；提醒淡水本身的移入有 3.5 個百分點是條件解釋不了的（新市鎮住宅供給、輕軌），
+所以「條件像」只是必要條件，還要看住宅供給與交通建設。
+
 **怎麼回答**
 - **第一行只寫一句結論**（40 字內，不要標題、不要「以下是」），畫面上只先顯示這一句；
   空一行之後才是完整分析
@@ -165,7 +252,7 @@ def _district_records(payload: dict, region: str, band: str) -> list[dict]:
     wanted = {"人口數", "勞動力人數", "勞動力參與率", "青年人口年變化率", "青年淨遷入率", "青年淨遷入人數"}
     # 行政區層級的全體指標（財政部所得中位數、普查在地工作機會與密度）也給模型 ——
     # 「林口區的工作供需」靠的就是這些，先前模型只能回「沒有」。
-    whole = {"綜合所得中位數", "工作機會密度", "在地工作機會"}
+    whole = {"綜合所得中位數", "工作機會密度", "在地工作機會", "住宅每坪月租中位數", "住宅月租金中位數"}
     out = [
         r for r in payload.get("records", [])
         if r.get("region", "").startswith(region)
@@ -192,5 +279,5 @@ def advise(question: str, payload: dict, backend: Backend, *,
     records = _mentioned_records(payload, question, records) + records
     raw = backend.complete(build_prompt(payload, records, question, region, band))
     text = raw.strip()
-    ok, bad = verify(text, records, payload)
+    ok, bad = verify(text, records, payload, extra=_drivers_lines(payload, region, question))
     return Grounded(text=text, records=records, verified=ok, unverified=bad, raw=raw)

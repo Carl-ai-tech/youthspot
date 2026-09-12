@@ -49,6 +49,8 @@ function makeNode(id) {
     setAttribute(name, v) { if (name === 'hidden') this.hidden = true; else this[name] = v; },
     getAttribute(name) { return this[name]; },
     querySelectorAll() { return []; },
+    querySelector() { const c = makeNode(); this.children.push(c); return c; },
+    insertAdjacentHTML(pos, html) { this._html += html; },
     click() { (this.handlers.click || []).forEach((f) => f({})); },
     focus() {},
   };
@@ -452,7 +454,7 @@ check('行政區問居住指標要說只有全市', '林口區房價所得比',
   const manual = (t.match(/badge est">人工/g) || []).length;
   const stamped = t.split('<td class="mono">').filter((x) => /^20[0-9]{2}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}/.test(x)).length;
   const scale = el('scaleLine').innerHTML || '';
-  const scaleOk = scale.indexOf('5 個資料提供單位') >= 0 && scale.indexOf('730 筆') >= 0 && scale.indexOf('1978–') >= 0;
+  const scaleOk = scale.indexOf('6 個資料提供單位') >= 0 && scale.indexOf('782 筆') >= 0 && scale.indexOf('1978–') >= 0;
   const method = el('methodBox').innerHTML || '';
   const methodOk = method.indexOf('pp') >= 0 && method.indexOf('三道查核') >= 0 && method.indexOf('逐數字驗證') >= 0;
   const ok = rowsN >= 12 && auto >= 10 && manual === 1 && stamped >= 11 && scaleOk && methodOk;
@@ -611,6 +613,22 @@ total++;
 if (!legendOk) fail++;
 console.log(`${legendOk ? '✅' : '❌'}　地圖圖例有色階與分級說明`);
 console.log();
+
+// 下一個淡水：散佈圖、係數、相似區、殘差四張圖都要畫出來；參考區預設淡水；散佈圖上色要走 style
+{
+  const figs = el('driversBox').children || [];
+  const keys = figs.map((f) => f['data-chart']).filter(Boolean);
+  const html = figs.map((f) => (f.innerHTML || '') + (f.children || []).map((c) => c.innerHTML || '').join('')).join('');
+  const dots = (html.match(/class="sc-dot /g) || []).length;
+  const badFill = /<circle[^>]*\sfill="var\(/.test(html);
+  const refOk = /新北市淡水區<small>參考區/.test(html);
+  const coefOk = /模型 A/.test(html) && /模型 B/.test(html) && /★/.test(html);
+  const ok = ['drivers', 'drivers-coef', 'drivers-similar', 'drivers-resid'].every((k) => keys.indexOf(k) >= 0) && dots >= 150 && !badFill && refOk && coefOk;
+  total++;
+  if (!ok) fail++;
+  console.log(`${ok ? '✅' : '❌'}　下一個淡水：${keys.length} 張圖、散佈 ${dots} 點、參考區淡水 ${refOk ? '✓' : '✗'}、係數表 ${coefOk ? '✓' : '✗'}${badFill ? ' ← fill 寫成呈現屬性' : ''}`);
+  console.log();
+}
 
 console.log(fail === 0 ? `全部 ${total} 項通過` : `❌ ${total} 項裡有 ${fail} 項失敗`);
 process.exit(fail === 0 ? 0 : 1);

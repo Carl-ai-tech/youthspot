@@ -69,7 +69,7 @@ class TestDistrictRecords(unittest.TestCase):
         """薪資、失業率沒有行政區層級，撈進來只會是空的。
         有行政區層級的：分齡三個 ＋ 全體層級的所得（財政部）與在地工作機會（普查）。"""
         metrics = {r["metric"] for r in _district_records(PAYLOAD, "新北市", "18-35")}
-        allowed = {"人口數", "勞動力人數", "勞動力參與率", "青年人口年變化率", "青年淨遷入率", "青年淨遷入人數", "綜合所得中位數", "工作機會密度", "在地工作機會"}
+        allowed = {"人口數", "勞動力人數", "勞動力參與率", "青年人口年變化率", "青年淨遷入率", "青年淨遷入人數", "綜合所得中位數", "工作機會密度", "在地工作機會", "住宅每坪月租中位數", "住宅月租金中位數"}
         self.assertTrue(metrics <= allowed, metrics)
         self.assertNotIn("平均年薪", metrics)
         self.assertNotIn("失業率", metrics)

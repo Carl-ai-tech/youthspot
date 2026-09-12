@@ -236,7 +236,8 @@ def _spellings(v: float, unit: str) -> list[tuple[float, bool]]:
     return [(v, False), (round(v, 1), False)]
 
 
-def verify(text: str, records: list[dict], payload: dict | None = None) -> tuple[list, list]:
+def verify(text: str, records: list[dict], payload: dict | None = None,
+           extra: list[str] | None = None) -> tuple[list, list]:
     """逐一比對敘述裡的數字是否真的來自記錄。
 
     這是整支程式的重點。模型寫得再流暢，只要有一個數字對不上，
@@ -259,7 +260,7 @@ def verify(text: str, records: list[dict], payload: dict | None = None) -> tuple
         for card in list(payload.get("policy_notes") or []) + list(payload.get("insights") or []):
             text_bits = [card.get("title", ""), card.get("body", "")]
             text_bits += list(card.get("detail") or [])
-            for bit in text_bits:
+            for bit in text_bits + list(extra or []):
                 bit = str(bit)
                 for m in _NUMBER.finditer(bit):
                     try:

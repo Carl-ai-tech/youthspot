@@ -84,7 +84,7 @@ def _merge_mentioned(payload: dict, question: str, region: str) -> dict:
         # 這個城市有沒有被點名：城市名，或它的任何一個行政區名
         districts = {r["region"] for r in other["records"] if r["region"].startswith(city) and r["region"] != city}
         named = [d for d in districts if d.replace(city, "") in q]
-        if city not in q and not named:
+        if city not in q and city.replace("市", "") not in q and not named:
             continue
         for r in other["records"]:
             if r["region"] == city and r["age_group"] in ("18-35", "全體", "25-29"):

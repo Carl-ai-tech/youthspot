@@ -2529,9 +2529,17 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   }
 
   var SIX = ['新北市', '臺北市', '桃園市', '臺中市', '臺南市', '高雄市'];
+  // 句子裡提到哪些城市（含「臺中」「高雄」這種沒有「市」的寫法）
+  function citiesIn(q) {
+    q = (q || '').replace(/台/g, '臺').replace(/内/g, '內');
+    var out = [];
+    SIX.forEach(function (c) { if (q.indexOf(c) >= 0 || q.indexOf(c.replace('市', '')) >= 0) out.push(c); });
+    return out;
+  }
   function mentionsOtherCity(q) {
     q = (q || '').replace(/台/g, '臺').replace(/内/g, '內');
-    for (var i = 0; i < SIX.length; i++) if (SIX[i] !== M.region && q.indexOf(SIX[i]) >= 0) return SIX[i];
+    var cs = citiesIn(q);
+    for (var i = 0; i < cs.length; i++) if (cs[i] !== M.region) return cs[i];
     // 「內湖區」這種別的城市的區名：用六都行政區名清單比對。先把本市的區名從句子裡挖掉，
     // 不然臺南的「中西區」會被臺中的「西區」誤中。
     var ql = q;
@@ -2549,7 +2557,36 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // 「該做什麼政策」這種問題，本機規則只會把數字查出來，答不了「該做什麼」。
   // 有這些詞就交給模型；它拿的是同一批數字（本市各區 + 點名的地區 + 六都表）。
+  // 六都比較：表6／表29／表37／內政部的官方公布值都在頁面裡，「臺中和臺南失業率比較」
+  // 不必打模型。有這個指標、又提到兩個以上城市（或「六都」）就直接畫。
+  function sixCityCompare(it) {
+    var B = DATA.benchmark;
+    if (!B || !B.metrics || !it.metric || !B.metrics[it.metric]) return null;
+    var q = (it.raw || '').replace(/台/g, '臺');
+    var cs = citiesIn(q);
+    var all = q.indexOf('六都') >= 0;
+    if (!all && cs.length < 2) return null;
+    var blk = B.metrics[it.metric];
+    var picked = (all ? B.cities : cs).filter(function (c) { return blk.values[c] !== undefined; });
+    if (picked.length < 2) return null;
+    var recs = picked.map(function (c) {
+      return { region: c, age_group: blk.scope ? '全體' : B.band, metric: it.metric, value: blk.values[c], unit: blk.unit,
+               provenance: { confidence: 'high', source_agency: '行政院主計總處／內政部',
+                             source_dataset: '六都比較（' + (blk.scope ? blk.scope : B.band + ' 歲官方公布值') + '）',
+                             source_age_group: blk.scope || B.band, method: 'exact_match', weight: 1,
+                             note: B.note + '。六都排名第 ' + blk.rank[c] + '（' + (blk.higher_is_better ? '高者佳' : '低者佳') + '）' } };
+    });
+    recs.sort(function (a, b) { return blk.higher_is_better ? b.value - a.value : a.value - b.value; });
+    var first = recs[0], last = recs[recs.length - 1];
+    return { ok: true, recs: recs, chart: recs, chartLabel: function (r) { return r.region; },
+      verdict: first.region + '的' + it.metric + (picked.length < B.cities.length ? (blk.higher_is_better ? '較高' : '較低') : (blk.higher_is_better ? '最高' : '最低')) + '（' + fmtRec(first) + '，六都第 ' + blk.rank[first.region] + '）；'
+        + last.region + ' ' + fmtRec(last) + '（第 ' + blk.rank[last.region] + '）。',
+      text: (blk.scope ? blk.scope : B.band + ' 歲') + '的' + it.metric + '六都比較（' + (blk.higher_is_better ? '高者佳' : '低者佳') + '）：' };
+  }
+
   function resolve(it) {
+    var six = sixCityCompare(it);
+    if (six) return six;
     if (isDiscussion(it.raw)) {
       var where = it.regions && it.regions.length ? it.regions.map(function (r) { return r.replace(M.region, '') || r; }).join('、')
                 : (it.region ? (it.region.replace(M.region, '') || it.region) : '');

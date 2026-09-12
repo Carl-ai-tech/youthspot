@@ -802,6 +802,68 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 .stale-t{color:#8a5200;}
 .conf-how{display:block;margin-top:.3rem;font-size:.68rem;color:var(--ink-3);line-height:1.4;}
 
+/* ── 頁面外殼（base44 式）：置頂導覽、英雄區、章節與分頁、右側抽屜 ── */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(247,250,250,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);}
+.topbar-in{max-width:76rem;margin:0 auto;padding:.6rem 1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.topbar .brand{display:flex;align-items:baseline;gap:.55rem;text-decoration:none;color:var(--ink);margin:0;}
+.topbar .brand strong{font-size:1.05rem;font-weight:900;letter-spacing:-.02em;}
+.topbar .brand span{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);}
+.topbar .cities{margin-left:.2rem;}
+.topbar .toc{margin-left:auto;display:flex;gap:.1rem;}
+.topbar .toc a{font-size:.8rem;font-weight:600;color:var(--ink-2);padding:.35rem .7rem;border-radius:999px;text-decoration:none;}
+.topbar .toc a:hover{background:var(--sunk);color:var(--ink);}
+.topbar .export-btn{margin:0;}
+@media (max-width:40rem){.topbar .toc{display:none;} .topbar .brand span{display:none;}}
+.hero{padding:2.4rem 0 1.2rem;}
+.hero-head{max-width:46rem;margin:0 0 1.4rem;}
+.hero-head .eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .6rem;}
+.hero-head h1{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:900;letter-spacing:-.035em;line-height:1.1;margin:0 0 .6rem;text-wrap:balance;}
+.hero-head .lede{font-size:1.02rem;color:var(--ink-2);margin:0;line-height:1.65;}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:1rem;align-items:start;}
+@media (max-width:56rem){.hero-grid{grid-template-columns:1fr;}}
+.hero .mapcard{margin:0;}
+.hero .mapcard .card-head{align-items:flex-start;}
+.ctlrow{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center;}
+.ctlrow .ctl{display:flex;align-items:center;gap:.4rem;}
+.ctlrow .ctl label{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);}
+.ctlrow .chips{padding:.15rem;}
+.ctlrow .chip{padding:.28rem .7rem;font-size:.74rem;}
+.hero .mapmetric{margin:.4rem 0 .2rem;}
+.hero .askbox{margin:0;border-top:0;padding:1.3rem 1.4rem 1.4rem;}
+.ask-h{font-size:1.25rem;font-weight:800;letter-spacing:-.02em;margin:.1rem 0 .3rem;line-height:1.25;}
+.ask-sub{font-size:.8rem;color:var(--ink-3);margin:0 0 .9rem;}
+.hero .askrow input{font-size:1.05rem;padding:.8rem .95rem;border-radius:12px;}
+.hero .askrow button{font-size:1rem;padding:.8rem 1.4rem;border-radius:12px;}
+.hero .scenarios{margin-bottom:.8rem;}
+.chapter{padding:2.6rem 0 1.4rem;border-top:1px solid var(--rule);}
+.ch-head{max-width:46rem;margin:0 0 1.1rem;}
+.ch-head .eyebrow{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .45rem;}
+.ch-head h2{font-size:clamp(1.4rem,3vw,2rem);font-weight:900;letter-spacing:-.03em;line-height:1.15;margin:0 0 .45rem;text-wrap:balance;}
+.ch-head .lede{font-size:.92rem;color:var(--ink-2);margin:0;line-height:1.6;}
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap;margin:0 0 1rem;padding:.25rem;background:var(--sunk);border-radius:999px;width:fit-content;max-width:100%;}
+.tabs button{font:inherit;font-size:.82rem;font-weight:600;color:var(--ink-2);background:transparent;border:0;border-radius:999px;padding:.45rem .95rem;cursor:pointer;white-space:nowrap;}
+.tabs button:hover{color:var(--ink);background:rgba(255,255,255,.7);}
+.tabs button[aria-selected="true"]{background:var(--deep);color:#fff;}
+.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+.tabpane{background:var(--card);border:1px solid var(--rule-soft);border-radius:var(--r-card);padding:1.2rem 1.4rem 1.4rem;}
+.tabpane>section.panel,.tabpane>section.policy,.tabpane>section.scancard{background:transparent;border:0;box-shadow:none;padding:0;margin:0;}
+.tabpane .panel-head,.tabpane .policy>.head{display:none;}
+.tabpane .scancard .card-head{margin-bottom:.8rem;}
+.pane-note{font-size:.8rem;color:var(--ink-3);margin:0 0 .8rem;}
+.watchwrap{margin-top:1.1rem;padding-top:1rem;border-top:1px solid var(--rule-soft);}
+.watch-head{font-size:.86rem;font-weight:700;margin:0 0 .6rem;display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;}
+.watch-head small{font-weight:400;color:var(--ink-3);font-size:.72rem;}
+.hero .askbox{min-height:0;}
+.pipeinner .sources{margin:0;padding:0;border:0;background:transparent;}
+.pipeinner .sources>h2{display:none;}
+.drawer{position:fixed;right:1rem;bottom:1rem;width:min(22rem,calc(100vw - 2rem));max-height:min(70vh,40rem);overflow:auto;z-index:30;box-shadow:0 18px 50px rgba(0,0,0,.18);border-radius:14px;}
+.drawer .prov{border-radius:14px;}
+.drawer-x{position:absolute;top:.5rem;right:.6rem;font:inherit;font-size:1.1rem;line-height:1;background:var(--sunk);border:0;border-radius:50%;width:1.7rem;height:1.7rem;cursor:pointer;color:var(--ink-2);z-index:2;}
+.drawer-x:hover{background:var(--deep);color:#fff;}
+@media print{.topbar,.tabs,.drawer-x{display:none!important;} .tabpane[hidden]{display:block!important;} .drawer{position:static;box-shadow:none;width:auto;max-height:none;} .hero{padding-top:0;}}
+body.report-layout .tabpane[hidden]{display:block!important;}
+body.report-layout .tabs,body.report-layout .topbar{display:none;}
+
 /* 固定目錄（在 sticky 的篩選列右側） */
 .toc{margin-left:auto;display:flex;flex-wrap:wrap;gap:.15rem .1rem;}
 .toc a{font-size:.74rem;color:var(--ink-2);text-decoration:none;padding:.28rem .55rem;border-radius:999px;white-space:nowrap;}
@@ -831,49 +893,39 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 .citeref.wide{display:block;text-align:left;margin:.25rem 0;padding:.25rem .6rem;font-family:var(--sans);font-weight:500;font-size:.8rem;}
 </style>
 
-<header class="masthead">
-  <div class="masthead-in">
-    <div class="brand">
-      <strong>YouthLens 青年數據透鏡</strong>
-      <span id="brandsub">新北市 · 統一至 18–35 歲口徑</span>
-      <nav class="cities" id="cities" aria-label="切換城市"></nav>
-      <button type="button" class="export-btn" id="exportBtn" title="把目前畫面匯出成 PDF 簡報頁">
-        匯出報告 <span>PDF</span>
-      </button>
-    </div>
+<header class="topbar" id="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#top"><strong>YouthLens</strong><span id="brandsub">新北市 · 青年移入預警</span></a>
+    <nav class="cities" id="cities" aria-label="切換城市"></nav>
+    <nav class="toc" id="toc" aria-label="頁面目錄">
+      <a href="#ch-next">預測</a><a href="#ch-explore">發現</a><a href="#ch-advice">建議</a><a href="#ch-tools">工具</a>
+    </nav>
+    <button type="button" class="export-btn" id="exportBtn" title="把目前畫面匯出成 PDF 簡報頁">匯出報告 <span>PDF</span></button>
   </div>
 </header>
 <!-- 報告封面：只在列印時出現。內容由 exportReport() 用當下的地區、年齡層、資料版本填 -->
 <section class="report-head" id="reportHead" aria-hidden="true"></section>
 
-<div class="controls">
-  <div class="controls-in">
-    <div class="ctl">
-      <label for="area">地區</label>
-      <select id="area"></select>
+<div class="wrap" id="top">
+  <section class="hero" id="sec-map">
+    <div class="hero-head">
+      <p class="eyebrow">六都 158 個行政區 · 全部是官方資料 · AI 只做解讀</p>
+      <h1>下一個淡水在哪裡？</h1>
+      <p class="lede">青年往哪裡搬、下一個會是哪一區、青年局要提前準備什麼。左邊看地圖，右邊問 AI 幕僚 —— 每個數字都對得回來源。</p>
     </div>
-    <div class="ctl">
-      <label id="bandlabel">年齡層</label>
-      <div class="chips" id="bands" role="group" aria-labelledby="bandlabel"></div>
-    </div>
-    <nav class="toc" id="toc" aria-label="頁面目錄">
-      <a href="#sec-map">預警地圖</a><a href="#sec-ask">問 AI</a><a href="#sec-drivers">下一個淡水</a>
-      <a href="#sec-scan" data-open>掃描</a><a href="#sec-policy" data-open>建議</a><a href="#sec-insights" data-open>洞察</a><a href="#sec-rights" data-open>權益</a>
-      <a href="#sec-bench" data-open>六都</a><a href="#sec-trend" data-open>動態</a><a href="#sec-formulas" data-open>公式</a><a href="#pipeline">pipeline</a>
-    </nav>
-  </div>
-</div>
-
-<div class="wrap">
-  <section class="stage" id="sec-map">
+    <div class="hero-grid">
     <div class="card mapcard">
       <div class="card-head">
         <div>
           <h2>青年往哪裡搬</h2>
           <p class="card-sub" id="mapSub">滑過看數字，點一下鎖定該區</p>
         </div>
-        <div class="mapmetric" id="mapMetric" role="group" aria-label="地圖指標"></div>
+        <div class="ctlrow">
+          <div class="ctl"><label for="area">地區</label><select id="area"></select></div>
+          <div class="ctl"><label id="bandlabel">年齡層</label><div class="chips" id="bands" role="group" aria-labelledby="bandlabel"></div></div>
+        </div>
       </div>
+      <div class="mapmetric" id="mapMetric" role="group" aria-label="地圖指標"></div>
       <div class="mapbox">
         <svg id="ntpcMap" viewBox="0 0 1000 1000" role="img"
              aria-label="新北市各行政區青年分布地圖"></svg>
@@ -881,14 +933,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </div>
       <div class="maplegend" id="mapLegend"></div>
     </div>
-
-    <div class="stagecol">
-      <div class="card watchcard" id="watchCard">
-        <p class="eyebrow">青年移入預警<span class="badge est">experimental</span></p>
-        <div id="watchBox"></div>
-      </div>
       <section class="askbox card" id="sec-ask">
-        <p class="eyebrow">問 AI 幕僚 · 預測與施政建議</p>
+        <p class="eyebrow">問 AI 幕僚</p><h2 class="ask-h">要準備什麼、該投哪裡，用中文問</h2><p class="ask-sub">AI 只做看懂與解讀，每個數字都由引擎算、逐一對回來源；對不上的會標出來。</p>
         <div class="scenarios" id="scenarios">
           <button type="button" data-scn="next">哪一區是下一個淡水？</button>
           <button type="button" data-scn="prepare">移入區要先準備什麼？</button>
@@ -907,30 +953,175 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
           <p class="verdict" id="askVerdict" style="display:none"></p>
           <div class="cite" id="askCite"></div>
         </div>
+        <div class="watchwrap">
+          <p class="watch-head">先從這些區開始問<span class="badge est">experimental</span><small>正在移入、下一個候選、持續流出 · 點區名鎖定地圖</small></p>
+          <div id="watchBox"></div>
+        </div>
       </section>
     </div>
   </section>
 
-  <section class="card focus" id="sec-drivers">
-    <div class="card-head">
-      <div>
-        <h2>下一個淡水 · 誰會是下一個青年移入區<span class="badge ntpc" data-local>在地實測</span><span class="badge nat">六都 158 區</span><span class="badge est">experimental</span></h2>
-        <p class="card-sub">三步：① 每一區自己的移入走勢（世代追蹤，扣掉少子化）→ ② 跟移入區條件最像、但還沒起來的區 → ③ 移入跟條件不符的區。全部是官方行政區級資料算出來的，AI 只負責解讀。</p>
-      </div>
+  <section class="chapter" id="ch-next">
+    <div class="ch-head">
+      <p class="eyebrow">01 · 預測</p>
+      <h2>誰會是下一個青年移入區</h2>
+      <p class="lede">每一區自己的移入走勢（世代追蹤，扣掉少子化）→ 跟移入區條件最像、但還沒起來的區 → 移入跟條件不符的區。全部是行政區級的官方資料算出來的。</p>
     </div>
-    <div id="driversBox"></div>
+    <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="trend" aria-selected="true">各區走勢</button><button type="button" role="tab" data-tab="similar" aria-selected="false">條件最像的區</button><button type="button" role="tab" data-tab="resid" aria-selected="false">條件之外的差距</button><button type="button" role="tab" data-tab="model" aria-selected="false">模型怎麼算</button></div>
+        <div class="tabpane" data-pane="trend">
+          <div id="drvTrend"></div>
+        </div>
+        <div class="tabpane" data-pane="similar" hidden>
+          <div id="drvSimilar"></div>
+        </div>
+        <div class="tabpane" data-pane="resid" hidden>
+          <div id="drvResid"></div>
+        </div>
+        <div class="tabpane" data-pane="model" hidden>
+          <div id="drvModel"></div>
+        </div>
   </section>
 
-  <div class="grid">
-    <main>
-      <div class="section-head">
-        <h2>深入看 · 背景資料</h2>
-        <p>上面的預警是從這些資料算出來的。十二個主題，點一下展開；每一個數字都點得開資料履歷 —— 來源、原始分組、推估方法、信心度。</p>
+  <section class="chapter" id="ch-explore">
+    <div class="ch-head">
+      <p class="eyebrow">02 · 發現</p>
+      <h2>我想發現什麼？</h2>
+      <p class="lede">青年局和局長談出來的三個面向：就業、居住、人口與在地。每一個數字都點得開資料履歷 —— 來源、原始分組、推估方法、信心度。</p>
+    </div>
+    <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="pop" aria-selected="true">人口結構</button><button type="button" role="tab" data-tab="emp" aria-selected="false">就業</button><button type="button" role="tab" data-tab="sal" aria-selected="false">薪資</button><button type="button" role="tab" data-tab="edu" aria-selected="false">教育 × 薪資</button><button type="button" role="tab" data-tab="vac" aria-selected="false">缺工與供需</button><button type="button" role="tab" data-tab="bench" aria-selected="false">六都比較 · 居住</button><button type="button" role="tab" data-tab="trends" aria-selected="false">時間趨勢</button><button type="button" role="tab" data-tab="rank" aria-selected="false">各區排名</button></div>
+        <div class="tabpane" data-pane="pop">
+      <section class="panel">
+        <div class="panel-head"><h2>青年人口結構</h2><span class="aspect">人口</span></div>
+      <div class="card statcard inpanel">
+        <p class="k" id="heroLabel">18–35 歲青年人口</p>
+        <p class="v"><span id="heroValue">—</span><em id="heroUnit"></em></p>
+        <div class="side" id="heroSide"></div>
+        <button type="button" class="synth-btn" id="synthBtn">
+          讓 AI 統整這個地區 <span>撈 → 生成 → 逐一驗證每個數字</span>
+        </button>
       </div>
+        <p class="note" id="popNote"></p>
+        <div class="bars" id="popBars"></div>
+      </section>
+        </div>
+        <div class="tabpane" data-pane="emp" hidden>
+      <section class="panel">
+        <div class="panel-head"><h2>就業與勞動參與</h2><span class="aspect">就業</span></div>
+        <p class="note" id="empNote"></p>
+        <div class="bars" id="empBars"></div>
+      </section>
+        </div>
+        <div class="tabpane" data-pane="sal" hidden>
+      <section class="panel">
+        <div class="panel-head"><h2>年薪：平均數與中位數</h2><span class="aspect">就業</span></div>
+        <p class="note">中位數低於平均數，代表薪資分布右偏 —— 少數高薪把平均拉高。看中位數比較貼近多數人的實際狀況。</p>
+        <div class="bars" id="salBars"></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--accent)"></i>平均數</span>
+          <span><i class="sw" style="background:var(--second)"></i>中位數</span>
+        </div>
+      </section>
+        </div>
+        <div class="tabpane" data-pane="edu" hidden>
+      <section class="panel">
+        <div class="panel-head"><h2>教育程度 × 薪資水準</h2><span class="aspect">教育 × 就業</span></div>
+        <p class="note">命題點名的跨領域交叉。人數是新北市實際統計；官方沒有縣市 × 教育程度的薪資，所以借全國的學歷差距形狀，再用表6 量出的地區係數校準到新北市水準 —— 係數隨薪資水準變動（低薪族群 0.995、高薪族群 0.908）。點開任一條可以看完整推導。<br><b>官方沒有教育程度 × 年齡的「薪資」交叉表，所以薪資是全年齡；人數的教育程度 × 年齡（表32）有，但目前這一區以全年齡呈現，不能只看 18–35 歲。</b></p>
+        <div class="bars" id="eduBars"></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--accent)"></i>新北市就業者人數</span>
+          <span><i class="sw" style="background:var(--second)"></i>新北市平均年薪（校準後）</span>
+        </div>
+      </section>
+        </div>
+        <div class="tabpane" data-pane="vac" hidden>
+      <section class="panel">
+        <div class="panel-head"><h2>缺工與供需錯配</h2><span class="aspect">趨勢預測</span></div>
+        <p class="note" id="vacNote"></p>
+        <div class="bars" id="vacBars"></div>
+        <div class="mismatch" id="mismatchBox"></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--accent)"></i>趨勢統計顯著</span>
+          <span><i class="sw" style="background:var(--second)"></i>看不出明確方向</span>
+        </div>
+      </section>
+        </div>
+        <div class="tabpane" data-pane="bench" hidden>
+      <section class="panel">
+        <div class="panel-head"><h2>六都比較</h2><span class="aspect">標竿</span></div>
+        <p class="note" id="benchNote"></p>
+        <div class="bench" id="benchBox"></div>
+      </section>
+        </div>
+        <div class="tabpane" data-pane="trends" hidden>
+      <section class="panel">
+        <div class="panel-head"><h2>青年動態 · 時間趨勢</h2><span class="aspect">動態</span></div>
+        <p class="note">
+          前面每個數字都是「現在」的快照。這一段看的是<b>變化</b> ——
+          薪資來自主計總處（分年齡，看得到青年自己的變化），
+          勞動力來自新北市資料開放平臺（全年齡，但序列最長）。
+        </p>
+        <div class="trend" id="trendBox"></div>
+      </section>
+        </div>
+        <div class="tabpane" data-pane="rank" hidden>
+      <section class="panel">
+        <div class="panel-head"><h2 id="rankTitle">各行政區比較</h2><span class="aspect">人口</span></div>
+        <p class="note" id="rankNote"></p>
+        <div class="bars" id="rankBars"></div>
+      </section>
+        </div>
+  </section>
 
-      <details class="fold" id="sec-scan">
-        <summary><span class="st"><b>掃描檔判讀<span class="badge est">AI 讀表</span></b><small>丟一張統計表的圖片或 CSV 進來 —— AI 讀出數字，三道查核，引擎對齊成 18–35 歲口徑</small></span><span class="aspect">輸入</span></summary>
-        <div class="foldbody">
+  <section class="chapter" id="ch-advice">
+    <div class="ch-head">
+      <p class="eyebrow">03 · 建議</p>
+      <h2>AI 幕僚怎麼協助施政</h2>
+      <p class="lede">會影響決策的建議交給可稽核的規則，AI 在那之上推理；通過統計檢定的變化才叫洞察；權益覆蓋盤點青年基本法哪些面向有資料、哪些是缺口。</p>
+    </div>
+    <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="policy" aria-selected="true">施政建議</button><button type="button" role="tab" data-tab="insights" aria-selected="false">異常與洞察</button><button type="button" role="tab" data-tab="rights" aria-selected="false">權益覆蓋</button></div>
+        <div class="tabpane" data-pane="policy">
+      <section class="policy">
+        <div class="head"><h2>施政建議</h2><span class="aspect">政策輔助</span></div>
+        <p class="note">
+          從上面的資料用<b>固定規則</b>推出來的，每一條都附上它依據哪些數字、以及那些數字有多可靠。
+          分工是刻意的：AI 負責它擅長而且驗得了的事（讀掃描檔、聽懂中文問題、統整敘述並逐數字驗證），
+          <b>會影響決策的建議交給可稽核的規則</b> —— 首長被質詢時，每一條都答得出「從哪幾個數字來」。
+        </p>
+        <div id="policyList"></div>
+      </section>
+        </div>
+        <div class="tabpane" data-pane="insights" hidden>
+      <section class="policy">
+        <div class="head"><h2>異常與洞察</h2><span class="aspect">顯著變化</span></div>
+        <p class="note">
+          掃描時間序列，只留下<b>通過統計檢定</b>的變化 ——
+          偏離既有趨勢、方向轉折、組間成長率落差。
+          每一條都標明用什麼檢定、幾個資料點、解釋力多少。
+          <br>
+          ⚠️ 官方的<b>分齡</b>勞參率、失業率、薪資表都沒有性別欄位，所以做不出我們規劃書（Spec §4.2）舉例的
+          「30–35 歲女性勞參率」這種縣市層級交叉；性別資料只有人口（分齡，戶政司）與全年齡勞參率（新北市），
+          兩者都在畫面上。能檢定的是跨年齡組與跨行業的變化。
+        </p>
+        <div id="insightList"></div>
+      </section>
+        </div>
+        <div class="tabpane" data-pane="rights" hidden>
+      <section class="panel">
+        <div class="panel-head"><h2>青年基本法權益覆蓋</h2><span class="aspect">盤點</span></div>
+        <p class="note" id="rightsNote"></p>
+        <div class="rights" id="rightsBox"></div>
+      </section>
+        </div>
+  </section>
+
+  <section class="chapter" id="ch-tools">
+    <div class="ch-head">
+      <p class="eyebrow">04 · 工具</p>
+      <h2>資料與方法</h2>
+      <p class="lede">任何機關的統計表都能丟進來對齊；每一條算法都有白話版；每個來源的抓取時間、檢查與更新週期都在這裡。</p>
+    </div>
+    <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="scan" aria-selected="true">掃描檔判讀</button><button type="button" role="tab" data-tab="formulas" aria-selected="false">公式工具庫</button><button type="button" role="tab" data-tab="pipeline" aria-selected="false">資料 pipeline</button></div>
+        <div class="tabpane" data-pane="scan">
       <section class="scancard">
     <div class="card-head">
       <div>
@@ -961,177 +1152,15 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     <div id="scanOut" class="scanout" hidden></div>
       </section>
         </div>
-      </details>
-
-      <details class="fold" id="sec-policy">
-        <summary><span class="st"><b>施政建議<span class="badge est">規則推導</span></b><small>從資料用固定規則推出來的建議，每條附依據與信心度</small></span><span class="aspect">政策輔助</span></summary>
-        <div class="foldbody">
-      <section class="policy">
-        <div class="head"><h2>施政建議</h2><span class="aspect">政策輔助</span></div>
-        <p class="note">
-          從上面的資料用<b>固定規則</b>推出來的，每一條都附上它依據哪些數字、以及那些數字有多可靠。
-          分工是刻意的：AI 負責它擅長而且驗得了的事（讀掃描檔、聽懂中文問題、統整敘述並逐數字驗證），
-          <b>會影響決策的建議交給可稽核的規則</b> —— 首長被質詢時，每一條都答得出「從哪幾個數字來」。
-        </p>
-        <div id="policyList"></div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-insights">
-        <summary><span class="st"><b>異常與洞察<span class="badge ntpc" data-local>在地實測</span><span class="badge nat">全國資料</span></b><small>通過統計檢定的變化：偏離趨勢、轉向、年齡組之間的落差</small></span><span class="aspect">顯著變化</span></summary>
-        <div class="foldbody">
-      <section class="policy">
-        <div class="head"><h2>異常與洞察</h2><span class="aspect">顯著變化</span></div>
-        <p class="note">
-          掃描時間序列，只留下<b>通過統計檢定</b>的變化 ——
-          偏離既有趨勢、方向轉折、組間成長率落差。
-          每一條都標明用什麼檢定、幾個資料點、解釋力多少。
-          <br>
-          ⚠️ 官方的<b>分齡</b>勞參率、失業率、薪資表都沒有性別欄位，所以做不出我們規劃書（Spec §4.2）舉例的
-          「30–35 歲女性勞參率」這種縣市層級交叉；性別資料只有人口（分齡，戶政司）與全年齡勞參率（新北市），
-          兩者都在畫面上。能檢定的是跨年齡組與跨行業的變化。
-        </p>
-        <div id="insightList"></div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-rights">
-        <summary><span class="st"><b>青年基本法權益覆蓋<span class="badge est">資料盤點</span></b><small>八個權益面向：哪些有資料、哪些是缺口、缺的去找哪個機關</small></span><span class="aspect">盤點</span></summary>
-        <div class="foldbody">
-      <section class="panel">
-        <div class="panel-head"><h2>青年基本法權益覆蓋</h2><span class="aspect">盤點</span></div>
-        <p class="note" id="rightsNote"></p>
-        <div class="rights" id="rightsBox"></div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-pop">
-        <summary><span class="st"><b>青年人口結構<span class="badge ntpc" data-local>在地實測</span></b><small>四個年齡層的人數，附推估方法</small></span><span class="aspect">人口</span></summary>
-        <div class="foldbody">
-      <section class="panel">
-        <div class="panel-head"><h2>青年人口結構</h2><span class="aspect">人口</span></div>
-      <div class="card statcard inpanel">
-        <p class="k" id="heroLabel">18–35 歲青年人口</p>
-        <p class="v"><span id="heroValue">—</span><em id="heroUnit"></em></p>
-        <div class="side" id="heroSide"></div>
-        <button type="button" class="synth-btn" id="synthBtn">
-          讓 AI 統整這個地區 <span>撈 → 生成 → 逐一驗證每個數字</span>
-        </button>
-      </div>
-        <p class="note" id="popNote"></p>
-        <div class="bars" id="popBars"></div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-emp">
-        <summary><span class="st"><b>就業與勞動參與<span class="badge ntpc" data-local>在地實測</span><span class="badge est">推估校準</span></b><small>勞動力、勞參率、就業者、失業率</small></span><span class="aspect">就業</span></summary>
-        <div class="foldbody">
-      <section class="panel">
-        <div class="panel-head"><h2>就業與勞動參與</h2><span class="aspect">就業</span></div>
-        <p class="note" id="empNote"></p>
-        <div class="bars" id="empBars"></div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-sal">
-        <summary><span class="st"><b>年薪：平均數與中位數<span class="badge ntpc" data-local>在地實測</span><span class="badge est">30–35 推估</span></b><small>各年齡層的年薪，平均數與中位數並列</small></span><span class="aspect">就業</span></summary>
-        <div class="foldbody">
-      <section class="panel">
-        <div class="panel-head"><h2>年薪：平均數與中位數</h2><span class="aspect">就業</span></div>
-        <p class="note">中位數低於平均數，代表薪資分布右偏 —— 少數高薪把平均拉高。看中位數比較貼近多數人的實際狀況。</p>
-        <div class="bars" id="salBars"></div>
-        <div class="legend">
-          <span><i class="sw" style="background:var(--accent)"></i>平均數</span>
-          <span><i class="sw" style="background:var(--second)"></i>中位數</span>
-        </div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-edu">
-        <summary><span class="st"><b>教育程度 × 薪資水準<span class="badge est">推估校準</span><span class="badge nat">全國形狀</span></b><small>學歷對薪資的影響（全年齡）</small></span><span class="aspect">教育 × 就業</span></summary>
-        <div class="foldbody">
-      <section class="panel">
-        <div class="panel-head"><h2>教育程度 × 薪資水準</h2><span class="aspect">教育 × 就業</span></div>
-        <p class="note">命題點名的跨領域交叉。人數是新北市實際統計；官方沒有縣市 × 教育程度的薪資，所以借全國的學歷差距形狀，再用表6 量出的地區係數校準到新北市水準 —— 係數隨薪資水準變動（低薪族群 0.995、高薪族群 0.908）。點開任一條可以看完整推導。<br><b>官方沒有教育程度 × 年齡的「薪資」交叉表，所以薪資是全年齡；人數的教育程度 × 年齡（表32）有，但目前這一區以全年齡呈現，不能只看 18–35 歲。</b></p>
-        <div class="bars" id="eduBars"></div>
-        <div class="legend">
-          <span><i class="sw" style="background:var(--accent)"></i>新北市就業者人數</span>
-          <span><i class="sw" style="background:var(--second)"></i>新北市平均年薪（校準後）</span>
-        </div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-vac">
-        <summary><span class="st"><b>缺工與供需錯配<span class="badge nat">全國資料</span></b><small>職缺趨勢 × 就業人數趨勢：哪些行業缺工擴大但人沒進去、哪些人還在進但缺在收</small></span><span class="aspect">趨勢預測</span></summary>
-        <div class="foldbody">
-      <section class="panel">
-        <div class="panel-head"><h2>缺工與供需錯配</h2><span class="aspect">趨勢預測</span></div>
-        <p class="note" id="vacNote"></p>
-        <div class="bars" id="vacBars"></div>
-        <div class="mismatch" id="mismatchBox"></div>
-        <div class="legend">
-          <span><i class="sw" style="background:var(--accent)"></i>趨勢統計顯著</span>
-          <span><i class="sw" style="background:var(--second)"></i>看不出明確方向</span>
-        </div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-bench">
-        <summary><span class="st"><b>六都比較<span class="badge ntpc">官方公布值</span><span class="badge house">居住＝全體家戶</span></b><small>新北市在六都排第幾，七個指標</small></span><span class="aspect">標竿</span></summary>
-        <div class="foldbody">
-      <section class="panel">
-        <div class="panel-head"><h2>六都比較</h2><span class="aspect">標竿</span></div>
-        <p class="note" id="benchNote"></p>
-        <div class="bench" id="benchBox"></div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-trend">
-        <summary><span class="st"><b>青年動態 · 時間趨勢<span class="badge ntpc" data-local>在地實測</span><span class="badge nat">全國資料</span><span class="badge house">全體家戶</span></b><small>48 年全國分齡序列、薪資、失業率、居住負擔</small></span><span class="aspect">動態</span></summary>
-        <div class="foldbody">
-      <section class="panel">
-        <div class="panel-head"><h2>青年動態 · 時間趨勢</h2><span class="aspect">動態</span></div>
-        <p class="note">
-          前面每個數字都是「現在」的快照。這一段看的是<b>變化</b> ——
-          薪資來自主計總處（分年齡，看得到青年自己的變化），
-          勞動力來自新北市資料開放平臺（全年齡，但序列最長）。
-        </p>
-        <div class="trend" id="trendBox"></div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-rank">
-        <summary><span class="st"><b>各行政區比較<span class="badge ntpc" data-local>在地實測</span></b><small>29 個行政區的排名</small></span><span class="aspect">人口</span></summary>
-        <div class="foldbody">
-      <section class="panel">
-        <div class="panel-head"><h2 id="rankTitle">各行政區比較</h2><span class="aspect">人口</span></div>
-        <p class="note" id="rankNote"></p>
-        <div class="bars" id="rankBars"></div>
-      </section>
-        </div>
-      </details>
-
-      <details class="fold" id="sec-formulas">
-        <summary><span class="st"><b>公式工具庫<span class="badge est">白話版</span></b><small>系統用到的每一條算法：一句白話、一條公式、用在哪、限制是什麼</small></span><span class="aspect">方法</span></summary>
-        <div class="foldbody">
+        <div class="tabpane" data-pane="formulas" hidden>
       <section class="panel">
         <div class="panel-head"><h2>公式工具庫</h2><span class="aspect">方法</span></div>
         <p class="note">上台或被質詢時照這裡講。每一條都是標準函式庫算的，沒有套件、沒有黑箱；技術名詞放在括號裡給看得懂的人。</p>
         <div class="formulas" id="formulaList"></div>
       </section>
         </div>
-      </details>
-
+        <div class="tabpane" data-pane="pipeline" hidden>
+      <div class="pipeinner">
       <div class="sources" id="pipeline">
         <h2>資料 pipeline</h2>
         <p class="scale" id="scaleLine"></p>
@@ -1145,10 +1174,14 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         </div>
         <pre class="dict" id="dictBox" hidden></pre>
       </div>
+      </div>
+        </div>
+  </section>
 
-    </main>
+</div>
 
-    <aside class="side">
+<aside class="drawer" id="provDrawer" hidden>
+  <button type="button" class="drawer-x" id="provClose" aria-label="關閉資料履歷">×</button>
       <div class="prov">
         <p class="eyebrow">資料履歷</p>
         <h3 id="pvTitle">點畫面上任何一個數字</h3>
@@ -1156,9 +1189,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         <p class="conf-row" id="pvConf"></p>
         <dl id="pvList"></dl>
       </div>
-    </aside>
-  </div>
-</div>
+</aside>
 
 <script id="payload" type="application/json">/*__DATA__*/</script>
 <script>
@@ -1213,9 +1244,10 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     formula_b_t2:'按實際在勞動市場的人切', formula_c:'分子分母分開切',
     formula_d_t3:'借全國形狀校準', llm_inferred:'AI 判讀年齡描述'
   };
-  function select(r) {
+  function select(r, quiet) {
     if (!r) return;
     state.sel = r;
+    if (!quiet && $('provDrawer')) $('provDrawer').hidden = false;   // 使用者點的才彈抽屜；render() 自動選的不彈
     $('pvTitle').textContent = r.region + '　' + (r.education ? r.education + '　' : '')
       + r.age_group + ' 歲　' + r.metric;
     $('pvValue').textContent = show(r);
@@ -1343,13 +1375,36 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   });
 
   // 洞察卡 → 對應的圖。卡片是從那條序列算出來的，看圖等於看證據。
+  // 章節分頁：每章一組 .tabs + 多個 .tabpane。點分頁只切換該章；目標在隱藏分頁裡時用 revealTarget 先切過去。
+  function activateTab(chapterEl, key) {
+    if (!chapterEl || !chapterEl.querySelectorAll) return;
+    chapterEl.querySelectorAll('.tabs [data-tab]').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tab') === key ? 'true' : 'false'); });
+    chapterEl.querySelectorAll('.tabpane').forEach(function (p2) {
+      if (p2.parentNode !== chapterEl) return;
+      p2.hidden = p2.getAttribute('data-pane') !== key;
+    });
+  }
+  function revealTarget(node) {
+    if (!node || !node.closest) return;
+    var pane = node.closest('.tabpane');
+    if (pane && pane.hidden) activateTab(pane.parentNode, pane.getAttribute('data-pane'));
+    var fold = node.closest('details');
+    while (fold) { fold.open = true; fold = fold.parentNode && fold.parentNode.closest ? fold.parentNode.closest('details') : null; }
+  }
+  if (document.querySelectorAll) document.querySelectorAll('.chapter .tabs').forEach(function (tabs) {
+    tabs.addEventListener('click', function (e) {
+      var b = e.target && e.target.closest ? e.target.closest('[data-tab]') : null;
+      if (b) activateTab(tabs.parentNode, b.getAttribute('data-tab'));
+    });
+  });
+  if ($('provClose')) $('provClose').addEventListener('click', function () { $('provDrawer').hidden = true; });
+
   function jumpToChart(key) {
     if (typeof document.querySelector !== 'function') return;
     var fig = document.querySelector('.figbox[data-chart="' + key + '"]');
     if (!fig) return;
-    // 圖在收合區裡，先把那一區打開
-    var fold = fig.closest && fig.closest('details.fold');
-    if (fold) fold.open = true;
+    // 圖在隱藏的分頁或收合區裡，先把它露出來
+    revealTarget(fig);
     if (fig.scrollIntoView) fig.scrollIntoView({ behavior: 'smooth', block: 'center' });
     fig.classList.remove('flash');
     void fig.offsetWidth;        // 重啟動畫
@@ -1793,13 +1848,15 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   }
 
   function renderDrivers() {
-    var host = $('driversBox');
+    var host = $('drvTrend');
     if (!host) return;
-    host.innerHTML = '';
+    var hostSim = $('drvSimilar'), hostRes = $('drvResid'), hostModel = $('drvModel');
+    host.innerHTML = ''; hostSim.innerHTML = ''; hostRes.innerHTML = ''; hostModel.innerHTML = '';
     var figMig = migrationFigure();
     if (figMig) { host.appendChild(figMig); bindLineHover(figMig); }
+    else host.innerHTML = '<p class="note">這個城市還沒有世代淨遷入資料。</p>';
     var D = DATA.trends && DATA.trends.drivers;
-    if (!D) { host.insertAdjacentHTML('beforeend', '<p class="note">尚未建立驅動模型（python data/drivers.py）。</p>'); return; }
+    if (!D) { hostSim.innerHTML = '<p class="note">尚未建立驅動模型（python data/drivers.py）。</p>'; return; }
     var all = D.districts.filter(function (d) { return d.y != null; });
     var mine = all.filter(function (d) { return d.city === M.region; });
     if (!drvState.ref || !all.some(function (d) { return d.area === drvState.ref; })) {
@@ -1808,10 +1865,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       var top = mine.slice().sort(function (a, b) { return b.y - a.y; })[0];
       drvState.ref = (M.region === '新北市' && pref) ? pref.area : (top ? top.area : all[0].area);
     }
-    // 散佈圖與係數表收在「模型怎麼算的」裡；相似區與殘差直接看
-    var how = document.createElement('details'); how.className = 'fold howfold';
-    how.innerHTML = '<summary><span class="st"><b>模型怎麼算的</b><small>六都 158 區的散佈圖、以及「什麼條件跟移入一起出現」的影響力表</small></span><span class="aspect">方法</span></summary><div class="foldbody"></div>';
-    var howBody = how.querySelector('.foldbody');
+    var howBody = hostModel;
 
     // ① 散佈圖：條件 × 近三年淨遷入率
     var fig = document.createElement('figure'); fig.className = 'figbox'; fig.setAttribute('data-chart', 'drivers');
@@ -1857,7 +1911,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     sf.innerHTML = '<p class="fig-title">條件最像 <select id="drvRef" class="sel" style="font:inherit;font-size:.9rem">' + opts + '</select> 的區<span class="scopetag">條件相似度 · 4 個維度</span></p>'
       + '<p class="fig-sub">用四個條件比：相對本市的租金、工作機會密度、所得中位數、青年人口規模，各換算成「比六都平均高幾格」再算距離（越小越像）。'
       + '<b>條件像、但移入還沒起來的區，是「下一個」的候選</b>；條件像、已經在移入的區，證明這組條件有效。換參考區看別的組合。</p><div class="sim"></div>';
-    host.appendChild(sf);
+    hostSim.appendChild(sf);
     sf.querySelector('#drvRef').addEventListener('change', function (e) { drvState.ref = e.target.value; renderDrivers(); });
     var simHost = sf.querySelector('.sim');
     if (!ref || !ref.z) { simHost.innerHTML = '<p class="cap">這個區缺租金樣本，算不了相似度。</p>'; }
@@ -1908,9 +1962,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
               + '<span class="v">' + (d.resid >= 0 ? '+' : '') + d.resid.toFixed(1) + ' pp<small>實際 ' + (d.y >= 0 ? '+' : '') + d.y.toFixed(1) + '%<br>解釋 ' + (d.fitted >= 0 ? '+' : '') + d.fitted.toFixed(1) + '%</small></span></div>';
           }).join('') + '</div>';
         }).join('') + '</div>';
-      host.appendChild(rf);
+      hostRes.appendChild(rf);
     }
-    host.appendChild(how);
   }
 
   // ── 公式工具庫：每條算法一張卡。白話 → 公式 → 用在哪 → 限制。內容是靜態的，數字從資料帶。
@@ -2395,7 +2448,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (pop) animateNum($('heroValue'), pop.value, num);
     else { $('heroValue').textContent = '—'; $('heroValue').__lastNum = 0; }
     $('heroUnit').textContent = pop ? '人' : '';
-    $('brandsub').textContent = state.area + ' · 青年移入預警 · 18–35 歲口徑';
+    $('brandsub').textContent = state.area + ' · 18–35 歲口徑';
 
     var side = $('heroSide'); side.innerHTML = '';
     var heroPop = find(state.area, state.band, '人口數');
@@ -2560,7 +2613,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     renderHero(); renderMap(); renderPolicy(); renderInsights(); renderRights(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderMismatch(); renderBench(); renderTrends(); renderDrivers(); renderWatch(); renderFormulas(); renderRank();
     var keep = state.sel;
     select((keep && find(state.area, keep.age_group, keep.metric, keep.education))
-      || find(state.area, state.band, '人口數'));
+      || find(state.area, state.band, '人口數'), true);
   }
 
   // ── 控制項
@@ -3747,10 +3800,17 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     var t = e.target;
     if (!t || !t.getAttribute) return;
     var href = t.getAttribute('href') || '';
-    if (t.hasAttribute && t.hasAttribute('data-open') && document.querySelector) {
+    if (document.querySelector && href.charAt(0) === '#') {
       var d = document.querySelector(href);
-      if (d) d.open = true;
+      if (d) revealTarget(d);
     }
+  });
+  // 頁面上任何 #sec-xxx 連結（洞察卡、建議卡、答案裡的）也都要能把目標分頁切出來
+  if (document.body && document.body.addEventListener) document.body.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a || !document.querySelector) return;
+    var d = document.querySelector(a.getAttribute('href'));
+    if (d) revealTarget(d);
   });
   $('askGo').addEventListener('click', function () { runAsk(); });
   // 中文輸入法：打字時第一下 Enter 是「確認選字」，不是「送出」。
@@ -3782,6 +3842,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     var folds = document.querySelectorAll ? document.querySelectorAll('details') : [];
     var wasOpen = [];
     for (var i = 0; i < folds.length; i++) { wasOpen.push(folds[i].open); folds[i].open = true; }
+    var panes = document.querySelectorAll ? document.querySelectorAll('.tabpane') : [];
+    var wasHidden = [];
+    for (var pi = 0; pi < panes.length; pi++) { wasHidden.push(panes[pi].hidden); panes[pi].hidden = false; }
 
     var bandLabel = state.band === '18-35' ? '18–35 歲（青年基本法）' : state.band + ' 歲';
     var today = new Date();
@@ -3798,6 +3861,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     }
     var restore = function () {
       for (var j = 0; j < folds.length; j++) folds[j].open = wasOpen[j];
+      for (var pj = 0; pj < panes.length; pj++) panes[pj].hidden = wasHidden[pj];
       if (window.removeEventListener) window.removeEventListener('afterprint', restore);
     };
     if (opts.print === false) {

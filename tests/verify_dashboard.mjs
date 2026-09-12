@@ -618,7 +618,7 @@ console.log();
 {
   // 主區塊：走勢圖與相似區、殘差直接看；散佈圖與係數收在「模型怎麼算的」摺頁裡，所以要往下找
   const walk = (n, out) => { (n.children || []).forEach((c) => { out.push(c); walk(c, out); }); return out; };
-  const figs = walk(el('driversBox'), []);
+  const figs = ['drvTrend', 'drvSimilar', 'drvResid', 'drvModel'].reduce((acc, id) => walk(el(id), acc), []);
   const keys = figs.map((f) => f['data-chart']).filter(Boolean);
   const html = figs.map((f) => f.innerHTML || '').join('');
   const dots = (html.match(/class="sc-dot /g) || []).length;

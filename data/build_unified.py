@@ -175,7 +175,9 @@ def _migration_trend(mig: dict, region: str) -> dict:
             tr = c["trend"]
             entry.update({
                 "signal": c["signal"],
-                "slope_pp": round(tr.slope * 100, 3), "significant": tr.significant, "r2": round(tr.r2, 2),
+                "slope_pp": round(tr.slope * 100, 3), "slope_se_pp": round(tr.slope_se * 100, 3),
+                "t": round(tr.t_stat, 2) if tr.t_stat not in (float("inf"), float("-inf")) else None,
+                "significant": tr.significant, "r2": round(tr.r2, 2),
                 "forecast_year": years[-1] + 1, "forecast": round(c["forecast"], 4), "margin": round(c["margin"], 4),
                 "confidence": tr.confidence, "positive_years": sum(1 for _, r in pts if r > 0), "n": len(pts),
             })

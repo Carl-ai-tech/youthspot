@@ -438,6 +438,27 @@ body{
 @media (max-width:40rem){.wrow{grid-template-columns:1fr auto;} .wrow .wq{grid-column:1/-1;justify-self:start;}}
 .drv-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin:.2rem 0 .6rem;}
 .vcard{background:var(--sunk);border-radius:12px;padding:.9rem 1rem 1rem;}
+.mth h4{font-size:.95rem;font-weight:800;margin:1rem 0 .3rem;letter-spacing:-.01em;}
+.mth h4:first-child{margin-top:0;}
+.mth p{font-size:.86rem;line-height:1.7;margin:.3rem 0;color:var(--ink-2);max-width:62rem;}
+.mth p b{color:var(--ink);}
+.mth code{display:block;font-family:var(--mono);font-size:.78rem;line-height:1.6;background:var(--sunk);border-radius:8px;padding:.55rem .75rem;margin:.4rem 0;white-space:pre-wrap;color:var(--ink-2);}
+.mth .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.6rem;margin:.5rem 0 .8rem;}
+.mth .kv div{background:var(--sunk);border-radius:10px;padding:.55rem .75rem;}
+.mth .kv b{display:block;font-family:var(--mono);font-size:1.25rem;font-weight:700;letter-spacing:-.02em;}
+.mth .kv span{font-size:.7rem;color:var(--ink-3);}
+.mth table{border-collapse:collapse;width:100%;font-size:.78rem;margin:.3rem 0 .6rem;}
+.mth th{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--ink-3);text-align:right;padding:.25rem .4rem;border-bottom:1px solid var(--rule);font-weight:500;white-space:nowrap;}
+.mth th:first-child,.mth td:first-child{text-align:left;}
+.mth td{padding:.28rem .4rem;border-bottom:1px solid var(--rule-soft);font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
+.mth td:first-child{font-family:var(--sans);}
+.mth tr.sig td{color:var(--ink);} .mth tr.nosig td{color:var(--ink-3);}
+.mth .ok{color:#2b7a2b;font-weight:700;} .mth .bad{color:var(--low);font-weight:700;}
+.mth ul{margin:.3rem 0 .6rem;padding-left:1.2rem;font-size:.84rem;line-height:1.65;color:var(--ink-2);}
+.mth .analogy{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.8rem;margin:.4rem 0 .8rem;}
+.mth .analogy div{background:var(--sunk);border-radius:12px;padding:.8rem .9rem;}
+.mth .analogy h5{margin:0 0 .3rem;font-size:.82rem;font-family:var(--mono);letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;}
+.mth .analogy p{font-size:.82rem;margin:.2rem 0;}
 .rm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.8rem;}
 .rm-cell{background:var(--sunk);border-radius:10px;padding:.6rem .7rem .7rem;}
 .rm-cell svg{width:100%;height:auto;display:block;}
@@ -1017,7 +1038,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   <div class="topbar-in">
     <a class="brand" href="#top"><i class="dot"></i><strong>YouthLens</strong><span id="brandsub">新北市</span></a>
     <nav class="toc" id="toc" aria-label="頁面目錄">
-      <a href="#ch-next">預測</a><a href="#ch-explore">發現</a><a href="#ch-advice">建議</a><a href="#ch-tools">工具</a>
+      <a href="#ch-next">預測</a><a href="#ch-explore">發現</a><a href="#ch-advice">建議</a><a href="#ch-tools">工具</a><a href="#ch-methods">方法與驗證</a>
     </nav>
     <button type="button" class="export-btn" id="exportBtn" title="把目前畫面匯出成 PDF 簡報頁">匯出報告 <span>PDF</span></button>
   </div>
@@ -1360,6 +1381,23 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch-methods">
+    <div class="ch-head">
+      <p class="eyebrow">05 · 方法與驗證</p>
+      <h2>我們用什麼統計方法，怎麼證明它站得住</h2>
+      <p class="lede">像分析一檔股票：<b>基本面</b>是對齊過的官方資料，<b>技術面</b>是時間序列的趨勢與訊號，<b>因子模型</b>是六都 158 區的迴歸。每一條方法都寫出公式、檢定、信賴區間，以及拿歷史資料回測的結果。</p>
+    </div>
+    <div class="rows">
+      <div class="row" data-row="frame"><button type="button" class="row-h" aria-expanded="false" data-tab="frame"><span class="n">01</span><span class="t"><b>分析框架</b><small>基本面（資料）× 技術面（趨勢）× 因子模型（迴歸）—— 各自回答什麼、各自的極限</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="frame" hidden><div id="mFrame"></div></div></div>
+      <div class="row" data-row="trend"><button type="button" class="row-h" aria-expanded="false" data-tab="trend"><span class="n">02</span><span class="t"><b>趨勢外推與訊號</b><small>最小平方直線、斜率 t 檢定、95% 預測區間；本市每一區的統計細節表</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="trend" hidden><div id="mTrend"></div></div></div>
+      <div class="row" data-row="backtest"><button type="button" class="row-h" aria-expanded="false" data-tab="backtest"><span class="n">03</span><span class="t"><b>回測（歷史驗證）</b><small>假裝在 2022／2023／2024 年，訊號的準確率、抓到率、預測誤差 vs 基準</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="backtest" hidden><div id="mBacktest"></div></div></div>
+      <div class="row" data-row="xcheck"><button type="button" class="row-h" aria-expanded="false" data-tab="xcheck"><span class="n">04</span><span class="t"><b>交叉驗證（官方遷徙）</b><small>世代淨遷入 vs 戶政司登記的遷入−遷出：跨區 Pearson 相關</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="xcheck" hidden><div id="mXcheck"></div></div></div>
+      <div class="row" data-row="drivers"><button type="button" class="row-h" aria-expanded="false" data-tab="drivers"><span class="n">05</span><span class="t"><b>因子模型（多元迴歸）</b><small>OLS 設定、係數與標準誤、t 值、R²、假設與不能講的話</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="drivers" hidden><div id="mDrivers"></div></div></div>
+      <div class="row" data-row="align"><button type="button" class="row-h" aria-expanded="false" data-tab="align"><span class="n">06</span><span class="t"><b>資料對齊的信心度與回測</b><small>五歲組拆成單一年齡的誤差實測；高／中／低信心怎麼判</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="align" hidden><div id="mAlign"></div></div></div>
+      <div class="row" data-row="limits"><button type="button" class="row-h" aria-expanded="false" data-tab="limits"><span class="n">07</span><span class="t"><b>AI 查核與已知限制</b><small>逐數字比對規則；戶籍≠居住、事件年、租金樣本、普查年份、點數</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="limits" hidden><div id="mLimits"></div></div></div>
     </div>
   </section>
 
@@ -2313,6 +2351,150 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     host.appendChild(wrap);
   }
 
+  // ── 05 章：方法與驗證。統計方法、檢定、區間、回測 —— 數字全部從 meta / trends 帶，文字是靜態的。
+  function renderMethods() {
+    if (!$('mFrame')) return;
+    var Mg = DATA.trends && DATA.trends.migration, D = DATA.trends && DATA.trends.drivers;
+    var V = M.validation_migration, B = M.backtest_migration, sc = M.scale || {};
+    var pct = function (x, d) { return x == null ? '—' : ((x > 0 ? '+' : '') + (x * 100).toFixed(d == null ? 1 : d) + '%'); };
+    var fx = function (x, d) { return x == null ? '—' : Number(x).toFixed(d == null ? 2 : d); };
+
+    // 01 框架
+    $('mFrame').innerHTML = '<div class="mth">'
+      + '<div class="analogy">'
+      + '<div><h5>基本面 · 資料</h5><p><b>' + (sc.datasets || 14) + ' 個官方資料集、' + (sc.agencies || 6) + ' 個提供單位</b>，全部切成《青年基本法》18–35 歲口徑，每一筆帶來源、原始分組、推估方法與信心度。</p><p>回答：現在是什麼。</p></div>'
+      + '<div><h5>技術面 · 趨勢</h5><p>每一區 8 年的世代淨遷入率，<b>最小平方直線 ＋ 斜率 t 檢定 ＋ 95% 預測區間</b>，判成七種訊號。</p><p>回答：往哪個方向、多快、可不可信。</p></div>'
+      + '<div><h5>因子模型 · 迴歸</h5><p>六都 158 區的 <b>OLS</b>：所得、工作機會、租金、規模四個因子加縣市固定效果。</p><p>回答：什麼條件跟移入一起出現；哪些區的移入超過或不及條件。</p></div>'
+      + '</div>'
+      + '<p>三層各有各的驗證：基本面靠<b>加總與恆等式檢查</b>（各區加總＝全市、男＋女＝合計）與拆組回測；技術面靠<b>回測</b>（假裝在過去，對隔兩年的實際）與<b>官方遷徙交叉驗證</b>（r = ' + (V ? V.r : '—') + '）；因子模型靠<b>係數的 t 值與 R²</b>，而且只講相關不講因果。</p>'
+      + '<p>刻意不用機器學習：每區 8 個點、六都 158 區，任何複雜模型都在擬合雜訊，而且係數講不出來；在公部門，一個講不出來的預測是負債。</p>'
+      + '</div>';
+
+    // 02 趨勢外推與訊號
+    var rows = [];
+    if (Mg && Mg.areas) {
+      Object.keys(Mg.areas).forEach(function (k) {
+        var a = Mg.areas[k]; if (k === M.region || a.slope_pp == null) return;
+        rows.push({ name: k.replace(M.region, ''), a: a, last: a.rate[a.rate.length - 1] });
+      });
+      rows.sort(function (x, y) { return (y.last || 0) - (x.last || 0); });
+    }
+    var tbl = rows.map(function (r) {
+      var a = r.a;
+      return '<tr class="' + (a.significant ? 'sig' : 'nosig') + '"><td>' + r.name + '</td><td>' + a.n + '</td><td>' + pct(r.last) + '</td>'
+        + '<td>' + (a.slope_pp > 0 ? '+' : '') + fx(a.slope_pp) + '</td><td>±' + fx(a.slope_se_pp) + '</td><td>' + (a.t == null ? '∞' : fx(a.t, 1)) + '</td><td>' + (a.significant ? '<span class="ok">是</span>' : '否') + '</td><td>' + fx(a.r2) + '</td>'
+        + '<td>' + pct(a.forecast) + ' ± ' + (a.margin * 100).toFixed(1) + '</td><td>' + confLabel(a.confidence) + '</td><td>' + (a.signal || '—') + '</td></tr>';
+    }).join('');
+    $('mTrend').innerHTML = '<div class="mth">'
+      + '<h4>模型：最小平方直線（OLS on time）</h4>'
+      + '<code>y_t = α + β·t + ε_t　　β̂ = Σ(t−t̄)(y−ȳ) ÷ Σ(t−t̄)²　　α̂ = ȳ − β̂·t̄\nse = √( Σ殘差² ÷ (n−2) )　　se(β̂) = se ÷ √Σ(t−t̄)²</code>'
+      + '<h4>檢定：斜率是不是零（雙尾 5%）</h4>'
+      + '<p><code>t = β̂ ÷ se(β̂)　　|t| ≥ t<sub>0.025, n−2</sub> → 顯著</code>用 t 分布不用常態：n = 8 時臨界值 2.447（自由度 6），不是 1.96。意思是：<b>如果真實趨勢是 0，看到這麼大斜率的機率不到 5%</b>。</p>'
+      + '<h4>預測區間：明年會落在哪裡（95%）</h4>'
+      + '<code>ŷ(t+1) ± 1.96 · se · √( 1 + 1/n + (t+1 − t̄)² ÷ Σ(t−t̄)² )</code>'
+      + '<p>這是<b>預測區間</b>（含明年那一點自己的隨機波動），不是趨勢線的信賴帶，所以比較寬。1.96 是常態近似，樣本小時會略低估寬度 —— 所以另外要求 n ≥ 6 且顯著才給「中信心」，否則一律「低信心」，外推永遠不給「高」。</p>'
+      + '<h4>訊號規則（跟回測用同一個函式）</h4>'
+      + '<code>連續正值（最多 1 年例外）且最新為正 → 持續移入；若斜率顯著向下 → 移入減速\n連續負值（最多 1 年例外）且最新為負 → 持續流出；若斜率顯著向下 → 流出加劇\n其餘：斜率顯著向上 → 轉為移入；顯著向下 → 轉為流出；不顯著 → 方向不明</code>'
+      + '<h4>' + M.region + '每一區的統計細節（' + (Mg ? Mg.years[0] + '–' + Mg.years[Mg.years.length - 1] : '') + '）</h4>'
+      + '<div class="tw"><table><thead><tr><th>區</th><th>n</th><th>最新</th><th>斜率 pp/年</th><th>斜率標準誤</th><th>t</th><th>顯著</th><th>R²</th><th>' + (Mg && rows[0] ? rows[0].a.forecast_year : '明年') + ' 預估 ± 95%</th><th>信心</th><th>訊號</th></tr></thead><tbody>' + tbl + '</tbody></table></div>'
+      + '<p>灰字＝斜率不顯著（t 沒過臨界值），它的「預估」只是延伸線，不能當結論。2022／2023 為疫情除籍與恢復戶籍的事件年，刻意留在序列裡。</p>'
+      + '</div>';
+
+    // 03 回測
+    var bt = '';
+    if (B && B.pooled) {
+      var Ts = Object.keys(B.pooled);
+      var body = Ts.map(function (T) {
+        var r = B.pooled[T];
+        return '<tr><td>' + T + '</td><td>' + r.points_used + '</td><td>' + r.n + '</td><td>' + fx(r.mae_model_pp) + '</td><td>' + fx(r.mae_last_pp) + '</td><td>' + fx(r.mae_mean_pp) + '</td>'
+          + '<td>' + r.inflow_hits + '/' + r.inflow_flagged + '</td><td><b>' + Math.round((r.inflow_precision || 0) * 100) + '%</b></td><td>' + Math.round((r.inflow_recall || 0) * 100) + '%</td>'
+          + '<td>' + r.outflow_hits + '/' + r.outflow_flagged + '</td><td><b>' + Math.round((r.outflow_precision || 0) * 100) + '%</b></td><td>' + Math.round((r.outflow_recall || 0) * 100) + '%</td></tr>';
+      }).join('');
+      var cityRows = Object.keys(B.city || {}).map(function (T) {
+        var r = B.city[T];
+        return '<tr><td>' + T + '</td><td>' + r.points_used + '</td><td>' + r.n + '</td><td>' + fx(r.mae_model_pp) + '</td><td>' + fx(r.mae_last_pp) + '</td><td>' + fx(r.mae_mean_pp) + '</td>'
+          + '<td>' + r.inflow_hits + '/' + r.inflow_flagged + '</td><td><b>' + Math.round((r.inflow_precision || 0) * 100) + '%</b></td><td>' + Math.round((r.inflow_recall || 0) * 100) + '%</td>'
+          + '<td>' + r.outflow_hits + '/' + r.outflow_flagged + '</td><td><b>' + Math.round((r.outflow_precision || 0) * 100) + '%</b></td><td>' + Math.round((r.outflow_recall || 0) * 100) + '%</td></tr>';
+      }).join('');
+      var head = '<thead><tr><th>假裝在 T 年</th><th>用幾點</th><th>區數</th><th>模型 MAE pp</th><th>沿用去年 MAE</th><th>歷年平均 MAE</th><th>標移入 命中</th><th>準確率</th><th>抓到率</th><th>標流出 命中</th><th>準確率</th><th>抓到率</th></tr></thead>';
+      var named = Object.keys(B.named || {}).map(function (area) {
+        var byT = B.named[area];
+        return '<li><b>' + area.replace(M.region, '') + '</b>：' + Object.keys(byT).map(function (T) { var v = byT[T]; return T + ' 年' + v.signal + '（預估 ' + v.forecast + '%，隔年實際 ' + v.actual_next + '%）'; }).join('；') + '</li>';
+      }).join('');
+      bt = '<h4>做法</h4><p>' + B.method + '</p>'
+        + '<code>準確率（precision）= 標「移入」且隔兩年平均真的 &gt; 0 的區 ÷ 標「移入」的區\n抓到率（recall）　= 隔兩年平均 ≥ ' + (B.hit_rate * 100).toFixed(1) + '% 且 T 年被標「移入」的區 ÷ 隔兩年平均 ≥ ' + (B.hit_rate * 100).toFixed(1) + '% 的區\nMAE = 平均 |預測(T+1) − 實際(T+1)|，單位百分點；基準：沿用去年值、歷年平均</code>'
+        + '<h4>六都 158 區合計</h4><div class="tw"><table>' + head + '<tbody>' + body + '</tbody></table></div>'
+        + (cityRows ? '<h4>' + M.region + '</h4><div class="tw"><table>' + head + '<tbody>' + cityRows + '</tbody></table></div>' : '')
+        + '<p><b>怎麼讀</b>：2022 只有 4 個點、又含除籍事件年，抓到率低（很多區被判「方向不明」），但標出來的仍有九成準；2023 起準確 ≥ 89%、抓到 ≈ 70%。點預測的 MAE 跟「沿用去年值」差不多、2022 甚至輸給「歷年平均」—— <b>這個方法的價值在方向（訊號），不在單一年的數字</b>。</p>'
+        + (named ? '<h4>局長點名的區</h4><ul>' + named + '</ul>' : '');
+    } else bt = '<p>尚未產生回測（python data/backtest_migration.py）。</p>';
+    $('mBacktest').innerHTML = '<div class="mth">' + bt + '</div>';
+
+    // 04 交叉驗證
+    var xc = '';
+    if (V) {
+      xc = '<div class="kv"><div><b>r = ' + V.r + '</b><span>Pearson 相關，' + V.n + ' 個行政區</span></div><div><b>' + V.same_sign + ' / ' + V.n + '</b><span>方向一致的區</span></div><div><b>' + num(V.city_official) + ' vs ' + num(V.city_cohort) + '</b><span>全市：官方全年齡 vs 青年 18–35</span></div></div>'
+        + '<p><b>比什麼</b>：同一年（' + V.months + '）、同一批區。X＝戶政司登記的全年齡「遷入 − 遷出 ＋ 初設 − 除籍 ＋ 其他」（' + V.source + '）；Y＝我們用單一年齡兩期相減算的 18–35 歲淨遷入。兩者口徑不同（全年齡 vs 青年），所以看的是<b>跨區的相對大小是否一致</b>，不是數字相等。</p>'
+        + '<code>r = Σ(x−x̄)(y−ȳ) ÷ √( Σ(x−x̄)² · Σ(y−ȳ)² )</code>'
+        + '<p>r = ' + V.r + ' 代表世代追蹤抓到的就是真實的搬遷，不是兩期相減的算法假象。青年約占官方全年齡淨遷入的兩到三成，方向與排序一致。</p>'
+        + '<div class="tw"><table><thead><tr><th>區</th><th>官方全年齡淨遷入</th><th>18–35 世代淨遷入</th></tr></thead><tbody>'
+        + (V.pairs || []).map(function (q) { return '<tr><td>' + q.area + '</td><td>' + (q.official > 0 ? '+' : '') + num(q.official) + '</td><td>' + (q.cohort > 0 ? '+' : '') + num(q.cohort) + '</td></tr>'; }).join('')
+        + '</tbody></table></div><p>' + V.note + '</p>';
+    } else xc = '<p>這個城市尚未載入官方遷徙資料。</p>';
+    $('mXcheck').innerHTML = '<div class="mth">' + xc + '</div>';
+
+    // 05 因子模型
+    var dv = '';
+    if (D && D.models) {
+      var coefTable = function (m) {
+        var feats = m.features.concat(Object.keys(m.coef).filter(function (k) { return k.indexOf('fe_') === 0; }));
+        return '<div class="tw"><table><thead><tr><th>變數</th><th>係數 β</th><th>標準誤</th><th>t</th><th>顯著</th><th>高 10% → pp</th><th>標準化 β</th></tr></thead><tbody>'
+          + feats.map(function (f) {
+            var c = m.coef[f]; var label = c.label || f.replace('fe_', '固定效果 ');
+            return '<tr class="' + (c.significant ? 'sig' : 'nosig') + '"><td>' + label + '</td><td>' + fx(c.b, 3) + '</td><td>' + fx(c.se, 3) + '</td><td>' + fx(c.t, 2) + '</td><td>' + (c.significant ? '<span class="ok">是</span>' : '否') + '</td><td>' + (c.per_10pct != null ? fx(c.per_10pct, 3) : '') + '</td><td>' + (c.beta_std != null ? fx(c.beta_std, 2) : '') + '</td></tr>';
+          }).join('') + '</tbody></table></div>';
+      };
+      var mb = D.models.base, mf = D.models.full;
+      dv = '<h4>設定</h4><code>' + D.spec + '\ny = ' + D.y + '</code>'
+        + '<p>全部解釋變數取 ln，係數讀成「X 高 10%，y 高 β·ln(1.1) 個百分點」。縣市固定效果吸掉六都之間的水準差，所以比較的是「同一個都會區裡」哪種區在吸青年。標準化 β = β·sd(x)/sd(y)，用來比哪個因子影響大。t 臨界值 ' + mb.t_critical + '（自由度 ' + (mb.n - mb.features.length - 6) + '）。</p>'
+        + '<h4>模型 A　不含租金　n = ' + mb.n + '　R² = ' + mb.r2 + '（能解釋 ' + Math.round(mb.r2 * 100) + '% 的跨區差異）</h4>' + coefTable(mb)
+        + '<h4>模型 B　含租金　n = ' + mf.n + '（租金樣本 ≥ 30 筆的區）　R² = ' + mf.r2 + '</h4>' + coefTable(mf)
+        + '<h4>假設與不能講的話</h4><ul>'
+        + '<li>OLS 假設殘差獨立同分布；行政區之間有空間相關（相鄰區互相影響），標準誤可能略被低估，顯著的結論以 t ≥ 3 的為準（所得中位數）。</li>'
+        + '<li>係數是<b>相關</b>不是因果：所得高的區青年多，也可能是青年多讓所得高。</li>'
+        + '<li>租金樣本偏向代管／包租物件（110 年 7 月起才強制申報），郊區樣本常不足 —— 所以兩個模型都報。</li>'
+        + '<li>工作機會是 110 年底普查（五年一次）；淡水殘差 +' + (function () { var d = (D.districts || []).filter(function (x) { return x.area === '新北市淡水區'; })[0]; return d && d.resid != null ? d.resid.toFixed(1) : '—'; })() + ' pp 說明住宅供給（建照）是缺的變數。</li>'
+        + '</ul><p>來源：' + (D.sources || []).join('；') + '。</p>';
+    } else dv = '<p>尚未建立因子模型。</p>';
+    $('mDrivers').innerHTML = '<div class="mth">' + dv + '</div>';
+
+    // 06 對齊回測
+    var bt2 = (M.backtest || []).map(function (b) {
+      return '<tr><td>' + b.curve + '</td><td>' + fx(b.ours_pp) + '</td><td>' + fx(b.naive_pp) + '</td><td>' + Math.round(b.ratio * 100) + '%</td><td>' + b.verdict + '</td></tr>';
+    }).join('');
+    $('mAlign').innerHTML = '<div class="mth">'
+      + '<h4>問題</h4><p>官方的比率型指標（勞參率、失業率）只有五歲組；要切成 18–35 歲得先拆成單一年齡。拆得對不對，用<b>回測</b>量：把官方五歲組併成十歲組、再拆回五歲組，跟真值比。</p>'
+      + '<div class="tw"><table><thead><tr><th>曲線</th><th>拆組誤差 pp</th><th>不拆（直接用大組）pp</th><th>比例</th><th>結論</th></tr></thead><tbody>' + bt2 + '</tbody></table></div>'
+      + '<h4>信心度規則（從回測來）</h4><ul>'
+      + '<li><b>高</b>：官方分組剛好對上（25–29 歲薪資、單一年齡人口）。</li>'
+      + '<li><b>中</b>：要拆組重組，且曲線單調（勞參率、薪資）—— 回測誤差降到不拆的三成。</li>'
+      + '<li><b>低</b>：曲線有局部高峰（失業率在 20–24 歲）—— 拆了比不拆還差，引擎自動降級；或外推點數不足、趨勢不顯著。</li>'
+      + '</ul><p>比率型指標絕對不乘權重（失業率 × 0.98 沒有統計意義）：走「Σ分子 ÷ Σ分母」重算，或借全國分齡形狀再校準。每筆記錄的資料履歷都寫了用哪一種。</p>'
+      + '</div>';
+
+    // 07 查核與限制
+    $('mLimits').innerHTML = '<div class="mth">'
+      + '<h4>AI 逐數字查核</h4><code>對上 ⇔ ∃ 池中值 p： |x − p| ≤ max(容差, 0.5%·|p|)　且　單位相容（寫成 % 的只能對上比率型）\n池 = 提示詞給模型的所有記錄值（含合理換算：萬元↔元、負號）＋ 六都比較 ＋ 卡片與模型摘要裡的數字</code>'
+      + '<p>對不上的數字在文中標橘底「模型自行估算，參考為主」。查的是「數字存在於資料」，不是「數字用對了地方」—— 引用 [N] 點開履歷看它指的是哪一筆。</p>'
+      + '<h4>已知限制（上台主動講）</h4><ul>'
+      + '<li>戶籍 ≠ 實際居住：沒遷戶籍的就學就業者看不到，量到的是「願意定居」的青年。</li>'
+      + '<li>2022／2023 是疫情除籍與恢復戶籍的事件年，全市一負一正的大幅波動不是搬家；訊號判定與回測都把它留在序列裡。</li>'
+      + '<li>每區只有 8 個年度點：區間寬、n &lt; 6 一律低信心；只用來排優先順序，不當單一年的預言。</li>'
+      + '<li>租金樣本偏向代管／包租物件；工作機會為 110 年普查；居住負擔指標是全體家戶不是青年。</li>'
+      + '<li>官方沒有行業 × 年齡、也沒有行政區層級的失業率與薪資（抽樣撐不到），行政區用的是全面資料：戶政、稅籍、普查、實價登錄。</li>'
+      + '</ul></div>';
+  }
+
   function drawScatter(wrap, all, D) {
     var xk = drvState.x, cfg = DRV_X[xk];
     var pts = all.filter(function (d) { return d[xk] != null && d[xk] > 0; });
@@ -2962,7 +3144,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     document.querySelectorAll('.chip').forEach(function (c) {
       c.setAttribute('aria-pressed', c.dataset.band === state.band ? 'true' : 'false');
     });
-    renderHero(); renderMap(); renderPolicy(); renderInsights(); renderRights(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderMismatch(); renderBench(); renderTrends(); renderDrivers(); renderWatch(); renderFormulas(); renderRank();
+    renderHero(); renderMap(); renderPolicy(); renderInsights(); renderRights(); renderPop(); renderEmp(); renderSal(); renderEdu(); renderVac(); renderMismatch(); renderBench(); renderTrends(); renderDrivers(); renderWatch(); renderFormulas(); renderMethods(); renderRank();
     var keep = state.sel;
     select((keep && find(state.area, keep.age_group, keep.metric, keep.education))
       || find(state.area, state.band, '人口數'), true);

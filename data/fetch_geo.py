@@ -33,6 +33,8 @@ LANDING = "https://www.npmjs.com/package/taiwan-atlas"
 VIEWBOX = 1000.0          # SVG 座標系邊長，前端用 viewBox 縮放
 SIMPLIFY_TOLERANCE = 0.45  # 以 VIEWBOX 為單位；再大就會看到鋸齒
 EXPECTED_DISTRICTS = 29    # 新北市的行政區數，對不上就是資料換版了
+# 六都各自的行政區數；atlas 的縣市名寫「台」，我們的資料寫「臺」
+DISTRICTS_BY_CITY = {"新北市": 29, "臺北市": 12, "桃園市": 13, "臺中市": 29, "臺南市": 37, "高雄市": 38}
 
 
 def _download(refresh: bool = False) -> dict:
@@ -117,11 +119,12 @@ def fetch_district_shapes(region: str = "新北市", *, refresh: bool = False) -
     """
     topo = _download(refresh)
     arcs = _decode_arcs(topo)
+    expected = DISTRICTS_BY_CITY.get(region, EXPECTED_DISTRICTS)
     geoms = [g for g in topo["objects"]["towns"]["geometries"]
-             if g.get("properties", {}).get("COUNTYNAME") == region]
-    if len(geoms) != EXPECTED_DISTRICTS:
+             if (g.get("properties", {}).get("COUNTYNAME") or "").replace("台", "臺") == region]
+    if len(geoms) != expected:
         raise RuntimeError(
-            f"{region} 應該有 {EXPECTED_DISTRICTS} 個行政區，實際取到 {len(geoms)} 個 —— "
+            f"{region} 應該有 {expected} 個行政區，實際取到 {len(geoms)} 個 —— "
             "來源資料可能換版了，先確認 taiwan-atlas 的版本再往下跑"
         )
 

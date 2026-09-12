@@ -27,6 +27,11 @@ PLACEHOLDER = "/*__DATA__*/"
 
 
 def main() -> int:
+    import sys as _sys
+    from data import sources as _src
+    global UNIFIED, OUTPUT
+    region = _src.region_arg(_sys.argv[1:])
+    UNIFIED, OUTPUT = _src.unified_path(region), _src.preview_path(region)
     if not UNIFIED.exists():
         print(f"找不到 {UNIFIED.name}，先跑 python data/build_unified.py")
         return 1

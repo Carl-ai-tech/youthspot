@@ -25,6 +25,32 @@ from pathlib import Path
 DATA_DIR = Path(__file__).resolve().parent
 CACHE_DIR = DATA_DIR / "_cache"
 
+# 六都。整條 pipeline 都以 region 參數化；新北市維持原本的檔名（reference_ntpc.json、
+# unified.json、preview.html），其他縣市的檔名帶縣市名，舊的指令與測試才不會壞。
+SIX_CITIES = ["新北市", "臺北市", "桃園市", "臺中市", "臺南市", "高雄市"]
+
+
+def reference_path(region: str = "新北市"):
+    return DATA_DIR / ("reference_ntpc.json" if region == "新北市" else f"reference_{region}.json")
+
+
+def unified_path(region: str = "新北市"):
+    return DATA_DIR / ("unified.json" if region == "新北市" else f"unified_{region}.json")
+
+
+def preview_path(region: str = "新北市"):
+    return DATA_DIR.parent / ("preview.html" if region == "新北市" else f"preview_{region}.html")
+
+
+def region_arg(argv, default: str = "新北市") -> str:
+    """--region 臺北市 這種參數；沒給就是新北市。"""
+    for i, a in enumerate(argv):
+        if a == "--region" and i + 1 < len(argv):
+            return argv[i + 1].replace("台", "臺")
+        if a.startswith("--region="):
+            return a.split("=", 1)[1].replace("台", "臺")
+    return default
+
 USER_AGENT = "YouthLens/0.3 (hackathon prototype; stdlib urllib)"
 TIMEOUT = 60
 

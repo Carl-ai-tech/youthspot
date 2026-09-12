@@ -129,7 +129,10 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
 
 
 def main(argv: list[str]) -> int:
-    payload = build(refresh="--refresh" in argv)
+    region = sources.region_arg(argv)
+    global OUTPUT
+    OUTPUT = sources.reference_path(region)
+    payload = build(refresh="--refresh" in argv, region=region)
     OUTPUT.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )

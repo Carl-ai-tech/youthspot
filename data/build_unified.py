@@ -825,14 +825,20 @@ def _district_income_records(inc: dict, region: str) -> list[AlignedRecord]:
 def _district_job_records(jobs: dict, areas: dict, region: str) -> list[AlignedRecord]:
     """各區在地工作機會（普查從業員工）與密度（÷ 區內 15–64 歲人口）。"""
     out = []
+    fixed = {f["area"]: f for f in jobs.get("corrections", [])}
     for area, v in jobs["areas"].items():
         counts = areas.get(area) or {}
         pop = sum(n for a, n in counts.items() if 15 <= a <= 64)
+        fix_note = ""
+        if area in fixed:
+            f = fixed[area]
+            fix_note = (f"⚠ 來源修正：{f['issue']}，{f['action']}（{f['before']:,.0f} → {f['after']:,.0f}）。")
         base = Provenance(
             source_agency="行政院主計總處", source_dataset=CEN_DATASET,
-            source_age_group="全體", method=Method.EXACT_MATCH, weight=1.0, confidence=Confidence.HIGH,
+            source_age_group="全體", method=Method.EXACT_MATCH, weight=1.0,
+            confidence=Confidence.MEDIUM if area in fixed else Confidence.HIGH,
             note="普查是全面清查不是抽樣。從業員工人數是「工作地在該區」的人，不是居民 ——"
-                 "住宅區的人多半通勤到別區工作。五年一次，這是 110 年底。",
+                 "住宅區的人多半通勤到別區工作。五年一次，這是 110 年底。" + fix_note,
         )
         out.append(AlignedRecord(region=area, year=jobs["year"], age_group="全體", gender="total",
                                  metric="在地工作機會", value=v["workers"], unit="人", provenance=base))
@@ -981,10 +987,11 @@ def _pipeline_status(records: list[AlignedRecord], meta: dict) -> list[dict]:
          "format": "XML（固定網址）", "auto": True, "cadence": "每年",
          "records": 0, "check": "三大部門 = 總計；各行業 = 工業＋服務業；男 + 女 = 小計",
          "coverage": "1978– 全國 18 行業", **_cache_info("dgbas_mp04025.xml")},
-        {"agency": "新北市政府主計處", "dataset": NTPC_DATASET, "url": NTPC_LANDING,
+        *([{"agency": "新北市政府主計處", "dataset": NTPC_DATASET, "url": NTPC_LANDING,
          "format": "新北市資料開放平臺 API", "auto": True, "cadence": "每年",
          "records": 0, "check": "兩條恆等式：勞動力＋非勞動力＝民間人口、就業＋失業＝勞動力",
-         "coverage": "2006–2024 全年齡（含男女）", **_cache_info("ntpc_labour.json")},
+         "coverage": "2006–2024 全年齡（含男女）", **_cache_info("ntpc_labour.json")}]
+          if meta.get("region", "新北市") == "新北市" else []),
         {"agency": "財政部財政資訊中心", "dataset": FIA_DATASET, "url": FIA_LANDING,
          "format": "CSV（固定網址，每年）", "auto": True, "cadence": "每年 8 月",
          "records": n_records(lambda r: r.metric == "綜合所得中位數"),
@@ -1200,12 +1207,18 @@ def _benchmark_note(bench: dict, region: str) -> dict | None:
 
     n = len(bench.get("cities", []))
     return {
-        "title": f"{region}青年「投入多、回報少」的落差要正視",
+        # 標題與文字要跟著哪個指標好、哪個差走 —— 新北是勞參率第 1、薪資第 4（投入多回報少），
+        # 臺北是薪資第 1、勞參率第 6，同一句話套上去就是錯的。
+        "title": (f"{region}青年「投入多、回報少」的落差要正視"
+                  if "參與率" in best and ("薪" in worst)
+                  else f"{region}青年的{best}與{worst}在六都的名次落差要正視"),
         "body": f"同樣是 {bench['band']} 歲這一群人，"
                 f"{region}的{best}在六都排第 {ranks[best]}（{show(best)}），"
                 f"{worst}卻排第 {ranks[worst]}（{show(worst)}）。"
-                "願意投入勞動市場的比例在最高一群，得到的待遇卻在後段。"
-                "可能原因（待驗證）：產業結構、跨縣市通勤 —— 這兩項目前沒有直接資料，"
+                + ("願意投入勞動市場的比例在最高一群，得到的待遇卻在後段。"
+                   if "參與率" in best and "薪" in worst else
+                   "同一群人在不同指標上的名次差這麼多，代表這個城市的青年處境不能用單一指標概括。")
+                + "可能原因（待驗證）：產業結構、跨縣市通勤、生活成本 —— 這些目前沒有直接資料，"
                 "本卡只陳述排名差距。",
         "detail": [f"{m}　六都第 {r} / {n}　{show(m)}" + _near_note(metrics[m], region)
                    for m, r in sorted(ranks.items(), key=lambda kv: kv[1])],
@@ -1266,6 +1279,13 @@ def _national_series(refresh) -> dict:
     return out
 
 
+def _dgbas_total_unemployment(region: str, refresh) -> float | None:
+    try:
+        return fetch_local_unemployment(region, refresh=refresh).get("total")
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def _trends(region: str, refresh) -> dict:
     """時間序列。—— 命題：「有助於整合出青年動態」
 
@@ -1277,7 +1297,8 @@ def _trends(region: str, refresh) -> dict:
     兩者算出的新北市失業率在重疊年度應該吻合 —— 這是資料可信度的直接證據。
     """
     salary = fetch_salary_series(region, refresh=refresh)
-    labour = fetch_ntpc_labour(refresh=refresh)
+    # 新北市資料開放平臺的勞動力序列只有新北市；其他縣市沒有這一塊（前端會略過）
+    labour = fetch_ntpc_labour(refresh=refresh) if region == "新北市" else []
 
     def band_key(b):
         lo, hi = b
@@ -1295,7 +1316,7 @@ def _trends(region: str, refresh) -> dict:
                        for b in (salary[0]["median"] if salary else {})},
             "note": "分年齡，看得到青年自己的薪資變化",
         },
-        "labour": {
+        **({} if not labour else {"labour": {
             "source": NTPC_DATASET,
             "url": NTPC_LANDING,
             "years": [r["year"] for r in labour],
@@ -1305,22 +1326,26 @@ def _trends(region: str, refresh) -> dict:
             "lfpr_m": [r.get("lfpr_m") for r in labour],
             "lfpr_f": [r.get("lfpr_f") for r in labour],
             "note": "全年齡，但這是我們手上最長的新北市本地序列（19 年）",
-        },
+        }}),
         # 48 年的全國分齡序列。資料一直都在快取裡（mp04020／mp04031 從 1978 年起），
         # 先前只用 latest() 取最新一年算 r(a)，其餘 47 年整個丟掉。
         # 這是手上**最長**也**唯一分齡**的序列 —— 新北市開放平臺那條雖然在地，
         # 但只有 19 年而且是全年齡，看不出青年自己的變化。
         "national": _national_series(refresh),
         "cross_check": {
-            "label": "兩個獨立來源的新北市失業率",
+            "label": f"兩個獨立來源的{region}失業率",
             "ntpc_latest": labour[-1]["unemployment"] if labour else None,
-            "dgbas_total": None,      # 由呼叫端填入
+            # 表37 的縣市總計（全年齡）。新北市 2024 開放平臺算出 3.4%，表37 也是 3.4%
+            "dgbas_total": _dgbas_total_unemployment(region, refresh),
         },
     }
 
 
 def build(*, refresh: bool = False, region: str = "新北市") -> dict:
-    ref = ReferenceData.load()
+    ref_path = sources.reference_path(region)
+    if not ref_path.exists():
+        raise FileNotFoundError(f"找不到 {ref_path.name}，先跑 python data/build_reference.py --region {region}")
+    ref = ReferenceData.load(ref_path)
     by_district, meta = fetch_population_by_district(region, refresh=refresh)
     year = 2000 + int(meta["period"][:3]) - 89
     label = meta["roc_period_label"]
@@ -1386,7 +1411,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     # 行政區層級的所得與工作機會。人力資源調查撐不到行政區，但財政部稅籍與主計總處普查是
     # 全面資料，可以。這兩份補的是「林口區的工作供需」這種問題先前只能回「沒有」的洞。
     try:
-        income = fetch_district_income(refresh=refresh)
+        income = fetch_district_income(region, refresh=refresh)
         records.extend(_district_income_records(income, region))
         trends["district_income"] = {
             "source": income["source"], "url": income["url"], "years": income["years"],
@@ -1396,7 +1421,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     except Exception as exc:  # noqa: BLE001
         print(f"  ⚠ 行政區所得未載入：{exc}")
     try:
-        jobs = fetch_district_jobs(refresh=refresh)
+        jobs = fetch_district_jobs(region, refresh=refresh)
         records.extend(_district_job_records(jobs, areas, region))
     except Exception as exc:  # noqa: BLE001
         print(f"  ⚠ 行政區工作機會未載入：{exc}")
@@ -1464,7 +1489,10 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
 
 
 def main(argv: list[str]) -> int:
-    payload = build(refresh="--refresh" in argv)
+    region = sources.region_arg(argv)
+    global OUTPUT
+    OUTPUT = sources.unified_path(region)
+    payload = build(refresh="--refresh" in argv, region=region)
     OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
     recs = payload["records"]
@@ -1473,14 +1501,14 @@ def main(argv: list[str]) -> int:
         c = r["provenance"]["confidence"]
         conf[c] = conf.get(c, 0) + 1
 
-    print(f"寫出 data/unified.json　{len(recs):,} 筆記錄　{OUTPUT.stat().st_size / 1024:.0f} KB")
+    print(f"寫出 data/{OUTPUT.name}　{len(recs):,} 筆記錄　{OUTPUT.stat().st_size / 1024:.0f} KB")
     print(f"  地區 {payload['meta']['areas']} 個（全市 + 各行政區）")
     print(f"  年齡層 {'、'.join(payload['meta']['age_groups'])}")
     print(f"  指標 {'、'.join(payload['meta']['metrics'])}")
     print(f"  信心度分布 " + "　".join(f"{k} {v}" for k, v in sorted(conf.items())))
     print()
     print("  抽樣看一筆：")
-    sample = next(r for r in recs if r["region"] == "新北市" and r["age_group"] == "18-35"
+    sample = next(r for r in recs if r["region"] == payload["meta"]["region"] and r["age_group"] == "18-35"
                   and r["metric"] == "人口數")
     print("   ", json.dumps(sample, ensure_ascii=False)[:150] + " …")
     return 0

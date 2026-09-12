@@ -37,6 +37,8 @@ $py="$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 & $py data/build_reference.py            # 重抓政府資料（加 --refresh 強制更新）
 & $py data/build_unified.py              # 產出 unified.json（交給前端的檔）
 & $py data/make_preview.py               # 產出 preview.html（雙擊即可開）
+& $py tools/build_six.py                 # 六都一次建完：reference → unified → preview 各一份
+& $py data/build_unified.py --region 高雄市   # 任一支都吃 --region；新北市維持原檔名，其他帶縣市名
 & $py demo_scan.py                       # 掃描檔判讀 demo
 & $py serve.py                           # 本機開發伺服器 localhost:8787（問答／掃描／統整都走它）
 & $py check_env.py                       # 看目前用哪個後端、金鑰有沒有讀到（不印金鑰）
@@ -46,6 +48,18 @@ node tests/verify_dashboard.mjs          # 51 項儀表板驗證（改前端後�
 & $py tools/make_report_pdf.py           # 命令列把儀表板印成 PDF（要有 Chrome）
 & $py check_scan_accuracy.py <圖片>       # 9/12 接上 Bedrock 後測真實準確率
 ```
+
+## 六都（2026-09-12 起）
+
+整條 pipeline 以 `--region` 參數化（`data/sources.py` 的 `SIX_CITIES`、`reference_path`、`unified_path`、
+`preview_path`）。新北市維持 `reference_ntpc.json / unified.json / preview.html`，其他城市是
+`reference_臺北市.json / unified_臺北市.json / preview_臺北市.html`。儀表板 masthead 有六都切換（純連結）。
+
+各城市都有的：戶政人口（分區、分性別、年變化）、主計總處縣市薪資／就業／勞參／失業、六都比較、
+居住負擔、財政部各區所得（檔名代碼 A 臺北 B 臺中 D 臺南 E 高雄 F 新北 H 桃園）、110 年普查各區
+從業員工（mp02013/14/18/20/25/26）、全國分齡與行業序列、供需錯配、權益覆蓋。
+**只有新北市有的**：新北市資料開放平臺勞動力序列（trends.labour）→ 其他城市那兩張圖與交叉驗證自動略過。
+桃園普查 XML 的新屋區從業員工與平鎮區重複，`fetch_district_jobs._repair()` 改為總計減其餘並留痕（medium）。
 
 ## 環境陷阱（每次換電腦都會中）
 

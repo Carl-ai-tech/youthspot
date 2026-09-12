@@ -26,8 +26,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from data.sources import fetch  # noqa: E402
 
-URL = "https://www.fia.gov.tw/WEB/fia/ias/ias{y}/{y}_165-F.csv"
-DATASET = "財政部財政資訊中心 綜稅綜合所得總額各縣市鄉鎮村里統計分析表（新北市）"
+URL = "https://www.fia.gov.tw/WEB/fia/ias/ias{y}/{y}_165-{code}.csv"
+# 財政部的檔名代碼（實測 112 年度逐一開檔確認）：A 臺北、B 臺中、D 臺南、E 高雄、F 新北、H 桃園
+CITY_CODE = {"臺北市": "A", "臺中市": "B", "臺南市": "D", "高雄市": "E", "新北市": "F", "桃園市": "H"}
+DATASET = "財政部財政資訊中心 綜稅綜合所得總額各縣市鄉鎮村里統計分析表"
 LANDING = "https://data.gov.tw/dataset/17975"
 FIRST_YEAR, LAST_YEAR = 101, 112          # 民國；找不到最新年會自動退一年
 BREAK_YEAR = 108                           # 定義改變，跨越這年不比較
@@ -43,7 +45,7 @@ def _decode(raw: bytes) -> str:
     raise RuntimeError("財政部 CSV 不是 UTF-8 也不是 Big5")
 
 
-def _parse(text: str) -> dict[str, dict[str, float]]:
+def _parse(text: str, region: str = "新北市") -> dict[str, dict[str, float]]:
     """{行政區: {"units", "median", "mean", "q1", "q3"}}，只取每區的「合計」列。單位：千元。"""
     rows = list(csv.reader(io.StringIO(text)))
     out: dict[str, dict[str, float]] = {}
@@ -52,7 +54,7 @@ def _parse(text: str) -> dict[str, dict[str, float]]:
             continue
         area = r[0].strip().replace("台", "臺")
         # 「新北市其他」是無法歸入行政區的申報戶，不是一個區
-        if not area.startswith("新北市") or area == "新北市" or not area.endswith("區"):
+        if not area.startswith(region) or area == region or not area.endswith("區"):
             continue
         try:
             out[area] = {"units": float(r[2]), "total": float(r[3]), "mean": float(r[4]),
@@ -62,9 +64,9 @@ def _parse(text: str) -> dict[str, dict[str, float]]:
     return out
 
 
-def _verify(year: int, d: dict[str, dict[str, float]]) -> None:
-    if len(d) != DISTRICTS:
-        raise RuntimeError(f"{year} 年只讀到 {len(d)} 個行政區，應為 {DISTRICTS}：{sorted(d)[:5]}…")
+def _verify(year: int, d: dict[str, dict[str, float]], expected: int = DISTRICTS) -> None:
+    if len(d) != expected:
+        raise RuntimeError(f"{year} 年只讀到 {len(d)} 個行政區，應為 {expected}：{sorted(d)[:5]}…")
     for area, v in d.items():
         if not (200 <= v["median"] <= 2000):
             raise RuntimeError(f"{year} 年 {area} 中位數 {v['median']} 千元不合理")
@@ -72,25 +74,32 @@ def _verify(year: int, d: dict[str, dict[str, float]]) -> None:
             raise RuntimeError(f"{year} 年 {area} 納稅單位或平均數不合理：{v}")
 
 
-def fetch_district_income(*, refresh: bool = False) -> dict:
+# 六都的行政區數（含直轄市山地原住民區）
+DISTRICTS_BY_CITY = {"新北市": 29, "臺北市": 12, "桃園市": 13, "臺中市": 29, "臺南市": 37, "高雄市": 38}
+
+
+def fetch_district_income(region: str = "新北市", *, refresh: bool = False) -> dict:
     """回傳 {"years": [西元], "latest_year", "latest": {區: {...}}, "series": {區: {"median": [...]}}, ...}"""
+    code = CITY_CODE[region]
+    expected = DISTRICTS_BY_CITY.get(region, DISTRICTS)
     by_year: dict[int, dict[str, dict[str, float]]] = {}
     for y in range(FIRST_YEAR, LAST_YEAR + 2):            # 多試一年，新檔出了就自動吃到
+        cache_name = f"fia_income_{y}.csv" if region == "新北市" else f"fia_income_{y}_{code}.csv"
         try:
-            raw = fetch(URL.format(y=y), f"fia_income_{y}.csv", refresh=refresh)
+            raw = fetch(URL.format(y=y, code=code), cache_name, refresh=refresh)
         except Exception as exc:  # noqa: BLE001
             if y > LAST_YEAR:
                 break
             raise RuntimeError(f"{y} 年度財政部 CSV 抓不到：{exc}") from exc
-        d = _parse(_decode(raw))
-        _verify(y, d)
+        d = _parse(_decode(raw), region)
+        _verify(y, d, expected)
         by_year[y + 1911] = d
     years = sorted(by_year)
     latest = years[-1]
     areas = sorted(by_year[latest])
     post = [y for y in years if y >= BREAK_YEAR + 1911]
     return {
-        "source": DATASET, "url": LANDING, "unit": "千元",
+        "source": f"{DATASET}（{region}）", "url": LANDING, "unit": "千元",
         "scope": "全體申報戶（非青年）",
         "years": post, "all_years": years, "latest_year": latest,
         "break_year": BREAK_YEAR + 1911,

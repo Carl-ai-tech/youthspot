@@ -747,6 +747,14 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 @media (max-width:40rem){.toc{display:none;}}
 @media print{.toc{display:none;}}
+
+/* 六都切換 */
+.cities{display:inline-flex;gap:.15rem;margin-left:.6rem;background:var(--sunk);border-radius:999px;padding:.2rem;}
+.cities a{font-size:.76rem;font-weight:600;color:var(--ink-2);text-decoration:none;padding:.28rem .6rem;border-radius:999px;}
+.cities a:hover{background:var(--card);color:var(--ink);}
+.cities a[aria-current="page"]{background:var(--deep);color:#fff;}
+@media (max-width:40rem){.cities{order:4;flex-basis:100%;justify-content:space-between;margin:.4rem 0 0;}}
+@media print{.cities{display:none;}}
 </style>
 
 <header class="masthead">
@@ -754,6 +762,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     <div class="brand">
       <strong>YouthLens 青年數據透鏡</strong>
       <span id="brandsub">新北市 · 統一至 18–35 歲口徑</span>
+      <nav class="cities" id="cities" aria-label="切換城市"></nav>
       <button type="button" class="export-btn" id="exportBtn" title="把目前畫面匯出成 PDF 簡報頁">
         匯出報告 <span>PDF</span>
       </button>
@@ -816,7 +825,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
           <button type="button" data-scn="budget">編青年發展預算的優先領域</button>
         </div>
         <div class="askrow">
-          <input id="askInput" type="text" placeholder="任何年齡區間都可以，例如：新北市 26-28 歲有多少人？"
+          <input id="askInput" type="text" placeholder="任何年齡區間都可以，例如：26-28 歲有多少人？"
                  aria-label="用中文問一個關於青年統計的問題">
           <button id="askGo" type="button">問</button>
         </div>
@@ -885,7 +894,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </details>
 
       <details class="fold" id="sec-insights">
-        <summary><span class="st"><b>異常與洞察<span class="badge ntpc">新北實測</span><span class="badge nat">全國資料</span></b><small>通過統計檢定的變化：偏離趨勢、轉向、年齡組之間的落差</small></span><span class="aspect">顯著變化</span></summary>
+        <summary><span class="st"><b>異常與洞察<span class="badge ntpc" data-local>在地實測</span><span class="badge nat">全國資料</span></b><small>通過統計檢定的變化：偏離趨勢、轉向、年齡組之間的落差</small></span><span class="aspect">顯著變化</span></summary>
         <div class="foldbody">
       <section class="policy">
         <div class="head"><h2>異常與洞察</h2><span class="aspect">顯著變化</span></div>
@@ -915,7 +924,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </details>
 
       <details class="fold" id="sec-pop">
-        <summary><span class="st"><b>青年人口結構<span class="badge ntpc">新北實測</span></b><small>四個年齡層的人數，附推估方法</small></span><span class="aspect">人口</span></summary>
+        <summary><span class="st"><b>青年人口結構<span class="badge ntpc" data-local>在地實測</span></b><small>四個年齡層的人數，附推估方法</small></span><span class="aspect">人口</span></summary>
         <div class="foldbody">
       <section class="panel">
         <div class="panel-head"><h2>青年人口結構</h2><span class="aspect">人口</span></div>
@@ -926,7 +935,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </details>
 
       <details class="fold" id="sec-emp">
-        <summary><span class="st"><b>就業與勞動參與<span class="badge ntpc">新北實測</span><span class="badge est">推估校準</span></b><small>勞動力、勞參率、就業者、失業率</small></span><span class="aspect">就業</span></summary>
+        <summary><span class="st"><b>就業與勞動參與<span class="badge ntpc" data-local>在地實測</span><span class="badge est">推估校準</span></b><small>勞動力、勞參率、就業者、失業率</small></span><span class="aspect">就業</span></summary>
         <div class="foldbody">
       <section class="panel">
         <div class="panel-head"><h2>就業與勞動參與</h2><span class="aspect">就業</span></div>
@@ -937,7 +946,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </details>
 
       <details class="fold" id="sec-sal">
-        <summary><span class="st"><b>年薪：平均數與中位數<span class="badge ntpc">新北實測</span><span class="badge est">30–35 推估</span></b><small>各年齡層的年薪，平均數與中位數並列</small></span><span class="aspect">就業</span></summary>
+        <summary><span class="st"><b>年薪：平均數與中位數<span class="badge ntpc" data-local>在地實測</span><span class="badge est">30–35 推估</span></b><small>各年齡層的年薪，平均數與中位數並列</small></span><span class="aspect">就業</span></summary>
         <div class="foldbody">
       <section class="panel">
         <div class="panel-head"><h2>年薪：平均數與中位數</h2><span class="aspect">就業</span></div>
@@ -994,7 +1003,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </details>
 
       <details class="fold" id="sec-trend">
-        <summary><span class="st"><b>青年動態 · 時間趨勢<span class="badge ntpc">新北實測</span><span class="badge nat">全國資料</span><span class="badge house">全體家戶</span></b><small>48 年全國分齡序列、薪資、失業率、居住負擔</small></span><span class="aspect">動態</span></summary>
+        <summary><span class="st"><b>青年動態 · 時間趨勢<span class="badge ntpc" data-local>在地實測</span><span class="badge nat">全國資料</span><span class="badge house">全體家戶</span></b><small>48 年全國分齡序列、薪資、失業率、居住負擔</small></span><span class="aspect">動態</span></summary>
         <div class="foldbody">
       <section class="panel">
         <div class="panel-head"><h2>青年動態 · 時間趨勢</h2><span class="aspect">動態</span></div>
@@ -1009,7 +1018,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </details>
 
       <details class="fold" id="sec-rank">
-        <summary><span class="st"><b>各行政區比較<span class="badge ntpc">新北實測</span></b><small>29 個行政區的排名</small></span><span class="aspect">人口</span></summary>
+        <summary><span class="st"><b>各行政區比較<span class="badge ntpc" data-local>在地實測</span></b><small>29 個行政區的排名</small></span><span class="aspect">人口</span></summary>
         <div class="foldbody">
       <section class="panel">
         <div class="panel-head"><h2 id="rankTitle">各行政區比較</h2><span class="aspect">人口</span></div>
@@ -1060,6 +1069,13 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (!seenA[r.region]) { seenA[r.region] = 1; areas.push(r.region); }
   });
   var BANDS = M.age_groups;
+  // 「在地實測」徽章文字跟著城市走：新北實測、臺北實測…
+  var LOCAL = M.region.replace('市', '') + '實測';
+  (function localBadges() {
+    if (!document.querySelectorAll) return;
+    var els = document.querySelectorAll('[data-local]');
+    for (var i = 0; i < els.length; i++) els[i].textContent = LOCAL;
+  })();
   var METRICS = M.metrics;
   var EDUS = M.educations || [];
   var state = { area: M.region, band: '18-35', sel: null };
@@ -1707,7 +1723,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     box1.className = 'figbox';
     box1.setAttribute('data-chart', 'salary');
     box1.innerHTML =
-      '<p class="fig-title">青年年薪的變化<span class="scopetag">新北實測</span></p>'
+      '<p class="fig-title">青年年薪的變化<span class="scopetag">' + LOCAL + '</span></p>'
       + '<p class="fig-sub">' + sal.years[0] + '–' + sal.years[sal.years.length - 1]
       + '　新北市　單位：萬元/年</p>'
       + '<div class="lc-wrap">'
@@ -1729,13 +1745,14 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     host.appendChild(box1);
     bindLineHover(box1);
 
-    // ── 長期勞動力
+    // ── 長期勞動力（新北市資料開放平臺，只有新北市有這條序列）
     var lab = T2.labour;
+    if (lab && lab.years && lab.years.length) {
     var box2 = document.createElement('figure');
     box2.className = 'figbox';
     box2.setAttribute('data-chart', 'labour');
     box2.innerHTML =
-      '<p class="fig-title">新北市失業率長期走勢<span class="scopetag">新北實測 · 全年齡</span></p>'
+      '<p class="fig-title">' + M.region + '失業率長期走勢<span class="scopetag">' + LOCAL + ' · 全年齡</span></p>'
       + '<p class="fig-sub">' + lab.years[0] + '–' + lab.years[lab.years.length - 1]
       + '　資料來源：新北市資料開放平臺（全年齡）</p>'
       + '<div class="lc-wrap">'
@@ -1761,7 +1778,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       box3.className = 'figbox';
       box3.setAttribute('data-chart', 'labour');
       box3.innerHTML =
-        '<p class="fig-title">新北市男女勞動力參與率<span class="scopetag">新北實測 · 全年齡</span></p>'
+        '<p class="fig-title">' + M.region + '男女勞動力參與率<span class="scopetag">' + LOCAL + ' · 全年齡</span></p>'
         + '<p class="fig-sub">' + lab.years[0] + '–' + lab.years[lab.years.length - 1]
         + '　資料來源：新北市資料開放平臺　·　官方分齡表沒有性別欄位，所以這是全年齡</p>'
         + '<div class="lc-wrap">'
@@ -1840,15 +1857,20 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       });
     }
 
-    // ── 交叉驗證
-    var x = document.createElement('p');
-    x.className = 'xcheck';
-    x.innerHTML = '<b>交叉驗證：</b>新北市資料開放平臺算出的 '
-      + lab.years[lab.years.length - 1] + ' 年失業率是 '
-      + (lab.unemployment[lab.unemployment.length - 1] * 100).toFixed(1)
-      + '%，主計總處表37 的新北市總計也是 3.4% —— '
-      + '兩個獨立來源、不同機關、不同調查，數字吻合。';
-    host.appendChild(x);
+    // ── 交叉驗證（兩個獨立來源的同一個數字）
+    var xc = T2.cross_check || {};
+    if (xc.ntpc_latest != null && xc.dgbas_total != null) {
+      var x = document.createElement('p');
+      x.className = 'xcheck';
+      var agree = Math.abs(xc.ntpc_latest - xc.dgbas_total) < 0.0015;
+      x.innerHTML = '<b>交叉驗證：</b>新北市資料開放平臺算出的 '
+        + lab.years[lab.years.length - 1] + ' 年失業率是 '
+        + (xc.ntpc_latest * 100).toFixed(1)
+        + '%，主計總處表37 的' + M.region + '總計是 ' + (xc.dgbas_total * 100).toFixed(1) + '% —— '
+        + (agree ? '兩個獨立來源、不同機關、不同調查，數字吻合。' : '兩個來源的差距要查。');
+      host.appendChild(x);
+    }
+    }
   }
 
   function renderRank() {
@@ -1926,7 +1948,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     var side = $('heroSide'); side.innerHTML = '';
     var heroPop = find(state.area, state.band, '人口數');
     $('heroLabel').innerHTML = state.band + ' 歲青年人口'
-      + (heroPop ? '<span class="badge ' + (heroPop.provenance.confidence === 'high' ? 'ntpc">新北實測' : 'est">推估') + '</span>' : '');
+      + (heroPop ? '<span class="badge ' + (heroPop.provenance.confidence === 'high' ? 'ntpc">' + LOCAL : 'est">推估') + '</span>' : '');
     [['勞動力參與率', '勞動力參與率'], ['就業者人數', '就業者'], ['中位數年薪', '年薪中位數']]
       .forEach(function (pair) {
         var r = find(state.area, state.band, pair[0]);
@@ -3058,13 +3080,19 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // 範例問句只**填進**輸入框，不送出。送不送由使用者按「問」決定 ——
   // 跟上面 change 事件那條是同一個原則：任何不是「問」或 Enter 的動作都不該觸發回答。
+  var DIST = (function () {
+    var list = R.filter(function (r) { return r.metric === '人口數' && r.age_group === '18-35' && r.region !== M.region && r.region !== '全國'; })
+      .sort(function (a, b) { return b.value - a.value; }).map(function (r) { return r.region.replace(M.region, ''); });
+    return list;
+  })();
+  if ($('askInput') && DIST.length) $('askInput').placeholder = '任何年齡區間都可以，例如：' + M.region + ' 26-28 歲有多少人？';
   ['職訓預算該怎麼分配到各行政區？',
    '青年薪資成長跟中壯年差在哪？',
    '哪些行業值得投職訓資源？',
-   '新北市 25-29 歲的平均年薪是多少？',
+   M.region + ' 25-29 歲的平均年薪是多少？',
    '哪一區的青年最多？',
-   '比較汐止區和林口區 22-25 歲的人口',
-   '新北市 18-24 歲的失業率'].forEach(function (q) {
+   '比較' + (DIST[1] || '') + '和' + (DIST[2] || '') + ' 22-25 歲的人口',
+   M.region + ' 18-24 歲的失業率'].forEach(function (q) {
     var b = document.createElement('button');
     b.type = 'button'; b.textContent = q;
     b.addEventListener('click', function () { fillAsk(q); });
@@ -3080,10 +3108,18 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     box.className = box.className.replace(' collapsed', '') + (open ? '' : ' collapsed');
   });
   // 業務情境入口：三種青年局最常遇到的場合，各自對到儀表板已有的動作
+  var TOP_DISTRICT = (function () {
+    var best = null;
+    R.forEach(function (r) {
+      if (r.metric === '人口數' && r.age_group === '18-35' && r.region !== M.region && r.region !== '全國'
+          && (!best || r.value > best.value)) best = r;
+    });
+    return best ? best.region : M.region;
+  })();
   var SCENARIOS = {
-    quiz:   { q: '板橋區 18-35 歲有多少人、勞參率多少？', area: '新北市板橋區',
+    quiz:   { q: TOP_DISTRICT.replace(M.region, '') + ' 18-35 歲有多少人、勞參率多少？', area: TOP_DISTRICT,
               tip: '議員問哪一區就把地區換成那一區；每個數字都點得開資料履歷，可以直接答「來源是戶政司 115 年 7 月」' },
-    brief:  { q: '統整新北市 18-35 歲青年的現況', area: null, synth: true,
+    brief:  { q: '統整' + M.region + ' 18-35 歲青年的現況', area: null, synth: true,
               tip: '會報前按「匯出報告」就是一份含資料履歷的 PDF；下面這句會讓模型先統整、再逐一驗證每個數字' },
     budget: { q: '職訓預算該怎麼分配到各行政區？', area: null,
               tip: '施政建議那一格是規則推出來的、可稽核；這句交給模型在那些建議之上做推理，數字一樣會驗' },
@@ -3165,6 +3201,18 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   }
   if ($('exportBtn')) $('exportBtn').addEventListener('click', function () { exportReport(); });
   render();
+
+  // 六都切換：每個城市一個檔（新北市是 preview.html，其他是 preview_臺北市.html）。
+  // 用連結不用 JS 載入，雙擊開的 file:// 也能切。
+  (function renderCities() {
+    var host = $('cities');
+    if (!host) return;
+    var SIX = ['新北市', '臺北市', '桃園市', '臺中市', '臺南市', '高雄市'];
+    host.innerHTML = SIX.map(function (c) {
+      var href = c === '新北市' ? 'preview.html' : 'preview_' + c + '.html';
+      return '<a href="' + href + '"' + (c === M.region ? ' aria-current="page"' : '') + '>' + c.replace('市', '') + '</a>';
+    }).join('');
+  })();
 
   // preview.html?report=layout → 直接擺成報告版面（要在 render() 之後，卡片才存在）（不跳列印對話框），
   // 這是命令列產 PDF 的入口，也方便在螢幕上檢查列印版長什麼樣。

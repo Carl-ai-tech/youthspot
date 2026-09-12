@@ -37,8 +37,12 @@ def _reply(status: int, body: dict) -> dict:
             "body": json.dumps(body, ensure_ascii=False)}
 
 
-def _load_unified() -> dict:
-    """優先從 S3 讀（那是最新的），讀不到就退回打包在函式裡的那份。"""
+def _load_unified(region: str = "新北市") -> dict:
+    """優先從 S3 讀（那是最新的），讀不到就退回打包在函式裡的那份。六都各一份。"""
+    if region and region != "新北市":
+        local = Path(__file__).resolve().parent.parent / "data" / f"unified_{region}.json"
+        if local.exists():
+            return json.loads(local.read_text(encoding="utf-8"))
     if BUCKET:
         try:
             import boto3
@@ -197,7 +201,7 @@ def _ai(action: str, body: dict, backend=None) -> dict:
         # 儀表板的問答框只有在**前端規則認不得**的問題才會打到這裡 ——
         # 查數字、排名、比較那些引擎自己就答得出來，不需要模型。
         from llm.advise import advise
-        g = advise(body.get("question", ""), _load_unified(), backend,
+        g = advise(body.get("question", ""), _load_unified(body.get("region", "新北市")), backend,
                    region=body.get("region", "新北市"),
                    band=body.get("band", "18-35"))
         # 模型說「建議補蒐集 X」時，系統對照資料目錄回答 X 有沒有、在哪、接了沒

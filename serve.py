@@ -43,7 +43,8 @@ DEFAULT_PORT = 8787
 # 對外只給這些。這支會透過 Cloudflare Tunnel 開到網際網路上，
 # 而 SimpleHTTPRequestHandler 預設把整個資料夾當網站 —— .env 裡的金鑰、
 # 原始碼、快取檔全部拿得到。白名單比黑名單安全：忘了列的東西是拿不到，不是漏出去。
-PUBLIC_FILES = {"/", "/preview.html", "/snapshot.html", "/favicon.ico"}
+PUBLIC_FILES = {"/", "/preview.html", "/snapshot.html", "/favicon.ico",
+                "/preview_臺北市.html", "/preview_桃園市.html", "/preview_臺中市.html", "/preview_臺南市.html", "/preview_高雄市.html"}
 PUBLIC_PREFIXES = ("/tests/fixtures/",)          # 掃描 demo 的範例圖
 
 

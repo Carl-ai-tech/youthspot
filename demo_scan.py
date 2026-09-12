@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import sys
+from pathlib import Path
 import unicodedata
 
 from engine import TARGET_BANDS, YOUTH_BAND, ReferenceData, align_extensive
@@ -91,7 +92,18 @@ def main() -> int:
     # ------------------------------------------------------------ 幕一
     scene("一", "一張掃描的統計表，AI 讀出來")
 
-    table = read_table("樣本_主計總處就業者統計表.png", backend)
+    # 這張圖由 tools/make_scan_fixture.py 從 tests/fixtures 的 HTML 產生。
+    # 先前這裡寫死一個從來不存在的檔名 —— StubBackend 不看 image_path，
+    # 所以這行「一直都通過」，直到接上真後端才炸。假後端比真實環境寬鬆的
+    # 典型後果，跟 CLAUDE.md 裡前端那條是同一件事。
+    sheet = Path("tests/fixtures/table32_sheet.png")
+    if not sheet.exists():
+        print()
+        print(f"  ❌ 找不到 {sheet}")
+        print("     跑這個產生：python tools/make_scan_fixture.py")
+        return 1
+
+    table = read_table(str(sheet), backend)
     show_table(table)
     print("    AI 做的事到這裡就結束了 —— 它只是把圖片上的字變成結構化資料。")
     print("    它沒有做任何計算，也沒有碰年齡對齊。")
@@ -119,8 +131,14 @@ def main() -> int:
     print("    模型自己不會發現 —— 它對兩個數字一樣有把握。")
     print()
 
-    backend.responses = {"__default__": json.dumps(MISREAD, ensure_ascii=False)}
-    bad = read_table("樣本_主計總處就業者統計表.png", backend)
+    # 這一幕**永遠**用假後端，即使現在接的是真模型。
+    # 要演的是「合計查核抓得到看錯的數字」，所以需要一份確定會出錯的輸入 ——
+    # 沒辦法叫模型按需求看錯，真模型讀同一張圖只會再讀對一次，什麼都演不出來。
+    #
+    # 先前這裡寫 `backend.responses = {...}`，那是 StubBackend 才有的屬性。
+    # 接上真後端時 Python 會默默替它長出一個沒人讀的屬性，然後照樣去呼叫模型。
+    misread_backend = StubBackend({"__default__": json.dumps(MISREAD, ensure_ascii=False)})
+    bad = read_table(str(sheet), misread_backend)
     show_table(bad)
 
     for issue in bad.issues:

@@ -94,6 +94,42 @@ def fetch_population(
     return counts, meta
 
 
+def fetch_population_by_sex(
+    region: str = "新北市",
+    *,
+    period: str | None = None,
+    age_range: tuple[int, int] = (15, 64),
+    refresh: bool = False,
+) -> dict[str, dict[str, dict[int, int]]]:
+    """{行政區: {"m": {年齡: 人數}, "f": {...}}}。
+
+    戶政司的欄位本來就是 people_age_XXX_m / _f —— 性別維度一直都在，
+    只是先前兩欄相加後就丟掉了。這支把它留下來。
+    """
+    period = period or latest_period(refresh=refresh)
+    lo, hi = age_range
+    out: dict[str, dict[str, dict[int, int]]] = {}
+    page, total_pages = 1, 1
+    while page <= total_pages:
+        payload = fetch_json(
+            f"{POPULATION_API.format(period=period)}?page={page}",
+            f"odrp014_{period}_p{page}.json",
+            refresh=refresh,
+        )
+        total_pages = int(payload["totalPage"])
+        for row in payload["responseData"]:
+            site = row["site_id"]
+            if not site.startswith(region):
+                continue
+            d = out.setdefault(site, {"m": {a: 0 for a in range(lo, hi + 1)},
+                                      "f": {a: 0 for a in range(lo, hi + 1)}})
+            for a in range(lo, hi + 1):
+                d["m"][a] += int(row[f"people_age_{a:03d}_m"])
+                d["f"][a] += int(row[f"people_age_{a:03d}_f"])
+        page += 1
+    return out
+
+
 def fetch_population_by_district(
     region: str = "新北市",
     *,

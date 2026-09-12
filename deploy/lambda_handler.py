@@ -78,10 +78,16 @@ def _run_pipeline() -> dict:
     }
 
 
-def _ai(action: str, body: dict) -> dict:
-    """三種 AI 工作。數字一律來自引擎，模型只負責看懂與表達。"""
-    from llm.backend import load_backend
-    backend = load_backend("bedrock")
+def _ai(action: str, body: dict, backend=None) -> dict:
+    """四種 AI 工作。數字一律來自引擎，模型只負責看懂與表達。
+
+    `backend` 可注入：Lambda 固定傳 bedrock（比賽規定），
+    本機 serve.py 傳 load_backend()（讀 .env，開發時走直連 API）。
+    兩邊跑的是**同一支函式**，本機測過的路徑就是 9/12 上線的路徑。
+    """
+    if backend is None:
+        from llm.backend import load_backend
+        backend = load_backend("bedrock")
 
     if action == "ask":
         from llm.ask import ask
@@ -95,10 +101,14 @@ def _ai(action: str, body: dict) -> dict:
                        region=body.get("region", "新北市"),
                        band=body.get("band", "18-35"),
                        question=body.get("question"))
+        # 模型說「建議補蒐集 X」時，系統對照資料目錄回答 X 有沒有、在哪、接了沒
+        from llm.gaps import find_gaps
         return {"ok": True, "text": g.text,
                 "trustworthy": g.trustworthy,
                 "verified": g.verified, "unverified": g.unverified,
-                "summary": g.summary(), "records": g.records}
+                "summary": g.summary(), "records": g.records[:12],
+                "gaps": find_gaps(g.text),
+                "model": getattr(backend, "model", backend.name)}
 
     if action == "scan":
         import base64
@@ -110,18 +120,96 @@ def _ai(action: str, body: dict) -> dict:
             fh.write(raw)
             path = fh.name
         table = read_table(path, backend)
+
+        # 對齊也在這裡做完，畫面才能演完整的故事：AI 讀表 → 三道查核 → 引擎對齊。
+        # 只回「讀到幾列」的話，使用者看不到掃描檔怎麼變成 18–35 歲的數字。
+        aligned = []
+        if table.usable_rows and table.trustworthy:
+            from engine import ReferenceData, TARGET_BANDS, YOUTH_BAND, align_extensive
+            ref = ReferenceData.load()
+            pool = to_source_records(table)
+            for band in list(TARGET_BANDS) + [YOUTH_BAND]:
+                rec = align_extensive(ref, pool, band)
+                if rec is not None:
+                    aligned.append(rec.to_dict())
+
         return {
             "ok": True,
+            "metric": table.metric, "unit": table.unit,
+            "region": getattr(table, "region", None), "year": getattr(table, "year", None),
             "summary": table.summary(),
             "trustworthy": table.trustworthy,
             "issues": table.issues,
             "unreadable": table.unreadable,
             "rows": [{"age_label": r.age_label, "value": r.value,
                       "band": r.band.label if r.band else None} for r in table.rows],
-            "source_records": len(to_source_records(table)) if table.usable_rows else 0,
+            "printed_total": getattr(table, "printed_total", None),
+            "computed_total": sum(r.value for r in table.rows) if table.rows else None,
+            "aligned": aligned,
+            "model": getattr(backend, "model", backend.name),
         }
 
-    raise ValueError(f"不認識的 action：{action}（可用：ask、synthesize、scan）")
+    if action == "scan_text":
+        # CSV／貼上的表格文字。規則解析（不用模型）→ 解析不了的年齡標籤才交模型判讀（§5.6）
+        # → 同一套三道查核 → 同一個引擎對齊。回傳格式跟 scan 一樣，前端共用同一個畫面。
+        from llm.table_text import read_table_text
+        from llm.scan_table import to_source_records
+        text = body.get("text", "")
+        if not text.strip():
+            raise ValueError("沒有表格文字")
+        table, inferred = read_table_text(text, backend)
+        if body.get("region"):
+            table.region = body["region"]
+        if body.get("year"):
+            table.year = int(body["year"])
+        aligned = []
+        if table.usable_rows and table.trustworthy and table.region and table.year:
+            from engine import ReferenceData, TARGET_BANDS, YOUTH_BAND, align_extensive
+            ref = ReferenceData.load()
+            pool = to_source_records(table)
+            for band in list(TARGET_BANDS) + [YOUTH_BAND]:
+                rec = align_extensive(ref, pool, band)
+                if rec is not None:
+                    d = rec.to_dict()
+                    if inferred:
+                        d["provenance"]["note"] = (d["provenance"].get("note") or "") + "；含模型語意判讀的分組（推定）"
+                    aligned.append(d)
+        return {
+            "ok": True, "source": "text",
+            "metric": table.metric, "unit": table.unit,
+            "region": table.region, "year": table.year,
+            "summary": table.summary(),
+            "trustworthy": table.trustworthy,
+            "issues": table.issues, "unreadable": table.unreadable,
+            "rows": [{"age_label": r.age_label, "value": r.value,
+                      "band": r.band.label if r.band else None,
+                      "inferred": bool(r.band) and any(v.get("applied_label") == r.band.label for v in inferred.values())}
+                     for r in table.rows],
+            "inferred": inferred,
+            "printed_total": table.printed_total,
+            "computed_total": sum(r.value for r in table.rows) if table.rows else None,
+            "aligned": aligned,
+            "model": getattr(backend, "model", backend.name) if inferred else "規則解析，未呼叫模型",
+        }
+
+    if action == "advise":
+        # 政策問答：規則先產生可稽核的發現，模型在那上面做推理，每個數字再驗一次。
+        # 儀表板的問答框只有在**前端規則認不得**的問題才會打到這裡 ——
+        # 查數字、排名、比較那些引擎自己就答得出來，不需要模型。
+        from llm.advise import advise
+        g = advise(body.get("question", ""), _load_unified(), backend,
+                   region=body.get("region", "新北市"),
+                   band=body.get("band", "18-35"))
+        # 模型說「建議補蒐集 X」時，系統對照資料目錄回答 X 有沒有、在哪、接了沒
+        from llm.gaps import find_gaps
+        return {"ok": True, "text": g.text,
+                "trustworthy": g.trustworthy,
+                "verified": g.verified, "unverified": g.unverified,
+                "summary": g.summary(), "records": g.records[:12],
+                "gaps": find_gaps(g.text),
+                "model": getattr(backend, "model", backend.name)}
+
+    raise ValueError(f"不認識的 action：{action}（可用：ask、synthesize、scan、scan_text、advise）")
 
 
 def handler(event, context=None):

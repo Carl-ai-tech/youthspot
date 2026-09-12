@@ -30,7 +30,7 @@
 $env:PYTHONIOENCODING="utf-8"
 $py="$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 
-& $py -m unittest discover -s tests -v   # 41 個測試，改任何東西都要跑
+& $py -m unittest discover -s tests -v   # 189 個測試，改任何東西都要跑
 & $py demo_align.py                      # 四幕現場 demo
 & $py data/backtest.py                   # 拆組方法的實測誤差
 & $py run_pipeline.py                    # 一鍵跑完整條流程（現場 demo 按這個）
@@ -38,9 +38,12 @@ $py="$env:LOCALAPPDATA\Programs\Python\Python312\python.exe"
 & $py data/build_unified.py              # 產出 unified.json（交給前端的檔）
 & $py data/make_preview.py               # 產出 preview.html（雙擊即可開）
 & $py demo_scan.py                       # 掃描檔判讀 demo
+& $py serve.py                           # 本機開發伺服器 localhost:8787（問答／掃描／統整都走它）
+& $py check_env.py                       # 看目前用哪個後端、金鑰有沒有讀到（不印金鑰）
 & $py -m llm.backend                     # 列出可用的 Bedrock 模型（9/12 早上第一件事）
 & $py check_scan_accuracy.py --self-test # 驗證評分程式本身
-node tests/verify_dashboard.mjs          # 驗證儀表板問答（改前端後一定要跑）
+node tests/verify_dashboard.mjs          # 51 項儀表板驗證（改前端後一定要跑）
+& $py tools/make_report_pdf.py           # 命令列把儀表板印成 PDF（要有 Chrome）
 & $py check_scan_accuracy.py <圖片>       # 9/12 接上 Bedrock 後測真實準確率
 ```
 
@@ -96,8 +99,16 @@ data/
   odsreader.py         用標準函式庫讀 ODS（政府統計表的通用格式）
   fetch_employment.py  主計總處表32 → 縣市 × 教育程度 × 五歲組就業者
   fetch_salary.py      主計總處表6 → 縣市 × 年齡別平均／中位數年薪
+  fetch_housing.py     內政部 房價所得比／貸款負擔率（六都、每季）← **只能人工下載**，見檔頭
+  fetch_labour_sex.py  主計總處 mp04016/18/30 → 分齡 × 性別 勞參率／失業率（全國 1978–）
+  fetch_employment_industry.py  主計總處 mp04025 → 歷年就業者之行業（供需錯配用）
+  fetch_district_income.py      財政部綜稅各鄉鎮所得中位數（唯一有行政區細分的所得；108 年度定義改變）
+  fetch_district_jobs.py        主計總處 110 年工商普查各區從業員工 → 在地工作機會、工作機會密度
+  fetch_geo.py         行政區界線 TopoJSON → SVG path（純 Python 投影＋簡化）
   ungroup.py           五歲組 → 單一年齡（PCHIP + 組內校準）
   backtest.py          量測 ungroup 的實際誤差 ← 信心度規則的依據
+  forecast.py          線性外推 + t 檢定（純函式）
+  insights.py          異常與洞察偵測，建在 forecast 上   ← Spec P1-3
   build_reference.py   組合三者 → reference_ntpc.json
   build_unified.py     跑引擎 → unified.json（交付給前端）
   preview_template.html / make_preview.py  → preview.html ← 儀表板就長在這
@@ -106,10 +117,16 @@ llm/            唯一呼叫語言模型的地方，可抽換後端
   scan_table.py    掃描檔 → 結構化表格 ＋ 三道查核
   ask.py           中文問題 → 受控意圖（模型只能從清單挑，不能發明）
   synthesize.py    RAG 統整：撈 → 生成 → **把模型寫的每個數字比對回來源**
+  advise.py        問答框的政策問答：規則結果 + 記錄 → 模型推理 → 逐數字查核
+  table_text.py    CSV／貼上文字 → 規則辨識年齡分組；文字標籤才交模型判讀（Spec §5.6）
+serve.py        本機開發伺服器，POST /api 走跟 Lambda 同一支 `_ai()`
+deploy/         lambda_handler.py（scan／synthesize／advise）、deploy.sh
+check_env.py    後端與金鑰狀態（只印長度與前綴）
 demo_align.py   終端機版 demo（技術細節用），上台主要看 preview.html
 demo_scan.py    掃描檔 demo，第二幕演「AI 讀錯時我們抓得到」
 demo_ai.py      AI 統整 demo，第三幕演「模型編數字時我們抓得到」
-tests/          41 個測試
+tests/          189 個 Python 測試 + verify_dashboard.mjs 51 項
+tools/          make_scan_fixture.py（掃描測驗卷）、make_report_pdf.py（報告 PDF）
 ```
 
 ## 資料來源（免金鑰）
@@ -124,6 +141,36 @@ tests/          41 個測試
 | 主計總處 表29／表37 | 縣市別分齡勞參率與失業率 | 五歲組、縣市 |
 | 主計總處 mp05005 | 歷年各業廠商職缺數 | 18 行業、全國、1997– |
 | **新北市資料開放平臺** | 新北市勞動力（主計處） | 全年齡、**19 個年度 2006–** |
+| **內政部不動產資訊平台** | 房價所得比、貸款負擔率 | **全體家戶**（非青年）、六都＋全國、每季 2002– |
+| 主計總處 mp04016／mp04018／mp04030 | 民間人口／勞動力／失業者之年齡（**分性別**） | 五歲組 × 男女、全國、1978– |
+| 主計總處 mp04025 | 歷年就業者之行業（分性別） | 18 行業、全國、1978– |
+| **財政部財政資訊中心** 綜稅村里統計 | 各行政區綜合所得中位數（全體申報戶） | **行政區**、2012–2023、每年 |
+| **主計總處 110 年工商普查** | 各行政區場所單位數、從業員工人數 | **行政區**、2021、每 5 年 |
+
+### 行政區層級的資料為什麼只有這兩份（2026-09-11 找過）
+
+人力資源調查是抽樣，樣本撐不到行政區，所以就業／失業／薪資都只有縣市。能細到行政區的是
+**全面資料**：戶政（人口）、稅籍（財政部所得）、普查（主計總處場所單位）。新北市資料開放平臺的
+就業服務站求職求才沒有找到可自動抓的資料集。上台被問「為什麼林口區沒有失業率」就這樣答。
+
+### 主計總處固定網址 XML 目錄（2026-09-11 掃過）
+
+`https://ws.dgbas.gov.tw/001/Upload/461/relfile/11525/236096/mp040NN.xml`，NN = 13–35 有檔（01–12 是 404）。
+16/18/23/30 是人口／勞動力／就業者／失業者之年齡（都分男女）、25 是行業、26 職業、29 初次尋職者、
+34 失業週數。**沒有行業 × 年齡**。114 年報（`.../11516/236078/tableNN.ods`，NN=1–44）也逐一看過標題，同樣沒有。
+
+### 居住資料（2026-09-11 接入）—— 唯一要人工下載的來源
+
+pip.moi.gov.tw 前面有 F5 防火牆，非瀏覽器請求一律 Request Rejected，五種自動化都試過。
+`data/fetch_housing.py` **不下載**，只讀 `data/_cache/moi_price_income.csv` 與
+`moi_loan_burden.csv`（cp950），檔案不在時把下載步驟印出來；pipeline 不會因此停。
+
+- **這是家戶層級，不是青年。** 記錄的 age_group 寫 `全體`，圖上、六都比較、問答、
+  LLM 提示詞全部標「全體家戶（非青年）」。青年所得低於家戶中位數，實際負擔只會更重 —— 上台要講。
+- 來源 CSV 的貸款負擔率有三季（110Q4、111Q1、111Q2）整列是正常值的 100 倍，
+  `_repair()` 只修「整列都 >100」的情況並留下 `corrections` 記錄，一路帶到 provenance 與圖說。
+  單一格異常不動，那可能是真的離群值。
+- 洞察層把季資料合成年平均（只取四季齊全的年份）再偵測，所以卡片講的「年」是真的年。
 
 ### ODS 來源（已接進來，2026-09-08）
 
@@ -185,7 +232,7 @@ tests/          41 個測試
 
 `runAsk` 另外包了 try/catch，出錯會把訊息印在答案區而不是靜靜消失。
 
-## 三處刻意偏離 Spec（都已驗證，不要改回去）
+## 四處刻意偏離 Spec（都已驗證，不要改回去）
 
 1. **結構轉折的信心度降級改成條件式。** §5.8 那條規則是為公式 A 寫的。
    公式 B 的 r(a) 曲線本身就在 18 歲跳 2.3 倍，再降一次是重複懲罰。
@@ -194,6 +241,14 @@ tests/          41 個測試
    必須連失業人數與勞動力人數一起抓。
 3. **§5.5「18–21 歲失業率約 1.4 倍」不成立。** 接上真實資料實測是 1.00 倍。
    **上台不要講 1.4 倍。**
+4. **P1-3 的例子做不出來，因為官方分齡表沒有性別欄位。** §4.2 舉「30–35 歲**女性**勞參率
+   在 2023 年後下降 4.2%」當範例，但分齡的勞參率／失業率／薪資表都沒有性別。
+   **不要說「所有資料源都沒性別」—— 那是錯的**（2026-09-11 模擬評審抓到）：
+   戶政司單一年齡人口有 `people_age_XXX_m/_f`，新北勞動力有男女欄。兩者已接進
+   `unified.json` 的 `gender` 區塊（人口分齡 × 性別）與 `trends.labour.lfpr_m/lfpr_f`
+   （全年齡）。`records` 的 `gender` 仍全部是 `total`，因為前端與引擎的查表不看性別，
+   混進去會撈錯筆。`insights.py` 偵測跨年齡組、跨行業、與全年齡男女勞參率的變化。
+   **上台要主動講** —— 評審對照 Spec 會發現例子沒做出來，先講是誠實，被問出來是漏做。
 
 ## 回測結論（`data/backtest.py`）
 
@@ -221,7 +276,7 @@ tests/          41 個測試
 Bedrock 走 AWS 憑證（Workshop 環境自帶），不是 sk-ant- 開頭的那種 key。
 
 AWS 環境**只在 9/12 08:00 – 9/13 13:00 開放**，賽前碰不到。
-所有邏輯已用 `StubBackend` 測完（66 個測試），當天只要換設定：
+所有邏輯已用 `StubBackend` 測完（113 個測試），當天只要換設定：
 
 ```powershell
 $env:YOUTHLENS_LLM_BACKEND = "bedrock"
@@ -245,11 +300,30 @@ Workshop 帳號有哪些模型、開在哪一區，賽前無法得知，一跑�
 ✅ `unified.json` 372 筆：30 個地區 × 4 個年齡層 × 6 個指標
 ✅ `preview.html` 可雙擊開啟的預覽頁
 ✅ 掃描檔判讀（AI 讀圖 ＋ 三道查核，含合計比對抓錯字）
-✅ 66 個測試
+✅ 異常與洞察（Spec P1-3，四個偵測器，全部建在 forecast 的 t 檢定上；每張圖最多 2 張卡）
+✅ 儀表板：地圖優先＋問答框；引擎答得了的問題走本機規則，答不了的 POST /api 交給模型
+✅ 問答框接真模型（賽前 `.env` 用 Anthropic Haiku 開發，**交件只能是 Bedrock**）
+✅ 掃描檔上傳（拖進儀表板 → 模型讀 → 三道查核 → 對齊）、RAG 統整鈕、洞察卡「看圖 →」
+✅ 第四個資料源：居住負擔（六都季序列圖、六都比較、問答、LLM 提示詞）
+✅ 查核池改成單位對應：「47.2%」只准對上比率型的值，不再對上某個里的人口數÷1000
+✅ 一鍵報告匯出（Spec P2-3）：右上「匯出報告」→ 瀏覽器列印 → 另存 PDF。零套件：
+   只有一份 `@media print`，`exportReport()` 展開所有區塊、填封面、印完還原。
+   `preview.html?report=layout` 在螢幕上直接看列印版；`tools/make_report_pdf.py` 用 headless Chrome 產檔。
+✅ 模擬評審報告（2026-09-11）逐項回應：性別（人口分齡 × 性別、全國分齡 × 性別勞參率／失業率）、
+   資料範圍徽章、pipeline 狀態表、回測數字與三道查核上畫面、AI 定位文案、失敗狀態、CSV 下載＋資料字典、
+   業務情境入口、青年基本法權益覆蓋（8 面向，1 有／2 部分／5 缺口＋候選來源）、
+   CSV／貼上文字自動辨識年齡分組＋ §5.6 語意判讀（推定）、供需錯配（職缺 × 就業人數，全國全年齡）
+✅ 行政區層級的兩個新來源（2026-09-11 晚）：財政部綜稅各鄉鎮所得中位數（2012–2023，固定網址 CSV）、
+   主計總處 110 年工商普查各區從業員工（→ 工作機會密度 = 區內從業員工 ÷ 區內 15–64 歲人口）。
+   地圖多兩個指標鈕；問答「林口區的所得」「哪一區工作機會密度最高」本機直接答；模型也拿得到各區這些數字
+✅ 修正與拉分清單（2026-09-11 晚，模擬評審第二輪）：法條條號逐條對照 H0180009 並擴到第 7–23 條；
+   異常偵測改近 15 年窗口＋比率型外推跨出 0–100% 不報（假警報消失）；偏離文字同時給點預測差與區間邊界差；
+   規則「取前三」寫進依據並列其餘符合者；不顯著不叫「持平」；施政建議因果句改「可能原因（待驗證）」並降級；
+   中位數合成標近似＋low；就業區加官方分齡失業率並說明三口徑；各區青年人口年變化（戶政兩期相減）→ 地圖指標＋公平性建議；
+   信心度中文；pipeline 過期提示；固定目錄；4 個部會／市府、5 個提供單位
+✅ 189 個 Python 測試 + 51 項儀表板驗證
 
 ⬜ 教育程度 × 薪資交叉（Spec P1-1，表32 已有教育程度欄位，就差組合）
-⬜ 缺工趨勢預測（命題明列的預期成果，48 年序列已備妥）
 ⬜ 表29 縣市別分齡勞參率（可提升信心度，但表頭要小心）
 ⬜ 中文問答（AI 聽懂問題，數字仍由引擎查）
-⬜ LLM 語意判讀（Spec §5.6，「社會新鮮人」→ 年齡區間）
 ⬜ 一鍵 ETL：把 build_reference + build_unified + make_preview 串成一支

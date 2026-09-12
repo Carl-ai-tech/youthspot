@@ -1,0 +1,146 @@
+"""政策問答。—— 「根據這些資料，我這個政策該怎麼調整？」
+
+跟 `data/build_unified.py::_policy_notes()` 的關係，是**疊加不是取代**：
+
+    _policy_notes()   規則寫死，五條，永遠一樣，離線可用，完全可稽核
+    advise()          針對使用者當下問的那個問題組織答案
+
+為什麼不直接讓模型自由發揮寫政策建議：`_policy_notes()` 的註解已經
+講過理由 —— 模型很會寫「建議加強社會住宅供給」，但那句話背後可能
+一個數字都沒有，而且沒有人查得出來。`demo_ai.py` 幕三就是這種例子。
+
+所以這裡的設計是：**規則先產生可稽核的發現，模型只負責在那些發現上
+做推理與組織，然後每一個數字再驗一次。**
+
+    1. 撈出跟問題相關的記錄（reuse synthesize.retrieve）
+    2. 連同「規則算出來的施政建議」與「統計檢定過的洞察」一起餵給模型
+    3. 模型寫出針對問題的建議
+    4. **verify() 逐一比對每個數字**，對不上就標出來
+
+模型的自由度在「怎麼組織、怎麼權衡、建議做什麼」，不在「數字是多少」。
+這條界線跟掃描檔判讀那邊是同一條：AI 只做看懂與表達，不做計算。
+"""
+
+from __future__ import annotations
+
+from .backend import Backend
+from .synthesize import Grounded, _fmt, retrieve, verify
+
+# 政策問題常常橫跨多個面向（就業＋薪資＋人口），撈窄了模型會無話可說
+RECORD_LIMIT = 32
+
+
+def build_prompt(payload: dict, records: list[dict], question: str,
+                 region: str, band: str) -> str:
+    """組出提示詞。**可用的數字全部列進去，模型只能挑，不能算也不能編。**
+
+    每一行都要帶地區、年齡層、指標與可靠度。`_fmt()` 只回傳「數值＋單位」——
+    先前這裡直接 `[_fmt(r) for r in records]`，等於餵給模型一串沒有標籤的
+    裸數字。實測後果：87 筆行政區資料全部進了提示詞，模型卻回答
+    「現有數字無法告訴我們各行政區青年人口分布」—— 它看得到數字，
+    但不知道哪個數字屬於哪一區。
+    """
+    lines = []
+    for i, r in enumerate(records, 1):
+        edu = f"／{r['education']}" if r.get("education") else ""
+        # 「全體」的口徑照來源寫：家戶（居住）、申報戶（所得）、全體（普查工作機會）
+        who = (f"{r['provenance'].get('source_age_group') or '全體'}（非青年）"
+               if r["age_group"] == "全體" else f"{r['age_group']} 歲")
+        lines.append(f"[{i}] {r['region']}{edu} {who} "
+                     f"{r['metric']} = {_fmt(r)} "
+                     f"（可靠度 {r['provenance']['confidence']}）")
+
+    notes = payload.get("policy_notes") or []
+    insights = payload.get("insights") or []
+
+    def block(title: str, items: list[dict], keys: tuple[str, str]) -> str:
+        if not items:
+            return ""
+        # detail 是卡片的細項（行業名稱、數字），不給的話模型只看到「這幾個領域」
+        # 卻不知道是哪幾個，實測它會因此回答「資料回答不了」。
+        body = "\n".join(
+            f"  - {it.get(keys[0], '')}（信心度 {it.get('confidence', '?')}）\n"
+            f"    {it.get(keys[1], '')}"
+            + "".join(f"\n      · {d}" for d in (it.get("detail") or [])[:4])
+            for it in items[:8]
+        )
+        return f"\n{title}\n{body}\n"
+
+    return f"""你是{region}青年事務的政策幕僚。承辦人問了你一個問題，
+請根據下面的資料回答。
+
+**使用者的問題**
+{question}
+
+**最重要的規則：你只能使用下面列出的數字。**
+不可以自己計算、不可以推估、不可以寫出清單裡沒有的數字。
+需要比較大小、講趨勢方向、給出行動建議都可以，
+但任何具體數值都必須出自下面的清單。
+
+**只有**清單與卡片裡完全沒有相關數字時，才說「這個問題現有資料回答不了」並說明缺哪一種資料。
+有部分相關的數字時，**第一句先用它們回答**，再講口徑限制（全國／全年齡／家戶）——
+不要先說回答不了、然後又引用一堆數字。**不要為了看起來有幫助而編一個數字。**
+
+標成「全體家戶（非青年）」的數字是家戶層級的官方值。問到居住、買房、房貸時
+可以引用它們，但要講明這是全體家戶的數字，而青年所得低於家戶中位數，
+實際負擔只會更重 —— 這是「有資料但口徑不同」，不是「沒有資料」。
+清單裡有這兩個數字時，**不要**說「回答不了」：先用它們回答（家戶要幾年不吃不喝、
+月所得幾成拿去繳房貸），講明口徑，再給建議。
+
+同樣地，行業（職缺、缺工、供需錯配、行業薪資）的數字是**全國、全年齡**的 —— 官方沒有縣市或
+分齡的行業表。問到行業時就用這些回答，講明「全國訊號」即可，不要因為不是{region}或不是青年
+就說回答不了。施政建議卡片底下的「·」細項就是具體行業與數字，可以直接引用。
+
+**可用的數字（{region}．{band} 歲為主）**
+{chr(10).join(lines)}
+{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
+{block("**通過統計檢定的變化（已附依據，可直接引用）**", insights, ("title", "body"))}
+**怎麼回答**
+- **第一行只寫一句結論**（40 字內，不要標題、不要「以下是」），畫面上只先顯示這一句；
+  空一行之後才是完整分析
+- 建議要具體到「做什麼」，不要停在「應重視」這種層次
+- 每個建議後面接它依據哪個數字
+- 三百字以內
+- 有反面證據或不確定的地方要講出來，不要只講支持結論的部分
+"""
+
+
+def _district_records(payload: dict, region: str, band: str) -> list[dict]:
+    """各行政區的分區數字。
+
+    政策問題十有八九跟「資源怎麼分配到各區」有關，而行政區人口正好是
+    整份資料裡品質最高的一塊（戶政司單一年齡實數、精確加總、high）。
+    `retrieve()` 只撈單一地區，所以模型看不到這些 —— 實測它因此回答
+    「缺少各行政區的青年人口數」，但那份資料一直都在。
+
+    只取有分區的三個指標；其餘指標沒有行政區層級，撈了也是空的。
+    """
+    wanted = {"人口數", "勞動力人數", "勞動力參與率"}
+    # 行政區層級的全體指標（財政部所得中位數、普查在地工作機會與密度）也給模型 ——
+    # 「林口區的工作供需」靠的就是這些，先前模型只能回「沒有」。
+    whole = {"綜合所得中位數", "工作機會密度", "在地工作機會"}
+    out = [
+        r for r in payload.get("records", [])
+        if r.get("region", "").startswith(region)
+        and r.get("region") != region
+        and ((r.get("age_group") == band and r.get("metric") in wanted)
+             or (r.get("age_group") == "全體" and r.get("metric") in whole))
+    ]
+    # 依人口排序，讓模型先看到最大的幾區
+    out.sort(key=lambda r: -r.get("value", 0))
+    return out
+
+
+def advise(question: str, payload: dict, backend: Backend, *,
+           region: str = "新北市", band: str = "18-35") -> Grounded:
+    """回答一個政策問題，並驗證答案裡的每個數字。
+
+    回傳的 `Grounded.unverified` 不為空時，代表模型寫出了資料不支持的數字 ——
+    前端**必須**把這件事顯示出來，不能只印文字。
+    """
+    records = retrieve(payload, region, band, limit=RECORD_LIMIT)
+    records += _district_records(payload, region, band)
+    raw = backend.complete(build_prompt(payload, records, question, region, band))
+    text = raw.strip()
+    ok, bad = verify(text, records, payload)
+    return Grounded(text=text, records=records, verified=ok, unverified=bad, raw=raw)

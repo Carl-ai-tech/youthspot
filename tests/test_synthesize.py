@@ -98,6 +98,20 @@ class TestVerification(unittest.TestCase):
         _, bad = verify(text, PAYLOAD["records"], PAYLOAD)
         self.assertEqual(bad, [])
 
+    def test_percent_must_match_a_rate_not_a_count(self) -> None:
+        """人口 832,214 人 ÷10000 = 83.2 萬人是合理寫法，但「83.2%」不是。
+
+        先前的池子對每一筆都放 ×100 與 ÷1000，結果 0–100 之間任意一個百分比
+        有七成能對上某筆人口數 —— 查核形同虛設。單位要跟著數字走。
+        """
+        _, bad = verify("新北市青年約 83.2 萬人。", PAYLOAD["records"], PAYLOAD)
+        self.assertEqual(bad, [])
+        _, bad = verify("新北市青年勞參率 83.2%。", PAYLOAD["records"], PAYLOAD)
+        self.assertIn("83.2", bad)
+        # 59.9 萬元的年薪，寫成 59.9% 也不行
+        _, bad = verify("青年就業率 59.9%。", PAYLOAD["records"], PAYLOAD)
+        self.assertIn("59.9", bad)
+
     def test_years_and_ages_are_not_treated_as_data(self) -> None:
         text = "2024 年的 25-29 歲青年，在六都排第 4 名。"
         _, bad = verify(text, PAYLOAD["records"], PAYLOAD)

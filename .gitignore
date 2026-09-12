@@ -21,13 +21,23 @@ Thumbs.db
 # 注意：data/reference_ntpc.json 要進版控 —— 它只有 8KB，
 # 而且有了它，換電腦不用連網就能跑 demo。
 data/_cache/
+# 例外：內政部不動產資訊平台的兩份 CSV 只能人工下載（防火牆擋自動化），
+# 沒有它們 pipeline 會少居住那一塊，所以這兩份要進版控（各 4KB）
+!data/_cache/
+data/_cache/*
+!data/_cache/moi_price_income.csv
+!data/_cache/moi_loan_burden.csv
 
-preview.html
+# preview.html 是交付物（雙擊即開的儀表板），要進版控；改模板後記得重跑 make_preview.py
 
 # ── 憑證與機密：絕對不能進公開 repo ──
 # 主辦單位特別提醒過不要把 AWS Access Keys 推上 GitHub
 .env
 .env.*
+# 也擋任何 *.env（local.env、prod.env、手滑打錯名字的…）——
+# 原本只擋 .env 開頭，youthlens.env 這種就會直接進版控。
+*.env
+*.env.*
 *.pem
 *.key
 credentials

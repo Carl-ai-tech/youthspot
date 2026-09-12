@@ -50,8 +50,10 @@ class Grounded:
             return "敘述中沒有出現數字"
         if self.trustworthy:
             return f"{total} 個數字全部比對到來源記錄"
-        return (f"{len(self.verified)}/{total} 個數字比對到來源；"
-                f"{len(self.unverified)} 個對不上：{'、'.join(self.unverified)}")
+        # 對不上的數字只列一次（前端會另外用「模型估算」的措辭標出來，
+        # 這裡再列會在同一行出現兩遍）
+        return (f"{len(self.verified)}/{total} 個數字比對到來源，"
+                f"{len(self.unverified)} 個對不上")
 
 
 def _fmt(rec: dict) -> str:
@@ -61,6 +63,8 @@ def _fmt(rec: dict) -> str:
         return f"{v * 100:.1f}%"
     if unit.startswith("萬"):
         return f"{v:.1f} {unit}"
+    if unit == "倍":
+        return f"{v:.2f} 倍"
     return f"{v:,.0f} {unit}"
 
 
@@ -76,6 +80,10 @@ def retrieve(payload: dict, region: str, band: str, limit: int = 24) -> list[dic
              if r["region"] == region and r["age_group"] not in (band,)
              and r["metric"] in {"平均年薪", "失業率", "就業者人數"}][:6]
     hits += [r for r in payload["records"] if r.get("education")][:6]
+    # 居住負擔是家戶層級（age_group = 全體），沒有這一行模型永遠看不到它，
+    # 問「青年買房」就只能說沒資料。標籤會寫明「非青年」，不會被當成青年數字。
+    hits += [r for r in payload["records"]
+             if r["region"] == region and r["age_group"] == "全體"]
     seen, out = set(), []
     for r in hits:
         key = (r["region"], r["age_group"], r["metric"], r.get("education"))
@@ -91,7 +99,10 @@ def build_prompt(payload: dict, records: list[dict], region: str, band: str,
     lines = []
     for i, r in enumerate(records, 1):
         edu = f"／{r['education']}" if r.get("education") else ""
-        lines.append(f"[{i}] {r['region']}{edu} {r['age_group']} 歲 "
+        # 「全體」的口徑照來源寫：家戶（居住）、申報戶（所得）、全體（普查工作機會）
+        who = (f"{r['provenance'].get('source_age_group') or '全體'}（非青年）"
+               if r["age_group"] == "全體" else f"{r['age_group']} 歲")
+        lines.append(f"[{i}] {r['region']}{edu} {who} "
                      f"{r['metric']} = {_fmt(r)} "
                      f"（可靠度 {r['provenance']['confidence']}）")
 
@@ -168,8 +179,54 @@ def _numbers_in(text: str) -> list[str]:
             continue                                  # 相差 7.4 個百分點
         if val <= 1:
             continue                                  # 0／1 多半是語氣
+        # 條列編號：行首（允許前面有 markdown 記號）的「2.」「3、」「4)」。
+        # 不擋的話，模型只要用編號清單回答，每個編號都會被報成「編造的數字」——
+        # 誤報跟漏報一樣傷：讀的人一旦發現查核會冤枉正確的數字，
+        # 之後真的抓到編造時他也不會信了。
+        # 注意用未裁切的前綴。上面的 head 已經 rstrip() 過，換行符被吃掉了，
+        # 拿它判斷「行首」永遠不會成立 —— 條列編號就漏出去了。
+        line_head = text[:m.start()].rsplit("\n", 1)[-1].strip(" *-　")
+        if line_head == "" and tail[:1] in (".", "、", ")", "．"):
+            continue
+        # 引用編號：advise() 的提示詞用 [1] [2] 標示每一筆記錄，模型會照著引
+        # （例如「…佔 33%（[1-27]）」）。那是索引不是資料，報成編造會很難看。
+        if head.endswith("[") or head.endswith("[") or tail.startswith("]"):
+            continue
         out.append(raw)
     return out
+
+
+def _is_percent(text: str, raw: str, nth: int) -> bool:
+    """敘述裡第 nth 次出現的 raw 後面是不是接著 %。"""
+    pos = -1
+    for _ in range(nth + 1):
+        pos = text.find(raw, pos + 1)
+        if pos < 0:
+            return False
+    tail = text[pos + len(raw):].lstrip()
+    return tail.startswith("%") or tail.startswith("％")
+
+
+def _spellings(v: float, unit: str) -> list[tuple[float, bool]]:
+    """一個值在敘述裡合理的寫法。**只做該單位會有的換算**。
+
+    先前對每一筆都同時放 v、v×100、v÷1000 進池子：人口 47,183 人 ÷1000 = 47.2，
+    於是模型編一個「47.2%」就對得上某個里的人口數。實測 0–100 之間任意一個
+    百分比有七成能過關 —— 查核形同虛設。這支程式存在的理由就是抓編造的數字，
+    池子鬆一點，整個主張就垮。
+
+    每個寫法帶一個「是不是百分比」的旗標：敘述裡「47.2%」只准對上比率型的值，
+    對上一個里的人口數不算。
+    """
+    if unit == "%":
+        return [(round(v * 100, 1), True), (round(v * 100, 2), True), (v, False)]
+    if unit.startswith("萬"):
+        return [(v, False), (round(v, 1), False), (round(v * 10000), False)]   # 59.9 萬 → 599,000 元
+    if unit == "倍":
+        return [(v, False), (round(v, 1), False), (round(v, 2), False)]
+    if unit in ("人", "個"):
+        return [(v, False), (round(v / 10000, 1), False)]           # 832,214 人 → 83.2 萬人
+    return [(v, False), (round(v, 1), False)]
 
 
 def verify(text: str, records: list[dict], payload: dict | None = None) -> tuple[list, list]:
@@ -178,22 +235,42 @@ def verify(text: str, records: list[dict], payload: dict | None = None) -> tuple
     這是整支程式的重點。模型寫得再流暢，只要有一個數字對不上，
     讀的人就無從分辨哪些可信 —— 所以要主動指出來。
     """
-    pool: list[float] = []
+    pool: list[tuple[float, bool]] = []
     for r in records:
-        v = r["value"]
-        pool += [v, round(v, 1), round(v * 100, 1), round(v / 1000, 1)]
+        pool += _spellings(r["value"], r.get("unit", ""))
     if payload:
         for blk in payload.get("benchmark", {}).get("metrics", {}).values():
             for v in blk.get("values", {}).values():
-                pool += [v, round(v, 1), round(v * 100, 1)]
+                pool += _spellings(v, blk.get("unit", ""))
         sal = payload.get("trends", {}).get("salary", {}).get("mean", {})
         for series in sal.values():
-            pool += list(series)
+            pool += [(v, False) for v in series]
+        # 施政建議與洞察卡片裡的數字。這些不是模型編的 —— 它們由
+        # _policy_notes() 與 insights.detect() 用寫死的規則從記錄算出來，
+        # 每張卡都附了依據。advise() 明確允許模型引用這些卡片，
+        # 所以查核池也必須認得它們，否則會把「正確引用」報成「編造」。
+        for card in list(payload.get("policy_notes") or []) + list(payload.get("insights") or []):
+            text_bits = [card.get("title", ""), card.get("body", "")]
+            text_bits += list(card.get("detail") or [])
+            for bit in text_bits:
+                bit = str(bit)
+                for m in _NUMBER.finditer(bit):
+                    try:
+                        pct = bit[m.end():].lstrip().startswith("%")
+                        pool.append((float(m.group().replace(",", "")), pct))
+                    except ValueError:
+                        pass
 
     ok, bad = [], []
+    seen: dict[str, int] = {}
     for raw in _numbers_in(text):
         val = float(raw.replace(",", ""))
-        if any(abs(val - p) <= max(TOLERANCE, abs(p) * 0.005) for p in pool):
+        nth = seen.get(raw, 0)
+        seen[raw] = nth + 1
+        pct = _is_percent(text, raw, nth)
+        # 寫成百分比的數字只能對上比率型的值；其餘寫法維持寬鬆
+        if any(abs(val - p) <= max(TOLERANCE, abs(p) * 0.005) and (p_pct or not pct)
+               for p, p_pct in pool):
             ok.append(raw)
         else:
             bad.append(raw)

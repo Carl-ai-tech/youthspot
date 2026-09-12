@@ -102,7 +102,12 @@ def main() -> int:
     # ---------------------------------------------------------------- 幕二
     scene("二", "模型寫得好的時候")
 
-    g = synthesize(payload, StubBackend({"__default__": GOOD}))
+    # 幕二用**真正載入的後端**。先前這裡固定塞 StubBackend，所以不管
+    # YOUTHLENS_LLM_BACKEND 設成什麼，跑出來的永遠是寫死的罐頭字串 ——
+    # 看起來像模型寫的，其實模型一次都沒被呼叫到。
+    # （幕三保持罐頭：沒辦法叫模型按需求產生幻覺，那一幕要的是固定的壞例子。）
+    g = synthesize(payload, backend if not isinstance(backend, StubBackend)
+                   else StubBackend({"__default__": GOOD}))
     print(wrap(g.text))
     print()
     ok, _ = verify(g.text, g.records, payload)

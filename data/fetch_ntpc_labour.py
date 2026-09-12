@@ -81,6 +81,10 @@ def fetch_ntpc_labour(*, refresh: bool = False) -> list[dict]:
             continue
         _verify(row, year)
         pop, lab = _both(row, "民間人口"), _both(row, "勞動力")
+        pm, pf = COLS["民間人口"]
+        lm, lf = COLS["勞動力"]
+        pop_m, pop_f = _num(row, pm), _num(row, pf)
+        lab_m, lab_f = _num(row, lm), _num(row, lf)
         out.append({
             "year": int(year),
             "population": pop,
@@ -89,6 +93,9 @@ def fetch_ntpc_labour(*, refresh: bool = False) -> list[dict]:
             "unemployed": _both(row, "失業"),
             "lfpr": round(lab / pop, 4) if pop else 0.0,
             "unemployment": round(_both(row, "失業") / lab, 4) if lab else 0.0,
+            # 性別分開的勞參率（全年齡）。這是手上唯一帶性別的時間序列。
+            "lfpr_m": round(lab_m / pop_m, 4) if pop_m else 0.0,
+            "lfpr_f": round(lab_f / pop_f, 4) if pop_f else 0.0,
         })
     return sorted(out, key=lambda r: r["year"])
 

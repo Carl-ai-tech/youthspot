@@ -11,10 +11,17 @@
 engine/ 和 data/ 完全照常運作。零第三方套件的承諾只在這一層被打破。
 """
 
-from .backend import Backend, BedrockBackend, StubBackend, load_backend
+from .backend import (
+    AnthropicBackend,
+    Backend,
+    BedrockBackend,
+    StubBackend,
+    load_backend,
+)
 from .scan_table import ScannedTable, read_table, to_source_records
 
 __all__ = [
+    "AnthropicBackend",
     "Backend",
     "BedrockBackend",
     "StubBackend",

@@ -2501,7 +2501,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   // 只回事實，讓呼叫端自己接上下文 —— 因為「還是給你看粗一級的數字」跟
   // 「這題根本答不出來」要接的話不一樣，共用一句話一定有一邊講錯。
   // 問題是在「查一個數字」還是在「問情況／要建議」？後者交給模型。
-  var DISCUSS_CUE = /問題|情況|狀況|現況|怎麼|怎樣|如何|為什麼|為何|建議|該|應該|嗎|好不好|供需|缺工|政策|分析|趨勢|落差|困境|挑戰|流失|嚴重|哪個比較|那個比較|比較嚴重|外流|機會/;
+  // 本機規則只會查表。凡是在問「分析、預測、原因、建議、判斷」的，都交給模型 ——
+  // 寧可多打一次模型，也不要把「推測臺南哪區人口流失會越來越嚴重」答成「臺南市人口 376,751 人」。
+  var DISCUSS_CUE = /問題|情況|狀況|現況|怎麼|怎樣|如何|為什麼|為何|建議|該|應該|嗎|好不好|供需|政策|分析|趨勢|落差|困境|挑戰|流失|嚴重|哪個比較|那個比較|比較嚴重|外流|推測|預測|預估|推估|估計|會不會|越來越|未來|可能|是否|評估|解讀|意義|差別|差異|原因|影響|優先|投入|資源|策略|方案|措施|對策|改善|因應|值得|風險|警訊|要注意/;
   function isDiscussion(q) { return DISCUSS_CUE.test(q || ''); }
 
   function scopeGap(it) {
@@ -2547,11 +2549,12 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // 「該做什麼政策」這種問題，本機規則只會把數字查出來，答不了「該做什麼」。
   // 有這些詞就交給模型；它拿的是同一批數字（本市各區 + 點名的地區 + 六都表）。
-  var POLICY_CUE = /政策|建議|該怎麼|怎麼做|怎麼辦|如何|為什麼|為何|優先|投入|資源|策略|方案|措施|對策|改善|因應/;
-
   function resolve(it) {
-    if (POLICY_CUE.test(it.raw || '')) {
-      return { ok: null, llm: true, why: '問到政策／建議，交給模型用同一批數字回答（本機規則只負責查表）。' };
+    if (isDiscussion(it.raw)) {
+      var where = it.regions && it.regions.length ? it.regions.map(function (r) { return r.replace(M.region, '') || r; }).join('、')
+                : (it.region ? (it.region.replace(M.region, '') || it.region) : '');
+      return { ok: null, llm: true,
+               why: '這是分析／預測／建議類的問題' + (where ? '（' + where + '）' : '') + '，交給模型用同一批數字回答（本機規則只負責查表）。' };
     }
     var other = mentionsOtherCity(it.raw);
     if (other) {

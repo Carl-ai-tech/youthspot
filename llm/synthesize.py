@@ -192,6 +192,8 @@ def _numbers_in(text: str) -> list[str]:
         # （例如「…佔 33%（[1-27]）」）。那是索引不是資料，報成編造會很難看。
         if head.endswith("[") or head.endswith("[") or tail.startswith("]"):
             continue
+        if head.endswith("#") or head.endswith("＃"):
+            continue                                  # 模型有時寫 #254 當引用編號
         out.append(raw)
     return out
 

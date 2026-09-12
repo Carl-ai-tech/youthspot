@@ -219,7 +219,12 @@ def _spellings(v: float, unit: str) -> list[tuple[float, bool]]:
     對上一個里的人口數不算。
     """
     if unit == "%":
-        return [(round(v * 100, 1), True), (round(v * 100, 2), True), (v, False)]
+        # 負的變化率（-0.04 = -4.0%）：模型寫「-4.0%」，數字擷取器抓到的是「4.0」（不含負號），
+        # 所以正負兩種寫法都放進池子，不然年變化率永遠被報成編造
+        out = [(round(v * 100, 1), True), (round(v * 100, 2), True), (v, False)]
+        if v < 0:
+            out += [(round(-v * 100, 1), True), (round(-v * 100, 2), True)]
+        return out
     if unit.startswith("萬"):
         return [(v, False), (round(v, 1), False), (round(v * 10000), False)]   # 59.9 萬 → 599,000 元
     if unit == "倍":

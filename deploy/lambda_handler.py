@@ -37,12 +37,30 @@ def _reply(status: int, body: dict) -> dict:
             "body": json.dumps(body, ensure_ascii=False)}
 
 
+SIX_CITIES = ["新北市", "臺北市", "桃園市", "臺中市", "臺南市", "高雄市"]
+
+
+def _city_of(region: str | None) -> str:
+    """「臺南市中西區」→「臺南市」。前端傳來的 region 可能是行政區，資料檔是按城市分的。"""
+    r = (region or "新北市").replace("台", "臺")
+    for c in SIX_CITIES:
+        if r.startswith(c):
+            return c
+    return "新北市"
+
+
 def _load_unified(region: str = "新北市") -> dict:
-    """優先從 S3 讀（那是最新的），讀不到就退回打包在函式裡的那份。六都各一份。"""
-    if region and region != "新北市":
-        local = Path(__file__).resolve().parent.parent / "data" / f"unified_{region}.json"
+    """優先從 S3 讀（那是最新的），讀不到就退回打包在函式裡的那份。六都各一份。
+
+    先前 synthesize／ask 一律讀新北市那份：在臺南市頁面按「讓 AI 統整這個地區」，
+    模型拿到的是新北市的數字卻被要求寫臺南市中西區 —— 它正確地拒答了。
+    """
+    city = _city_of(region)
+    if city != "新北市":
+        local = Path(__file__).resolve().parent.parent / "data" / f"unified_{city}.json"
         if local.exists():
             return json.loads(local.read_text(encoding="utf-8"))
+        raise FileNotFoundError(f"找不到 {local.name}，先跑 python tools/build_six.py")
     if BUCKET:
         try:
             import boto3
@@ -95,13 +113,13 @@ def _ai(action: str, body: dict, backend=None) -> dict:
 
     if action == "ask":
         from llm.ask import ask
-        a = ask(body.get("question", ""), _load_unified(), backend)
+        a = ask(body.get("question", ""), _load_unified(body.get("region")), backend)
         return {"ok": True, "answered": a.answered, "text": a.text,
                 "records": a.records}
 
     if action == "synthesize":
         from llm.synthesize import synthesize
-        g = synthesize(_load_unified(), backend,
+        g = synthesize(_load_unified(body.get("region")), backend,
                        region=body.get("region", "新北市"),
                        band=body.get("band", "18-35"),
                        question=body.get("question"))
@@ -201,7 +219,7 @@ def _ai(action: str, body: dict, backend=None) -> dict:
         # 儀表板的問答框只有在**前端規則認不得**的問題才會打到這裡 ——
         # 查數字、排名、比較那些引擎自己就答得出來，不需要模型。
         from llm.advise import advise
-        g = advise(body.get("question", ""), _load_unified(body.get("region", "新北市")), backend,
+        g = advise(body.get("question", ""), _load_unified(body.get("region")), backend,
                    region=body.get("region", "新北市"),
                    band=body.get("band", "18-35"))
         # 模型說「建議補蒐集 X」時，系統對照資料目錄回答 X 有沒有、在哪、接了沒

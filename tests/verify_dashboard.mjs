@@ -616,17 +616,31 @@ console.log();
 
 // 下一個淡水：散佈圖、係數、相似區、殘差四張圖都要畫出來；參考區預設淡水；散佈圖上色要走 style
 {
-  const figs = el('driversBox').children || [];
+  // 主區塊：走勢圖與相似區、殘差直接看；散佈圖與係數收在「模型怎麼算的」摺頁裡，所以要往下找
+  const walk = (n, out) => { (n.children || []).forEach((c) => { out.push(c); walk(c, out); }); return out; };
+  const figs = walk(el('driversBox'), []);
   const keys = figs.map((f) => f['data-chart']).filter(Boolean);
-  const html = figs.map((f) => (f.innerHTML || '') + (f.children || []).map((c) => c.innerHTML || '').join('')).join('');
+  const html = figs.map((f) => f.innerHTML || '').join('');
   const dots = (html.match(/class="sc-dot /g) || []).length;
-  const badFill = /<circle[^>]*\sfill="var\(/.test(html);
+  const badFill = /<circle class="sc-dot[^>]*\sfill="var\(/.test(html);
   const refOk = /新北市淡水區<small>參考區/.test(html);
   const coefOk = /模型 A/.test(html) && /模型 B/.test(html) && /★/.test(html);
-  const ok = ['drivers', 'drivers-coef', 'drivers-similar', 'drivers-resid'].every((k) => keys.indexOf(k) >= 0) && dots >= 150 && !badFill && refOk && coefOk;
+  const watch = walk(el('watchBox'), []).map((c) => c.innerHTML || '').join('');
+  const watchOk = /正在移入/.test(watch) && /下一個候選/.test(watch) && /問 AI/.test(watch);
+  const ok = ['migration', 'drivers', 'drivers-coef', 'drivers-similar', 'drivers-resid'].every((k) => keys.indexOf(k) >= 0) && dots >= 150 && !badFill && refOk && coefOk && watchOk;
   total++;
   if (!ok) fail++;
-  console.log(`${ok ? '✅' : '❌'}　下一個淡水：${keys.length} 張圖、散佈 ${dots} 點、參考區淡水 ${refOk ? '✓' : '✗'}、係數表 ${coefOk ? '✓' : '✗'}${badFill ? ' ← fill 寫成呈現屬性' : ''}`);
+  console.log(`${ok ? '✅' : '❌'}　下一個淡水：${keys.length} 張圖（含走勢）、散佈 ${dots} 點、參考區淡水 ${refOk ? '✓' : '✗'}、影響力表 ${coefOk ? '✓' : '✗'}、預警摘要 ${watchOk ? '✓' : '✗'}${badFill ? ' ← fill 寫成呈現屬性' : ''}`);
+  console.log();
+}
+
+// 公式工具庫：八條算法都要有白話、公式、用在哪、限制
+{
+  const h = el('formulaList').innerHTML || '';
+  const n = (h.match(/<details class="fx"/g) || []).length;
+  const ok = n >= 8 && /世代淨遷入/.test(h) && /多元迴歸/.test(h) && (h.match(/class="where"><b>限制<\/b>/g) || []).length === n && /高 10% 的區/.test(h);
+  total++; if (!ok) fail++;
+  console.log(`${ok ? '✅' : '❌'}　公式工具庫：${n} 條，每條有白話／公式／用在哪／限制`);
   console.log();
 }
 

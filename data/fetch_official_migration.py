@@ -30,6 +30,13 @@ from data.sources import CACHE_DIR, TIMEOUT, USER_AGENT  # noqa: E402
 
 API = "https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP011/{yyymm}?PAGE={page}&COUNTY={county}"
 DATASET = "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）"
+# 遷入來源欄位（實測 11507）：tp 臺北市、ntp 新北市、ty 桃園市、tc 臺中市、tn 臺南市、kh 高雄市、
+# other_city 其他縣市、other_town 同縣市其他鄉鎮、foreign 國外
+# 實測 11507 淡水：tp 289、tw 96、other_town 253、foreign 68…加總 826，in_total 854，差 28 列為「未分類」
+ORIGIN_FIELDS = ("tp", "ntp", "ty", "tc", "tn", "kh", "tw", "fu", "foreign", "other_town", "other_city", "other")
+ORIGIN_LABELS = {"tp": "臺北市", "ntp": "新北市", "ty": "桃園市", "tc": "臺中市", "tn": "臺南市", "kh": "高雄市",
+                 "tw": "臺灣省其他縣市", "fu": "金門馬祖", "foreign": "國外", "other_town": "同市其他區",
+                 "other_city": "其他縣市", "other": "其他", "rest": "未分類"}
 LANDING = "https://www.ris.gov.tw/rs-opendata/api/Main/docs/v1"   # 戶政司開放資料 API 文件（ODRP011 在列表裡）；data.gov.tw 的 77141 是別的資料集
 
 
@@ -79,10 +86,16 @@ def fetch_official_migration(region: str = "新北市", *, end_period: str = "11
             a["in"] += g("in_total"); a["out"] += g("out_total")
             a["first"] += g("first_reg"); a["deleted"] += g("deleted_reg")
             a["other_in"] += g("move_in_other"); a["other_out"] += g("move_out_other")
+            # 遷入來源：白送的一張圖 —— 淡水／林口的遷入者多少來自臺北市
+            o = a.setdefault("origins", {k: 0 for k in ORIGIN_FIELDS})
+            for k in ORIGIN_FIELDS:
+                o[k] += g("in_" + k)
     for a in areas.values():
+        a["origins"]["rest"] = max(0, a["in"] - sum(a["origins"][k] for k in ORIGIN_FIELDS))
         a["net"] = a["in"] - a["out"] + a["first"] - a["deleted"] + a["other_in"] - a["other_out"]
         a["net_moves_only"] = a["in"] - a["out"]
-    city = {k: sum(a[k] for a in areas.values()) for k in next(iter(areas.values()))}
+    city = {k: sum(a[k] for a in areas.values()) for k in next(iter(areas.values())) if k != "origins"}
+    city["origins"] = {k: sum(a["origins"][k] for a in areas.values()) for k in ORIGIN_FIELDS + ("rest",)}
     areas[region] = city
     return {"source": DATASET, "url": LANDING, "region": region, "months": ms, "areas": areas,
             "note": "全年齡官方登記遷徙；net 含初設／除籍／其他（與世代追蹤口徑一致），不含同區里間遷徙。"}

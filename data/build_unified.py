@@ -41,7 +41,9 @@ from engine.jurisdiction import plan as _plan, plan_lines as _plan_lines  # noqa
 from data.fetch_population import fetch_population_by_district, fetch_population_by_sex  # noqa: E402
 from data.fetch_migration import DATASET as MIG_DATASET, LANDING as MIG_LANDING, fetch_migration  # noqa: E402
 from data.fetch_official_migration import DATASET as OFF_DATASET, LANDING as OFF_LANDING, fetch_official_migration  # noqa: E402
-from data.backtest_migration import OUT as BACKTEST_MIG_JSON, classify as _classify_migration  # noqa: E402
+from data.backtest_migration import OUT as BACKTEST_MIG_JSON, classify as _classify_migration, SHOCK_PAIR  # noqa: E402
+from data.fetch_births import DATASET as BIRTH_DATASET, LANDING as BIRTH_LANDING, fetch_births  # noqa: E402
+from data.fetch_official_migration import ORIGIN_FIELDS, ORIGIN_LABELS  # noqa: E402
 from data.fetch_labour import (  # noqa: E402
     labour_force_participation,
     latest,
@@ -196,6 +198,69 @@ def _migration_trend(mig: dict, region: str) -> dict:
                  "是戶籍事件不是搬家：判定訊號與做檢定時把這兩點合併成一個時間點（2022.5，取平均；同一批人除籍再恢復，互相抵銷），"
                  "n 從 8 變 7，圖上仍畫原始值；預測標 experimental。"),
     }
+
+
+def _fertility_records(births: dict, women: dict, region: str) -> list[AlignedRecord]:
+    """各區 18–35 歲女性一般生育率（‰）。分子：生母 18–35 歲的出生數（按發生）；分母：同區 18–35 歲女性戶籍人口。"""
+    out = []
+    for area, b in births["areas"].items():
+        if area == region:
+            w = sum(sum(c.values()) for k, c in women.items())
+        else:
+            w = sum((women.get(area) or {}).values())
+        if not w:
+            continue
+        rate = b["youth_mothers"] / w * 1000
+        prov = Provenance(
+            source_agency="內政部戶政司",
+            source_dataset=f"{BIRTH_DATASET}（{births['roc_year']} 年）÷ ODRP014 單一年齡女性人口",
+            source_age_group="生母 18–35 歲 ÷ 18–35 歲女性",
+            method=Method.EXACT_MATCH, weight=1.0, confidence=Confidence.HIGH,
+            note=(f"{births['year']} 年生母 18–35 歲的出生數 {b['youth_mothers']:,}（全部出生 {b['total']:,}）÷ 18–35 歲女性 {w:,} 人。"
+                  "按發生日期、生母戶籍所在區。婚育主責社會局／衛生局，青年局非主責 —— 這個數字是拿來答辯的，不是拿來做 KPI 的。"),
+        )
+        out.append(AlignedRecord(region=area, year=births["year"], age_group="18-35", gender="total",
+                                 metric="青年女性一般生育率", value=round(rate, 1), unit="‰", provenance=prov))
+    return out
+
+
+def _migration_origins(off: dict, region: str) -> dict:
+    """各區遷入者從哪裡來（全年齡、近 12 個月）。支持「臺北青年外溢到新北」的故事。"""
+    areas = {}
+    for area, a in off["areas"].items():
+        o = a.get("origins") or {}
+        tot = sum(o.values())
+        if tot:
+            areas[area] = {"total": tot, **{ORIGIN_LABELS[k]: o[k] for k in ORIGIN_FIELDS + ("rest",)}}
+    return {"source": off["source"], "url": off["url"], "months": f"{off['months'][0]}–{off['months'][-1]}",
+            "labels": [ORIGIN_LABELS[k] for k in ORIGIN_FIELDS + ("rest",)], "areas": areas,
+            "note": "官方登記的遷入人數按原戶籍所在地分（全年齡）；同市其他區＝市內搬家。"}
+
+
+def _migration_sensitivity(mig: dict, region: str) -> dict:
+    """訊號穩不穩：正式做法（事件年合併成一點，n=7）vs 原始 8 點不動 vs 兩個事件年直接剔除（n=6）。
+    三種算法訊號都一樣的區＝穩健；會變的區就是「邊緣」該標出來的地方。"""
+    import data.backtest_migration as bm
+    years = mig["years"]
+    rows = []
+    for area, a in mig["areas"].items():
+        if area == region:
+            continue
+        pts = [(y, r) for y, r in zip(years, a["rate"]) if r is not None]
+        if len(pts) < 6:
+            continue
+        prod = bm.classify(pts)
+        orig_fn = bm.neutralize_shock
+        bm.neutralize_shock = lambda p: p                     # 原始 8 點
+        raw = bm.classify(pts)
+        bm.neutralize_shock = lambda p: [(x, v) for x, v in p if x not in SHOCK_PAIR]   # 剔除
+        drop = bm.classify(pts)
+        bm.neutralize_shock = orig_fn
+        rows.append({"area": area.replace(region, ""), "merged": prod["signal"], "raw": raw["signal"], "dropped": drop["signal"],
+                     "stable": prod["signal"] == raw["signal"] == drop["signal"], "edge": prod["edge"]})
+    stable = sum(1 for r in rows if r["stable"])
+    return {"n": len(rows), "stable": stable, "rows": rows,
+            "note": "三種同樣合理的算法（合併／不動／剔除事件年）訊號一致的區數；不一致的多半就是標「邊緣」的區。"}
 
 
 def _validate_migration(mig: dict, off: dict, region: str) -> dict:
@@ -1234,6 +1299,10 @@ def _pipeline_status(records: list[AlignedRecord], meta: dict) -> list[dict]:
          "records": n_records(lambda r: r.metric in ("在地工作機會", "場所單位數", "工作機會密度")),
          "check": "各區加總 = 總計（場所數、從業員工）", "coverage": "110 年底 各行政區",
          **_cache_info("dgbas_census_110.xml")},
+        {"agency": "內政部戶政司", "dataset": BIRTH_DATASET, "url": BIRTH_LANDING,
+         "format": "JSON API", "auto": True, "cadence": "每年",
+         "records": n_records(lambda r: r.metric == "青年女性一般生育率"),
+         "check": "分子分母同一機關同一區界；全市 = Σ各區", "coverage": "108–114 年 各行政區（按發生）", **_cache_info("odrp056_*.json")},
         {"agency": "內政部戶政司", "dataset": OFF_DATASET, "url": OFF_LANDING,
          "format": "JSON API", "auto": True, "cadence": "每月",
          "records": 0, "check": "只做交叉驗證：跨區相關 r（世代淨遷入 vs 官方遷入−遷出）",
@@ -1285,9 +1354,10 @@ RIGHTS_ASPECTS = [
      "have_note": "家戶層級（非青年）",
      "gaps": ["青年租金補貼核准戶數（分區）", "社會住宅青年承租比例"],
      "candidates": ["內政部 國土管理署 租金補貼統計", "新北市住都中心 社宅出租統計"]},
-    {"aspect": "生育與家庭", "law": "第 13 條", "metrics": [], "trend_keys": [],
-     "gaps": ["生育率（按母親年齡）", "育嬰留職停薪申請（分齡）", "公共托育使用率"],
-     "candidates": ["內政部戶政司 出生數按生母年齡（ODRP 系列，同一個 API）", "勞動部 勞保局 育嬰留停津貼", "衛福部 社家署 托育統計"]},
+    {"aspect": "生育與家庭", "law": "第 13 條", "metrics": ["青年女性一般生育率"], "trend_keys": [],
+     "have_note": "各區 18–35 歲女性一般生育率（戶政司 ODRP056 出生數按生母單一年齡 ÷ 同區 18–35 歲女性）",
+     "gaps": ["育嬰留職停薪申請（分齡）", "公共托育使用率"],
+     "candidates": ["勞動部 勞保局 育嬰留停津貼", "衛福部 社家署 托育統計"]},
     {"aspect": "身心健康", "law": "第 14 條", "metrics": [], "trend_keys": [],
      "gaps": ["青年心理健康支持方案使用人次", "15–34 歲主要死因與自殺死亡率"],
      "candidates": ["衛福部 心理健康司 15–30 歲心理健康支持方案", "衛福部 統計處 死因統計"]},
@@ -1384,7 +1454,7 @@ def _scale(records: list[AlignedRecord], trends: dict) -> dict:
         years.append(r.year)
     return {
         "agencies": 6,                       # 戶政司、主計總處、新北市政府主計處、內政部、財政部、地政司
-        "datasets": 14,
+        "datasets": 15,
         "metrics": len({r.metric for r in records}),
         "records": len(records),
         "year_min": min(years) if years else None,
@@ -1620,6 +1690,14 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     except Exception as exc:  # noqa: BLE001
         print(f"  ⚠ 青年人口年變化未載入：{exc}")
 
+    # 生育率：局長被問「青年局該不該負責結婚生小孩」—— 先有數字，再講權責
+    try:
+        births = fetch_births(region, refresh=refresh)
+        women, _ = fetch_population_by_district(region, period=meta["period"], age_range=(18, 35), refresh=refresh, sex="f")
+        records.extend(_fertility_records(births, women, region))
+    except Exception as exc:  # noqa: BLE001
+        print(f"  ⚠ 生育率未載入：{exc}")
+
     # 世代淨遷徙：人口差扣掉少子化與死亡，剩下的才是青年搬進搬出。2019– 每年一點，
     # 每區一條序列 → 線性外推 + t 檢定 → 移入／流出訊號。局長要的「預測」就是這條。
     migration = None
@@ -1698,6 +1776,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
 
     validation = None
     backtest_mig = None
+    meta_sensitivity = None
     if migration:
         trends["migration"] = _migration_trend(migration, region)
         # 交叉驗證：官方登記的全年齡遷入−遷出（ODRP011，12 個月加總）vs 我們的 18–35 世代淨遷入，跨區相關
@@ -1705,8 +1784,10 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
             off = fetch_official_migration(region, end_period=meta["period"], refresh=refresh)
             validation = _validate_migration(migration, off, region)
             print(f"  世代淨遷入 vs 官方遷徙：r = {validation['r']}（{validation['n']} 區）")
+            trends["migration_origin"] = _migration_origins(off, region)
         except Exception as exc:  # noqa: BLE001
             print(f"  ⚠ 官方遷徙交叉驗證未載入：{exc}")
+        meta_sensitivity = _migration_sensitivity(migration, region)
         # 回測（data/backtest_migration.py 先跑）
         if BACKTEST_MIG_JSON.exists():
             bt = json.loads(BACKTEST_MIG_JSON.read_text(encoding="utf-8"))
@@ -1788,6 +1869,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
             "backtest": _backtest_summary(),
             "validation_migration": validation,
             "backtest_migration": backtest_mig,
+            "sensitivity_migration": meta_sensitivity if migration else None,
             "rights": _rights_coverage(records, trends),
         },
         "benchmark": bench,

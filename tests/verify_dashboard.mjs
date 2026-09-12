@@ -454,7 +454,7 @@ check('行政區問居住指標要說只有全市', '林口區房價所得比',
   const manual = (t.match(/badge est">人工/g) || []).length;
   const stamped = t.split('<td class="mono">').filter((x) => /^20[0-9]{2}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}/.test(x)).length;
   const scale = el('scaleLine').innerHTML || '';
-  const scaleOk = scale.indexOf('6 個資料提供單位') >= 0 && scale.indexOf('782 筆') >= 0 && scale.indexOf('1978–') >= 0;
+  const scaleOk = scale.indexOf('6 個資料提供單位') >= 0 && /\d{3,} 筆/.test(scale) && scale.indexOf('1978–') >= 0;
   const method = el('methodBox').innerHTML || '';
   const methodOk = method.indexOf('pp') >= 0 && method.indexOf('三道查核') >= 0 && method.indexOf('逐數字驗證') >= 0;
   const ok = rowsN >= 12 && auto >= 10 && manual === 1 && stamped >= 11 && scaleOk && methodOk;

@@ -136,8 +136,9 @@ def fetch_population_by_district(
     period: str | None = None,
     age_range: tuple[int, int] = (15, 64),
     refresh: bool = False,
+    sex: str | None = None,
 ) -> tuple[dict[str, dict[int, int]], dict]:
-    """同上，但按行政區分開回傳 —— 儀表板的「地區篩選」要用（P0-4）。"""
+    """同上，但按行政區分開回傳 —— 儀表板的「地區篩選」要用（P0-4）。sex="f"／"m" 只取一種性別（生育率的分母）。"""
     period = period or latest_period(refresh=refresh)
     lo, hi = age_range
     by_district: dict[str, dict[int, int]] = {}
@@ -158,7 +159,10 @@ def fetch_population_by_district(
             villages += 1
             counts = by_district.setdefault(site, {a: 0 for a in range(lo, hi + 1)})
             for a in range(lo, hi + 1):
-                counts[a] += int(row[f"people_age_{a:03d}_m"]) + int(row[f"people_age_{a:03d}_f"])
+                if sex in ("m", "f"):
+                    counts[a] += int(row[f"people_age_{a:03d}_{sex}"])
+                else:
+                    counts[a] += int(row[f"people_age_{a:03d}_m"]) + int(row[f"people_age_{a:03d}_f"])
         page += 1
 
     meta = {

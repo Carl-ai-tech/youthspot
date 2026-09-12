@@ -460,6 +460,12 @@ body{
 .mth .analogy h5{margin:0 0 .3rem;font-size:.82rem;font-family:var(--mono);letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;}
 .mth .analogy p{font-size:.82rem;margin:.2rem 0;}
 .rm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.8rem;}
+.org{display:grid;gap:.4rem;}
+.org-row{display:grid;grid-template-columns:7rem 1fr 5.5rem;gap:.7rem;align-items:center;font-size:.8rem;}
+.org-k{font-weight:700;} .org-k small{display:block;font-weight:400;font-family:var(--mono);font-size:.64rem;color:var(--ink-3);}
+.org-bar{display:flex;height:16px;border-radius:4px;overflow:hidden;background:var(--sunk);} .org-bar i{display:block;height:100%;}
+.org-v{font-family:var(--mono);font-size:.78rem;text-align:right;color:var(--ink-2);} .org-v b{color:var(--b44-orange);}
+@media (max-width:40rem){.org-row{grid-template-columns:5rem 1fr 4rem;}}
 .rm-cell{background:var(--sunk);border-radius:10px;padding:.6rem .7rem .7rem;}
 .rm-cell svg{width:100%;height:auto;display:block;}
 .rm-t{font-size:.9rem;font-weight:700;margin:0 0 .2rem;display:flex;justify-content:space-between;align-items:baseline;}
@@ -1463,6 +1469,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   function show(r) {
     if (!r) return '—';
     if (r.unit === '%') return (r.value * 100).toFixed(1) + '%';
+    if (r.unit === '‰') return r.value.toFixed(1) + '‰';
     if (r.unit.indexOf('萬') === 0) return r.value.toFixed(1);
     if (r.unit === '倍') return r.value.toFixed(2);
     return num(r.value);
@@ -1671,7 +1678,17 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (!host || !Rg) return;
     var WORD = { covered: '有資料', partial: '部分', gap: '缺口' };
     $('rightsNote').innerHTML = Rg.basis + '。<b>' + Rg.total + ' 個面向：' + Rg.covered + ' 個有資料、'
-      + Rg.partial + ' 個部分、' + Rg.gap + ' 個缺口</b>。缺口清單是青年局編製四年一次青年現況統計時的待辦清單，每一格都附候選資料來源。';
+      + Rg.partial + ' 個部分、' + Rg.gap + ' 個缺口</b>。缺口清單是青年局編製四年一次青年現況統計（青年基本法第 27 條）時要跟哪個機關要什麼資料的清單，每一格都附候選來源。'
+      + ' <button type="button" class="more ghost" id="dlGaps">下載缺口清單（CSV）</button>';
+    var dg = $('dlGaps');
+    if (dg && dg.addEventListener) dg.addEventListener('click', function () {
+      var lines = ['面向,法條,狀態,缺口,候選資料來源'];
+      Rg.aspects.forEach(function (a) {
+        (a.gaps || []).forEach(function (g, i) { lines.push([a.aspect, a.law, WORD[a.status], g, a.candidates[i] || ''].map(function (x) { return '"' + String(x).replace(/"/g, '""') + '"'; }).join(',')); });
+      });
+      var blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+      var a2 = document.createElement('a'); a2.href = URL.createObjectURL(blob); a2.download = 'youthlens_' + M.region + '_資料缺口清單.csv'; document.body.appendChild(a2); a2.click(); document.body.removeChild(a2);
+    });
     host.innerHTML = Rg.aspects.map(function (a) {
       var ind = a.indicators.map(function (m) { return '<span class="rchip">' + m + '</span>'; }).join('');
       return '<div class="rrow ' + (a.status === 'gap' ? 'rgap' : a.status) + '">'
@@ -2145,6 +2162,30 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     return fig;
   }
 
+  // ── 遷入者從哪裡來：官方登記的遷入按原戶籍地分（全年齡）。移入最多的區，多少是臺北市搬來的。
+  function originFigure() {
+    var O = DATA.trends && DATA.trends.migration_origin, Mg = DATA.trends && DATA.trends.migration;
+    if (!O || !O.areas || !Mg || !Mg.areas) return null;
+    var names = Object.keys(Mg.areas).filter(function (k) { return k !== M.region && O.areas[k] && Mg.areas[k].net && Math.abs(Mg.areas[k].net[Mg.areas[k].net.length - 1] || 0) >= 50; })
+      .sort(function (a, b) { return Mg.areas[b].rate[Mg.areas[b].rate.length - 1] - Mg.areas[a].rate[Mg.areas[a].rate.length - 1]; }).slice(0, 6);
+    if (!names.length) return null;
+    var labels = O.labels.filter(function (l) { return l !== M.region; });   // 本市那欄是 0（市內搬家在「同市其他區」）
+    var COL = ['var(--b44-orange)', 'var(--ord-2)', 'var(--ord-3)', 'var(--ord-4)', 'var(--deep)', 'var(--ink-3)', 'var(--rule)', '#9AA0A6', '#C9CDD0'];
+    var rows = names.map(function (k) {
+      var o = O.areas[k], tot = o.total || 1;
+      var segs = labels.map(function (l, i) { var v = o[l] || 0; return v ? '<i style="width:' + (v / tot * 100).toFixed(1) + '%;background:' + COL[i % COL.length] + '" title="' + l + ' ' + num(v) + '（' + Math.round(v / tot * 100) + '%）"></i>' : ''; }).join('');
+      var tp = o['臺北市'] || 0;
+      return '<div class="org-row"><span class="org-k">' + k.replace(M.region, '') + '<small>' + num(tot) + ' 人遷入</small></span><span class="org-bar">' + segs + '</span><span class="org-v">臺北 <b>' + Math.round(tp / tot * 100) + '%</b></span></div>';
+    }).join('');
+    var legend = labels.map(function (l, i) { return '<span class="rm-k"><i style="background:' + COL[i % COL.length] + '"></i>' + l + '</span>'; }).join('');
+    var fig = document.createElement('figure'); fig.className = 'figbox'; fig.setAttribute('data-chart', 'migration-origin');
+    fig.innerHTML = '<p class="fig-title">移入最多的區，青年是從哪裡搬來的<span class="scopetag">' + LOCAL + ' · 全年齡 · 官方登記</span></p>'
+      + '<p class="fig-sub">戶政司登記的遷入人數按原戶籍地分（' + O.months + '，全年齡）。橘色＝從臺北市搬來。</p>'
+      + '<div class="org">' + rows + '</div><p class="fig-sub" style="margin-top:.5rem">' + legend + '</p>'
+      + '<p class="cap">這是「臺北青年外溢到新北」的直接證據：移入區的遷入者裡從臺北市來的占比越高，越是承接臺北的居住需求。全年齡數字，青年占比另見淨遷入。</p>';
+    return fig;
+  }
+
   function renderDrivers() {
     var host = $('drvTrend');
     if (!host) return;
@@ -2155,6 +2196,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     else host.innerHTML = '<p class="note">這個城市還沒有世代淨遷入資料。</p>';
     var figCase = rentMigrationFigure();
     if (figCase) host.appendChild(figCase);
+    var figOrg = originFigure();
+    if (figOrg) host.appendChild(figOrg);
     var D = DATA.trends && DATA.trends.drivers;
     if (!D) { hostSim.innerHTML = '<p class="note">尚未建立驅動模型（python data/drivers.py）。</p>'; return; }
     var all = D.districts.filter(function (d) { return d.y != null; });
@@ -2448,6 +2491,15 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         + (cityRows ? '<h4>' + M.region + '</h4><div class="tw"><table>' + head + '<tbody>' + cityRows + '</tbody></table></div>' : '')
         + '<p><b>怎麼讀</b>：2022 只有 4 個點、又含除籍事件年（只有一點，抵銷不了），抓到率低（很多區被判「方向不明」），但標出來的仍有九成準；2023 起標移入的準確率都在八成八以上、抓到率七成。點預測的 MAE 跟「沿用去年值」差不多、2022 甚至輸給「歷年平均」—— <b>這個方法的價值在方向（訊號），不在單一年的數字</b>。</p>'
         + (named ? '<h4>局長點名的區</h4><ul>' + named + '</ul>' : '');
+      var S = M.sensitivity_migration;
+      if (S && S.rows) {
+        var changed = S.rows.filter(function (r) { return !r.stable; });
+        bt += '<h4>敏感度：換一種算法，訊號會不會變</h4>'
+          + '<div class="kv"><div><b>' + S.stable + ' / ' + S.n + '</b><span>三種算法訊號一致的區</span></div><div><b>' + changed.length + '</b><span>會變的區（' + changed.filter(function (r) { return r.edge; }).length + ' 個已標邊緣）</span></div></div>'
+          + '<p>正式做法＝事件年合併成一點（n=7）；對照：原始 8 點不動、兩個事件年直接剔除（n=6）。' + S.note + '</p>'
+          + (changed.length ? '<div class="tw"><table><thead><tr><th>區</th><th>合併（正式）</th><th>原始 8 點</th><th>剔除（n=6）</th><th>邊緣</th></tr></thead><tbody>'
+            + changed.map(function (r) { return '<tr><td>' + r.area + '</td><td>' + r.merged + '</td><td>' + r.raw + '</td><td>' + r.dropped + '</td><td>' + (r.edge ? '是' : '') + '</td></tr>'; }).join('') + '</tbody></table></div>' : '');
+      }
     } else bt = '<p>尚未產生回測（python data/backtest_migration.py）。</p>';
     $('mBacktest').innerHTML = '<div class="mth">' + bt + '</div>';
 
@@ -2469,10 +2521,12 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (D && D.models) {
       var coefTable = function (m) {
         var feats = m.features.concat(Object.keys(m.coef).filter(function (k) { return k.indexOf('fe_') === 0; }));
-        return '<div class="tw"><table><thead><tr><th>變數</th><th>係數 β</th><th>標準誤</th><th>t</th><th>顯著</th><th>高 10% → pp</th><th>標準化 β</th></tr></thead><tbody>'
+        return '<div class="tw"><table><thead><tr><th>變數</th><th>係數 β</th><th>標準誤</th><th>t</th><th>顯著</th><th>HC3 標準誤</th><th>HC3 t</th><th>HC3 顯著</th><th>高 10% → pp</th><th>標準化 β</th></tr></thead><tbody>'
           + feats.map(function (f) {
             var c = m.coef[f]; var label = c.label || f.replace('fe_', '固定效果 ');
-            return '<tr class="' + (c.significant ? 'sig' : 'nosig') + '"><td>' + label + '</td><td>' + fx(c.b, 3) + '</td><td>' + fx(c.se, 3) + '</td><td>' + fx(c.t, 2) + '</td><td>' + (c.significant ? '<span class="ok">是</span>' : '否') + '</td><td>' + (c.per_10pct != null ? fx(c.per_10pct, 3) : '') + '</td><td>' + (c.beta_std != null ? fx(c.beta_std, 2) : '') + '</td></tr>';
+            return '<tr class="' + (c.significant ? 'sig' : 'nosig') + '"><td>' + label + '</td><td>' + fx(c.b, 3) + '</td><td>' + fx(c.se, 3) + '</td><td>' + fx(c.t, 2) + '</td><td>' + (c.significant ? '<span class="ok">是</span>' : '否') + '</td>'
+              + '<td>' + (c.se_hc3 != null ? fx(c.se_hc3, 3) : '') + '</td><td>' + (c.t_hc3 != null ? fx(c.t_hc3, 2) : '') + '</td><td>' + (c.significant_hc3 == null ? '' : (c.significant_hc3 ? '<span class="ok">是</span>' : '否')) + '</td>'
+              + '<td>' + (c.per_10pct != null ? fx(c.per_10pct, 3) : '') + '</td><td>' + (c.beta_std != null ? fx(c.beta_std, 2) : '') + '</td></tr>';
           }).join('') + '</tbody></table></div>';
       };
       var mb = D.models.base, mf = D.models.full;
@@ -2480,8 +2534,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         + '<p>全部解釋變數取 ln，係數讀成「X 高 10%，y 高 β·ln(1.1) 個百分點」。縣市固定效果吸掉六都之間的水準差，所以比較的是「同一個都會區裡」哪種區在吸青年。標準化 β = β·sd(x)/sd(y)，用來比哪個因子影響大。t 臨界值 ' + mb.t_critical + '（自由度 ' + (mb.n - mb.features.length - 6) + '）。</p>'
         + '<h4>模型 A　不含租金　n = ' + mb.n + '　R² = ' + mb.r2 + '（能解釋 ' + Math.round(mb.r2 * 100) + '% 的跨區差異）</h4>' + coefTable(mb)
         + '<h4>模型 B　含租金　n = ' + mf.n + '（租金樣本 ≥ 30 筆的區）　R² = ' + mf.r2 + '</h4>' + coefTable(mf)
+        + (D.models.burden ? '<h4>模型 C　租金負擔（租金 ÷ 所得）取代絕對租金　n = ' + D.models.burden.n + '　R² = ' + D.models.burden.r2 + '</h4><p>局長的因果鏈是「收入低＋房價高」—— 相對的負擔，不是絕對的租金。這是直接測他的假設。</p>' + coefTable(D.models.burden) : '')
         + '<h4>假設與不能講的話</h4><ul>'
-        + '<li>OLS 假設殘差獨立同分布；行政區之間有空間相關（相鄰區互相影響），標準誤可能略被低估，顯著的結論以 t ≥ 3 的為準（所得中位數）。</li>'
+        + '<li>OLS 假設殘差獨立同分布；行政區之間有空間相關、殘差變異不齊，所以另外列 HC3 穩健標準誤（White 型異質變異校正）—— 兩種標準誤下都顯著的才算站得住。</li>'
         + '<li>係數是<b>相關</b>不是因果：所得高的區青年多，也可能是青年多讓所得高。</li>'
         + '<li>租金樣本偏向代管／包租物件（110 年 7 月起才強制申報），郊區樣本常不足 —— 所以兩個模型都報。</li>'
         + '<li>工作機會是 110 年底普查（五年一次）；淡水殘差 +' + (function () { var d = (D.districts || []).filter(function (x) { return x.area === '新北市淡水區'; })[0]; return d && d.resid != null ? d.resid.toFixed(1) : '—'; })() + ' pp 說明住宅供給（建照）是缺的變數。</li>'
@@ -2976,7 +3031,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // ── 地圖 ───────────────────────────────────────────────
   // 界線是 build 時在 Python 端解好的 SVG 路徑，這裡不需要任何地圖函式庫。
-  var MAP_METRICS = ['人口數', '青年淨遷入率', '青年人口年變化率', '勞動力參與率', '綜合所得中位數', '工作機會密度', '住宅每坪月租中位數'];
+  var MAP_METRICS = ['人口數', '青年淨遷入率', '青年人口年變化率', '勞動力參與率', '綜合所得中位數', '工作機會密度', '住宅每坪月租中位數', '青年女性一般生育率'];
   // 全體層級的指標（財政部所得、普查工作機會）沒有分齡：先照年齡層找，找不到退到「全體」
   function findMap(area, metric) {
     return find(area, state.band, metric) || find(area, '全體', metric);
@@ -2988,7 +3043,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     '青年人口年變化率': '過去一年這個年齡層的人口增減（含少子化）· 紅＝減少最多、綠＝增加 · 要看搬家請用「青年淨遷入率」',
     '綜合所得中位數': '全體申報戶的綜合所得中位數（財政部稅籍，非抽樣）· 不是青年、不是薪資',
     '工作機會密度': '區內從業員工（110 年普查）÷ 區內 15–64 歲人口 · 遠低於 1 的是通勤外出的住宅區',
-    '住宅每坪月租中位數': '實價登錄租賃案件近四季中位數（元／坪／月）· 全體案件非青年 · 樣本偏向代管／包租物件'
+    '住宅每坪月租中位數': '實價登錄租賃案件近四季中位數（元／坪／月）· 全體案件非青年 · 樣本偏向代管／包租物件',
+    '青年女性一般生育率': '生母 18–35 歲的出生數 ÷ 同區 18–35 歲女性 × 1000‰（戶政司，按發生）· 婚育主責社會局／衛生局，這是答辯用的數字'
   };
   var MAP_INVERT = ['青年淨遷入率', '青年人口年變化率'];   // 值越低越紅（流出／減少是壞事）
   var mapYear = null;   // null＝最新一年（記錄本身）；選了年份就從 trends 的年序列取值
@@ -3337,6 +3393,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     ['每坪', '住宅每坪月租中位數'],
     ['房租', '住宅每坪月租中位數'],
     ['月租', '住宅月租金中位數'],
+    ['生育率', '青年女性一般生育率'],
+    ['出生', '青年女性一般生育率'],
     ['淨遷入', '青年淨遷入率'],
     ['移入', '青年淨遷入率'],
     ['遷入', '青年淨遷入率'],

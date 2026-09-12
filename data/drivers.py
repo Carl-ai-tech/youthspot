@@ -44,7 +44,8 @@ from data.sources import DATA_DIR, SIX_CITIES  # noqa: E402
 OUT = DATA_DIR / "drivers.json"
 Y_YEARS = 3                                   # 近三年平均
 FEATURES = ["ln_jobs_density", "ln_income", "ln_rent", "ln_youth"]
-LABELS = {"ln_jobs_density": "工作機會密度", "ln_income": "所得中位數", "ln_rent": "每坪月租", "ln_youth": "青年人口規模"}
+LABELS = {"ln_jobs_density": "工作機會密度", "ln_income": "所得中位數", "ln_rent": "每坪月租", "ln_youth": "青年人口規模",
+          "ln_rent_burden": "租金負擔（租金÷所得）"}
 # 「像淡水」的四個維度：相對本市的租金（便宜）、工作機會密度、所得、規模。距離用 z 分數算
 SIMILARITY = ["rel_rent", "ln_jobs_density", "ln_income", "ln_youth"]
 
@@ -92,10 +93,20 @@ def ols(X: list[list[float]], y: list[float], names: list[str]) -> dict:
     inv = _inverse(xtx)
     se = [math.sqrt(sigma2 * inv[a][a]) for a in range(p)]
     tcrit = _t_critical(df)
+    # HC3 穩健標準誤：行政區之間有空間相關、殘差變異不齊，一般 se 可能低估。
+    # (X'X)⁻¹ X' diag(e²/(1−h)²) X (X'X)⁻¹，h = x_i (X'X)⁻¹ x_iᵀ（帽子矩陣對角）
+    hat = [sum(Xc[i][a] * sum(inv[a][b] * Xc[i][b] for b in range(p)) for a in range(p)) for i in range(n)]
+    w = [resid[i] ** 2 / max(1e-9, (1 - hat[i]) ** 2) for i in range(n)]
+    meat = [[sum(Xc[i][a] * w[i] * Xc[i][b] for i in range(n)) for b in range(p)] for a in range(p)]
+    tmp = [[sum(inv[a][k] * meat[k][b] for k in range(p)) for b in range(p)] for a in range(p)]
+    hc3 = [[sum(tmp[a][k] * inv[k][b] for k in range(p)) for b in range(p)] for a in range(p)]
+    se_hc3 = [math.sqrt(max(0.0, hc3[a][a])) for a in range(p)]
     coef = {}
     for a, name in enumerate(["截距"] + names):
         t = beta[a] / se[a] if se[a] > 0 else float("nan")
-        coef[name] = {"b": round(beta[a], 4), "se": round(se[a], 4), "t": round(t, 2), "significant": abs(t) >= tcrit}
+        t3 = beta[a] / se_hc3[a] if se_hc3[a] > 0 else float("nan")
+        coef[name] = {"b": round(beta[a], 4), "se": round(se[a], 4), "t": round(t, 2), "significant": abs(t) >= tcrit,
+                      "se_hc3": round(se_hc3[a], 4), "t_hc3": round(t3, 2), "significant_hc3": abs(t3) >= tcrit}
     return {"coef": coef, "r2": round(1 - sse / sst, 3) if sst else None, "n": n, "df": df,
             "t_critical": tcrit, "fitted": fitted, "resid": resid}
 
@@ -133,6 +144,8 @@ def build_panel(*, refresh: bool = False) -> list[dict]:
             row["ln_income"] = math.log(inc_med) if inc_med else None
             row["ln_rent"] = math.log(row["rent"]) if row["rent"] else None
             row["ln_youth"] = math.log(youth) if youth else None
+            # 租金負擔：每坪月租 ÷ 所得中位數（局長的因果鏈是「收入低＋房價高」，是相對的不是絕對的）
+            row["ln_rent_burden"] = math.log(row["rent"] / inc_med) if row["rent"] and inc_med else None
             rows.append(row)
     # 相對本市的租金：ln(租金) − 本市各區 ln(租金) 平均。「便宜」是相對同一個都會區講的
     for city in SIX_CITIES:
@@ -183,6 +196,8 @@ def fit_drivers(rows: list[dict]) -> dict:
     租金缺的多半是郊區 —— 正是流出區，只跑含租金的模型會把它們丟掉，所以兩個都報。"""
     base = _fit(rows, [f for f in FEATURES if f != "ln_rent"], "")
     full = _fit(rows, FEATURES, "_full")
+    # 模型 C：把局長的因果模型放進去 —— 租金相對所得的負擔，而不是絕對租金
+    burden = _fit(rows, ["ln_jobs_density", "ln_rent_burden", "ln_youth"], "_burden")
     # z 分數（相似度用）
     stats = {}
     for f in SIMILARITY:
@@ -195,7 +210,7 @@ def fit_drivers(rows: list[dict]) -> dict:
                 m, s = stats[f]
                 z[f] = round((r[f] - m) / s, 3)
         r["z"] = z if len(z) == len(SIMILARITY) else None
-    return {"base": base, "full": full}
+    return {"base": base, "full": full, "burden": burden}
 
 
 def similar_to(rows: list[dict], area: str, k: int = 8) -> list[dict]:
@@ -243,7 +258,8 @@ def main(argv: list[str]) -> int:
     out = build(refresh="--refresh" in argv)
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{out['y']}\n{out['spec']}")
-    for tag, title in (("base", "模型 A：不含租金（六都全部行政區）"), ("full", "模型 B：含租金（租金樣本 ≥ 30 筆的區）")):
+    for tag, title in (("base", "模型 A：不含租金（六都全部行政區）"), ("full", "模型 B：含租金（租金樣本 ≥ 30 筆的區）"),
+                       ("burden", "模型 C：租金負擔（租金÷所得）取代所得與租金")):
         m = out["models"][tag]
         print(f"\n{title}　n = {m['n']}，R² = {m['r2']}，t 臨界 {m['t_critical']}")
         print(f"{'變數':<10}{'係數':>9}{'標準誤':>9}{'t':>7}{'顯著':>5}{'高10%→pp':>10}{'標準化β':>9}{'單相關':>8}")

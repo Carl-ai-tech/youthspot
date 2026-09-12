@@ -33,6 +33,32 @@ JURISDICTION = [
 ]
 
 
+# 多因子模型的四個條件，各自是哪個局處能動的、青年局能做什麼。「青年人口規模」是結果不是槓桿。
+LEVERS = {
+    "income":       {"label": "所得中位數",   "lead": "經濟發展局（招商、產業）／勞工局（就業）", "youth": "職涯探索、創業基地（青年局主責）", "lever": True},
+    "jobs_density": {"label": "工作機會密度", "lead": "經濟發展局（產業用地、招商）",              "youth": "青創進駐、在地實習媒合（青年局主責）", "lever": True},
+    "rent":         {"label": "每坪月租",     "lead": "城鄉發展局（社宅、包租代管、租補）",         "youth": "青年租屋資訊與申請宣導（協作）", "lever": True},
+    "youth":        {"label": "青年人口規模", "lead": "—", "youth": "這是結果不是槓桿：人來了規模才會大", "lever": False},
+}
+
+
+def condition_gaps(d: dict, ref: dict, betas: dict) -> list[dict]:
+    """一個區跟參考區的四個條件差多少（%），乘上模型的影響力（標準化 β 的絕對值）排序。
+    差距為負（比參考區差）而且影響力大的排最前 —— 那就是最該先動的條件。租金反向：比參考區高才算缺口。"""
+    out = []
+    for key, sign in (("income", 1), ("jobs_density", 1), ("rent", -1), ("youth", 1)):
+        a, b = d.get(key), ref.get(key)
+        if not a or not b:
+            continue
+        gap = (a / b - 1) * 100                    # 正＝比參考區高
+        short_of = gap * sign < 0                  # 是不是「缺」
+        w = abs(betas.get(key, 0))
+        out.append({"key": key, "label": LEVERS[key]["label"], "gap_pct": round(gap, 0), "short": short_of,
+                    "weight": round(w, 2), "score": round(abs(gap) * w, 1) if short_of else 0.0,
+                    "lead": LEVERS[key]["lead"], "youth": LEVERS[key]["youth"], "lever": LEVERS[key]["lever"]})
+    return sorted(out, key=lambda g: -g["score"])
+
+
 def lookup(question: str) -> list[dict]:
     """問題裡碰到哪些議題，回傳對應的權責列（給提示詞用）。"""
     import re

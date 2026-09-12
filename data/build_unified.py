@@ -37,7 +37,7 @@ from data.fetch_district_income import DATASET as FIA_DATASET, LANDING as FIA_LA
 from data.fetch_district_jobs import DATASET as CEN_DATASET, LANDING as CEN_LANDING, fetch_district_jobs  # noqa: E402
 from data.fetch_rent import DATASET as RENT_DATASET, LANDING as RENT_LANDING, fetch_rent  # noqa: E402
 from data.drivers import OUT as DRIVERS_JSON  # noqa: E402
-from engine.jurisdiction import plan as _plan, plan_lines as _plan_lines  # noqa: E402
+from engine.jurisdiction import plan as _plan, plan_lines as _plan_lines, condition_gaps as _condition_gaps  # noqa: E402
 from data.fetch_population import fetch_population_by_district, fetch_population_by_sex  # noqa: E402
 from data.fetch_migration import DATASET as MIG_DATASET, LANDING as MIG_LANDING, fetch_migration  # noqa: E402
 from data.fetch_official_migration import DATASET as OFF_DATASET, LANDING as OFF_LANDING, fetch_official_migration  # noqa: E402
@@ -344,12 +344,14 @@ def _plan_notes(drivers: dict, mt: dict, region: str) -> list[dict]:
         if cands:
             d = cands[0][1]
             p = _plan(d["area"], "candidate", {"short": d["short"], "similar_to": ref["short"], "rate": latest.get(d["area"])})
+            gaps = _condition_gaps(d, ref, _betas(drivers))
+            lever_lines = _lever_lines(d, ref, gaps)
             notes.append({"title": p["title"],
                           "body": (f"{d['short']}的租金、工作機會、所得、規模四個條件跟{ref['short']}最像（六都相似度排序第一），"
                                    f"但近三年淨遷入平均 {d['y']:+.1f}%，移入還沒起來。這張清單把「看什麼、誰做什麼、怎麼驗收」排成三年；"
                                    "青年局主責的只有職涯、創業、公共參與，其餘是轉請或協作。"),
-                          "detail": _plan_lines(p), "confidence": "low",
-                          "basis": "條件相似度（data/drivers.py）＋世代淨遷入訊號；" + p["note"]})
+                          "detail": lever_lines + _plan_lines(p), "confidence": "low",
+                          "basis": "條件相似度（data/drivers.py）＋世代淨遷入訊號＋多因子係數（模型 A 標準化 β）；" + p["note"]})
     if top:
         p = _plan(top, "inflow", {"short": top.replace(region, ""), "rate": latest[top]})
         notes.append({"title": p["title"],
@@ -357,6 +359,27 @@ def _plan_notes(drivers: dict, mt: dict, region: str) -> list[dict]:
                       "detail": _plan_lines(p), "confidence": "medium",
                       "basis": "世代淨遷入訊號（回測：2023 起標移入的區 ≥ 89% 隔兩年真的移入）；" + p["note"]})
     return notes
+
+
+def _betas(drivers: dict) -> dict:
+    """模型 A 的標準化 β（所得、密度、規模）＋模型 B 的租金；當「哪個條件影響大」的權重。"""
+    mA = drivers["models"]["base"]["coef"]; mB = drivers["models"]["full"]["coef"]
+    return {"income": mA["ln_income"]["beta_std"], "jobs_density": mA["ln_jobs_density"]["beta_std"],
+            "youth": mA["ln_youth"]["beta_std"], "rent": mB["ln_rent"]["beta_std"]}
+
+
+def _lever_lines(d: dict, ref: dict, gaps: list[dict]) -> list[str]:
+    """卡片上的「施政切入點」：只列真的有缺口的條件，照影響力排；每條寫差多少、誰能動、青年局做什麼。"""
+    short = [g for g in gaps if g["short"] and g["lever"]]
+    if not short:
+        return [f"施政切入點｜{d['short']}的三個可動條件（所得、工作機會、租金）都不比{ref['short']}差 —— 缺的不是條件，是住宅供給或交通，轉請城鄉局、交通局"]
+    out = [f"施政切入點｜跟{ref['short']}比，{d['short']}缺的條件（照模型影響力排）："]
+    for i, g in enumerate(short, 1):
+        out.append(f"　{i}. {g['label']}比{ref['short']}{'低' if g['key'] != 'rent' else '高'} {abs(g['gap_pct']):.0f}%（影響力 {g['weight']:.2f}）→ 主責 {g['lead']}；青年局：{g['youth']}")
+    ok = [g["label"] for g in gaps if not g["short"] and g["lever"]]
+    if ok:
+        out.append(f"　不缺的：{'、'.join(ok)} —— 不必投資源")
+    return out
 
 
 def _drivers_note(drivers: dict, region: str) -> dict | None:

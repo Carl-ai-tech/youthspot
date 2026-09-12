@@ -30,7 +30,7 @@ from .synthesize import Grounded, _fmt, retrieve, verify
 RECORD_LIMIT = 32
 
 
-from engine.jurisdiction import JURISDICTION, YOUTH_BUREAU_MANDATE, lookup as _jur_lookup  # noqa: E402
+from engine.jurisdiction import JURISDICTION, YOUTH_BUREAU_MANDATE, lookup as _jur_lookup, condition_gaps as _condition_gaps  # noqa: E402
 
 SIMILAR_CUE = ("下一個", "潛力", "候選", "相似", "類似", "像", "條件")
 CLAIM_CUE = ("應該", "該", "是不是", "真的嗎", "嚴重", "權責", "責任", "負責", "需要", "要求")
@@ -154,6 +154,21 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
             lines += [_line(dist, d) for dist, d in local]
         lines.append(f"六都內條件最像 {ref['area']} 的區：")
         lines += [_line(dist, d) for dist, d in cands[:6]]
+        # 施政切入點：主角（或本市第一候選）跟參考區的條件缺口 × 模型影響力
+        target = subject or (local[0][1] if local else None)
+        if target is not None and target is not ref:
+            betas = {"income": mb["coef"]["ln_income"]["beta_std"], "jobs_density": mb["coef"]["ln_jobs_density"]["beta_std"],
+                     "youth": mb["coef"]["ln_youth"]["beta_std"], "rent": mf["coef"]["ln_rent"]["beta_std"]}
+            gaps = _condition_gaps(target, ref, betas)
+            short_g = [g for g in gaps if g["short"] and g["lever"]]
+            lines.append(f"施政切入點（{target['short']} vs {ref['short']}，條件缺口 × 模型影響力，影響力＝模型 A 標準化 β）：")
+            for g in short_g:
+                lines.append(f"  - {g['label']}比{ref['short']}{'高' if g['key'] == 'rent' else '低'} {abs(g['gap_pct']):.0f}%，影響力 {g['weight']:.2f} → 主責 {g['lead']}；青年局：{g['youth']}")
+            if not short_g:
+                lines.append(f"  - {target['short']}的所得、工作機會、租金都不比{ref['short']}差；缺的不是條件，是住宅供給或交通（模型沒有這兩個變數）")
+            ok = [g["label"] for g in gaps if not g["short"] and g["lever"]]
+            if ok:
+                lines.append(f"  - 不缺的條件：{'、'.join(ok)}（不必投資源）")
         if subject is not None:
             plans = [n for n in (payload.get("policy_notes") or []) if "三年準備清單" in n.get("title", "") and subject["short"] in n.get("title", "")]
             hint = (f"這題的主角是 {subject['short']}（參考區是 {ref['short']}）：回答 {subject['short']} 要看什麼、誰做什麼，"
@@ -270,6 +285,7 @@ def build_prompt(payload: dict, records: list[dict], question: str,
 迴歸係數說「相關」不說「因為」；提醒淡水本身的移入有 3.5 個百分點是條件解釋不了的（新市鎮住宅供給、輕軌），
 所以「條件像」只是必要條件，還要看住宅供給與交通建設。
 
+問「該做什麼／怎麼施政」時，先用「施政切入點」：條件缺口大又影響力大的先講，寫清楚主責局處與青年局的角色；不缺的條件明說不必投。
 施政建議卡裡的「三年準備清單」是固定樣板：引用時照卡片的年份與項目寫（第 1 年看什麼／誰做什麼、第 2 年…），可以精簡，
 **不要改寫成自己的三個項目**，也不要把協作局處的事寫成青年局主責。
 生育率（青年女性一般生育率）目前只有本市各區的數字、沒有六都或全國對照：只陳述數字，**不要下「偏低／偏高」的判斷**；可以比較本市各區之間的高低。

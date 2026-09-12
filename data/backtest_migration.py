@@ -24,7 +24,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from data.fetch_migration import fetch_migration  # noqa: E402
-from data.forecast import fit  # noqa: E402
+from data.forecast import MIN_POINTS, _t_critical, fit  # noqa: E402
 from data.sources import DATA_DIR, SIX_CITIES  # noqa: E402
 
 OUT = DATA_DIR / "backtest_migration.json"
@@ -56,8 +56,25 @@ def classify(pts: list[tuple[int, float]]) -> dict | None:
     else:
         signal = "方向不明"
     yhat, margin = tr.predict(pts[-1][0] + 1)
+    # 水準檢定：這個區「平均起來」是不是真的在淨移入／流出（單樣本 t，H0：平均 = 0）。
+    # 跟斜率檢定是兩件事：淡水每年都 +2～4%，斜率 ≈ 0（不顯著）但水準非常顯著 ——
+    # 「持續移入」靠的是水準，訊號的信心度也要看水準，不然穩定的區反而被標成低信心。
+    from math import sqrt
+    ys = [r for _, r in pts]
+    n = len(ys)
+    mean = sum(ys) / n
+    sd = sqrt(sum((y - mean) ** 2 for y in ys) / (n - 1)) if n > 1 else 0.0
+    level_t = (mean / (sd / sqrt(n))) if sd > 0 else (float("inf") if mean else 0.0)
+    level_sig = abs(level_t) >= _t_critical(n - 1)
+    if signal in ("持續移入", "持續流出"):
+        confidence = "medium" if level_sig and n >= MIN_POINTS else "low"
+    elif signal in ("移入減速", "流出加劇", "轉為移入", "轉為流出"):
+        confidence = tr.confidence            # 方向的訊號看斜率
+    else:
+        confidence = "low"
     return {"signal": signal, "forecast": yhat, "margin": margin, "slope": tr.slope,
-            "significant": tr.significant, "confidence": tr.confidence, "n": len(pts), "trend": tr}
+            "significant": tr.significant, "confidence": confidence, "n": n, "trend": tr,
+            "mean": mean, "sd": sd, "level_t": level_t, "level_significant": level_sig}
 
 
 def _hindcast_city(region: str, period: str | None) -> dict:

@@ -2381,23 +2381,29 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     }
     var tbl = rows.map(function (r) {
       var a = r.a;
-      return '<tr class="' + (a.significant ? 'sig' : 'nosig') + '"><td>' + r.name + '</td><td>' + a.n + '</td><td>' + pct(r.last) + '</td>'
-        + '<td>' + (a.slope_pp > 0 ? '+' : '') + fx(a.slope_pp) + '</td><td>±' + fx(a.slope_se_pp) + '</td><td>' + (a.t == null ? '∞' : fx(a.t, 1)) + '</td><td>' + (a.significant ? '<span class="ok">是</span>' : '否') + '</td><td>' + fx(a.r2) + '</td>'
+      return '<tr class="' + ((a.level_significant || a.significant) ? 'sig' : 'nosig') + '"><td>' + r.name + '</td><td>' + a.n + '</td><td>' + pct(r.last) + '</td>'
+        + '<td>' + pct(a.mean) + '</td><td>' + (a.level_t == null ? '∞' : fx(a.level_t, 1)) + '</td><td>' + (a.level_significant ? '<span class="ok">是</span>' : '否') + '</td>'
+        + '<td>' + (a.slope_pp > 0 ? '+' : '') + fx(a.slope_pp) + '</td><td>' + (a.t == null ? '∞' : fx(a.t, 1)) + '</td><td>' + (a.significant ? '<span class="ok">是</span>' : '否') + '</td>'
         + '<td>' + pct(a.forecast) + ' ± ' + (a.margin * 100).toFixed(1) + '</td><td>' + confLabel(a.confidence) + '</td><td>' + (a.signal || '—') + '</td></tr>';
     }).join('');
     $('mTrend').innerHTML = '<div class="mth">'
       + '<h4>模型：最小平方直線（OLS on time）</h4>'
       + '<code>y_t = α + β·t + ε_t　　β̂ = Σ(t−t̄)(y−ȳ) ÷ Σ(t−t̄)²　　α̂ = ȳ − β̂·t̄\nse = √( Σ殘差² ÷ (n−2) )　　se(β̂) = se ÷ √Σ(t−t̄)²</code>'
-      + '<h4>檢定：斜率是不是零（雙尾 5%）</h4>'
-      + '<p><code>t = β̂ ÷ se(β̂)　　|t| ≥ t<sub>0.025, n−2</sub> → 顯著</code>用 t 分布不用常態：n = 8 時臨界值 2.447（自由度 6），不是 1.96。意思是：<b>如果真實趨勢是 0，看到這麼大斜率的機率不到 5%</b>。</p>'
+      + '<h4>兩個檢定，回答兩個不同的問題（都是雙尾 5%）</h4>'
+      + '<p><b>① 水準：這個區平均起來是不是真的在淨移入／流出？</b>單樣本 t，H0：平均 = 0。</p>'
+      + '<code>t_水準 = ȳ ÷ ( s ÷ √n )　　|t| ≥ t<sub>0.025, n−1</sub> → 顯著（n = 8：2.365）</code>'
+      + '<p>「持續移入／持續流出」的信心看這個。淡水每年都 +2～4%，平均 +3.2%、t ≈ 8 —— 非常顯著。</p>'
+      + '<p><b>② 斜率：移入在加速還是減速？</b>H0：斜率 = 0。</p>'
+      + '<code>t_斜率 = β̂ ÷ se(β̂)　　|t| ≥ t<sub>0.025, n−2</sub> → 顯著（n = 8：2.447）</code>'
+      + '<p>「減速／加劇／轉向」的信心看這個。一個穩定移入的區斜率當然接近 0 —— <b>斜率不顯著不代表訊號不可信，代表它沒有在變</b>。用 t 分布不用常態 1.96：樣本小，常態會高估顯著性。意思是：如果真實值是 0，看到這麼大的統計量的機率不到 5%。</p>'
       + '<h4>預測區間：明年會落在哪裡（95%）</h4>'
       + '<code>ŷ(t+1) ± 1.96 · se · √( 1 + 1/n + (t+1 − t̄)² ÷ Σ(t−t̄)² )</code>'
       + '<p>這是<b>預測區間</b>（含明年那一點自己的隨機波動），不是趨勢線的信賴帶，所以比較寬。1.96 是常態近似，樣本小時會略低估寬度 —— 所以另外要求 n ≥ 6 且顯著才給「中信心」，否則一律「低信心」，外推永遠不給「高」。</p>'
       + '<h4>訊號規則（跟回測用同一個函式）</h4>'
       + '<code>連續正值（最多 1 年例外）且最新為正 → 持續移入；若斜率顯著向下 → 移入減速\n連續負值（最多 1 年例外）且最新為負 → 持續流出；若斜率顯著向下 → 流出加劇\n其餘：斜率顯著向上 → 轉為移入；顯著向下 → 轉為流出；不顯著 → 方向不明</code>'
       + '<h4>' + M.region + '每一區的統計細節（' + (Mg ? Mg.years[0] + '–' + Mg.years[Mg.years.length - 1] : '') + '）</h4>'
-      + '<div class="tw"><table><thead><tr><th>區</th><th>n</th><th>最新</th><th>斜率 pp/年</th><th>斜率標準誤</th><th>t</th><th>顯著</th><th>R²</th><th>' + (Mg && rows[0] ? rows[0].a.forecast_year : '明年') + ' 預估 ± 95%</th><th>信心</th><th>訊號</th></tr></thead><tbody>' + tbl + '</tbody></table></div>'
-      + '<p>灰字＝斜率不顯著（t 沒過臨界值），它的「預估」只是延伸線，不能當結論。2022／2023 為疫情除籍與恢復戶籍的事件年，刻意留在序列裡。</p>'
+      + '<div class="tw"><table><thead><tr><th>區</th><th>n</th><th>最新</th><th>8 年平均</th><th>水準 t</th><th>水準顯著</th><th>斜率 pp/年</th><th>斜率 t</th><th>斜率顯著</th><th>' + (Mg && rows[0] ? rows[0].a.forecast_year : '明年') + ' 預估 ± 95%</th><th>訊號信心</th><th>訊號</th></tr></thead><tbody>' + tbl + '</tbody></table></div>'
+      + '<p><b>訊號信心怎麼給</b>：持續移入／流出 → 看水準檢定（顯著且 n ≥ 6 → 中）；減速／轉向 → 看斜率檢定；方向不明 → 低。外推永遠不給「高」——那是留給官方公布值的。灰字＝兩個檢定都沒過，它的數字只能當參考。2022／2023 為疫情除籍與恢復戶籍的事件年，刻意留在序列裡。</p>'
       + '</div>';
 
     // 03 回測

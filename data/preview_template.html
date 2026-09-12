@@ -2693,7 +2693,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     host.innerHTML = '';
     var mig = DATA.trends && DATA.trends.migration, D = DATA.trends && DATA.trends.drivers;
     if (!mig || !mig.areas) { host.innerHTML = '<p class="watch-empty">這個城市還沒有世代淨遷入資料。</p>'; return; }
-    var rows = Object.keys(mig.areas).filter(function (k) { return k !== M.region && mig.areas[k].rate && mig.areas[k].rate[mig.areas[k].rate.length - 1] != null; })
+    // 小區幾十個人就是好幾個百分點，預警摘要只列一年至少 50 人進出的區
+    var rows = Object.keys(mig.areas).filter(function (k) { var a = mig.areas[k]; return k !== M.region && a.rate && a.rate[a.rate.length - 1] != null && Math.abs((a.net || [0])[a.net.length - 1] || 0) >= 50; })
       .map(function (k) { var a = mig.areas[k]; return { area: k, short: k.replace(M.region, ''), v: a.rate[a.rate.length - 1], signal: a.signal || '', forecast: a.forecast, fy: a.forecast_year }; });
     var inflow = rows.filter(function (r) { return /移入/.test(r.signal); }).sort(function (a, b) { return b.v - a.v; }).slice(0, 3);
     var outflow = rows.filter(function (r) { return /流出/.test(r.signal); }).sort(function (a, b) { return a.v - b.v; }).slice(0, 3);
@@ -4066,7 +4067,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     var mig = DATA.trends && DATA.trends.migration, best = null, bv = -Infinity;
     if (!mig || !mig.areas) return null;
     Object.keys(mig.areas).forEach(function (k) {
-      var a = mig.areas[k]; if (k === M.region || !a.rate) return;
+      var a = mig.areas[k]; if (k === M.region || !a.rate || Math.abs((a.net || [0])[a.net.length - 1] || 0) < 100) return;
       var v = a.rate[a.rate.length - 1]; if (v != null && v > bv) { bv = v; best = k; }
     });
     return best;

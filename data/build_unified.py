@@ -257,7 +257,9 @@ def _plan_notes(drivers: dict, mt: dict, region: str) -> list[dict]:
     if not ds or not areas:
         return []
     latest = {k: (v["rate"][-1] if v.get("rate") else None) for k, v in areas.items() if k != region}
-    top = max((k for k in latest if latest[k] is not None), key=lambda k: latest[k], default=None)
+    # 小區（茂林、平溪）幾十個人就是好幾個百分點，「移入最多」要看得起碼有 100 人
+    big = [k for k in latest if latest[k] is not None and abs((areas[k].get("net") or [0])[-1] or 0) >= 100]
+    top = max(big, key=lambda k: latest[k], default=None)
     ref_name = "新北市淡水區" if region == "新北市" else top
     ref = next((d for d in ds if d["area"] == ref_name), None)
     notes = []

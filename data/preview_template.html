@@ -802,6 +802,73 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 .stale-t{color:#8a5200;}
 .conf-how{display:block;margin-top:.3rem;font-size:.68rem;color:var(--ink-3);line-height:1.4;}
 
+/* ── base44 式英雄區：點陣背景、置中大標、白色提示框、城市分頁與卡片列 ── */
+:root{--b44-bg:#F1F0EC;--b44-dot:#D5D3CD;--b44-orange:#FF5A1F;--b44-card:#FFFFFF;--b44-ink:#111114;--b44-mute:#6B6B70;}
+body{background:var(--b44-bg);}
+.topbar{background:rgba(241,240,236,.88);border-bottom:0;}
+.topbar .brand .dot{width:14px;height:14px;border-radius:50%;background:var(--b44-orange);display:inline-block;align-self:center;}
+.topbar .brand strong{font-size:1.15rem;}
+.topbar .toc a{font-size:.86rem;font-weight:500;color:var(--b44-ink);}
+.topbar .export-btn{background:var(--b44-ink);color:#fff;border-radius:999px;padding:.55rem 1.1rem;font-weight:700;}
+.hero44{position:relative;text-align:center;padding:3.4rem 0 1.6rem;}
+.hero44::before{content:"";position:absolute;inset:-4rem -100vw 0;z-index:-1;background-image:radial-gradient(var(--b44-dot) 1.1px,transparent 1.2px);background-size:22px 22px;opacity:.9;}
+.hero44 h1{font-size:clamp(2.5rem,7.2vw,5.2rem);font-weight:900;letter-spacing:-.045em;line-height:1.02;margin:0 auto .9rem;color:var(--b44-ink);text-wrap:balance;max-width:16em;}
+.hero44 .lede{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--b44-ink);opacity:.85;margin:0 auto 1.8rem;max-width:40em;line-height:1.6;}
+.prompt .asktips[hidden]{display:none!important;}
+.prompt{background:var(--b44-card);border-radius:20px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 12px 40px rgba(0,0,0,.07);max-width:40rem;margin:0 auto;padding:1.1rem 1.2rem 1rem;text-align:left;}
+.prompt-in{position:relative;}
+.prompt-in input{width:100%;box-sizing:border-box;font:inherit;font-size:1.08rem;color:var(--b44-ink);background:transparent;border:0;padding:.5rem .2rem 2.2rem;min-height:4.6rem;}
+.prompt-in input::placeholder{color:#9A9A9F;}
+.prompt-in input:focus{outline:none;}
+.ph-use{position:absolute;right:.2rem;bottom:.55rem;font:inherit;font-size:.7rem;color:var(--b44-mute);background:var(--sunk);border:0;border-radius:999px;padding:.2rem .6rem;cursor:pointer;}
+.ph-use:hover{background:var(--b44-ink);color:#fff;}
+.prompt-bar{display:flex;align-items:center;justify-content:space-between;gap:.6rem;}
+.attach{font:inherit;font-size:1.25rem;line-height:1;color:var(--b44-ink);background:transparent;border:0;border-radius:999px;padding:.35rem .5rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;}
+.attach span{font-size:.8rem;font-weight:600;color:var(--b44-mute);}
+.attach:hover{background:var(--sunk);}
+.prompt-right{display:flex;align-items:center;gap:.6rem;}
+.areapill{position:relative;display:inline-flex;align-items:center;gap:.35rem;font-size:.86rem;font-weight:700;color:var(--b44-ink);padding:.35rem .7rem;border-radius:999px;cursor:pointer;}
+.areapill:hover{background:var(--sunk);}
+.areapill .ap-l{font-weight:500;color:var(--b44-mute);font-size:.74rem;}
+.areapill select{font:inherit;font-size:.86rem;font-weight:700;color:var(--b44-ink);background:transparent;border:0;appearance:none;-webkit-appearance:none;padding:0 .2rem;cursor:pointer;max-width:11rem;}
+.areapill select:focus{outline:none;}
+.areapill .ap-c{font-size:.75rem;color:var(--b44-mute);}
+.send{width:2.6rem;height:2.6rem;border-radius:12px;border:0;background:var(--b44-orange);color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(255,90,31,.35);}
+.send:hover{filter:brightness(1.06);transform:translateY(-1px);}
+.prompt .answer{margin-top:.6rem;}
+.prompt .answer:empty{display:none;}
+.citytabs{display:flex;justify-content:center;gap:.2rem;flex-wrap:wrap;margin:1.7rem auto .9rem;font-size:.9rem;}
+.citytabs a{color:var(--b44-ink);text-decoration:none;padding:.2rem .5rem;opacity:.72;position:relative;}
+.citytabs a+a::before{content:"";position:absolute;left:-.25rem;top:50%;width:3px;height:3px;background:var(--b44-ink);border-radius:1px;transform:translateY(-50%);opacity:.5;}
+.citytabs a:hover{opacity:1;}
+.citytabs a[aria-current="page"],.citytabs a.is-on{opacity:1;font-weight:700;}
+.citytabs a[aria-current="page"]::after{content:"";}
+.citytabs a.is-on b::before{content:"[";} .citytabs a.is-on b::after{content:"]";}
+.strip-wrap{position:relative;margin:0 -1.25rem;padding:0 .4rem;}
+.strip{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:.6rem 1.25rem 1.2rem;scrollbar-width:none;}
+.strip::-webkit-scrollbar{display:none;}
+.ccard{flex:0 0 min(78vw,21rem);scroll-snap-align:center;background:var(--b44-card);border-radius:16px;border:1px solid var(--rule-soft);box-shadow:0 1px 2px rgba(0,0,0,.04);text-decoration:none;color:var(--b44-ink);padding:.9rem 1rem 1rem;text-align:left;display:grid;grid-template-columns:1fr 1fr;gap:.6rem .8rem;align-items:center;position:relative;transition:transform .2s ease,box-shadow .2s ease;}
+.ccard:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.08);}
+.ccard.is-cur{outline:2px solid var(--b44-ink);outline-offset:-2px;}
+.ccard .cc-map{grid-row:1/4;aspect-ratio:1/1;width:100%;}
+.ccard .cc-map svg{width:100%;height:100%;display:block;}
+.ccard .cc-map path{stroke:#fff;stroke-width:3;}
+.ccard .cc-t{font-size:1.05rem;font-weight:800;letter-spacing:-.01em;display:flex;align-items:baseline;gap:.4rem;}
+.ccard .cc-t small{font-family:var(--mono);font-size:.62rem;font-weight:500;color:var(--b44-mute);letter-spacing:.06em;}
+.ccard .cc-n{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.76rem;color:var(--b44-mute);line-height:1.45;}
+.ccard .cc-n b{color:var(--b44-ink);font-weight:600;}
+.ccard .cc-go{font-size:.78rem;font-weight:700;color:var(--b44-orange);}
+.strip-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:2.2rem;height:2.2rem;border-radius:50%;border:1px solid var(--rule);background:var(--b44-card);font-size:1.3rem;line-height:1;cursor:pointer;color:var(--b44-ink);box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.strip-nav[data-dir="-1"]{left:.2rem;} .strip-nav[data-dir="1"]{right:.2rem;}
+.strip-nav:hover{background:var(--b44-ink);color:#fff;}
+@media (max-width:40rem){.strip-nav{display:none;} .hero44{padding-top:2.2rem;} .prompt{padding:.9rem .9rem .8rem;} .attach span{display:none;}}
+.mapwrap{margin:0 0 1.2rem;}
+.mapwrap .mapcard{margin:0;}
+.mapwrap .mapbox{max-width:34rem;margin:0 auto;}
+.mapwrap .maplegend{max-width:34rem;margin-left:auto;margin-right:auto;}
+@media print{.hero44::before,.strip-wrap,.citytabs,.ph-use,.attach{display:none!important;}}
+body.report-layout .strip-wrap,body.report-layout .citytabs{display:none;}
+
 /* ── 頁面外殼（base44 式）：置頂導覽、英雄區、章節與分頁、右側抽屜 ── */
 .topbar{position:sticky;top:0;z-index:20;background:rgba(247,250,250,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);}
 .topbar-in{max-width:76rem;margin:0 auto;padding:.6rem 1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
@@ -912,8 +979,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
 <header class="topbar" id="topbar">
   <div class="topbar-in">
-    <a class="brand" href="#top"><strong>YouthLens</strong><span id="brandsub">新北市 · 青年移入預警</span></a>
-    <nav class="cities" id="cities" aria-label="切換城市"></nav>
+    <a class="brand" href="#top"><i class="dot"></i><strong>YouthLens</strong><span id="brandsub">新北市</span></a>
     <nav class="toc" id="toc" aria-label="頁面目錄">
       <a href="#ch-next">預測</a><a href="#ch-explore">發現</a><a href="#ch-advice">建議</a><a href="#ch-tools">工具</a>
     </nav>
@@ -924,21 +990,55 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 <section class="report-head" id="reportHead" aria-hidden="true"></section>
 
 <div class="wrap" id="top">
-  <section class="hero" id="sec-map">
-    <div class="hero-head">
-      <p class="eyebrow">六都 158 個行政區 · 全部是官方資料 · AI 只做解讀</p>
-      <h1>青年往哪裡搬，青年局先準備什麼</h1>
-      <p class="lede">六都 158 個行政區的青年移入預警。左邊看地圖，右邊問 AI 幕僚 —— 每個數字都對得回官方來源。</p>
+  <section class="hero44" id="sec-hero">
+    <h1>YouthLens 青年放大鏡</h1>
+    <p class="lede">尋找青年數據，透過資料分析結合 AI 應用，給你最精確的趨勢預測與施政方向。</p>
+
+    <section class="prompt" id="sec-ask">
+      <div class="prompt-in">
+        <input id="askInput" type="text" placeholder="哪一區可能成為下一個淡水？青年局該先準備什麼？"
+               aria-label="用中文問一個關於青年統計的問題" autocomplete="off">
+        <button type="button" class="ph-use" id="phUse" hidden>用這個範例 ⇥</button>
+      </div>
+      <div class="prompt-bar">
+        <button type="button" class="attach" id="attachBtn" title="丟資料進來：統計表圖片或 CSV，補網路上沒有的公開資料">＋<span>丟資料</span></button>
+        <div class="prompt-right">
+          <label class="areapill"><span class="ap-l">地區</span><select id="area"></select><span class="ap-c">▾</span></label>
+          <button id="askGo" type="button" class="send" aria-label="送出問題"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+      <div class="asktips" id="askTips" hidden></div>
+      <div class="answer" id="askAnswer">
+        <p class="txt" id="askText"></p>
+        <p class="meta" id="askMeta"></p>
+        <div id="askChart"></div>
+        <p class="verdict" id="askVerdict" style="display:none"></p>
+        <div class="cite" id="askCite"></div>
+      </div>
+    </section>
+
+    <nav class="citytabs" id="cities" aria-label="切換城市"></nav>
+    <div class="strip-wrap">
+      <button type="button" class="strip-nav" data-dir="-1" aria-label="上一個城市">‹</button>
+      <div class="strip" id="cityStrip"></div>
+      <button type="button" class="strip-nav" data-dir="1" aria-label="下一個城市">›</button>
     </div>
-    <div class="hero-grid">
-    <div class="card mapcard">
+  </section>
+
+  <section class="chapter" id="ch-next">
+    <div class="ch-head">
+      <p class="eyebrow">01 · 預測</p>
+      <h2>誰會是下一個青年移入區</h2>
+      <p class="lede">每一區自己的移入走勢（世代追蹤，扣掉少子化）→ 跟移入區條件最像、但還沒起來的區 → 移入跟條件不符的區。全部是行政區級的官方資料算出來的。</p>
+    </div>
+    <div class="mapwrap">
+    <div class="card mapcard" id="sec-map">
       <div class="card-head">
         <div>
           <h2>青年往哪裡搬</h2>
           <p class="card-sub" id="mapSub">滑過看數字，點一下鎖定該區</p>
         </div>
         <div class="ctlrow">
-          <div class="ctl"><label for="area">地區</label><select id="area"></select></div>
           <div class="ctl"><label id="bandlabel">年齡層</label><div class="chips" id="bands" role="group" aria-labelledby="bandlabel"></div></div>
         </div>
       </div>
@@ -950,35 +1050,6 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </div>
       <div class="maplegend" id="mapLegend"></div>
     </div>
-      <section class="askbox card" id="sec-ask">
-        <p class="eyebrow">問 AI 幕僚</p><h2 class="ask-h">要準備什麼、該投哪裡，用中文問</h2><p class="ask-sub">AI 只做看懂與解讀，每個數字都由引擎算、逐一對回來源；對不上的會標出來。</p>
-        <div class="scenarios" id="scenarios">
-          <button type="button" data-scn="next">哪一區是下一個淡水？</button>
-          <button type="button" data-scn="prepare">移入區要先準備什麼？</button>
-          <button type="button" data-scn="quiz">議員質詢某區青年就業</button>
-        </div>
-        <div class="askrow">
-          <input id="askInput" type="text" placeholder="任何年齡區間都可以，例如：26-28 歲有多少人？"
-                 aria-label="用中文問一個關於青年統計的問題">
-          <button id="askGo" type="button">問</button>
-        </div>
-        <div class="asktips" id="askTips"></div>
-        <div class="answer" id="askAnswer">
-          <p class="txt" id="askText"></p>
-          <p class="meta" id="askMeta"></p>
-          <div id="askChart"></div>
-          <p class="verdict" id="askVerdict" style="display:none"></p>
-          <div class="cite" id="askCite"></div>
-        </div>
-      </section>
-    </div>
-  </section>
-
-  <section class="chapter" id="ch-next">
-    <div class="ch-head">
-      <p class="eyebrow">01 · 預測</p>
-      <h2>誰會是下一個青年移入區</h2>
-      <p class="lede">每一區自己的移入走勢（世代追蹤，扣掉少子化）→ 跟移入區條件最像、但還沒起來的區 → 移入跟條件不符的區。全部是行政區級的官方資料算出來的。</p>
     </div>
     <div class="rows">
       <div class="row" data-row="watch">
@@ -2530,7 +2601,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (pop) animateNum($('heroValue'), pop.value, num);
     else { $('heroValue').textContent = '—'; $('heroValue').__lastNum = 0; }
     $('heroUnit').textContent = pop ? '人' : '';
-    $('brandsub').textContent = state.area + ' · 18–35 歲口徑';
+    $('brandsub').textContent = state.area;
 
     var side = $('heroSide'); side.innerHTML = '';
     var heroPop = find(state.area, state.band, '人口數');
@@ -3697,7 +3768,10 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       }
     });
     if (input && input.addEventListener) {
-      input.addEventListener('change', function () { scanImage(input.files && input.files[0]); });
+      input.addEventListener('change', function () {
+        scanImage(input.files && input.files[0]);
+        var so = $('scanOut'); if (so) { revealTarget(so); if (so.scrollIntoView) so.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
     }
     if (dz && dz.addEventListener) {
       dz.addEventListener('dragover', function (e) { e.preventDefault(); dz.classList && dz.classList.add('over'); });
@@ -3968,8 +4042,114 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     var SIX = ['新北市', '臺北市', '桃園市', '臺中市', '臺南市', '高雄市'];
     host.innerHTML = SIX.map(function (c) {
       var href = c === '新北市' ? 'preview.html' : 'preview_' + c + '.html';
-      return '<a href="' + href + '"' + (c === M.region ? ' aria-current="page"' : '') + '>' + c.replace('市', '') + '</a>';
+      return '<a href="' + href + '" data-city="' + c + '"' + (c === M.region ? ' aria-current="page" class="is-on"' : '') + '><b>' + c.replace('市', '') + '</b></a>';
     }).join('');
+    // 點分頁：先把卡片列滑到那個城市；再點一次（或點卡片）才換頁
+    host.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[data-city]') : null;
+      if (!a) return;
+      var card = document.querySelector && document.querySelector('.ccard[data-city="' + a.getAttribute('data-city') + '"]');
+      if (card && !a.classList.contains('is-on')) {
+        e.preventDefault();
+        host.querySelectorAll('a').forEach(function (x) { x.classList.remove('is-on'); });
+        a.classList.add('is-on');
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+  })();
+
+  // 六都卡片列：每個城市一張小地圖（淨遷入率上色）＋三個數字，點了換到那個城市的頁。
+  (function renderStrip() {
+    var host = $('cityStrip'), six = DATA.six || [];
+    if (!host || !six.length) return;
+    function color(v, cuts) {
+      if (v == null) return 'var(--sunk)';
+      var k = 0; while (k < cuts.length && v > cuts[k]) k++;
+      return 'var(--seq-' + (6 - k) + ')';
+    }
+    host.innerHTML = six.map(function (c) {
+      var vals = Object.keys(c.rate).map(function (k) { return c.rate[k]; }).sort(function (a, b) { return a - b; });
+      var cuts = [1, 2, 3, 4, 5].map(function (q) { return vals[Math.floor(vals.length * q / 6)]; });
+      var g = c.geo || {}, ds = g.districts || {};
+      var paths = Object.keys(ds).map(function (n) {
+        return '<path d="' + ds[n].d + '" style="fill:' + color(c.rate[n], cuts) + '"><title>' + n + (c.rate[n] != null ? ' ' + (c.rate[n] * 100).toFixed(1) + '%' : '') + '</title></path>';
+      }).join('');
+      var cr = c.city_rate != null ? ((c.city_rate > 0 ? '+' : '') + (c.city_rate * 100).toFixed(1) + '%') : '—';
+      return '<a class="ccard' + (c.current ? ' is-cur' : '') + '" data-city="' + c.region + '" href="' + c.href + '">'
+        + '<div class="cc-map"><svg viewBox="' + (g.viewBox || '0 0 1000 1000') + '" role="img" aria-label="' + c.region + '各區青年淨遷入率">' + paths + '</svg></div>'
+        + '<p class="cc-t">' + c.region + (c.current ? '<small>目前</small>' : '') + '</p>'
+        + '<p class="cc-n">18–35 歲 <b>' + num(c.youth || 0) + '</b> 人<br>一年淨遷入 <b>' + cr + '</b>（' + (c.net != null ? (c.net > 0 ? '+' : '') + num(c.net) : '—') + ' 人）<br>'
+        + (c.top ? '移入最多 <b>' + c.top.name + '</b> ' + (c.top.rate * 100).toFixed(1) + '%<br>' : '')
+        + '移入 <b>' + c.inflow + '</b> 區 · 流出 <b>' + c.outflow + '</b> 區</p>'
+        + '<p class="cc-go">' + (c.current ? '就是這一頁' : '打開 ' + c.region.replace('市', '') + ' →') + '</p></a>';
+    }).join('');
+    // 目前城市置中
+    var cur = host.querySelector('.ccard.is-cur');
+    if (cur && cur.scrollIntoView && CAN_ANIMATE) setTimeout(function () { cur.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }, 50);
+    document.querySelectorAll('.strip-nav').forEach(function (b) {
+      b.addEventListener('click', function () {
+        host.scrollBy({ left: (parseInt(b.getAttribute('data-dir'), 10) || 1) * (host.clientWidth * 0.7), behavior: 'smooth' });
+      });
+    });
+    // 滑到哪個城市，分頁的括號就跟到哪
+    var tabs = $('cities');
+    if (tabs && host.addEventListener) host.addEventListener('scroll', function () {
+      var mid = host.scrollLeft + host.clientWidth / 2, best = null, bd = Infinity;
+      host.querySelectorAll('.ccard').forEach(function (cd) {
+        var d = Math.abs(cd.offsetLeft + cd.offsetWidth / 2 - mid);
+        if (d < bd) { bd = d; best = cd; }
+      });
+      if (!best) return;
+      tabs.querySelectorAll('a').forEach(function (x) { x.classList.toggle('is-on', x.getAttribute('data-city') === best.getAttribute('data-city')); });
+    });
+  })();
+
+  // 提示框：範例問題輪播（打字機），Tab 或「用這個範例」直接填入；＋ 丟資料走掃描檔流程
+  (function promptExtras() {
+    var input = $('askInput'), use = $('phUse');
+    if (!input) return;
+    var EX = [
+      '哪一區可能成為下一個淡水？青年局該先準備什麼？',
+      M.region.replace('市', '') + '哪些區的青年正在移入？會持續嗎？',
+      '議員說' + M.region.replace('市', '') + '青年失業很嚴重，是真的嗎？有多嚴重？',
+      '推測哪一區的青年流失會越來越嚴重',
+      '臺中和臺南的青年失業率比較',
+      '職訓預算該怎麼分配到各行政區？',
+      M.region + ' 25-29 歲的平均年薪是多少？',
+      '青年局應該協助年輕人結婚生小孩嗎？這是青年局的權責嗎？'
+    ];
+    var idx = 0, pos = 0, phase = 'type', timer = null;
+    function current() { return EX[idx % EX.length]; }
+    function tick() {
+      if (document.activeElement === input || input.value) { timer = setTimeout(tick, 600); return; }
+      var t = current();
+      if (phase === 'type') {
+        pos++; input.placeholder = t.slice(0, pos);
+        if (pos >= t.length) { phase = 'hold'; timer = setTimeout(tick, 2600); return; }
+        timer = setTimeout(tick, 38);
+      } else if (phase === 'hold') {
+        phase = 'erase'; timer = setTimeout(tick, 20);
+      } else {
+        pos = Math.max(0, pos - 3); input.placeholder = t.slice(0, pos);
+        if (pos === 0) { idx++; phase = 'type'; timer = setTimeout(tick, 400); return; }
+        timer = setTimeout(tick, 14);
+      }
+    }
+    if (CAN_ANIMATE && !REDUCED) { input.placeholder = ''; timer = setTimeout(tick, 900); }
+    function fillCurrent() { input.value = current(); input.placeholder = ''; if (use) use.hidden = true; input.focus(); }
+    input.addEventListener('keydown', function (e) {
+      if ((e.key === 'Tab' || e.key === 'ArrowRight') && !input.value) { e.preventDefault(); fillCurrent(); }
+    });
+    input.addEventListener('focus', function () { if (use && !input.value) use.hidden = false; });
+    input.addEventListener('blur', function () { if (use) setTimeout(function () { use.hidden = true; }, 150); });
+    input.addEventListener('input', function () { if (use) use.hidden = !!input.value || document.activeElement !== input; });
+    if (use) use.addEventListener('click', fillCurrent);
+    var attach = $('attachBtn'), file = $('scanFile');
+    if (attach && file) attach.addEventListener('click', function () {
+      // 上傳走原本的掃描檔流程；結果在「工具 › 掃描檔判讀」那一列，先把它打開再挑檔
+      revealTarget($('scanOut'));
+      if (file.click) file.click();
+    });
   })();
 
   // preview.html?report=layout → 直接擺成報告版面（要在 render() 之後，卡片才存在）（不跳列印對話框），

@@ -26,6 +26,40 @@ OUTPUT = DATA_DIR.parent / "preview.html"
 PLACEHOLDER = "/*__DATA__*/"
 
 
+def _six_cards(current: str) -> list[dict]:
+    """首頁的六都卡片：每個城市一張小地圖（淨遷入率上色）＋三個數字。讀六個 unified，沒建的城市略過。"""
+    from data import sources as _src
+    cards = []
+    for city in _src.SIX_CITIES:
+        f = _src.unified_path(city)
+        if not f.exists():
+            continue
+        d = json.loads(f.read_text(encoding="utf-8"))
+        recs = d.get("records", [])
+        rate = {r["region"].replace(city, ""): r["value"] for r in recs
+                if r.get("metric") == "青年淨遷入率" and r.get("age_group") == "18-35" and r["region"] != city}
+        city_rec = {r["metric"]: r["value"] for r in recs if r["region"] == city and r.get("age_group") == "18-35"}
+        mig = (d.get("trends") or {}).get("migration") or {}
+        signals = [v.get("signal") for k, v in (mig.get("areas") or {}).items() if k != city]
+        top = max(rate.items(), key=lambda kv: kv[1]) if rate else None
+        geo = d.get("geo") or {}
+        cards.append({
+            "region": city,
+            "href": _src.preview_path(city).name,
+            "current": city == current,
+            "geo": {"viewBox": geo.get("viewBox"), "districts": {k: {"d": v["d"]} for k, v in (geo.get("districts") or {}).items()}},
+            "rate": rate,
+            "youth": city_rec.get("人口數"),
+            "net": city_rec.get("青年淨遷入人數"),
+            "city_rate": city_rec.get("青年淨遷入率"),
+            "top": {"name": top[0], "rate": top[1]} if top else None,
+            "inflow": sum(1 for s in signals if s and "移入" in s),
+            "outflow": sum(1 for s in signals if s and "流出" in s),
+            "districts": len(rate),
+        })
+    return cards
+
+
 def main() -> int:
     import sys as _sys
     from data import sources as _src
@@ -37,6 +71,7 @@ def main() -> int:
         return 1
 
     payload = json.loads(UNIFIED.read_text(encoding="utf-8"))
+    payload["six"] = _six_cards(region)
     html = TEMPLATE.read_text(encoding="utf-8")
     if PLACEHOLDER not in html:
         print(f"樣板裡找不到 {PLACEHOLDER} 佔位符")

@@ -819,7 +819,7 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 .hero-head .eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .6rem;}
 .hero-head h1{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:900;letter-spacing:-.035em;line-height:1.1;margin:0 0 .6rem;text-wrap:balance;}
 .hero-head .lede{font-size:1.02rem;color:var(--ink-2);margin:0;line-height:1.65;}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:1rem;align-items:start;}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:1rem;align-items:stretch;}
 @media (max-width:56rem){.hero-grid{grid-template-columns:1fr;}}
 .hero .mapcard{margin:0;}
 .hero .mapcard .card-head{align-items:flex-start;}
@@ -829,17 +829,34 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 .ctlrow .chips{padding:.15rem;}
 .ctlrow .chip{padding:.28rem .7rem;font-size:.74rem;}
 .hero .mapmetric{margin:.4rem 0 .2rem;}
-.hero .askbox{margin:0;border-top:0;padding:1.3rem 1.4rem 1.4rem;}
+.hero .askbox{margin:0;border-top:0;padding:1.4rem 1.5rem 1.5rem;display:flex;flex-direction:column;}
+.hero .askbox .answer{flex:1;}
 .ask-h{font-size:1.25rem;font-weight:800;letter-spacing:-.02em;margin:.1rem 0 .3rem;line-height:1.25;}
 .ask-sub{font-size:.8rem;color:var(--ink-3);margin:0 0 .9rem;}
-.hero .askrow input{font-size:1.05rem;padding:.8rem .95rem;border-radius:12px;}
-.hero .askrow button{font-size:1rem;padding:.8rem 1.4rem;border-radius:12px;}
+.hero .askrow input{font-size:1.15rem;padding:1rem 1.1rem;border-radius:14px;}
+.hero .askrow button{font-size:1.05rem;padding:1rem 1.6rem;border-radius:14px;}
+.hero .ask-h{font-size:1.45rem;}
 .hero .scenarios{margin-bottom:.8rem;}
 .chapter{padding:2.6rem 0 1.4rem;border-top:1px solid var(--rule);}
 .ch-head{max-width:46rem;margin:0 0 1.1rem;}
 .ch-head .eyebrow{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .45rem;}
 .ch-head h2{font-size:clamp(1.4rem,3vw,2rem);font-weight:900;letter-spacing:-.03em;line-height:1.15;margin:0 0 .45rem;text-wrap:balance;}
 .ch-head .lede{font-size:.92rem;color:var(--ink-2);margin:0;line-height:1.6;}
+.rows{border-top:1px solid var(--rule);}
+.row{border-bottom:1px solid var(--rule);}
+.row-h{display:grid;grid-template-columns:3rem 1fr 2rem;align-items:center;gap:1rem;width:100%;text-align:left;font:inherit;color:var(--ink);background:none;border:0;padding:1.15rem .2rem;cursor:pointer;}
+.row-h:hover{background:var(--sunk);}
+.row-h:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+.row-h .n{font-family:var(--mono);font-size:.78rem;color:var(--ink-3);}
+.row-h .t b{display:block;font-size:clamp(1.15rem,2.4vw,1.6rem);font-weight:800;letter-spacing:-.02em;line-height:1.2;}
+.row-h .t small{display:block;font-size:.84rem;color:var(--ink-3);margin-top:.2rem;line-height:1.45;}
+.row-h .pm{position:relative;width:1.6rem;height:1.6rem;border-radius:50%;border:1px solid var(--rule);justify-self:end;}
+.row-h .pm::before,.row-h .pm::after{content:"";position:absolute;left:50%;top:50%;background:var(--ink-2);transform:translate(-50%,-50%);}
+.row-h .pm::before{width:.7rem;height:1.5px;} .row-h .pm::after{width:1.5px;height:.7rem;transition:transform .2s ease;}
+.row-h[aria-expanded="true"] .pm{background:var(--deep);border-color:var(--deep);} .row-h[aria-expanded="true"] .pm::before,.row-h[aria-expanded="true"] .pm::after{background:#fff;}
+.row-h[aria-expanded="true"] .pm::after{transform:translate(-50%,-50%) rotate(90deg);}
+.row .tabpane{margin:0 0 1.3rem;}
+@media (max-width:40rem){.row-h{grid-template-columns:2rem 1fr 1.6rem;gap:.6rem;} .row-h .t b{font-size:1.05rem;}}
 .tabs{display:flex;gap:.25rem;flex-wrap:wrap;margin:0 0 1rem;padding:.25rem;background:var(--sunk);border-radius:999px;width:fit-content;max-width:100%;}
 .tabs button{font:inherit;font-size:.82rem;font-weight:600;color:var(--ink-2);background:transparent;border:0;border-radius:999px;padding:.45rem .95rem;cursor:pointer;white-space:nowrap;}
 .tabs button:hover{color:var(--ink);background:rgba(255,255,255,.7);}
@@ -860,9 +877,9 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 .drawer .prov{border-radius:14px;}
 .drawer-x{position:absolute;top:.5rem;right:.6rem;font:inherit;font-size:1.1rem;line-height:1;background:var(--sunk);border:0;border-radius:50%;width:1.7rem;height:1.7rem;cursor:pointer;color:var(--ink-2);z-index:2;}
 .drawer-x:hover{background:var(--deep);color:#fff;}
-@media print{.topbar,.tabs,.drawer-x{display:none!important;} .tabpane[hidden]{display:block!important;} .drawer{position:static;box-shadow:none;width:auto;max-height:none;} .hero{padding-top:0;}}
+@media print{.topbar,.tabs,.drawer-x,.row-h .pm{display:none!important;} .tabpane[hidden]{display:block!important;} .drawer{position:static;box-shadow:none;width:auto;max-height:none;} .hero{padding-top:0;}}
 body.report-layout .tabpane[hidden]{display:block!important;}
-body.report-layout .tabs,body.report-layout .topbar{display:none;}
+body.report-layout .tabs,body.report-layout .topbar,body.report-layout .row-h .pm{display:none;}
 
 /* 固定目錄（在 sticky 的篩選列右側） */
 .toc{margin-left:auto;display:flex;flex-wrap:wrap;gap:.15rem .1rem;}
@@ -910,8 +927,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   <section class="hero" id="sec-map">
     <div class="hero-head">
       <p class="eyebrow">六都 158 個行政區 · 全部是官方資料 · AI 只做解讀</p>
-      <h1>下一個淡水在哪裡？</h1>
-      <p class="lede">青年往哪裡搬、下一個會是哪一區、青年局要提前準備什麼。左邊看地圖，右邊問 AI 幕僚 —— 每個數字都對得回來源。</p>
+      <h1>青年往哪裡搬，青年局先準備什麼</h1>
+      <p class="lede">六都 158 個行政區的青年移入預警。左邊看地圖，右邊問 AI 幕僚 —— 每個數字都對得回官方來源。</p>
     </div>
     <div class="hero-grid">
     <div class="card mapcard">
@@ -953,10 +970,6 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
           <p class="verdict" id="askVerdict" style="display:none"></p>
           <div class="cite" id="askCite"></div>
         </div>
-        <div class="watchwrap">
-          <p class="watch-head">先從這些區開始問<span class="badge est">experimental</span><small>正在移入、下一個候選、持續流出 · 點區名鎖定地圖</small></p>
-          <div id="watchBox"></div>
-        </div>
       </section>
     </div>
   </section>
@@ -967,19 +980,38 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       <h2>誰會是下一個青年移入區</h2>
       <p class="lede">每一區自己的移入走勢（世代追蹤，扣掉少子化）→ 跟移入區條件最像、但還沒起來的區 → 移入跟條件不符的區。全部是行政區級的官方資料算出來的。</p>
     </div>
-    <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="trend" aria-selected="true">各區走勢</button><button type="button" role="tab" data-tab="similar" aria-selected="false">條件最像的區</button><button type="button" role="tab" data-tab="resid" aria-selected="false">條件之外的差距</button><button type="button" role="tab" data-tab="model" aria-selected="false">模型怎麼算</button></div>
-        <div class="tabpane" data-pane="trend">
+    <div class="rows">
+      <div class="row" data-row="watch">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="watch"><span class="n">01</span><span class="t"><b>預警摘要</b><small>正在移入、下一個候選、持續流出 —— 每列可鎖定地圖或直接問 AI</small></span><span class="pm" aria-hidden="true"></span></button>
+        <div class="tabpane" data-pane="watch" hidden>
+          <div class="watchwrap"><p class="pane-note">點區名鎖定地圖，「問 AI」把問題填進上面的問答框。<span class="badge est">experimental</span></p><div id="watchBox"></div></div>
+        </div>
+      </div>
+      <div class="row" data-row="trend">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="trend"><span class="n">02</span><span class="t"><b>各區走勢</b><small>每一區 8 年的淨遷入率走勢、訊號與明年預估</small></span><span class="pm" aria-hidden="true"></span></button>
+        <div class="tabpane" data-pane="trend" hidden>
           <div id="drvTrend"></div>
         </div>
+      </div>
+      <div class="row" data-row="similar">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="similar"><span class="n">03</span><span class="t"><b>條件最像的區</b><small>用租金、工作機會、所得、規模四個條件，找跟移入區最像的區</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="similar" hidden>
           <div id="drvSimilar"></div>
         </div>
+      </div>
+      <div class="row" data-row="resid">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="resid"><span class="n">04</span><span class="t"><b>條件之外的差距</b><small>移入比條件該有的多還是少 —— 兩端都是實地訪查名單</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="resid" hidden>
           <div id="drvResid"></div>
         </div>
+      </div>
+      <div class="row" data-row="model">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="model"><span class="n">05</span><span class="t"><b>模型怎麼算</b><small>六都 158 區的散佈圖，以及「什麼條件跟移入一起出現」的影響力表</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="model" hidden>
           <div id="drvModel"></div>
         </div>
+      </div>
+    </div>
   </section>
 
   <section class="chapter" id="ch-explore">
@@ -988,8 +1020,10 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       <h2>我想發現什麼？</h2>
       <p class="lede">青年局和局長談出來的三個面向：就業、居住、人口與在地。每一個數字都點得開資料履歷 —— 來源、原始分組、推估方法、信心度。</p>
     </div>
-    <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="pop" aria-selected="true">人口結構</button><button type="button" role="tab" data-tab="emp" aria-selected="false">就業</button><button type="button" role="tab" data-tab="sal" aria-selected="false">薪資</button><button type="button" role="tab" data-tab="edu" aria-selected="false">教育 × 薪資</button><button type="button" role="tab" data-tab="vac" aria-selected="false">缺工與供需</button><button type="button" role="tab" data-tab="bench" aria-selected="false">六都比較 · 居住</button><button type="button" role="tab" data-tab="trends" aria-selected="false">時間趨勢</button><button type="button" role="tab" data-tab="rank" aria-selected="false">各區排名</button></div>
-        <div class="tabpane" data-pane="pop">
+    <div class="rows">
+      <div class="row" data-row="pop">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="pop"><span class="n">01</span><span class="t"><b>人口結構</b><small>四個年齡層的人數，附推估方法與信心度</small></span><span class="pm" aria-hidden="true"></span></button>
+        <div class="tabpane" data-pane="pop" hidden>
       <section class="panel">
         <div class="panel-head"><h2>青年人口結構</h2><span class="aspect">人口</span></div>
       <div class="card statcard inpanel">
@@ -1004,6 +1038,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         <div class="bars" id="popBars"></div>
       </section>
         </div>
+      </div>
+      <div class="row" data-row="emp">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="emp"><span class="n">02</span><span class="t"><b>就業</b><small>勞動力、勞參率、就業者、失業率</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="emp" hidden>
       <section class="panel">
         <div class="panel-head"><h2>就業與勞動參與</h2><span class="aspect">就業</span></div>
@@ -1011,6 +1048,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         <div class="bars" id="empBars"></div>
       </section>
         </div>
+      </div>
+      <div class="row" data-row="sal">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="sal"><span class="n">03</span><span class="t"><b>薪資</b><small>平均數與中位數，30–35 歲為推估</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="sal" hidden>
       <section class="panel">
         <div class="panel-head"><h2>年薪：平均數與中位數</h2><span class="aspect">就業</span></div>
@@ -1020,6 +1060,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
           <span><i class="sw" style="background:var(--accent)"></i>平均數</span>
           <span><i class="sw" style="background:var(--second)"></i>中位數</span>
         </div>
+      </div>
+    </div>
       </section>
         </div>
         <div class="tabpane" data-pane="edu" hidden>
@@ -1078,8 +1120,10 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       <h2>AI 幕僚怎麼協助施政</h2>
       <p class="lede">會影響決策的建議交給可稽核的規則，AI 在那之上推理；通過統計檢定的變化才叫洞察；權益覆蓋盤點青年基本法哪些面向有資料、哪些是缺口。</p>
     </div>
-    <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="policy" aria-selected="true">施政建議</button><button type="button" role="tab" data-tab="insights" aria-selected="false">異常與洞察</button><button type="button" role="tab" data-tab="rights" aria-selected="false">權益覆蓋</button></div>
-        <div class="tabpane" data-pane="policy">
+    <div class="rows">
+      <div class="row" data-row="policy">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="policy"><span class="n">01</span><span class="t"><b>施政建議</b><small>從資料用固定規則推出來的建議，每條附依據與信心度</small></span><span class="pm" aria-hidden="true"></span></button>
+        <div class="tabpane" data-pane="policy" hidden>
       <section class="policy">
         <div class="head"><h2>施政建議</h2><span class="aspect">政策輔助</span></div>
         <p class="note">
@@ -1090,6 +1134,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         <div id="policyList"></div>
       </section>
         </div>
+      </div>
+      <div class="row" data-row="insights">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="insights"><span class="n">02</span><span class="t"><b>異常與洞察</b><small>通過統計檢定的變化：偏離趨勢、轉向、組間落差</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="insights" hidden>
       <section class="policy">
         <div class="head"><h2>異常與洞察</h2><span class="aspect">顯著變化</span></div>
@@ -1105,6 +1152,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         <div id="insightList"></div>
       </section>
         </div>
+      </div>
+      <div class="row" data-row="rights">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="rights"><span class="n">03</span><span class="t"><b>權益覆蓋</b><small>青年基本法 17 個面向：哪些有資料、哪些是缺口</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="rights" hidden>
       <section class="panel">
         <div class="panel-head"><h2>青年基本法權益覆蓋</h2><span class="aspect">盤點</span></div>
@@ -1112,6 +1162,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         <div class="rights" id="rightsBox"></div>
       </section>
         </div>
+      </div>
+    </div>
   </section>
 
   <section class="chapter" id="ch-tools">
@@ -1120,8 +1172,10 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       <h2>資料與方法</h2>
       <p class="lede">任何機關的統計表都能丟進來對齊；每一條算法都有白話版；每個來源的抓取時間、檢查與更新週期都在這裡。</p>
     </div>
-    <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="scan" aria-selected="true">掃描檔判讀</button><button type="button" role="tab" data-tab="formulas" aria-selected="false">公式工具庫</button><button type="button" role="tab" data-tab="pipeline" aria-selected="false">資料 pipeline</button></div>
-        <div class="tabpane" data-pane="scan">
+    <div class="rows">
+      <div class="row" data-row="scan">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="scan"><span class="n">01</span><span class="t"><b>掃描檔判讀</b><small>丟一張統計表的圖片或 CSV，AI 讀出數字、三道查核、對齊成 18–35 歲</small></span><span class="pm" aria-hidden="true"></span></button>
+        <div class="tabpane" data-pane="scan" hidden>
       <section class="scancard">
     <div class="card-head">
       <div>
@@ -1152,6 +1206,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     <div id="scanOut" class="scanout" hidden></div>
       </section>
         </div>
+      </div>
+      <div class="row" data-row="formulas">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="formulas"><span class="n">02</span><span class="t"><b>公式工具庫</b><small>系統用到的每一條算法：一句白話、一條公式、用在哪、限制</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="formulas" hidden>
       <section class="panel">
         <div class="panel-head"><h2>公式工具庫</h2><span class="aspect">方法</span></div>
@@ -1159,6 +1216,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         <div class="formulas" id="formulaList"></div>
       </section>
         </div>
+      </div>
+      <div class="row" data-row="pipeline">
+        <button type="button" class="row-h" aria-expanded="false" data-tab="pipeline"><span class="n">03</span><span class="t"><b>資料 pipeline</b><small>每個來源的抓取時間、檢查、更新週期；下載 CSV 與資料字典</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="pipeline" hidden>
       <div class="pipeinner">
       <div class="sources" id="pipeline">
@@ -1172,6 +1232,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
           <button type="button" class="more" id="dlCsv">下載 18–35 歲口徑資料（CSV）</button>
           <button type="button" class="more ghost" id="dlDict">資料字典 ▾</button>
         </div>
+      </div>
+    </div>
         <pre class="dict" id="dictBox" hidden></pre>
       </div>
       </div>
@@ -1376,25 +1438,30 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // 洞察卡 → 對應的圖。卡片是從那條序列算出來的，看圖等於看證據。
   // 章節分頁：每章一組 .tabs + 多個 .tabpane。點分頁只切換該章；目標在隱藏分頁裡時用 revealTarget 先切過去。
-  function activateTab(chapterEl, key) {
+  function activateTab(chapterEl, key, toggle) {
     if (!chapterEl || !chapterEl.querySelectorAll) return;
-    chapterEl.querySelectorAll('.tabs [data-tab]').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tab') === key ? 'true' : 'false'); });
-    chapterEl.querySelectorAll('.tabpane').forEach(function (p2) {
-      if (p2.parentNode !== chapterEl) return;
-      p2.hidden = p2.getAttribute('data-pane') !== key;
+    var rows = chapterEl.querySelectorAll('.row');
+    rows.forEach(function (row) {
+      var h = row.querySelector('.row-h'), pane = row.querySelector('.tabpane');
+      var isIt = row.getAttribute('data-row') === key;
+      var open = isIt && !(toggle && h.getAttribute('aria-expanded') === 'true');
+      h.setAttribute('aria-expanded', open ? 'true' : 'false');
+      pane.hidden = !open;
     });
   }
   function revealTarget(node) {
     if (!node || !node.closest) return;
     var pane = node.closest('.tabpane');
-    if (pane && pane.hidden) activateTab(pane.parentNode, pane.getAttribute('data-pane'));
+    if (pane && pane.hidden) activateTab(pane.closest('.chapter'), pane.getAttribute('data-pane'));
     var fold = node.closest('details');
     while (fold) { fold.open = true; fold = fold.parentNode && fold.parentNode.closest ? fold.parentNode.closest('details') : null; }
   }
-  if (document.querySelectorAll) document.querySelectorAll('.chapter .tabs').forEach(function (tabs) {
-    tabs.addEventListener('click', function (e) {
-      var b = e.target && e.target.closest ? e.target.closest('[data-tab]') : null;
-      if (b) activateTab(tabs.parentNode, b.getAttribute('data-tab'));
+  if (document.querySelectorAll) document.querySelectorAll('.chapter .rows').forEach(function (rows) {
+    rows.addEventListener('click', function (e) {
+      var b = e.target && e.target.closest ? e.target.closest('.row-h') : null;
+      if (!b) return;
+      activateTab(rows.closest('.chapter'), b.getAttribute('data-tab'), true);
+      if (b.getAttribute('aria-expanded') === 'true' && b.scrollIntoView) b.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
   if ($('provClose')) $('provClose').addEventListener('click', function () { $('provDrawer').hidden = true; });

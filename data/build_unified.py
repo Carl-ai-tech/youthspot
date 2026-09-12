@@ -178,7 +178,7 @@ def _migration_trend(mig: dict, region: str) -> dict:
                 "slope_pp": round(tr.slope * 100, 3), "slope_se_pp": round(tr.slope_se * 100, 3),
                 "t": round(tr.t_stat, 2) if tr.t_stat not in (float("inf"), float("-inf")) else None,
                 "significant": tr.significant, "r2": round(tr.r2, 2),
-                "mean": round(c["mean"], 4), "sd": round(c["sd"], 4),
+                "mean": round(c["mean"], 4), "sd": round(c["sd"], 4), "mean_ci": round(c["mean_ci"], 4),
                 "level_t": round(c["level_t"], 2) if c["level_t"] not in (float("inf"), float("-inf")) else None,
                 "level_significant": c["level_significant"],
                 "forecast_year": years[-1] + 1, "forecast": round(c["forecast"], 4), "margin": round(c["margin"], 4),
@@ -191,7 +191,8 @@ def _migration_trend(mig: dict, region: str) -> dict:
                    "斜率（最小平方＋雙尾 5% t）判「減速／轉向」；預測為線性外推＋95% 預測區間（forecast.py）"),
         "shock_years": list(REGISTRY_SHOCK_YEARS),
         "note": (mig["note"] + " 2022／2023 兩期受疫情除籍與恢復戶籍影響，全市出現一負一正的大幅波動，"
-                 "是戶籍事件不是搬家；預測標 experimental。"),
+                 "是戶籍事件不是搬家：判定訊號與做檢定時把這兩點換成兩者平均（同一批人除籍再恢復，互相抵銷），"
+                 "圖上仍畫原始值；預測標 experimental。"),
     }
 
 

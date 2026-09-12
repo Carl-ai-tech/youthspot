@@ -28,7 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from data import sources  # noqa: E402
 from data.fetch_benchmark import fetch_benchmark  # noqa: E402
 from data.fetch_employment import fetch_employment  # noqa: E402
-from data.fetch_geo import fetch_district_shapes  # noqa: E402
+from data.fetch_geo import district_names_by_city, fetch_district_shapes  # noqa: E402
 from data.fetch_housing import DATASET as HOUSING_DATASET  # noqa: E402
 from data.fetch_housing import LANDING as HOUSING_LANDING, fetch_housing  # noqa: E402
 from data.fetch_labour_sex import DATASET as SEX_DATASET, LANDING as SEX_LANDING, fetch_labour_by_sex  # noqa: E402
@@ -1126,6 +1126,14 @@ def _backtest_summary() -> list[dict]:
         return []
 
 
+def _six_districts() -> dict:
+    try:
+        return district_names_by_city()
+    except Exception as exc:  # noqa: BLE001
+        print(f"  ⚠ 六都行政區名清單略過：{exc}")
+        return {}
+
+
 def _scale(records: list[AlignedRecord], trends: dict) -> dict:
     """「N 個機關、M 個資料集、K 個指標、涵蓋幾年」—— 從資料算，不手寫。"""
     years = []
@@ -1472,6 +1480,8 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
             "industries": industries,
             "forecast_year": FORECAST_TO,
             "reference_data": str(ref.path.name) if ref.path else "",
+            # 六都各自的行政區名：前端靠它認出「內湖區」是臺北市的區，問到別的城市就交給模型
+            "six_districts": _six_districts(),
             "sources": _pipeline_status(records, meta),
             "scale": _scale(records, trends),
             "backtest": _backtest_summary(),

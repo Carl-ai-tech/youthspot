@@ -2524,7 +2524,31 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       + String.fromCharCode(10);
   }
 
+  var SIX = ['新北市', '臺北市', '桃園市', '臺中市', '臺南市', '高雄市'];
+  function mentionsOtherCity(q) {
+    q = (q || '').replace(/台/g, '臺');
+    for (var i = 0; i < SIX.length; i++) if (SIX[i] !== M.region && q.indexOf(SIX[i]) >= 0) return SIX[i];
+    // 「內湖區」這種別的城市的區名：用六都行政區名清單比對。先把本市的區名從句子裡挖掉，
+    // 不然臺南的「中西區」會被臺中的「西區」誤中。
+    var ql = q;
+    areas.forEach(function (a) { var sh = a.replace(M.region, ''); if (sh) ql = ql.split(sh).join('　'); });
+    var six = M.six_districts || {};
+    for (var c in six) {
+      if (c === M.region) continue;
+      var list = six[c] || [];
+      for (var k = 0; k < list.length; k++) {
+        if (ql.indexOf(list[k]) >= 0) return c + list[k];
+      }
+    }
+    return null;
+  }
+
   function resolve(it) {
+    var other = mentionsOtherCity(it.raw);
+    if (other) {
+      // 問到別的城市：本機只有本市的表，交給模型（伺服器會把被點名城市的資料併進來）
+      return { ok: null, llm: true, why: '問題提到「' + other + '」，不在' + M.region + '的表裡；交給模型，伺服器會把六都中被點名的城市資料一起給它。' };
+    }
     if (!it.metric) {
       // 規則認不得的問題交給模型。查數字、排名、比較這些引擎自己答得出來
       // （即時、精確、有圖），不需要模型；模型負責的是政策問題和換個說法問的東西。

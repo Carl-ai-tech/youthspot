@@ -111,6 +111,18 @@ def _simplify(points: list, tol: float) -> list:
     return [p for p, k in zip(points, keep) if k]
 
 
+def district_names_by_city(*, refresh: bool = False) -> dict[str, list[str]]:
+    """六都各自的行政區名清單（不含縣市名）。前端用來認出「內湖區」是別的城市的區。"""
+    topo = _download(refresh)
+    out: dict[str, list[str]] = {c: [] for c in DISTRICTS_BY_CITY}
+    for g in topo["objects"]["towns"]["geometries"]:
+        props = g.get("properties", {})
+        city = (props.get("COUNTYNAME") or "").replace("台", "臺")
+        if city in out:
+            out[city].append(props.get("TOWNNAME", "").replace("台", "臺"))
+    return {c: sorted(set(v)) for c, v in out.items()}
+
+
 def fetch_district_shapes(region: str = "新北市", *, refresh: bool = False) -> dict:
     """回傳 {"viewBox": ..., "districts": {區名: {"d": SVG路徑, "cx":…, "cy":…}}}。
 

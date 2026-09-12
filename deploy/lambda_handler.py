@@ -49,6 +49,47 @@ def _city_of(region: str | None) -> str:
     return "新北市"
 
 
+def _load_city(city: str) -> dict | None:
+    local = Path(__file__).resolve().parent.parent / "data" / ("unified.json" if city == "新北市" else f"unified_{city}.json")
+    return json.loads(local.read_text(encoding="utf-8")) if local.exists() else None
+
+
+def _merge_mentioned(payload: dict, question: str, region: str) -> dict:
+    """問題提到其他城市（或其他城市的行政區）時，把那些城市的記錄併進 payload。
+
+    使用者在臺南頁問「臺北市內湖區和新北市林口區有什麼差別」，模型只拿到臺南的資料，
+    就只能說回答不了。六都的資料都在本機，沒有理由不給。
+    併進來的：被提到的城市的市層級記錄（18–35 與全體）、被提到的行政區的所有記錄。
+    """
+    q = (question or "").replace("台", "臺")
+    if not q:
+        return payload
+    home = _city_of(region)
+    extra: list[dict] = []
+    for city in SIX_CITIES:
+        if city == home:
+            continue
+        other = _load_city(city)
+        if not other:
+            continue
+        # 這個城市有沒有被點名：城市名，或它的任何一個行政區名
+        districts = {r["region"] for r in other["records"] if r["region"].startswith(city) and r["region"] != city}
+        named = [d for d in districts if d.replace(city, "") in q]
+        if city not in q and not named:
+            continue
+        for r in other["records"]:
+            if r["region"] == city and r["age_group"] in ("18-35", "全體", "25-29"):
+                extra.append(r)
+            elif r["region"] in named and r["age_group"] in ("18-35", "全體"):
+                extra.append(r)
+    if not extra:
+        return payload
+    merged = dict(payload)
+    merged["records"] = list(payload["records"]) + extra
+    merged["_cross_city"] = sorted({r["region"] for r in extra})
+    return merged
+
+
 def _load_unified(region: str = "新北市") -> dict:
     """優先從 S3 讀（那是最新的），讀不到就退回打包在函式裡的那份。六都各一份。
 
@@ -220,7 +261,8 @@ def _ai(action: str, body: dict, backend=None) -> dict:
         # 儀表板的問答框只有在**前端規則認不得**的問題才會打到這裡 ——
         # 查數字、排名、比較那些引擎自己就答得出來，不需要模型。
         from llm.advise import advise
-        g = advise(body.get("question", ""), _load_unified(body.get("region")), backend,
+        payload = _merge_mentioned(_load_unified(body.get("region")), body.get("question", ""), body.get("region", "新北市"))
+        g = advise(body.get("question", ""), payload, backend,
                    region=body.get("region", "新北市"),
                    band=body.get("band", "18-35"))
         # 模型說「建議補蒐集 X」時，系統對照資料目錄回答 X 有沒有、在哪、接了沒

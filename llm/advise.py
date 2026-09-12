@@ -53,6 +53,22 @@ def build_prompt(payload: dict, records: list[dict], question: str,
     notes = payload.get("policy_notes") or []
     insights = payload.get("insights") or []
 
+    # 六都比較：每個指標六個城市的值與名次都給。「六都誰最重、本市排第幾」這種問題
+    # 的答案本來就在 payload 裡，先前提示詞沒放，模型只能說回答不了。
+    bench = payload.get("benchmark") or {}
+    bench_text = ""
+    if bench.get("metrics"):
+        def _bv(v, unit):
+            return f"{v * 100:.1f}%" if unit == "%" else (f"{v:.2f} 倍" if unit == "倍" else f"{v:.1f} {unit}")
+        rows = []
+        for metric, blk in bench["metrics"].items():
+            order = sorted(blk["values"], key=lambda c: blk["rank"].get(c, 99))
+            rows.append(f"  - {metric}" + (f"（{blk['scope']}）" if blk.get("scope") else "")
+                        + "：" + "、".join(f"{c} {_bv(blk['values'][c], blk['unit'])}（第 {blk['rank'][c]}）" for c in order))
+        bench_text = ("\n**六都比較（" + str(bench.get("band", "25-29"))
+                      + " 歲官方公布值；房價所得比、貸款負擔率為全體家戶）**\n"
+                      + "\n".join(rows) + "\n")
+
     def block(title: str, items: list[dict], keys: tuple[str, str]) -> str:
         if not items:
             return ""
@@ -91,9 +107,9 @@ def build_prompt(payload: dict, records: list[dict], question: str,
 分齡的行業表。問到行業時就用這些回答，講明「全國訊號」即可，不要因為不是{region}或不是青年
 就說回答不了。施政建議卡片底下的「·」細項就是具體行業與數字，可以直接引用。
 
-**可用的數字（{region}．{band} 歲為主）**
+**可用的數字（{region}．{band} 歲為主{"；另含問題點名的其他城市／行政區" if payload.get("_cross_city") else ""}）**
 {chr(10).join(lines)}
-{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
+{bench_text}{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
 {block("**通過統計檢定的變化（已附依據，可直接引用）**", insights, ("title", "body"))}
 **怎麼回答**
 - **第一行只寫一句結論**（40 字內，不要標題、不要「以下是」），畫面上只先顯示這一句；
@@ -103,6 +119,34 @@ def build_prompt(payload: dict, records: list[dict], question: str,
 - 三百字以內
 - 有反面證據或不確定的地方要講出來，不要只講支持結論的部分
 """
+
+
+def _mentioned_records(payload: dict, question: str, have: list[dict]) -> list[dict]:
+    """問題裡點名的地區（包含其他城市、其他城市的行政區）的記錄，補進提示詞。
+
+    lambda_handler 會把被點名城市的資料併進 payload；這裡負責把它們挑出來給模型。
+    """
+    q = (question or "").replace("台", "臺")
+    if not q:
+        return []
+    seen = {(r["region"], r["age_group"], r["metric"], r.get("education")) for r in have}
+    out = []
+    for r in payload.get("records", []):
+        reg = r.get("region", "")
+        short = reg
+        for c in ("新北市", "臺北市", "桃園市", "臺中市", "臺南市", "高雄市"):
+            if reg.startswith(c) and reg != c:
+                short = reg[len(c):]
+        if reg == "全國" or not (reg in q or (short != reg and short in q)):
+            continue
+        if r.get("age_group") not in ("18-35", "全體", "25-29") or r.get("education"):
+            continue
+        key = (r["region"], r["age_group"], r["metric"], r.get("education"))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(r)
+    return out
 
 
 def _district_records(payload: dict, region: str, band: str) -> list[dict]:
@@ -140,6 +184,7 @@ def advise(question: str, payload: dict, backend: Backend, *,
     """
     records = retrieve(payload, region, band, limit=RECORD_LIMIT)
     records += _district_records(payload, region, band)
+    records += _mentioned_records(payload, question, records)
     raw = backend.complete(build_prompt(payload, records, question, region, band))
     text = raw.strip()
     ok, bad = verify(text, records, payload)

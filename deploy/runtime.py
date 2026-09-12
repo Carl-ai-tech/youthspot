@@ -6,6 +6,7 @@ import json
 import os
 
 from deploy.lambda_handler import _ai
+from llm.rate_limit import request_budget
 
 ALLOWED_ACTIONS = frozenset({'ask', 'advise', 'synthesize', 'scan', 'scan_text'})
 MAX_BODY_BYTES = 4 * 1024 * 1024
@@ -59,12 +60,16 @@ def handler(event, context=None):
     except (ValueError, TypeError, UnicodeError):
         return reply(400, {'ok': False, 'error': '輸入不是有效的JSON或欄位格式不正確'})
     try:
-        result = _ai(action, body)
+        seconds = min(55, context.get_remaining_time_in_millis() / 1000 - 5) if context else 55
+        with request_budget(seconds):
+            result = _ai(action, body)
         result.setdefault('model', os.getenv('YOUTHLENS_BEDROCK_MODEL', ''))
         return reply(200, result)
     except Exception as exc:
         code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
         print(json.dumps({'event': 'api_failure', 'action': action, 'error_code': code}))
+        if code == 'InferenceTimeout':
+            return reply(504, {'ok': False, 'error': 'AI回應逾時，請稍後再試；為避免重複推論，服務可能暫停接收AI請求最多3分鐘，頁面資料仍可查閱', 'code': code})
         if code in ('ThrottlingException', 'TooManyRequestsException', 'RateLimitTimeout', 'RateLimitError'):
             return reply(429, {'ok': False, 'error': '目前使用人數較多，請稍後重試', 'code': code})
         return reply(503, {'ok': False, 'error': 'AI服務暫時無法完成，請稍後重試；頁面資料仍可查閱', 'code': code})

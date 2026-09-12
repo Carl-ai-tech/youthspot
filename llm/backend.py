@@ -90,13 +90,9 @@ class BedrockBackend:
             raise RuntimeError("請設定 YOUTHLENS_BEDROCK_MODEL 為競賽帳號可用模型")
         self.model = model
         self.region = region
-        self._client = boto3.client(
-            "bedrock-runtime", region_name=region,
-            config=Config(retries={"total_max_attempts": 1},
-                          connect_timeout=5, read_timeout=120))
 
     def complete(self, prompt: str, image_path: str | Path | None = None) -> str:
-        from llm.rate_limit import acquire
+        from llm.rate_limit import acquire, remaining_budget, InferenceTimeout
         content: list[dict] = []
         if image_path:
             path = Path(image_path)
@@ -107,9 +103,31 @@ class BedrockBackend:
                                       "source": {"bytes": path.read_bytes()}}})
         content.append({"text": prompt})
         with acquire(self.region):
-            response = self._client.converse(
-                modelId=self.model, messages=[{"role": "user", "content": content}],
-                inferenceConfig={"maxTokens": 8000})
+            # Recalculate after the gate wait. All calls within one API action
+            # share the runtime budget; leave time for connection + gate release.
+            read_seconds = min(48, remaining_budget() - 5)
+            if read_seconds < 1:
+                raise InferenceTimeout("Insufficient request time to start inference")
+            import boto3
+            from botocore.config import Config
+            client = boto3.client(
+                "bedrock-runtime", region_name=self.region,
+                config=Config(retries={"total_max_attempts": 1},
+                              connect_timeout=2, read_timeout=read_seconds))
+            try:
+                response = client.converse(
+                    modelId=self.model, messages=[{"role": "user", "content": content}],
+                    inferenceConfig={"maxTokens": 8000})
+            except Exception as exc:
+                if any(cls.__name__ in {"ReadTimeoutError", "ConnectTimeoutError",
+                                        "ConnectionClosedError", "HTTPClientError"}
+                       for cls in type(exc).__mro__):
+                    # A socket failure is not evidence that Bedrock stopped.
+                    raise InferenceTimeout("Inference response timed out; retry later",
+                                           may_be_running=True) from exc
+                raise
+            finally:
+                client.close()
         if response.get("stopReason") in {"guardrail_intervened", "content_filtered"}:
             raise RuntimeError("模型拒絕了這個請求")
         blocks = response.get("output", {}).get("message", {}).get("content", [])

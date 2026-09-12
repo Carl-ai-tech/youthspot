@@ -47,5 +47,27 @@ class CloudRuntimeTests(unittest.TestCase):
         self.assertEqual(result['statusCode'], 503)
         self.assertNotIn('do not expose', result['body'])
 
+    @patch('deploy.runtime._ai')
+    def test_lambda_remaining_time_is_shared_and_reset(self, ai):
+        from llm.rate_limit import remaining_budget
+        from types import SimpleNamespace
+        context = SimpleNamespace(get_remaining_time_in_millis=lambda: 14000)
+        def action(*args):
+            self.assertGreater(remaining_budget(), 8)
+            self.assertLessEqual(remaining_budget(), 9)
+            return {'ok': True}
+        ai.side_effect = action
+        self.assertEqual(handler(self.event({'action': 'ask'}), context)['statusCode'], 200)
+        self.assertEqual(remaining_budget(), 55)
+
+    @patch('deploy.runtime._ai')
+    def test_timeout_has_useful_response(self, ai):
+        from llm.rate_limit import InferenceTimeout
+        ai.side_effect = InferenceTimeout('private endpoint', may_be_running=True)
+        response = handler(self.event({'action': 'ask'}))
+        self.assertEqual(response['statusCode'], 504)
+        self.assertIn('3分鐘', response['body'])
+        self.assertNotIn('private endpoint', response['body'])
+
 if __name__ == '__main__':
     unittest.main()

@@ -128,7 +128,8 @@ def _ai(action: str, body: dict, backend=None) -> dict:
         return {"ok": True, "text": g.text,
                 "trustworthy": g.trustworthy,
                 "verified": g.verified, "unverified": g.unverified,
-                "summary": g.summary(), "records": g.records[:12],
+                # records 要整份回、順序不能動：提示詞裡的 [N] 就是這個清單的第 N 筆，前端靠它把引用變成可點的
+                "summary": g.summary(), "records": g.records,
                 "gaps": find_gaps(g.text),
                 "model": getattr(backend, "model", backend.name)}
 
@@ -227,7 +228,8 @@ def _ai(action: str, body: dict, backend=None) -> dict:
         return {"ok": True, "text": g.text,
                 "trustworthy": g.trustworthy,
                 "verified": g.verified, "unverified": g.unverified,
-                "summary": g.summary(), "records": g.records[:12],
+                # records 要整份回、順序不能動：提示詞裡的 [N] 就是這個清單的第 N 筆，前端靠它把引用變成可點的
+                "summary": g.summary(), "records": g.records,
                 "gaps": find_gaps(g.text),
                 "model": getattr(backend, "model", backend.name)}
 

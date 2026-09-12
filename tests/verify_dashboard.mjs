@@ -71,7 +71,7 @@ const document = {
 const fetchCalls = [];
 const CANNED = {
   ok: true, model: 'test-model',
-  text: '**不建議平均分配。**\n前三大區合計佔 33%，其中板橋 106,473 人。\n另外我自己算了一個 999,999。',
+  text: '**不建議平均分配。**\n前三大區合計佔 33%，其中板橋 106,473 人（[1]）。\n另外我自己算了一個 999,999。',
   trustworthy: false, verified: ['33', '106,473'], unverified: ['999,999'],
   summary: '2/3 個數字比對到來源；1 個對不上：999,999',
   gaps: [{ key: '行業 × 年齡的就業人數', status: 'missing', note: '官方沒有行業 × 年齡的表' }],
@@ -147,11 +147,13 @@ check('教育程度交叉', '大專及以上的薪水多少？', (t) => t.indexO
   const call = fetchCalls[fetchCalls.length - 1];
   const routed = sent && call.body.action === 'advise' && call.body.question === '新北市青年的居住情況？';
   const html = el('askText').innerHTML || '';
-  const rendered = html.indexOf('<b>不建議平均分配。</b>') >= 0 && html.indexOf('<br>') >= 0;
+  const rendered = html.indexOf('<b>不建議平均分配。</b>') >= 0 && html.indexOf('<br>') >= 0 && html.indexOf('<button type="button" class="citeref" data-i="1"') >= 0;
   const meta = el('askMeta').textContent;
   const flagged = meta.indexOf('999,999') >= 0 && meta.indexOf('模型自行估算') >= 0 && html.indexOf('<mark class="unv"') >= 0 && meta.indexOf('claude') < 0;
   const warned = el('askAnswer').className.indexOf('warn') >= 0;
-  const cited = el('askCite').children.length === 1;
+  const citeHtml = el('askCite').innerHTML || '';
+  // 來源清單：列出被引用的機關與資料集，每筆一個可點的 [N]
+  const cited = citeHtml.indexOf('這則回答的資料來源') >= 0 && citeHtml.indexOf('class="citeref" data-i="1"') >= 0;
   const gapShown = (el('askChart').children || []).some((c) => /gaps/.test(c.innerHTML || '') && (c.innerHTML || '').indexOf('官方沒有') >= 0);
   // 先只給第一句結論，其餘收在「看完整分析」裡；展開後可再收起
   const leadOnly = html.indexOf('<span class="lead"><b>不建議平均分配。</b></span>') >= 0

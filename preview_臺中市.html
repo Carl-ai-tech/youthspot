@@ -755,6 +755,17 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 .cities a[aria-current="page"]{background:var(--deep);color:#fff;}
 @media (max-width:40rem){.cities{order:4;flex-basis:100%;justify-content:space-between;margin:.4rem 0 0;}}
 @media print{.cities{display:none;}}
+
+/* 引用標記與來源清單 */
+.citeref{font:inherit;font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--accent);
+  background:var(--sunk);border:1px solid var(--rule-soft);border-radius:6px;padding:0 .3rem;margin:0 .1rem;
+  cursor:pointer;vertical-align:baseline;line-height:1.4;}
+.citeref:hover{background:var(--deep);color:#fff;border-color:var(--deep);}
+.src-t{margin:.8rem 0 .3rem;font-size:.78rem;font-weight:600;color:var(--ink-2);}
+.srcs{list-style:none;margin:0;padding:0;display:grid;gap:.3rem;}
+.srcs li{font-size:.8rem;color:var(--ink-2);line-height:1.6;padding-left:.7rem;border-left:3px solid var(--rule);}
+.srcs li b{color:var(--ink);}
+.answer.collapsed .cite{display:block;}
 </style>
 
 <header class="masthead">
@@ -2761,6 +2772,48 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     return html;
   }
 
+  // 模型引用的 [N] 是提示詞裡記錄清單的第 N 筆。把它變成可以點的：點了開右邊的資料履歷，
+  // 滑過看是哪一筆。資料來源要能當場查，不能只是一串看不懂的數字。
+  var LAST_CITED = [];
+  function citeTitle(r) {
+    if (!r) return '';
+    var p = r.provenance || {};
+    return r.region + ' ' + (r.education ? r.education + ' ' : '') + (r.age_group === '全體' ? (p.source_age_group || '全體') : r.age_group + ' 歲')
+      + ' ' + r.metric + ' = ' + fmtRec(r) + '　' + confLabel(p.confidence) + '　' + (p.source_agency || '');
+  }
+  function linkCites(html, records) {
+    return html.replace(/\[(\d{1,3})(?:[-–](\d{1,3}))?\]/g, function (m, a, b) {
+      var i = parseInt(a, 10), r = records[i - 1];
+      if (!r) return m;
+      var label = b ? '[' + a + '–' + b + ']' : '[' + a + ']';
+      return '<button type="button" class="citeref" data-i="' + i + '" title="' + citeTitle(r).replace(/"/g, '&quot;') + '">' + label + '</button>';
+    });
+  }
+  function renderSources(records, text) {
+    // 本答案實際引用到的來源（依 [N] 出現次數），沒有引用標記時退回前幾筆
+    var used = {};
+    (text.match(/\[(\d{1,3})(?:[-–]\d{1,3})?\]/g) || []).forEach(function (m) {
+      var i = parseInt(m.slice(1), 10); if (records[i - 1]) used[i] = 1;
+    });
+    var idx = Object.keys(used).map(Number);
+    if (!idx.length) idx = records.slice(0, 6).map(function (_, i) { return i + 1; });
+    var groups = {};
+    idx.forEach(function (i) {
+      var r = records[i - 1], p = r.provenance || {};
+      var key = (p.source_agency || '') + '｜' + (p.source_dataset || '');
+      (groups[key] = groups[key] || { agency: p.source_agency, dataset: p.source_dataset, idx: [] }).idx.push(i);
+    });
+    var keys = Object.keys(groups);
+    if (!keys.length) return '';
+    return '<p class="src-t">這則回答的資料來源（點編號看該筆的履歷）</p><ul class="srcs">'
+      + keys.map(function (k) {
+          var g = groups[k];
+          return '<li><b>' + (g.agency || '') + '</b>　' + (g.dataset || '') + '　'
+            + g.idx.map(function (i) { return '<button type="button" class="citeref" data-i="' + i + '" title="' + citeTitle(records[i - 1]).replace(/"/g, '&quot;') + '">[' + i + ']</button>'; }).join('')
+            + '</li>';
+        }).join('') + '</ul>';
+  }
+
   function renderModelAnswer(d) {
     if (!d || !d.ok) {
       showAnswer('no', failText('模型回答', { message: (d && d.error) || '模型端沒有回傳內容' }));
@@ -2768,11 +2821,13 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     }
     var box = showAnswer(d.trustworthy ? '' : 'warn', '', '');
     var parts = splitLead(d.text);
-    var unv = d.unverified || [];
-    $('askText').innerHTML = '<span class="lead">' + markUnverified(md(parts.lead), unv) + '</span>'
+    var unv = [];
+    (d.unverified || []).forEach(function (u) { if (unv.indexOf(u) < 0) unv.push(u); });   // 同一個數字只列一次
+    LAST_CITED = d.records || [];
+    $('askText').innerHTML = '<span class="lead">' + linkCites(markUnverified(md(parts.lead), unv), LAST_CITED) + '</span>'
       + (parts.rest
           ? '<button type="button" class="more" id="askMore">看完整分析 ▾</button>'
-            + '<span class="full" id="askFull" hidden>' + markUnverified(md(parts.rest), unv) + '</span>'
+            + '<span class="full" id="askFull" hidden>' + linkCites(markUnverified(md(parts.rest), unv), LAST_CITED) + '</span>'
           : '');
     box.className += ' collapsed';
     // 查核結果要跟答案一起出現。對不上的數字**一定**要標出來，
@@ -2782,7 +2837,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (d.unverified && d.unverified.length) {
       // 措辭：「模型估算」而不是「編的」。它多半是模型自己加減出來的，
       // 說編造太重；重點是讓讀的人知道這個數字不在資料裡、不要拿去引用。
-      meta += '　·　文中橘底的 ' + d.unverified.join('、') + ' 為模型自行估算，資料裡對不到，參考為主';
+      meta += '　·　文中橘底的 ' + unv.join('、') + ' 為模型自行估算，資料裡對不到，參考為主';
     }
     $('askMeta').textContent = meta;
     // 模型說缺什麼資料 → 系統對照資料目錄：官方沒有／已接入／有但未接入。
@@ -2801,13 +2856,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       $('askChart').appendChild(gbox);
     }
     var cite = $('askCite');
-    (d.records || []).slice(0, 6).forEach(function (r) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.textContent = '看【' + r.metric + '】的資料履歷';
-      b.addEventListener('click', function () { select(r); });
-      cite.appendChild(b);
-    });
+    cite.innerHTML = renderSources(LAST_CITED, d.text || '');
   }
 
   // ── 掃描檔上傳 ──────────────────────────────────────────
@@ -3098,7 +3147,18 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     b.addEventListener('click', function () { fillAsk(q); });
     $('askTips').appendChild(b);
   });
+  function onCiteClick(e) {
+    var t = e.target;
+    if (!t || !t.dataset || !t.dataset.i) return;
+    var r = LAST_CITED[parseInt(t.dataset.i, 10) - 1];
+    if (!r) return;
+    select(r);
+    var pv = document.querySelector && document.querySelector('.prov');
+    if (pv && pv.scrollIntoView) pv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  $('askCite').addEventListener('click', onCiteClick);
   $('askText').addEventListener('click', function (e) {
+    onCiteClick(e);
     var t = e.target;
     if (!t || !t.className || String(t.className).indexOf('more') < 0) return;
     var full = $('askFull'), box = $('askAnswer');

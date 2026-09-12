@@ -62,6 +62,9 @@ def _fmt(rec: dict) -> str:
     v = rec["value"]
     if unit == "%":
         return f"{v * 100:.1f}%"
+    if unit == "‰":
+        # 26.2‰ 常被寫成「26‰」：整數寫法也算對上（千分率不會跟別的池值撞）
+        return [(v, False), (round(v, 1), False), (float(round(v)), False)]
     if unit.startswith("萬"):
         return f"{v:.1f} {unit}"
     if unit == "倍":

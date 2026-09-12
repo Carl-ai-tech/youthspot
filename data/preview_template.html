@@ -432,6 +432,18 @@ body{
 .fx .where b{color:var(--ink-2);font-weight:600;}
 @media (max-width:40rem){.wrow{grid-template-columns:1fr auto;} .wrow .wq{grid-column:1/-1;justify-self:start;}}
 .drv-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin:.2rem 0 .6rem;}
+.vcard{background:var(--sunk);border-radius:12px;padding:.9rem 1rem 1rem;}
+.vk{font-size:.82rem;font-weight:700;margin:0 0 .3rem;color:var(--ink-2);}
+.vbig{font-family:var(--mono);font-size:1.9rem;font-weight:700;letter-spacing:-.02em;margin:0 0 .3rem;line-height:1.1;}
+.vbig small{display:block;font-size:.72rem;font-weight:400;color:var(--ink-3);letter-spacing:0;margin-top:.15rem;}
+.vpairs{margin-top:.5rem;}
+.vpairs .coef{grid-template-columns:4.5rem 1fr;padding:.12rem 0;}
+.vtab{border-collapse:collapse;width:100%;font-size:.78rem;margin:.2rem 0 .4rem;}
+.vtab th{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--ink-3);text-align:left;padding:.25rem .35rem;border-bottom:1px solid var(--rule);font-weight:500;}
+.vtab td{padding:.3rem .35rem;border-bottom:1px solid var(--rule-soft);}
+.vtab .mono{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+.vnamed{margin:.2rem 0 0;padding-left:1.1rem;font-size:.76rem;color:var(--ink-2);line-height:1.6;}
+.tw{overflow-x:auto;}
 .drv-tabs .chip{padding:.3rem .7rem;font-size:.74rem;}
 .drv-grid{display:grid;grid-template-columns:1fr;gap:1.2rem;}
 .sc-wrap{position:relative;}
@@ -2019,6 +2031,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       drvState.ref = (M.region === '新北市' && pref) ? pref.area : (top ? top.area : all[0].area);
     }
     var howBody = hostModel;
+    renderValidation(howBody);
 
     // ① 散佈圖：條件 × 近三年淨遷入率
     var fig = document.createElement('figure'); fig.className = 'figbox'; fig.setAttribute('data-chart', 'drivers');
@@ -2135,7 +2148,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       { t: '走勢與訊號', s: '會持續嗎、在減速嗎', where: '走勢圖圖說、預警摘要的「持續移入／流出加劇」',
         plain: '每一區 ' + (mig ? mig.years[0] + '–' + mig.years[mig.years.length - 1] : '2019–2026') + ' 共 8 個點，畫一條最貼合的直線（最小平方法）。看兩件事：<b>水準</b>（連續幾年正或負）和<b>方向</b>（斜率往上還是往下、而且不是巧合）。「不是巧合」用 t 檢定判斷：斜率除以它的不確定度，超過門檻才算數。預測值一定附 95% 區間，區間本身就是誠實度。',
         code: '斜率 b = Σ(x−x̄)(y−ȳ) ÷ Σ(x−x̄)²　　t = b ÷ 標準誤(b)　　|t| ≥ 臨界值 → 顯著\n明年預估 = 直線延伸一年 ± 1.96 × 預測標準誤\n訊號：連續正值＝持續移入｜斜率顯著下降＝移入減速｜連續負值＝持續流出｜斜率顯著改變方向＝轉向｜其餘＝方向不明',
-        limit: '8 個點的直線外推，區間寬；只用來排優先順序，不當單一年的預言。' },
+        limit: '8 個點的直線外推，區間寬；只用來排優先順序，不當單一年的預言。'
+          + (M.validation_migration ? ' 驗證：跟戶政司登記的全年齡遷入−遷出跨區相關 r = ' + M.validation_migration.r + '。' : '')
+          + (M.backtest_migration && M.backtest_migration.pooled && M.backtest_migration.pooled['2023'] ? ' 回測：2023 年標「移入」的區，隔兩年真的移入的比例 ' + Math.round(M.backtest_migration.pooled['2023'].inflow_precision * 100) + '%（六都 158 區）。' : '') },
       { t: '影響力表（多元迴歸）', s: '什麼條件的區在吸青年', where: '「模型怎麼算的」影響力表、AI 回答裡的「所得高 10% → +0.40 個百分點」',
         plain: '把六都 ' + (mb ? mb.n : 158) + ' 個行政區排排站，每區有四個條件（工作機會密度、所得中位數、每坪月租、青年人口規模）和一個結果（近三年淨遷入率）。找一組權重，讓「條件 × 權重」加起來最接近實際結果 —— 這就是多元迴歸（OLS）。權重讀成<b>「某條件高 10% 的區，淨遷入率平均高幾個百分點」</b>。「縣市固定效果」是先把六都之間的水準差扣掉，只比同一個都會區裡的區。',
         code: '淨遷入率 = β₀ + β₁·ln(工作機會密度) + β₂·ln(所得) + β₃·ln(租金) + β₄·ln(青年人口) + 縣市 + ε\n「高 10% → 幾 pp」 = β × ln(1.1)　　影響力（同一把尺） = β × sd(x) ÷ sd(y)\n能解釋幾成（R²） = 1 − 殘差平方和 ÷ 總平方和' + (mb ? '　　目前 ' + Math.round(mb.r2 * 100) + '%' : ''),
@@ -2166,6 +2181,49 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
         + '<p class="plain">' + f.plain + '</p><code>' + f.code + '</code>'
         + '<p class="where"><b>用在哪</b>　' + f.where + '</p><p class="where"><b>限制</b>　' + f.limit + '</p></details>';
     }).join('');
+  }
+
+  // ── 方法驗證：① 跟官方遷徙對答案（跨區相關）② 回測（訊號提前多久）。都是程式算的，數字從 meta 帶。
+  function renderValidation(host) {
+    var V = M.validation_migration, B = M.backtest_migration;
+    if (!V && !B) return;
+    var wrap = document.createElement('figure'); wrap.className = 'figbox'; wrap.setAttribute('data-chart', 'validation');
+    var html = '<p class="fig-title">這個方法準嗎<span class="scopetag">兩道驗證</span></p>'
+      + '<div class="drv-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">';
+    if (V) {
+      var pairs = (V.pairs || []).map(function (q) {
+        return '<div class="coef"><span class="k">' + q.area + '</span><span class="v" style="text-align:left">官方 ' + (q.official > 0 ? '+' : '') + num(q.official) + '<small>18–35 世代 ' + (q.cohort > 0 ? '+' : '') + num(q.cohort) + '</small></span></div>';
+      }).join('');
+      html += '<div class="vcard"><p class="vk">① 跟官方登記的遷徙對答案</p>'
+        + '<p class="vbig">r = ' + V.r + '<small>' + V.n + ' 個行政區 · 方向一致 ' + V.same_sign + '/' + V.n + '</small></p>'
+        + '<p class="cap">同一年、同一批區：戶政司登記的<b>全年齡遷入−遷出</b>（' + V.months + '）對上我們用單一年齡兩期相減算的 <b>18–35 歲淨遷入</b>。'
+        + '相關 ' + V.r + ' —— 世代追蹤抓到的就是真實的搬遷，不是算法的假象。全市官方 ' + (V.city_official > 0 ? '+' : '') + num(V.city_official) + ' 人、青年 ' + (V.city_cohort > 0 ? '+' : '') + num(V.city_cohort) + ' 人。</p>'
+        + '<div class="vpairs">' + pairs + '</div></div>';
+    }
+    if (B && B.pooled) {
+      var Ts = Object.keys(B.pooled);
+      var rows = Ts.map(function (T) {
+        var r = B.pooled[T];
+        return '<tr><td class="mono">' + T + '</td><td class="mono">' + r.points_used + '</td>'
+          + '<td class="mono">' + r.inflow_hits + '/' + r.inflow_flagged + '</td><td class="mono"><b>' + Math.round((r.inflow_precision || 0) * 100) + '%</b></td><td class="mono">' + Math.round((r.inflow_recall || 0) * 100) + '%</td>'
+          + '<td class="mono">' + r.outflow_hits + '/' + r.outflow_flagged + '</td><td class="mono"><b>' + Math.round((r.outflow_precision || 0) * 100) + '%</b></td><td class="mono">' + Math.round((r.outflow_recall || 0) * 100) + '%</td></tr>';
+      }).join('');
+      var named = Object.keys(B.named || {}).map(function (area) {
+        var byT = B.named[area];
+        return '<li><b>' + area.replace(M.region, '') + '</b>　' + Object.keys(byT).map(function (T) {
+          var v = byT[T]; return T + '：' + v.signal + '（隔年實際 ' + (v.actual_next > 0 ? '+' : '') + v.actual_next + '%）';
+        }).join('；') + '</li>';
+      }).join('');
+      html += '<div class="vcard"><p class="vk">② 回測：假裝在 T 年，訊號提前多久</p>'
+        + '<div class="tw"><table class="vtab"><thead><tr><th>T 年</th><th>用幾點</th><th>標移入 命中</th><th>準確</th><th>抓到</th><th>標流出 命中</th><th>準確</th><th>抓到</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+        + '<p class="cap">六都 158 區合計。「準確」＝標了移入的區，隔兩年平均真的淨移入的比例；「抓到」＝隔兩年真的淨移入 ≥ 0.5% 的區，T 年就被標到的比例。'
+        + '2022 只有 4 個點又含除籍事件年，抓到率低；2023 起準確 ≥ 89%、抓到 ≈ 70%。點預測的誤差跟「沿用去年值」差不多 —— <b>價值在方向，不在單年的數字</b>。</p>'
+        + (named ? '<p class="cap" style="margin-top:.4rem"><b>局長點名的區</b></p><ul class="vnamed">' + named + '</ul>' : '')
+        + '</div>';
+    }
+    html += '</div>';
+    wrap.innerHTML = html;
+    host.appendChild(wrap);
   }
 
   function drawScatter(wrap, all, D) {

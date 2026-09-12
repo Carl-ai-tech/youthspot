@@ -412,6 +412,20 @@
     "cached": true
    },
    {
+    "agency": "內政部戶政司",
+    "dataset": "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）",
+    "url": "https://data.gov.tw/dataset/77141",
+    "format": "JSON API",
+    "auto": true,
+    "cadence": "每月",
+    "records": 0,
+    "check": "只做交叉驗證：跨區相關 r（世代淨遷入 vs 官方遷入−遷出）",
+    "coverage": "近 12 個月 各行政區（全年齡）",
+    "fetched_at": "2026-09-12 22:20",
+    "size_kb": 1472,
+    "cached": true
+   },
+   {
     "agency": "內政部地政司",
     "dataset": "內政部地政司 不動產成交案件實際資訊（實價登錄）租賃案件",
     "url": "https://plvr.land.moi.gov.tw/DownloadOpenData",
@@ -456,7 +470,7 @@
   ],
   "scale": {
    "agencies": 6,
-   "datasets": 13,
+   "datasets": 14,
    "metrics": 21,
    "records": 782,
    "year_min": 1978,
@@ -485,6 +499,316 @@
     "verdict": "比不拆更差 → 引擎自動降 low"
    }
   ],
+  "validation_migration": {
+   "source": "內政部戶政司 ODRP011 遷入遷出統計表（新增區域代碼）",
+   "url": "https://data.gov.tw/dataset/77141",
+   "months": "11408–11507",
+   "n": 29,
+   "r": 0.952,
+   "same_sign": 22,
+   "city_official": 6923,
+   "city_cohort": 546,
+   "pairs": [
+    {
+     "area": "淡水區",
+     "official": 4580,
+     "cohort": 1069
+    },
+    {
+     "area": "土城區",
+     "official": 1694,
+     "cohort": 428
+    },
+    {
+     "area": "林口區",
+     "official": 1637,
+     "cohort": 363
+    },
+    {
+     "area": "三重區",
+     "official": 1334,
+     "cohort": 331
+    },
+    {
+     "area": "五股區",
+     "official": 952,
+     "cohort": 282
+    },
+    {
+     "area": "汐止區",
+     "official": 572,
+     "cohort": 98
+    },
+    {
+     "area": "永和區",
+     "official": -652,
+     "cohort": -424
+    },
+    {
+     "area": "樹林區",
+     "official": -678,
+     "cohort": -358
+    },
+    {
+     "area": "板橋區",
+     "official": -774,
+     "cohort": -23
+    },
+    {
+     "area": "蘆洲區",
+     "official": -923,
+     "cohort": -431
+    }
+   ],
+   "note": "官方遷入遷出是全年齡的登記數，我們的是 18–35 歲用單一年齡兩期相減算的；同一年、同一批區，兩者跨區相關 r 越接近 1，代表世代追蹤抓到的就是真實的搬遷。"
+  },
+  "backtest_migration": {
+   "method": "假裝現在是 T 年，只用 T 年以前的世代淨遷入率跑正式的線性外推＋訊號判定，對 T+1、T+2 的實際值。2022／2023 戶籍事件年刻意留在序列裡。",
+   "hit_rate": 0.005,
+   "pooled": {
+    "2022": {
+     "n": 158,
+     "points_used": 4,
+     "mae_model_pp": 2.23,
+     "mae_last_pp": 2.02,
+     "mae_mean_pp": 1.31,
+     "inflow_flagged": 24,
+     "inflow_hits": 22,
+     "inflow_precision": 0.92,
+     "inflow_recall": 0.32,
+     "truly_inflow": 68,
+     "outflow_flagged": 109,
+     "outflow_hits": 65,
+     "outflow_precision": 0.6,
+     "outflow_recall": 0.85,
+     "truly_outflow": 47
+    },
+    "2023": {
+     "n": 158,
+     "points_used": 5,
+     "mae_model_pp": 0.76,
+     "mae_last_pp": 0.92,
+     "mae_mean_pp": 0.61,
+     "inflow_flagged": 33,
+     "inflow_hits": 33,
+     "inflow_precision": 1.0,
+     "inflow_recall": 0.69,
+     "truly_inflow": 45,
+     "outflow_flagged": 54,
+     "outflow_hits": 51,
+     "outflow_precision": 0.94,
+     "outflow_recall": 0.62,
+     "truly_outflow": 79
+    },
+    "2024": {
+     "n": 158,
+     "points_used": 6,
+     "mae_model_pp": 1.02,
+     "mae_last_pp": 0.95,
+     "mae_mean_pp": 1.01,
+     "inflow_flagged": 36,
+     "inflow_hits": 32,
+     "inflow_precision": 0.89,
+     "inflow_recall": 0.7,
+     "truly_inflow": 43,
+     "outflow_flagged": 70,
+     "outflow_hits": 64,
+     "outflow_precision": 0.91,
+     "outflow_recall": 0.75,
+     "truly_outflow": 80
+    }
+   },
+   "named": {
+    "新北市新莊區": {
+     "2022": {
+      "signal": "方向不明",
+      "forecast": -1.37,
+      "actual_next": 0.82,
+      "future_mean": 0.39,
+      "n": 4
+     },
+     "2023": {
+      "signal": "方向不明",
+      "forecast": -0.04,
+      "actual_next": -0.04,
+      "future_mean": -0.27,
+      "n": 5
+     },
+     "2024": {
+      "signal": "方向不明",
+      "forecast": -0.02,
+      "actual_next": -0.5,
+      "future_mean": -0.45,
+      "n": 6
+     }
+    },
+    "新北市林口區": {
+     "2022": {
+      "signal": "移入減速",
+      "forecast": 1.23,
+      "actual_next": 4.62,
+      "future_mean": 3.74,
+      "n": 4
+     },
+     "2023": {
+      "signal": "持續移入",
+      "forecast": 2.92,
+      "actual_next": 2.87,
+      "future_mean": 2.5,
+      "n": 5
+     },
+     "2024": {
+      "signal": "持續移入",
+      "forecast": 2.54,
+      "actual_next": 2.12,
+      "future_mean": 1.73,
+      "n": 6
+     }
+    },
+    "新北市汐止區": {
+     "2022": {
+      "signal": "持續移入",
+      "forecast": 0.22,
+      "actual_next": 2.25,
+      "future_mean": 1.76,
+      "n": 4
+     },
+     "2023": {
+      "signal": "持續移入",
+      "forecast": 1.5,
+      "actual_next": 1.28,
+      "future_mean": 1.65,
+      "n": 5
+     },
+     "2024": {
+      "signal": "持續移入",
+      "forecast": 1.42,
+      "actual_next": 2.03,
+      "future_mean": 1.12,
+      "n": 6
+     }
+    },
+    "新北市淡水區": {
+     "2022": {
+      "signal": "持續移入",
+      "forecast": 1.06,
+      "actual_next": 3.69,
+      "future_mean": 3.65,
+      "n": 4
+     },
+     "2023": {
+      "signal": "持續移入",
+      "forecast": 2.57,
+      "actual_next": 3.61,
+      "future_mean": 4.45,
+      "n": 5
+     },
+     "2024": {
+      "signal": "持續移入",
+      "forecast": 3.19,
+      "actual_next": 5.28,
+      "future_mean": 3.92,
+      "n": 6
+     }
+    }
+   },
+   "city": {
+    "2022": {
+     "n": 29,
+     "points_used": 4,
+     "mae_model_pp": 1.89,
+     "mae_last_pp": 1.75,
+     "mae_mean_pp": 1.1,
+     "inflow_flagged": 5,
+     "inflow_hits": 5,
+     "inflow_precision": 1.0,
+     "inflow_recall": 0.42,
+     "truly_inflow": 12,
+     "outflow_flagged": 19,
+     "outflow_hits": 13,
+     "outflow_precision": 0.68,
+     "outflow_recall": 0.82,
+     "truly_outflow": 11,
+     "flagged_in_names": [
+      "五股區",
+      "八里區",
+      "汐止區",
+      "淡水區",
+      "鶯歌區"
+     ],
+     "missed_in_names": [
+      "三重區",
+      "中和區",
+      "土城區",
+      "新店區",
+      "板橋區",
+      "林口區",
+      "深坑區"
+     ]
+    },
+    "2023": {
+     "n": 29,
+     "points_used": 5,
+     "mae_model_pp": 0.54,
+     "mae_last_pp": 0.9,
+     "mae_mean_pp": 0.5,
+     "inflow_flagged": 6,
+     "inflow_hits": 6,
+     "inflow_precision": 1.0,
+     "inflow_recall": 0.67,
+     "truly_inflow": 9,
+     "outflow_flagged": 12,
+     "outflow_hits": 12,
+     "outflow_precision": 1.0,
+     "outflow_recall": 0.8,
+     "truly_outflow": 15,
+     "flagged_in_names": [
+      "五股區",
+      "八里區",
+      "林口區",
+      "汐止區",
+      "淡水區",
+      "鶯歌區"
+     ],
+     "missed_in_names": [
+      "三重區",
+      "新店區",
+      "泰山區"
+     ]
+    },
+    "2024": {
+     "n": 29,
+     "points_used": 6,
+     "mae_model_pp": 0.97,
+     "mae_last_pp": 1.03,
+     "mae_mean_pp": 1.28,
+     "inflow_flagged": 6,
+     "inflow_hits": 6,
+     "inflow_precision": 1.0,
+     "inflow_recall": 0.6,
+     "truly_inflow": 10,
+     "outflow_flagged": 14,
+     "outflow_hits": 13,
+     "outflow_precision": 0.93,
+     "outflow_recall": 1.0,
+     "truly_outflow": 12,
+     "flagged_in_names": [
+      "五股區",
+      "八里區",
+      "林口區",
+      "汐止區",
+      "淡水區",
+      "鶯歌區"
+     ],
+     "missed_in_names": [
+      "三重區",
+      "土城區",
+      "平溪區",
+      "泰山區"
+     ]
+    }
+   }
+  },
   "rights": {
    "basis": "青年基本法（2026-01-21 公布施行，全國法規資料庫 H0180009）第 27 條：每四年公布青年現況統計；第 7–23 條逐條盤點",
    "aspects": [

@@ -39,6 +39,8 @@ from data.fetch_rent import DATASET as RENT_DATASET, LANDING as RENT_LANDING, fe
 from data.drivers import OUT as DRIVERS_JSON  # noqa: E402
 from data.fetch_population import fetch_population_by_district, fetch_population_by_sex  # noqa: E402
 from data.fetch_migration import DATASET as MIG_DATASET, LANDING as MIG_LANDING, fetch_migration  # noqa: E402
+from data.fetch_official_migration import DATASET as OFF_DATASET, LANDING as OFF_LANDING, fetch_official_migration  # noqa: E402
+from data.backtest_migration import OUT as BACKTEST_MIG_JSON, classify as _classify_migration  # noqa: E402
 from data.fetch_labour import (  # noqa: E402
     labour_force_participation,
     latest,
@@ -166,29 +168,15 @@ def _migration_trend(mig: dict, region: str) -> dict:
     out_areas = {}
     for area, a in mig["areas"].items():
         pts = [(y, r) for y, r in zip(years, a["rate"]) if r is not None]
-        tr = fit(pts) if len(pts) >= 3 else None
+        c = _classify_migration(pts)          # 跟回測（backtest_migration.py）同一個判定
         entry = {"net": a["net"], "rate": a["rate"], "naive": a["naive"]}
-        if tr is not None:
-            yhat, margin = tr.predict(years[-1] + 1)
-            pos_years = sum(1 for _, r in pts if r > 0)
-            last = pts[-1][1]
-            d = tr.direction()
-            # 訊號：看「水準」（連續正／負）與「方向」（斜率顯著）
-            if pos_years >= len(pts) - 1 and last > 0:
-                signal = "持續移入" if d != "down" else "移入減速"
-            elif pos_years <= 1 and last < 0:
-                signal = "流出加劇" if d == "down" else "持續流出"
-            elif d == "up":
-                signal = "轉為移入"
-            elif d == "down":
-                signal = "轉為流出"
-            else:
-                signal = "方向不明"
+        if c is not None:
+            tr = c["trend"]
             entry.update({
-                "signal": signal,
+                "signal": c["signal"],
                 "slope_pp": round(tr.slope * 100, 3), "significant": tr.significant, "r2": round(tr.r2, 2),
-                "forecast_year": years[-1] + 1, "forecast": round(yhat, 4), "margin": round(margin, 4),
-                "confidence": tr.confidence, "positive_years": pos_years, "n": len(pts),
+                "forecast_year": years[-1] + 1, "forecast": round(c["forecast"], 4), "margin": round(c["margin"], 4),
+                "confidence": tr.confidence, "positive_years": sum(1 for _, r in pts if r > 0), "n": len(pts),
             })
         out_areas[area] = entry
     return {
@@ -197,6 +185,35 @@ def _migration_trend(mig: dict, region: str) -> dict:
         "shock_years": list(REGISTRY_SHOCK_YEARS),
         "note": (mig["note"] + " 2022／2023 兩期受疫情除籍與恢復戶籍影響，全市出現一負一正的大幅波動，"
                  "是戶籍事件不是搬家；預測標 experimental。"),
+    }
+
+
+def _validate_migration(mig: dict, off: dict, region: str) -> dict:
+    """跨區相關：官方全年齡淨遷入（登記）vs 世代 18–35 淨遷入（兩期相減）。r 高＝方法站得住。"""
+    import math
+    xs, ys, pairs = [], [], []
+    for area, a in mig["areas"].items():
+        if area == region or a["net"][-1] is None:
+            continue
+        o = off["areas"].get(area)
+        if not o:
+            continue
+        xs.append(o["net"]); ys.append(a["net"][-1])
+        pairs.append({"area": area.replace(region, ""), "official": o["net"], "cohort": a["net"][-1]})
+    n = len(xs)
+    mx, my = sum(xs) / n, sum(ys) / n
+    num = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
+    den = math.sqrt(sum((x - mx) ** 2 for x in xs) * sum((y - my) ** 2 for y in ys))
+    r = num / den if den else None
+    same = sum(1 for p in pairs if (p["official"] > 0) == (p["cohort"] > 0))
+    pairs.sort(key=lambda p: -p["official"])
+    return {
+        "source": OFF_DATASET, "url": OFF_LANDING, "months": f"{off['months'][0]}–{off['months'][-1]}",
+        "n": n, "r": round(r, 3) if r is not None else None, "same_sign": same,
+        "city_official": off["areas"][region]["net"], "city_cohort": mig["areas"][region]["net"][-1],
+        "pairs": pairs[:6] + pairs[-4:],
+        "note": ("官方遷入遷出是全年齡的登記數，我們的是 18–35 歲用單一年齡兩期相減算的；"
+                 "同一年、同一批區，兩者跨區相關 r 越接近 1，代表世代追蹤抓到的就是真實的搬遷。"),
     }
 
 
@@ -1156,6 +1173,10 @@ def _pipeline_status(records: list[AlignedRecord], meta: dict) -> list[dict]:
          "records": n_records(lambda r: r.metric in ("在地工作機會", "場所單位數", "工作機會密度")),
          "check": "各區加總 = 總計（場所數、從業員工）", "coverage": "110 年底 各行政區",
          **_cache_info("dgbas_census_110.xml")},
+        {"agency": "內政部戶政司", "dataset": OFF_DATASET, "url": OFF_LANDING,
+         "format": "JSON API", "auto": True, "cadence": "每月",
+         "records": 0, "check": "只做交叉驗證：跨區相關 r（世代淨遷入 vs 官方遷入−遷出）",
+         "coverage": "近 12 個月 各行政區（全年齡）", **_cache_info("odrp011_*.json")},
         {"agency": "內政部地政司", "dataset": RENT_DATASET, "url": RENT_LANDING,
          "format": "ZIP／CSV（固定網址，每季）", "auto": True, "cadence": "每季",
          "records": n_records(lambda r: r.metric in ("住宅每坪月租中位數", "住宅月租金中位數")),
@@ -1302,7 +1323,7 @@ def _scale(records: list[AlignedRecord], trends: dict) -> dict:
         years.append(r.year)
     return {
         "agencies": 6,                       # 戶政司、主計總處、新北市政府主計處、內政部、財政部、地政司
-        "datasets": 13,
+        "datasets": 14,
         "metrics": len({r.metric for r in records}),
         "records": len(records),
         "year_min": min(years) if years else None,
@@ -1614,8 +1635,24 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     except Exception as exc:  # noqa: BLE001
         print(f"  ⚠ 行政區租金未載入：{exc}")
 
+    validation = None
+    backtest_mig = None
     if migration:
         trends["migration"] = _migration_trend(migration, region)
+        # 交叉驗證：官方登記的全年齡遷入−遷出（ODRP011，12 個月加總）vs 我們的 18–35 世代淨遷入，跨區相關
+        try:
+            off = fetch_official_migration(region, end_period=meta["period"], refresh=refresh)
+            validation = _validate_migration(migration, off, region)
+            print(f"  世代淨遷入 vs 官方遷徙：r = {validation['r']}（{validation['n']} 區）")
+        except Exception as exc:  # noqa: BLE001
+            print(f"  ⚠ 官方遷徙交叉驗證未載入：{exc}")
+        # 回測（data/backtest_migration.py 先跑）
+        if BACKTEST_MIG_JSON.exists():
+            bt = json.loads(BACKTEST_MIG_JSON.read_text(encoding="utf-8"))
+            backtest_mig = {"method": bt["method"], "hit_rate": bt["hit_rate"], "pooled": bt["pooled"],
+                            "named": bt["named"], "city": (bt["cities"].get(region) or {}).get("cutoffs", {})}
+        else:
+            print("  ⚠ 沒有 data/backtest_migration.json（先跑 python data/backtest_migration.py）")
         mig_notes = _migration_notes(trends["migration"], region)
         # 排在「服務據點」那條後面
         idx = next((i for i, n in enumerate(notes) if "服務據點" in n["title"]), len(notes) - 1)
@@ -1685,6 +1722,8 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
             "sources": _pipeline_status(records, meta),
             "scale": _scale(records, trends),
             "backtest": _backtest_summary(),
+            "validation_migration": validation,
+            "backtest_migration": backtest_mig,
             "rights": _rights_coverage(records, trends),
         },
         "benchmark": bench,

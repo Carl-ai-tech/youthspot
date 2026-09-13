@@ -1,0 +1,40 @@
+{
+  "metadataAttributes": {
+    "access": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "public"
+      }
+    },
+    "title": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2024新北青年職涯諮詢歷史公告摘要"
+      }
+    },
+    "published_at": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2024-01-26"
+      }
+    },
+    "source_url": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28"
+      }
+    },
+    "region": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "新北市"
+      }
+    },
+    "corpus_kind": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "curated_official_summary"
+      }
+    }
+  }
+}

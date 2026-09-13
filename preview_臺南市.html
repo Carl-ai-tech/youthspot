@@ -647,7 +647,25 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 }
 
 /* 模型答案：結論 → 看完整分析 → 收起 */
-.answer .lead{font-weight:600;}
+.answer .lead{white-space:normal;font-weight:600;font-size:1.05rem;line-height:1.85;max-width:66ch;}
+.answer .lead p{margin:0 0 .6rem;}
+.answer .answer-prose{white-space:normal;font-size:.94rem;line-height:1.9;overflow-wrap:anywhere;counter-reset:answer-step;}
+.answer-prose p{margin:0 0 .85rem;max-width:70ch;}
+.answer-prose p:last-child{margin-bottom:0;}
+.answer-prose ul,.answer-prose ol{padding-left:1.45rem;margin:.4rem 0 1rem;}
+.answer-prose li{padding-left:.25rem;margin:.5rem 0;max-width:68ch;}
+.answer-step{margin:.8rem 0;padding:1rem 1.15rem;background:var(--card);border:1px solid var(--rule-soft);border-radius:12px;}
+.answer-step h3{display:flex;align-items:baseline;gap:.6rem;margin:0;color:var(--ink);font-size:.97rem;line-height:1.6;}
+.answer-step-toggle{display:flex;align-items:baseline;justify-content:space-between;gap:.8rem;flex:1;min-width:0;text-align:left;font:inherit;font-weight:700;line-height:inherit;color:inherit;border:0;background:transparent;padding:0;cursor:pointer;}
+.answer-step-toggle::after{content:'＋';flex-shrink:0;color:var(--accent);}
+.answer-step-toggle[aria-expanded="true"]::after{content:'−';}
+.answer-step-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px;}
+.answer-step-body{padding-top:.85rem;}
+.answer-step-body[hidden]{display:none;}
+.answer-step h4{font-size:.92rem;margin:1rem 0 .35rem;line-height:1.7;}
+.answer-step h3::before{counter-increment:answer-step;content:counter(answer-step,decimal-leading-zero);font:600 .76rem var(--mono);color:var(--accent);}
+@media(max-width:40rem){.answer-step{padding:.85rem .75rem;}.answer .answer-prose{white-space:normal;font-size:.92rem;}.answer .lead{font-size:1rem;}}
+@media print{.answer .full[hidden],.answer-step-body[hidden]{display:block!important;}.answer-step-toggle::after{display:none;}.answer-step{break-inside:auto;border-color:#bbb;background:transparent;}.answer-step h3{break-after:avoid;}.answer-prose p,.answer-prose li{orphans:3;widows:3;}}
 .answer .more{display:block;margin:.55rem 0 0;font:inherit;font-size:.8rem;font-weight:600;
   color:var(--accent);background:var(--sunk);border:1px solid var(--rule-soft);border-radius:999px;
   padding:.3rem .8rem;cursor:pointer;transition:background .16s ease,transform .16s ease;}
@@ -858,7 +876,9 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 .gaps li.available{border-left-color:var(--high);}
 .gaps li.external{border-left-color:var(--medium);}
 .gaps .gs{margin-left:.5rem;font-family:var(--mono);font-size:.68rem;color:var(--ink-3);}
-.gaps small{color:var(--ink-3);}
+.gaps small{color:var(--ink-2);line-height:1.7;}
+.gaps details{margin-top:.4rem;}
+.gaps summary{font-size:.75rem;color:var(--ink-3);cursor:pointer;}
 
 
 .pipe tr.stale td{background:rgba(247,144,9,.08);}
@@ -1057,6 +1077,15 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 .topbar .export-btn{background:transparent;color:#5c5749;border:1px solid #ded7ca;box-shadow:none;border-radius:999px;}
 /* Centered magnifier hero restored from the original preview. */
 .hero44 :is(button,a,select,input):focus-visible,.topbar :is(button,a):focus-visible{outline:3px solid #FF5A1F;outline-offset:4px;}
+/* Keep the question focus ring inside its own rounded input, away from examples. */
+.hero44 .prompt-in{min-width:0;}
+.hero44 .prompt-in input{display:block;min-width:0;border-radius:12px;padding:.65rem .75rem 2.35rem;}
+.hero44 .prompt-in input:focus-visible{outline:2px solid #FF5A1F;outline-offset:-2px;}
+.hero44 .prompt-bar{flex-wrap:wrap;}
+.hero44 .prompt-right{min-width:0;margin-left:auto;}
+.hero44 .areapill{min-width:0;}
+.hero44 .areapill select{min-width:0;max-width:min(11rem,42vw);}
+.hero44 .send{flex-shrink:0;}
 @media(max-width:40rem){
  .topbar-in{padding:12px 16px;gap:12px;justify-content:space-between;}
  .topbar .brand strong{font-size:17px;}
@@ -1070,36 +1099,67 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   th,td{white-space:normal!important;overflow-wrap:anywhere;padding:3px!important;font-size:8pt;}
   .prompt-in,.prompt-bar,.claims,.scenarios,.strip-nav{display:none!important;}
 }
+
+/* Indeterminate movement only: elapsed time is real, backend stages are unknown. */
+.answer[aria-busy="true"] { border-color:#f69b73; background:linear-gradient(135deg,#fff8f2,#fffdfb); }
+.answer[aria-busy="true"]::before { content:""; display:block; width:32px; height:32px; margin:0 0 16px; border:3px solid #f5d8c8; border-top-color:#ed5424; border-right-color:#f79855; border-radius:50%; animation:answer-spin 1s linear infinite; }
+.answer[aria-busy="true"] .meta { font-variant-numeric:tabular-nums; line-height:1.7; }
+.send[data-busy="true"] { position:relative; opacity:1; cursor:wait; box-shadow:none; transform:none; }
+.send[data-busy="true"] svg { visibility:hidden; }
+.send[data-busy="true"]::after { content:""; position:absolute; width:18px; height:18px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:answer-spin 1s linear infinite; }
+@keyframes answer-spin { to { transform:rotate(360deg); } }
+@media (prefers-reduced-motion:reduce) { .answer[aria-busy="true"]::before, .send[data-busy="true"]::after { animation:none; } }
+/* The dashboard has three chapters; technical detail lives in a secondary view. */
+#ch-tools,#ch-methods,#whitepaperIntro,#whitepaperNav{display:none!important;}
+body.whitepaper-view #ch-tools,body.whitepaper-view #ch-methods,body.whitepaper-view #whitepaperIntro{display:block!important;}
+body.whitepaper-view #whitepaperNav{display:flex!important;}
+body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-view #ch-explore,body.whitepaper-view #ch-advice,body.whitepaper-view #toc,body.whitepaper-view #whitepaperFooter{display:none!important;}
+.whitepaper-intro{padding:3rem 0 1.5rem;max-width:52rem;}
+.whitepaper-intro h1{font-size:clamp(1.8rem,4vw,2.8rem);margin:.8rem 0;line-height:1.2;}
+.whitepaper-intro p{color:var(--ink-2);line-height:1.8;}
+.whitepaper-links{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;margin-top:1rem;}
+.whitepaper-links a,.whitepaper-back{color:var(--ink-2);text-underline-offset:4px;}
+.whitepaper-footer{margin-top:2rem;padding:1.5rem 0 2rem;border-top:1px solid var(--line);color:var(--ink-3);font-size:.85rem;line-height:1.7;}
+.whitepaper-footer p{margin:0 0 .35rem;}
+.whitepaper-footer a{color:var(--ink-2);text-underline-offset:4px;}
+@media(max-width:40rem){body.whitepaper-view #whitepaperNav{display:none!important;}}
+@media print{#whitepaperFooter,#whitepaperNav,.whitepaper-back,.whitepaper-links{display:none!important;}body.whitepaper-view #whitepaperNav{display:none!important;}}
 </style>
 
 <header class="topbar" id="topbar">
   <div class="topbar-in">
     <a class="brand" href="#top"><img class="ys-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iMTQiIGZpbGw9IiNGRjVBMUYiLz48dGV4dCB4PSIyNCIgeT0iMzEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNGRkYiIGZvbnQtZmFtaWx5PSJBdmVuaXIgTmV4dCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNiIgZm9udC13ZWlnaHQ9IjcwMCIgbGV0dGVyLXNwYWNpbmc9Ii0xLjQiPnlzLjwvdGV4dD48L3N2Zz4K" width="37" height="37" alt="YS"><strong>YouthScope</strong><span id="brandsub">新北市</span></a>
     <nav class="toc" id="toc" aria-label="頁面目錄">
-      <a href="#ch-next">預測</a><a href="#ch-explore">發現</a><a href="#ch-advice">建議</a><a href="#ch-tools">工具</a><a href="#ch-methods">方法與驗證</a>
+      <a href="#ch-next">01 · 預測</a><a href="#ch-explore">02 · 發現</a><a href="#ch-advice">03 · 建議</a>
     </nav>
+    <nav class="toc" id="whitepaperNav" aria-label="白皮書目錄"><a href="?view=dashboard#top" data-view="dashboard">返回主頁</a><a href="#ch-tools">資料工具</a><a href="#ch-methods">方法與驗證</a></nav>
     <button type="button" class="export-btn" id="exportBtn" title="把目前畫面匯出成 PDF 簡報頁">匯出報告 <span>PDF</span></button>
   </div>
 </header>
 <!-- 報告封面：只在列印時出現。內容由 exportReport() 用當下的地區、年齡層、資料版本填 -->
 <section class="report-head" id="reportHead" aria-hidden="true"></section>
 
-<div class="wrap" id="top">
+<div class="wrap" id="top" tabindex="-1">
+  <section class="whitepaper-intro" id="whitepaperIntro" tabindex="-1">
+    <a class="whitepaper-back" href="?view=dashboard#top" data-view="dashboard">← 返回預測、發現與建議</a>
+    <h1>方法與資料白皮書</h1>
+    <p>想了解數字怎麼來、預測怎麼算、結果有哪些限制？這裡保留資料工具、計算公式與驗證細節，方便進一步查閱。</p>
+    <nav class="whitepaper-links" aria-label="白皮書章節"><a href="#ch-tools">資料工具與來源</a><a href="#ch-methods">計算方法與驗證</a></nav>
+  </section>
   <section class="hero44" id="sec-hero">
     <h1>YouthScope 青年放大鏡</h1>
     <p class="lede">透過公開資料與 AI，看懂青年人口變化，探索城市趨勢與施政方向。</p>
 
     <section class="prompt" id="sec-ask">
       <div class="prompt-in">
-        <input id="askInput" type="text" placeholder="哪一區可能成為下一個淡水？青年局該先準備什麼？"
+        <input id="askInput" type="text" placeholder="新北市哪一區可能成為下一個青年聚集地，讓青年局提前投入資源？"
                aria-label="用中文問一個關於青年統計的問題" autocomplete="off">
         <button type="button" class="ph-use" id="phUse" hidden>用這個範例 ⇥</button>
       </div>
-      <div class="claims" id="claims" aria-label="外界丟過來的主張">
-          <span class="cl-l">有人這樣說：</span>
-          <button type="button" data-scn="claim1">青年局應該負責讓年輕人結婚生小孩</button>
-          <button type="button" data-scn="claim2">青年局應該降低青年失業率</button>
-          <button type="button" data-scn="claim3">新北青年都被房價逼走了</button>
+      <div class="claims" id="claims" aria-label="示範問題">
+          <span class="cl-l">試著問：</span>
+          <button type="button" data-scn="next">新北市哪一區可能成為下一個青年聚集地，讓青年局提前投入資源？</button>
+          <button type="button" data-scn="budget">青年局的預算可以怎麼分配到各個行政區？</button>
         </div>
       <div class="prompt-bar">
         <button type="button" class="attach" id="attachBtn" title="丟資料進來：統計表圖片或 CSV，補網路上沒有的公開資料">＋<span>丟資料</span></button>
@@ -1110,7 +1170,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       </div>
       <div class="asktips" id="askTips" hidden></div>
       <div class="answer" id="askAnswer">
-        <p class="txt" id="askText"></p>
+        <div class="txt" id="askText"></div>
         <p class="meta" id="askMeta"></p>
         <div id="askChart"></div>
         <p class="verdict" id="askVerdict" style="display:none"></p>
@@ -1157,7 +1217,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       <div class="row" data-row="watch">
         <button type="button" class="row-h" aria-expanded="false" data-tab="watch"><span class="n">01</span><span class="t"><b>預警摘要</b><small>正在移入、下一個候選、持續流出 —— 每列可鎖定地圖或直接問 AI</small></span><span class="pm" aria-hidden="true"></span></button>
         <div class="tabpane" data-pane="watch" hidden>
-          <div class="watchwrap"><p class="pane-note">點區名鎖定地圖，「問 AI」把問題填進上面的問答框。<span class="badge est">experimental</span></p><div id="watchBox"></div></div>
+          <div class="watchwrap"><p class="pane-note">點區名鎖定地圖，「問 AI」把問題填進上面的問答框。<span class="badge est">初步線索，仍待驗證</span><br>條件像，不代表青年一定會搬來；先列為觀察對象，再用後續資料確認。</p><div id="watchBox"></div></div>
         </div>
       </div>
       <div class="row" data-row="trend">
@@ -1354,9 +1414,14 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     </div>
   </section>
 
+  <footer class="whitepaper-footer" id="whitepaperFooter">
+    <p>想進一步了解資料來源、計算公式與驗證方式？</p>
+    <a href="?view=whitepaper#whitepaperIntro" data-view="whitepaper">方法與資料白皮書 →</a>
+  </footer>
+
   <section class="chapter" id="ch-tools">
     <div class="ch-head">
-      <p class="eyebrow">04 · 工具</p>
+      <p class="eyebrow">白皮書 · 資料工具</p>
       <h2>資料與方法</h2>
       <p class="lede">任何機關的統計表都能丟進來對齊；每一條算法都有白話版；每個來源的抓取時間、檢查與更新週期都在這裡。</p>
     </div>
@@ -1430,7 +1495,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   <section class="chapter" id="ch-methods">
     <div class="ch-head">
-      <p class="eyebrow">05 · 方法與驗證</p>
+      <p class="eyebrow">白皮書 · 方法與驗證</p>
       <h2>我們用什麼統計方法，怎麼證明它站得住</h2>
       <p class="lede">像分析一檔股票：<b>基本面</b>是對齊過的官方資料，<b>技術面</b>是時間序列的趨勢與訊號，<b>因子模型</b>是六都 158 區的迴歸。每一條方法都寫出公式、檢定、信賴區間，以及拿歷史資料回測的結果。</p>
     </div>
@@ -1506,9 +1571,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // ── 履歷面板
   var LABELS = { source_agency:'來源機關', source_dataset:'來源資料集', source_age_group:'原始分組',
-                 method:'使用方法', weight:'權重', note:'計算說明' };
+                 method:'數字怎麼來的', weight:'權重', note:'計算說明' };
   var METHODS = {
-    exact_match:'分組直接對上，未插補', formula_a_t1:'按人頭切',
+    exact_match:'使用官方資料，不需要拆分年齡來推估', formula_a_t1:'依各年齡的人口比例推估',
     formula_b_t2:'按實際在勞動市場的人切', formula_c:'分子分母分開切',
     formula_d_t3:'借全國形狀校準', llm_inferred:'AI 判讀年齡描述'
   };
@@ -1534,7 +1599,13 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     Object.keys(LABELS).forEach(function (k) {
       var v = r.provenance[k];
       if (v === undefined || v === null || v === '') return;
-      if (k === 'method') v = (METHODS[v] || v) + '（' + r.provenance[k] + '）';
+      if (k === 'method') {
+        v = METHODS[v] || v;
+        if (r.provenance.method === 'exact_match' && r.metric === '人口數'
+            && /單一年齡/.test(r.provenance.source_dataset || '')) {
+          v = '直接加總官方各年齡人口，未經推估';
+        }
+      }
       var dt = document.createElement('dt'); dt.textContent = LABELS[k];
       var dd = document.createElement('dd'); dd.textContent = v;
       if (k === 'weight') dd.className = 'mono';
@@ -1655,8 +1726,39 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       pane.hidden = !open;
     });
   }
+  // Switch in place so an in-flight question and the selected filters survive.
+  var whitepaperView = false;
+  function setWhitepaperView(enabled, updateUrl) {
+    whitepaperView = !!enabled;
+    if (document.body && document.body.classList) document.body.classList.toggle('whitepaper-view', whitepaperView);
+    if (updateUrl && typeof location !== 'undefined' && typeof URL !== 'undefined' && window.history && window.history.pushState) {
+      var url = new URL(location.href);
+      if (whitepaperView) url.searchParams.set('view', 'whitepaper');
+      else url.searchParams.delete('view');
+      url.hash = whitepaperView ? 'whitepaperIntro' : 'top';
+      window.history.pushState(null, '', url.toString());
+    }
+  }
+  function viewForTarget(node) {
+    if (!node || !node.closest) return null;
+    if (node.closest('#ch-tools, #ch-methods, #whitepaperIntro')) return true;
+    if (node.closest('#sec-hero, #ch-next, #ch-explore, #ch-advice') || node.id === 'top') return false;
+    return null;
+  }
+  function syncWhitepaperView() {
+    var search = typeof location !== 'undefined' ? location.search || '' : '';
+    var hash = typeof location !== 'undefined' ? location.hash || '' : '';
+    var targetId = hash.slice(1);
+    try { targetId = decodeURIComponent(targetId); } catch (e) { /* Ignore malformed external anchors. */ }
+    var target = hash.length > 1 ? $(targetId) : null;
+    var targetView = viewForTarget(target);
+    setWhitepaperView(targetView === null ? /[?&]view=whitepaper(?:&|$)/.test(search) : targetView, false);
+    if (target) { revealTarget(target); if (target.scrollIntoView) target.scrollIntoView(); }
+  }
   function revealTarget(node) {
     if (!node || !node.closest) return;
+    var targetView = viewForTarget(node);
+    if (targetView !== null && targetView !== whitepaperView) setWhitepaperView(targetView, true);
     var pane = node.closest('.tabpane');
     if (pane && pane.hidden) activateTab(pane.closest('.chapter'), pane.getAttribute('data-pane'));
     var fold = node.closest('details');
@@ -2283,7 +2385,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       .map(function (d) { return '<option value="' + d.area + '"' + (d.area === drvState.ref ? ' selected' : '') + '>' + d.area + '</option>'; }).join('');
     sf.innerHTML = '<p class="fig-title">條件最像 <select id="drvRef" class="sel" style="font:inherit;font-size:.9rem">' + opts + '</select> 的區<span class="scopetag">條件相似度 · 4 個維度</span></p>'
       + '<p class="fig-sub">用四個條件比：相對本市的租金、工作機會密度、所得中位數、青年人口規模，各換算成「比六都平均高幾格」再算距離（越小越像）。'
-      + '<b>條件像、但移入還沒起來的區，是「下一個」的候選</b>；條件像、已經在移入的區，證明這組條件有效。換參考區看別的組合。</p><div class="sim"></div>';
+      + '<b>條件像、但移入還沒起來的區，是「下一個」的候選</b>；條件像、已經在移入的區，可用來比較，但不能證明青年是因為這些條件才搬來。換參考區看別的組合。</p><div class="sim"></div>';
     hostSim.appendChild(sf);
     sf.querySelector('#drvRef').addEventListener('change', function (e) { drvState.ref = e.target.value; renderDrivers(); });
     var simHost = sf.querySelector('.sim');
@@ -3937,13 +4039,22 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // 問答與統整共用一個答案槽；舊請求完成不得蓋掉新問題或新範圍。
   var answerSequence = 0, pendingAnswer = null;
+  var answerTimer = null;
   function answerBusy(busy) {
+    $('askAnswer').setAttribute('aria-busy', String(busy));
+    $('askGo').setAttribute('aria-label', busy ? '正在處理，請稍候' : '送出問題');
+    $('askGo').setAttribute('data-busy', String(busy));
+    $('askGo').setAttribute('aria-disabled', String(busy));
+    if (!busy && answerTimer !== null) { clearInterval(answerTimer); answerTimer = null; }
     ['askGo', 'synthBtn'].forEach(function (id) { if ($(id)) $(id).disabled = busy; });
   }
   function invalidateAnswer() {
     answerSequence++;
-    if (pendingAnswer) showAnswer('', '問題或範圍已變更，請重新送出。');
-    pendingAnswer = null;
+    if (pendingAnswer) {
+      pendingAnswer.invalidated = true;
+      $('askText').textContent = '已保留你的修改，等待上一個請求結束後即可送出。';
+      return;
+    }
     answerBusy(false);
   }
   function requestAnswer(body, loading, why) {
@@ -3953,20 +4064,42 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     pendingAnswer = ticket;
     showAnswer('', loading, why);
     answerBusy(true);
+    var started = Date.now();
+    function updateWaiting() {
+      var seconds = Math.floor((Date.now() - started) / 1000);
+      $('askMeta').textContent = (ticket.invalidated ? '上一個請求仍在處理' : (why || '正在等待 AI 回覆'))
+        + ' · 已等待 ' + seconds + ' 秒' + (seconds >= 20 ? ' · 回覆較久，請稍候；送出已暫停' : ' · 送出已暫停，避免重複請求');
+    }
+    updateWaiting();
+    if (typeof setInterval === 'function') answerTimer = setInterval(updateWaiting, 1000);
     function current() {
       return pendingAnswer === ticket && ticket.id === answerSequence
         && ticket.question === $('askInput').value
         && ticket.area === state.area && ticket.band === state.band;
     }
     function complete() {
-      if (pendingAnswer === ticket) { pendingAnswer = null; answerBusy(false); }
+      if (pendingAnswer === ticket) {
+        var changed = !current();
+        pendingAnswer = null; answerBusy(false);
+        if (changed) showAnswer('', '上一個請求已結束，可以送出修改後的問題。');
+      }
     }
     if (typeof fetch !== 'function') {
       showAnswer('no', '這個環境沒有 fetch，無法呼叫模型。'); complete(); return;
     }
-    fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body) })
-      .then(function (r) { return r.json(); })
+    var response;
+    try {
+      response = fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body) });
+    } catch (err) {
+      if (current()) showAnswer('no', failText('AI 回答', err));
+      complete(); return;
+    }
+    response
+      .then(function (r) {
+        if (r.ok === false) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
       .then(function (d) {
         if (!current()) return;
         renderModelAnswer(d);
@@ -3987,39 +4120,86 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       '模型思考中…', '→ ' + (why || '交給模型分析') + '　·　查詢範圍：' + region);
   }
 
-  // 模型的回答帶 markdown 粗體與條列，直接 textContent 會看到一堆星號。
-  // 只處理 **粗體** 與換行，其餘一律當純文字（先跳脫再替換，不讓模型輸出變成 HTML）。
+  // Render a small, safe Markdown subset. Model HTML stays text; all wording is retained.
+  function answerEscape(text) {
+    return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function answerInline(text) {
+    return answerEscape(text).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+  }
+  function answerHeading(line) {
+    var m = line.match(/^#{1,6}\s+(.+)$/) || line.match(/^\*\*([^*]+)\*\*\s*[:：]?$/);
+    return m && !/[。！？]$/.test(m[1]) ? m[1] : '';
+  }
+  var answerSectionSerial = 0;
   function md(text) {
-    var esc = String(text || '')
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return esc
-      .replace(new RegExp('^#{1,3} +(.+)$', 'gm'), '<b>$1</b>')
-      .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
-      .replace(/\n/g, '<br>');
+    var output = [], paragraph = [], list = '', section = false, sectionCount = 0;
+    function flushParagraph() {
+      if (!paragraph.length) return;
+      // Break long prose only at complete Chinese sentences, without summarising or deleting it.
+      var chunks = paragraph.join('\n').match(/[^。！？]+[。！？]?|[。！？]/g) || [];
+      var group = '';
+      chunks.forEach(function (sentence) {
+        group += sentence;
+        if (group.length >= 110 && /[。！？]$/.test(group)) {
+          output.push('<p>' + answerInline(group).replace(/\n/g, '<br>') + '</p>'); group = '';
+        }
+      });
+      if (group) output.push('<p>' + answerInline(group).replace(/\n/g, '<br>') + '</p>');
+      paragraph = [];
+    }
+    function closeList() { if (list) output.push('</' + list + '>'); list = ''; }
+    String(text || '').replace(/\r\n?/g, '\n').split('\n').forEach(function (raw) {
+      var line = raw.trim(), heading = answerHeading(line);
+      if (/^(?:-{3,}|\*{3,}|_{3,})$/.test(line)) { flushParagraph(); closeList(); return; }
+      if (heading) {
+        flushParagraph(); closeList();
+        if (section && (/:|：/.test(heading.slice(-1)) || /\*\*[:：]$/.test(line) || /^#{3,}\s/.test(line))) {
+          output.push('<h4>' + answerInline(heading) + '</h4>'); return;
+        }
+        if (section) output.push('</div></section>');
+        var bodyId = 'answerStep' + (++answerSectionSerial);
+        var open = sectionCount++ === 0 || /權責|缺口|限制|不確定/.test(heading);
+        output.push('<section class="answer-step"><h3><button type="button" class="answer-step-toggle" aria-expanded="'
+          + open + '" aria-controls="' + bodyId + '">' + answerInline(heading) + '</button></h3>'
+          + '<div class="answer-step-body" id="' + bodyId + '"' + (open ? '' : ' hidden') + '>');
+        section = true; return;
+      }
+      if (!line) { flushParagraph(); closeList(); return; }
+      var item = line.match(/^([-*•]|\d+[.)、])\s+(.+)$/);
+      if (item) {
+        flushParagraph();
+        var kind = /^\d/.test(item[1]) ? 'ol' : 'ul';
+        if (list !== kind) {
+          closeList();
+          output.push('<' + kind + (kind === 'ol' ? ' start="' + parseInt(item[1], 10) + '"' : '') + '>');
+          list = kind;
+        }
+        output.push('<li>' + answerInline(item[2]) + '</li>'); return;
+      }
+      closeList(); paragraph.push(line);
+    });
+    flushParagraph(); closeList();
+    if (section) output.push('</div></section>');
+    return output.join('');
   }
 
-  // 模型的回答通常三四段。全部攤開會把問答框撐到跟整個舞台一樣高，
-  // 版面被一則答案綁架。所以先只給第一句結論，想看的人再展開。
+  function toggleAnswerStep(button) {
+    var body = $(button.getAttribute('aria-controls'));
+    if (!body) return;
+    body.hidden = !body.hidden;
+    button.setAttribute('aria-expanded', String(!body.hidden));
+  }
+
+  // Keep the first content line as the conclusion. Preserve every later line and skipped heading in the analysis.
   function splitLead(text) {
-    var lines = String(text || '').split(String.fromCharCode(10));
-    var lead = '', i = 0;
-    for (; i < lines.length; i++) {
-      var l = lines[i].trim();
-      if (!l) continue;
-      if (/^#{1,3} /.test(l)) continue;               // 標題不是結論，跳過
-      lead = l; i++; break;
-    }
-    var rest = lines.slice(i).join(String.fromCharCode(10)).replace(/^\s+/, '');
-    // 第一段太長就在第一個句號切，後半併回全文
-    var plain = lead.replace(/\*\*/g, '');
-    if (plain.length > 80) {
-      var cut = plain.indexOf('。');
-      if (cut > 15 && cut < plain.length - 1) {
-        rest = plain.slice(cut + 1).trim() + String.fromCharCode(10) + rest;
-        lead = plain.slice(0, cut + 1);
-      }
-    }
-    return { lead: lead, rest: rest.trim() };
+    var lines = String(text || '').replace(/\r\n?/g, '\n').split('\n');
+    var start = lines.findIndex(function (line) { return line.trim() && !answerHeading(line.trim()); });
+    if (start < 0) return { lead: '', rest: lines.join('\n').trim() };
+    var end = start + 1;
+    return { lead: lines.slice(start, end).join('\n').trim(),
+      rest: lines.slice(0, start).concat(lines.slice(end)).join('\n').trim() };
   }
 
   // 失敗時要講清楚三件事：發生了什麼、儀表板哪些還能用、下一步做什麼。
@@ -4038,11 +4218,15 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // 把對不上來源的數字在文章裡標出來。讀的人要一眼看到「這個數字是模型自己估的」，
   // 而不是在最下面一行找 64 是哪一個 64。只標整個數字（64 不會標到 640 或 1,264）。
+  function answerMapText(html, transform) {
+    return html.split(/(<[^>]*>|&(?:#\d+|#x[\da-f]+|[a-z]+);)/gi)
+      .map(function (part) { return /^(?:<|&)/.test(part) ? part : transform(part); }).join('');
+  }
   function markUnverified(html, unverified) {
     (unverified || []).forEach(function (raw) {
       var esc = String(raw).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       var re = new RegExp('(^|[^\\d,.])(' + esc + ')(?![\\d,.])', 'g');
-      html = html.replace(re, '$1<mark class="unv" title="模型自行估算，資料裡對不到，參考為主">$2</mark>');
+      html = answerMapText(html, function (part) { return part.replace(re, '$1<mark class="unv" title="模型自行估算，資料裡對不到，參考為主">$2</mark>'); });
     });
     return html;
   }
@@ -4058,13 +4242,13 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   }
   function linkCites(html, records) {
     // 模型寫 [254] 或 #254 都算引用
-    return html.replace(/\[(\d{1,3})(?:[-–](\d{1,3}))?\]|[#＃](\d{1,3})/g, function (m, a, b, c) {
+    return answerMapText(html, function (part) { return part.replace(/\[(\d{1,3})(?:[-–](\d{1,3}))?\]|[#＃](\d{1,3})/g, function (m, a, b, c) {
       var n = a || c;
       var i = parseInt(n, 10), r = records[i - 1];
       if (!r) return m;
       var label = b ? '[' + a + '–' + b + ']' : '[' + n + ']';
-      return '<button type="button" class="citeref" data-i="' + i + '" title="' + citeTitle(r).replace(/"/g, '&quot;') + '">' + label + '</button>';
-    });
+      return '<button type="button" class="citeref" data-i="' + i + '" title="' + answerEscape(citeTitle(r)) + '">' + label + '</button>';
+    }); });
   }
   function renderSources(records, text) {
     // 本答案實際引用到的來源（依 [N] 出現次數），沒有引用標記時退回前幾筆
@@ -4101,10 +4285,10 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     var unv = [];
     (d.unverified || []).forEach(function (u) { if (unv.indexOf(u) < 0) unv.push(u); });   // 同一個數字只列一次
     LAST_CITED = d.records || [];
-    $('askText').innerHTML = '<span class="lead">' + linkCites(markUnverified(md(parts.lead), unv), LAST_CITED) + '</span>'
+    $('askText').innerHTML = '<div class="lead">' + linkCites(markUnverified(md(parts.lead), unv), LAST_CITED) + '</div>'
       + (parts.rest
-          ? '<button type="button" class="more" id="askMore">看完整分析 ▾</button>'
-            + '<span class="full" id="askFull" hidden>' + linkCites(markUnverified(md(parts.rest), unv), LAST_CITED) + '</span>'
+          ? '<button type="button" class="more" id="askMore" aria-expanded="false" aria-controls="askFull">看完整分析 ▾</button>'
+            + '<div class="full answer-prose" id="askFull" hidden>' + linkCites(markUnverified(md(parts.rest), unv), LAST_CITED) + '</div>'
           : '');
     box.className += ' collapsed';
     // 查核結果要跟答案一起出現。對不上的數字**一定**要標出來，
@@ -4117,15 +4301,21 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       meta += '　·　文中橘底的 ' + unv.join('、') + ' 為模型自行估算，資料裡對不到，參考為主';
     }
     $('askMeta').textContent = meta;
-    // 模型說缺什麼資料 → 系統對照資料目錄：官方沒有／已接入／有但未接入。
+    // 只列缺口語句涉及的資料，區分直接資料、替代指標及待查來源。
     // 模型不能自己去找資料，但「缺什麼」這句話系統接得住。
     var gaps = d.gaps || [];
     if (gaps.length) {
-      var WORD = { missing: ['✗', '官方沒有'], available: ['✓', '已在儀表板'], external: ['△', '有，尚未接入'] };
-      var gh = '<p class="gaps-t">模型提到的資料缺口，對照資料目錄：</p><ul class="gaps">'
+      var WORD = { needed: ['△', '這題還缺的資料'], available: ['✓', '已有資料可參考'],
+        proxy: ['◐', '已有參考指標，仍有限制'], candidate: ['△', '可再查的資料來源'] };
+      var gh = '<p class="gaps-t">這題的資料，哪些能用、哪些還要補？</p><ul class="gaps">'
         + gaps.map(function (g) {
-            var w = WORD[g.status] || ['?', ''];
-            return '<li class="' + g.status + '"><b>' + w[0] + ' ' + g.key + '</b><span class="gs">' + w[1] + '</span><br><small>' + g.note + '</small></li>';
+            var status = g.display_status || ({missing:'needed', available:'available', external:'candidate'})[g.status];
+            var w = WORD[status] || WORD.needed;
+            var note = g.plain_note || String(g.note || '').replace(/^有但未接入[：:]\s*/, '可再查詢：').replace(/^已接入[：:]\s*/, '目前可用：');
+            var cls = status === 'available' ? 'available' : 'external';
+            return '<li class="' + cls + '"><b>' + w[0] + ' ' + answerEscape(g.key) + '</b><span class="gs">' + w[1]
+              + '</span><br><small>' + answerEscape(note) + '</small>'
+              + (g.plain_note && g.note ? '<details><summary>查看資料目錄說明</summary><small>' + answerEscape(g.note) + '</small></details>' : '') + '</li>';
           }).join('') + '</ul>';
       var gbox = document.createElement('div');
       gbox.className = 'gapbox';
@@ -4388,13 +4578,13 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   }
 
   function runAskInner(raw) {
+    if (pendingAnswer) return;
     var q = (raw || $('askInput').value || '').trim();
     if (!q) {
       showAnswer('no', '先在上面打一句話，或點下面的例句試試看。');
       $('askInput').focus();
       return;
     }
-    if (pendingAnswer && pendingAnswer.question === q && pendingAnswer.area === state.area && pendingAnswer.band === state.band) return;
     invalidateAnswer();
     $('askInput').value = q;
     var it = parseQuestion(q);
@@ -4438,15 +4628,9 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       .sort(function (a, b) { return b.value - a.value; }).map(function (r) { return r.region.replace(M.region, ''); });
     return list;
   })();
-  if ($('askInput') && DIST.length) $('askInput').placeholder = '任何年齡區間都可以，例如：' + M.region + ' 26-28 歲有多少人？';
-  ['哪一區可能成為下一個淡水？青年局該先準備什麼？',
-   '職訓預算該怎麼分配到各行政區？',
-   '青年薪資成長跟中壯年差在哪？',
-   '哪些行業值得投職訓資源？',
-   M.region + ' 25-29 歲的平均年薪是多少？',
-   '哪一區的青年最多？',
-   '比較' + (DIST[1] || '') + '和' + (DIST[2] || '') + ' 22-25 歲的人口',
-   M.region + ' 18-24 歲的失業率'].forEach(function (q) {
+  if ($('askInput')) $('askInput').placeholder = '新北市哪一區可能成為下一個青年聚集地，讓青年局提前投入資源？';
+  ['新北市哪一區可能成為下一個青年聚集地，讓青年局提前投入資源？',
+   '青年局的預算可以怎麼分配到各個行政區？'].forEach(function (q) {
     var b = document.createElement('button');
     b.type = 'button'; b.textContent = q;
     b.addEventListener('click', function () { fillAsk(q); });
@@ -4465,10 +4649,14 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   $('askText').addEventListener('click', function (e) {
     onCiteClick(e);
     var t = e.target;
+    var step = t && t.closest ? t.closest('.answer-step-toggle') :
+      (t && String(t.className).indexOf('answer-step-toggle') >= 0 ? t : null);
+    if (step) { toggleAnswerStep(step); return; }
     if (!t || !t.className || String(t.className).indexOf('more') < 0) return;
     var full = $('askFull'), box = $('askAnswer');
     var open = !!full.hidden;
     full.hidden = !open;
+    t.setAttribute('aria-expanded', String(open));
     t.textContent = open ? '收起 ▴' : '看完整分析 ▾';
     box.className = box.className.replace(' collapsed', '') + (open ? '' : ' collapsed');
   });
@@ -4497,7 +4685,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
               tip: '25–29 歲失業率是官方公布值（六都可比）；18–24 歲是拆組推估、回測失準所以標低信心，答案會講清楚' },
     claim3: { q: '新北的青年都被房價逼走了，真的嗎？', area: null,
               tip: '世代淨遷入是正的但房價所得比六都第 5：答案會用兩把尺一起講，並把「逼走」拆成流出區與移入區' },
-    next:   { q: '哪一區可能成為下一個淡水？青年局該先準備什麼？', area: null,
+    next:   { q: '新北市哪一區可能成為下一個青年聚集地，讓青年局提前投入資源？', area: null,
               tip: '模型會拿到「條件最像的區」清單（租金、工作機會、所得、規模四維比對），答案是條件像但移入還沒起來的區，數字逐一驗證' },
     prepare:{ q: (WATCH_TOP ? WATCH_TOP.replace(M.region, '') : '移入最多的區') + '的青年持續移入，青年局要提前準備什麼？', area: WATCH_TOP,
               tip: '規則卡「青年正在移入的區，需求會先到」是可稽核的底；這句讓模型在那之上排準備順序' },
@@ -4505,7 +4693,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
               tip: '議員問哪一區就把地區換成那一區；每個數字都點得開資料履歷，可以直接答「來源是戶政司 115 年 7 月」' },
     brief:  { q: '統整' + M.region + ' 18-35 歲青年的現況', area: null, synth: true,
               tip: '會報前按「匯出報告」就是一份含資料履歷的 PDF；下面這句會讓模型先統整、再逐一驗證每個數字' },
-    budget: { q: '職訓預算該怎麼分配到各行政區？', area: null,
+    budget: { q: '青年局的預算可以怎麼分配到各個行政區？', area: null,
               tip: '施政建議那一格是規則推出來的、可稽核；這句交給模型在那些建議之上做推理，數字一樣會驗' },
   };
   if ($('claims')) $('claims').addEventListener('click', function (e) {
@@ -4581,7 +4769,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       + '-' + ('0' + today.getDate()).slice(-2);
     var head = $('reportHead');
     if (head) {
-      head.innerHTML = '<h1>' + state.area + '　青年統計簡報</h1>'
+      head.innerHTML = '<h1>' + state.area + (whitepaperView ? '　方法與資料白皮書' : '　青年統計簡報') + '</h1>'
         + '<p class="sub">' + bandLabel + '　·　' + M.period_label + '　·　'
         + M.areas + ' 個地區 × ' + M.age_groups.length + ' 個年齡層 × ' + M.metrics.length + ' 個指標</p>'
         + '<p class="meta">YouthScope｜青年趨勢預測工具　·　資料版本 ' + DATA._generated
@@ -4604,6 +4792,20 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   }
   if ($('exportBtn')) $('exportBtn').addEventListener('click', function () { exportReport(); });
   render();
+  syncWhitepaperView();
+  if (window.addEventListener) {
+    window.addEventListener('popstate', syncWhitepaperView);
+    window.addEventListener('hashchange', syncWhitepaperView);
+  }
+  if (document.body && document.body.addEventListener) document.body.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[data-view]') : null;
+    if (!a) return;
+    e.preventDefault();
+    setWhitepaperView(a.getAttribute('data-view') === 'whitepaper', true);
+    var target = $(whitepaperView ? 'whitepaperIntro' : 'top');
+    if (target && target.scrollIntoView) target.scrollIntoView({block:'start'});
+    if (target && target.focus) target.focus({preventScroll:true});
+  });
 
   // 六都切換：每個城市一個檔（新北市是 preview.html，其他是 preview_臺北市.html）。
   // 用連結不用 JS 載入，雙擊開的 file:// 也能切。
@@ -4659,14 +4861,8 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     var input = $('askInput'), use = $('phUse');
     if (!input) return;
     var EX = [
-      '哪一區可能成為下一個淡水？青年局該先準備什麼？',
-      M.region.replace('市', '') + '哪些區的青年正在移入？會持續嗎？',
-      '議員說' + M.region.replace('市', '') + '青年失業很嚴重，是真的嗎？有多嚴重？',
-      '推測哪一區的青年流失會越來越嚴重',
-      '臺中和臺南的青年失業率比較',
-      '職訓預算該怎麼分配到各行政區？',
-      M.region + ' 25-29 歲的平均年薪是多少？',
-      '青年局應該協助年輕人結婚生小孩嗎？這是青年局的權責嗎？'
+      '新北市哪一區可能成為下一個青年聚集地，讓青年局提前投入資源？',
+      '青年局的預算可以怎麼分配到各個行政區？'
     ];
     var idx = 0, pos = 0, phase = 'type', timer = null;
     function current() { return EX[idx % EX.length]; }
@@ -4698,6 +4894,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     if (attach && file) attach.addEventListener('click', function () {
       // 上傳走原本的掃描檔流程；結果在「工具 › 掃描檔判讀」那一列，先把它打開再挑檔
       revealTarget($('scanOut'));
+      if ($('scanOut') && $('scanOut').scrollIntoView) $('scanOut').scrollIntoView({block:'center'});
       if (file.click) file.click();
     });
   })();

@@ -44,7 +44,7 @@ class Backend(Protocol):
 
     name: str
 
-    def complete(self, prompt: str, image_path: str | Path | None = None) -> str: ...
+    def complete(self, prompt: str, image_path: str | Path | None = None, *, system: str | None = None) -> str: ...
 
 
 class StubBackend:
@@ -59,9 +59,11 @@ class StubBackend:
     def __init__(self, responses: dict[str, str] | None = None) -> None:
         self.responses = responses or {}
         self.calls: list[tuple[str, str | None]] = []
+        self.system_calls: list[str | None] = []
 
-    def complete(self, prompt: str, image_path: str | Path | None = None) -> str:
+    def complete(self, prompt: str, image_path: str | Path | None = None, *, system: str | None = None) -> str:
         self.calls.append((prompt, str(image_path) if image_path else None))
+        self.system_calls.append(system)
         for key, value in self.responses.items():
             if key in prompt:
                 return value
@@ -91,7 +93,7 @@ class BedrockBackend:
         self.model = model
         self.region = region
 
-    def complete(self, prompt: str, image_path: str | Path | None = None) -> str:
+    def complete(self, prompt: str, image_path: str | Path | None = None, *, system: str | None = None) -> str:
         from llm.rate_limit import acquire, remaining_budget, InferenceTimeout
         content: list[dict] = []
         if image_path:
@@ -117,7 +119,8 @@ class BedrockBackend:
             try:
                 response = client.converse(
                     modelId=self.model, messages=[{"role": "user", "content": content}],
-                    inferenceConfig={"maxTokens": 8000})
+                    inferenceConfig={"maxTokens": 8000},
+                    **({"system": [{"text": system}]} if system else {}))
             except Exception as exc:
                 if any(cls.__name__ in {"ReadTimeoutError", "ConnectTimeoutError",
                                         "ConnectionClosedError", "HTTPClientError"}
@@ -173,7 +176,7 @@ class AnthropicBackend:
         self.model = model
         self._client = anthropic.Anthropic()
 
-    def complete(self, prompt: str, image_path: str | Path | None = None) -> str:
+    def complete(self, prompt: str, image_path: str | Path | None = None, *, system: str | None = None) -> str:
         content: list[dict] = []
         if image_path:
             path = Path(image_path)
@@ -194,6 +197,7 @@ class AnthropicBackend:
             model=self.model,
             max_tokens=8000,
             messages=[{"role": "user", "content": content}],
+            **({"system": system} if system else {}),
         )
         # 安全分類器可能擋下請求：那是 HTTP 200 + stop_reason="refusal"，
         # 不是例外。直接讀 content[0] 會在這種情況下爆掉或拿到空字串。

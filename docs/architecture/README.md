@@ -1,3 +1,9 @@
+# 2026-09-13 更新
+
+[最新 Archify 架構圖](youthscope-current-20260913.html)｜[SVG](youthscope-current-20260913.svg)｜[架構來源 JSON](youthscope-current-20260913.architecture.json)｜[RAG 實作說明](RAG-CURRENT.md)
+
+新圖區分既有正式部署紀錄、本機新問答流程及隔離文件 RAG 實驗；保留舊圖供比對。未重新查核正式 AWS 狀態。
+
 > 歷史紀錄：以下反映當時審查或部署狀態。最新整合與操作方式見 [部署說明](../../deploy/CLOUDFORMATION.md)；本輪已保留 Webber 最新功能並整合 YouthScope 品牌與私有 S3 部署。
 
 # YouthScope 架構圖

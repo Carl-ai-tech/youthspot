@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-13",
+  "artifact": "youthscope-current-20260913.html",
+  "deterministic_validation": "9 checks passed; 0 errors; 0 warnings",
+  "browser_evidence": "pass",
+  "perceptual_review": "1440x900 light screenshot viewed: labels and arrows contained, experiment separate, no overlap; small context text intended for zoom",
+  "svg": "Standalone extracted SVG with embedded stylesheet and fonts; XML parsed; no separate SVG browser rendering test",
+  "deployment_verification": "Existing saved deployment snapshot only; no new AWS live inspection",
+  "source_files": [
+    "llm/advise.py",
+    "llm/backend.py",
+    "llm/synthesize.py",
+    "docs/architecture/aws-live-deployment-20260913.json",
+    "../youthscope-rag-prototype/experiments/hybrid_rag/CLOUD-RESULTS.md"
+  ]
+}

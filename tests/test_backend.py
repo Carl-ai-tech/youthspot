@@ -12,7 +12,7 @@ from __future__ import annotations
 import os
 import pathlib
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from llm import backend as B
 
@@ -104,6 +104,21 @@ class TestLoadBackend(unittest.TestCase):
         self.assertEqual(B.AnthropicBackend.name, "anthropic")
         self.assertEqual(B.BedrockBackend.name, "bedrock")
         self.assertIn("不能拿去交件", B.AnthropicBackend.__doc__)
+
+
+class TestSystemTransport(unittest.TestCase):
+    def test_anthropic_system_is_separate_and_optional(self):
+        backend = object.__new__(B.AnthropicBackend)
+        backend.model = "test-model"
+        backend._client = Mock()
+        backend._client.messages.create.return_value = Mock(
+            stop_reason="end_turn", content=[Mock(type="text", text="answer")])
+        self.assertEqual(backend.complete("question", system="rules"), "answer")
+        body = backend._client.messages.create.call_args.kwargs
+        self.assertEqual(body["system"], "rules")
+        self.assertEqual(body["messages"], [{"role": "user", "content": [{"type": "text", "text": "question"}]}])
+        backend.complete("legacy question")
+        self.assertNotIn("system", backend._client.messages.create.call_args.kwargs)
 
 
 class TestModelSelection(unittest.TestCase):

@@ -158,8 +158,8 @@ check('教育程度交叉', '大專及以上的薪水多少？', (t) => t.indexO
   const cited = citeHtml.indexOf('這則回答的資料來源') >= 0 && citeHtml.indexOf('class="citeref" data-i="1"') >= 0;
   const gapShown = (el('askChart').children || []).some((c) => /gaps/.test(c.innerHTML || '') && (c.innerHTML || '').indexOf('官方沒有') >= 0);
   // 先只給第一句結論，其餘收在「看完整分析」裡；展開後可再收起
-  const leadOnly = html.indexOf('<span class="lead"><b>不建議平均分配。</b></span>') >= 0
-    && html.indexOf('class="more"') >= 0 && html.indexOf('<span class="full" id="askFull" hidden>') >= 0
+  const leadOnly = html.indexOf('<div class="lead"><p><b>不建議平均分配。</b></p></div>') >= 0
+    && html.indexOf('class="more"') >= 0 && html.indexOf('<div class="full answer-prose" id="askFull" hidden>') >= 0
     && html.indexOf('前三大區') > html.indexOf('askFull');
   const collapsed = el('askAnswer').className.indexOf('collapsed') >= 0;
   const full = el('askFull'); full.hidden = true;
@@ -240,6 +240,8 @@ check('行政區問全國級指標要講明白', '林口區哪個行業最缺工
   const before = fetchCalls.length;
   el('askInput').value = ''; runAsk('林口區工作供需問題');
   const routed = fetchCalls.length === before + 1 && el('askMeta').textContent.indexOf('林口') >= 0;
+  // A new question is allowed only after the previous request settles.
+  await new Promise(r => setImmediate(r));
   el('askInput').value = ''; runAsk('林口區 18-24 歲的平均年薪');
   const stayed = fetchCalls.length === before + 1 && el('askText').textContent.indexOf('只統計到') >= 0;
   const ok = routed && stayed;

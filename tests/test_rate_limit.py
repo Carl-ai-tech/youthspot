@@ -137,6 +137,9 @@ class TestGate(unittest.TestCase):
                     self.assertEqual(boto3.client.call_args.kwargs['config']['retries'], {'total_max_attempts': 1})
                     body=client.converse.call_args.kwargs
                     self.assertEqual(body['messages'][0]['content'],[{'image':{'format':fmt,'source':{'bytes':b'fixture'}}},{'text':'question'}])
+            backend.complete('question', system='policy rules')
+            self.assertEqual(client.converse.call_args.kwargs['system'], [{'text': 'policy rules'}])
+            self.assertEqual(client.converse.call_args.kwargs['messages'][0]['content'], [{'text': 'question'}])
             gate.assert_called_with('us-west-2')
             gate.side_effect=R.RateLimitError('closed')
             before=client.converse.call_count

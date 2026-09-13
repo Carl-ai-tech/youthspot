@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "YouthScope｜目前架構與 RAG 實驗",
+    "subtitle": "2026-09-13 · 正式部署紀錄／本機新問答／隔離實驗，三者分開呈現",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1380,
+      660
+    ]
+  },
+  "components": [
+    {
+      "id": "publish",
+      "type": "cloud",
+      "label": "正式 AWS 發布",
+      "sublabel": "CloudFront ＋ S3 ＋ Lambda",
+      "pos": [
+        52,
+        280
+      ],
+      "size": [
+        260,
+        100
+      ]
+    },
+    {
+      "id": "data",
+      "type": "database",
+      "label": "公開統計資料",
+      "sublabel": "ETL／模型計算 → unified JSON",
+      "pos": [
+        52,
+        65
+      ],
+      "size": [
+        260,
+        100
+      ]
+    },
+    {
+      "id": "ret",
+      "type": "backend",
+      "label": "統計規則檢索",
+      "sublabel": "地區／年齡；非嚴格年份篩選",
+      "pos": [
+        378,
+        65
+      ],
+      "size": [
+        260,
+        100
+      ]
+    },
+    {
+      "id": "prompt",
+      "type": "backend",
+      "label": "System ＋問題＋證據",
+      "sublabel": "驗證 → 嚴重度 → 建議／缺口",
+      "pos": [
+        705,
+        65
+      ],
+      "size": [
+        260,
+        100
+      ]
+    },
+    {
+      "id": "model",
+      "type": "cloud",
+      "label": "Amazon Bedrock",
+      "sublabel": "Sonnet 4.6 · Converse",
+      "pos": [
+        1032,
+        65
+      ],
+      "size": [
+        260,
+        100
+      ]
+    },
+    {
+      "id": "check",
+      "type": "backend",
+      "label": "數值池比對",
+      "sublabel": "未驗證引用期間與比較方向",
+      "pos": [
+        1032,
+        280
+      ],
+      "size": [
+        260,
+        100
+      ]
+    },
+    {
+      "id": "answer",
+      "type": "frontend",
+      "label": "回覆與來源展示",
+      "sublabel": "摘要／完整分析；保留查核限制",
+      "pos": [
+        705,
+        280
+      ],
+      "size": [
+        260,
+        100
+      ]
+    },
+    {
+      "id": "source",
+      "type": "database",
+      "label": "公開公告摘要",
+      "sublabel": "私有 S3 · 2 份文件",
+      "pos": [
+        52,
+        495
+      ],
+      "size": [
+        260,
+        100
+      ]
+    },
+    {
+      "id": "kb",
+      "type": "cloud",
+      "label": "Managed Knowledge Base",
+      "sublabel": "EOPWDZAJRT · 5 次 Retrieve",
+      "pos": [
+        378,
+        495
+      ],
+      "size": [
+        260,
+        100
+      ]
+    },
+    {
+      "id": "lab",
+      "type": "backend",
+      "label": "雙路 RAG 原型",
+      "sublabel": "精確統計 scope ＋文件來源",
+      "pos": [
+        705,
+        495
+      ],
+      "size": [
+        260,
+        100
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "data-ret",
+      "to": "ret",
+      "label": "",
+      "variant": "default",
+      "from": "data"
+    },
+    {
+      "id": "ret-prompt",
+      "to": "prompt",
+      "label": "",
+      "variant": "default",
+      "from": "ret"
+    },
+    {
+      "id": "prompt-model",
+      "to": "model",
+      "label": "",
+      "variant": "default",
+      "from": "prompt"
+    },
+    {
+      "id": "model-check",
+      "to": "check",
+      "label": "",
+      "variant": "default",
+      "from": "model"
+    },
+    {
+      "id": "check-answer",
+      "to": "answer",
+      "label": "",
+      "variant": "default",
+      "from": "check"
+    },
+    {
+      "id": "source-kb",
+      "to": "kb",
+      "label": "",
+      "variant": "dashed",
+      "from": "source"
+    },
+    {
+      "id": "kb-lab",
+      "to": "lab",
+      "label": "",
+      "variant": "dashed",
+      "from": "kb"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "隔離 RAG 實驗｜已檢索，未接本機／正式問答生成",
+      "wraps": [
+        "source",
+        "kb",
+        "lab"
+      ],
+      "pad": 22
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "正式部署｜依既有紀錄",
+      "items": [
+        "CloudFront → S3 靜態頁／Lambda API",
+        "DynamoDB 節流、CloudWatch 日誌",
+        "本次未重新查核 AWS live 狀態"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "回答查核仍有限制",
+      "items": [
+        "本機 UI：防重送、Loading、分段來源",
+        "數字存在 ≠ 引用、年份、比較正確",
+        "圖中 Bedrock 為本機實際雲端推論"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "文件 RAG｜僅檢索實測",
+      "items": [
+        "2 份官方公告／5 次檢索／0 次生成",
+        "檢索分數不能當答案信心度",
+        "未建立 AgentCore Gateway／Harness"
+      ]
+    }
+  ]
+}

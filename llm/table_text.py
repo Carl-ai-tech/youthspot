@@ -90,6 +90,10 @@ def _to_num(s: str) -> float | None:
 
 def _split(line: str) -> list[str]:
     line = line.rstrip("\r\n")
+    if '"' in line and "," in line:
+        # 標準 CSV：引號裡的逗號是千分位（"1,234"），不是分隔（F01）
+        import csv as _csv
+        return [c.strip() for c in next(_csv.reader([line]))]
     for sep in ("\t", "，", ",", "|"):
         if sep in line:
             return [c.strip().strip('"') for c in line.split(sep)]

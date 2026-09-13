@@ -100,7 +100,7 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
     V = (payload.get("meta") or {}).get("validation_migration") or {}
     B = (payload.get("meta") or {}).get("backtest_migration") or {}
     if V.get("r") is not None:
-        lines.append(f"方法驗證：世代淨遷入（18–35 歲）跟戶政司登記的全年齡遷入−遷出，{V['n']} 個行政區跨區相關 r = {V['r']}，方向一致 {V['same_sign']}/{V['n']}")
+        lines.append(f"方法一致性：世代淨遷入（18–35 歲，未扣死亡的世代餘額近似）跟戶政司登記的全年齡遷入−遷出（含登記異動），{V['n']} 個行政區跨區相關 r = {V['r']}，方向一致 {V['same_sign']}/{V['n']} —— 這是兩種算法相對大小一致的參考，不是預測準確率、也不是青年搬遷的直接證明")
     p23 = (B.get("pooled") or {}).get("2023") or (B.get("pooled") or {}).get(2023)
     if p23:
         lines.append(f"回測：假裝在 2023 年只用當時的資料，標「移入」的區有 {round(p23['inflow_precision'] * 100)}% 隔兩年真的淨移入、真的移入的區有 {round(p23['inflow_recall'] * 100)}% 被提前標到（六都 158 區）；點預測誤差跟沿用去年值差不多，價值在方向")

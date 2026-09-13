@@ -2217,7 +2217,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       figM.setAttribute('data-chart', 'migration');
       figM.innerHTML =
         '<p class="fig-title">各區 18–35 歲青年淨遷入率<span class="scopetag">' + LOCAL + ' · 世代追蹤</span></p>'
-        + '<p class="fig-sub">' + mig.years[0] + '–' + mig.years[mig.years.length - 1] + '　今年 a 歲 − 去年 a−1 歲，扣掉少子化與死亡；正＝青年搬進來。'
+        + '<p class="fig-sub">' + mig.years[0] + '–' + mig.years[mig.years.length - 1] + '　今年 a 歲 − 去年 a−1 歲，扣掉少子化（死亡未扣，0.05%，近似）；正＝青年淨移入。'
         + '移入前 ' + top.length + ' 區與流出前 ' + bottom.length + ' 區。' + (mig.shock_years ? '⚠ ' + mig.shock_years.join('／') + ' 年為疫情除籍／恢復戶籍的戶籍事件，不是搬家：圖上畫原始值，判訊號與做檢定時兩點取平均互相抵銷' : '') + '</p>'
         + '<div class="lc-wrap">'
         + lineChart({
@@ -2313,7 +2313,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
     fig.innerHTML = '<p class="fig-title">移入最多的區，青年是從哪裡搬來的<span class="scopetag">' + LOCAL + ' · 全年齡 · 官方登記</span></p>'
       + '<p class="fig-sub">戶政司登記的遷入人數按原戶籍地分（' + O.months + '，全年齡）。橘色＝從臺北市搬來。</p>'
       + '<div class="org">' + rows + '</div><p class="fig-sub" style="margin-top:.5rem">' + legend + '</p>'
-      + '<p class="cap">這是「臺北青年外溢到新北」的直接證據：移入區的遷入者裡從臺北市來的占比越高，越是承接臺北的居住需求。全年齡數字，青年占比另見淨遷入。</p>';
+      + '<p class="cap">⚠ 全年齡的登記遷入來源，不是青年：只能當「移入區在承接臺北居住需求」的參考，不能當青年外溢的證明。青年的淨遷入另見世代追蹤。</p>';
     return fig;
   }
 
@@ -2506,7 +2506,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       html += '<div class="vcard"><p class="vk">① 跟官方登記的遷徙對答案</p>'
         + '<p class="vbig">r = ' + V.r + '<small>' + V.n + ' 個行政區 · 方向一致 ' + V.same_sign + '/' + V.n + '</small></p>'
         + '<p class="cap">同一年、同一批區：戶政司登記的<b>全年齡遷入−遷出</b>（' + V.months + '）對上我們用單一年齡兩期相減算的 <b>18–35 歲淨遷入</b>。'
-        + '相關 ' + V.r + ' —— 世代追蹤抓到的就是真實的搬遷，不是算法的假象。全市官方 ' + (V.city_official > 0 ? '+' : '') + num(V.city_official) + ' 人、青年 ' + (V.city_cohort > 0 ? '+' : '') + num(V.city_cohort) + ' 人。</p>'
+        + '相關 ' + V.r + ' —— 兩種完全不同的算法（登記異動 vs 世代餘額）跨區相對大小一致，是方法的有限一致性參考，不是預測準確率、也不是青年搬遷的直接證明。全市官方 ' + (V.city_official > 0 ? '+' : '') + num(V.city_official) + ' 人、青年 ' + (V.city_cohort > 0 ? '+' : '') + num(V.city_cohort) + ' 人。</p>'
         + '<div class="vpairs">' + pairs + '</div></div>';
     }
     if (B && B.pooled) {
@@ -2623,6 +2623,11 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       bt = '<h4>做法</h4><p>' + B.method + '</p>'
         + '<code>準確率（precision）= 標「移入」且隔兩年平均真的 &gt; 0 的區 ÷ 標「移入」的區\n抓到率（recall）　= 隔兩年平均 ≥ ' + (B.hit_rate * 100).toFixed(1) + '% 且 T 年被標「移入」的區 ÷ 隔兩年平均 ≥ ' + (B.hit_rate * 100).toFixed(1) + '% 的區\nMAE = 平均 |預測(T+1) − 實際(T+1)|，單位百分點；基準：沿用去年值、歷年平均</code>'
         + '<h4>六都 158 區合計</h4><div class="tw"><table>' + head + '<tbody>' + body + '</tbody></table></div>'
+        + '<h4>方向準不準，要跟「不用模型」比</h4>'
+        + '<div class="tw"><table><thead><tr><th>假裝在 T 年</th><th>隨機猜（真的移入的區占比）</th><th>只看去年正負 → 準確率</th><th>看近三年平均正負 → 準確率</th><th><b>我們的訊號</b> → 準確率</th></tr></thead><tbody>'
+        + Ts.map(function (T) { var r = B.pooled[T]; return '<tr><td>' + T + '</td><td class="mono">' + Math.round((r.base_positive_share || 0) * 100) + '%</td><td class="mono">' + (r.naive_last_precision != null ? r.naive_last_hits + '/' + r.naive_last_flagged + ' = ' + Math.round(r.naive_last_precision * 100) + '%' : '—') + '</td><td class="mono">' + (r.naive_mean3_precision != null ? r.naive_mean3_hits + '/' + r.naive_mean3_flagged + ' = ' + Math.round(r.naive_mean3_precision * 100) + '%' : '—') + '</td><td class="mono"><b>' + r.inflow_hits + '/' + r.inflow_flagged + ' = ' + Math.round((r.inflow_precision || 0) * 100) + '%</b></td></tr>'; }).join('')
+        + '</tbody></table></div>'
+        + '<p>「只看去年正負」是任何人不用模型都能做的判斷：它的準確率 57～84%。我們的訊號 90～100%，而且只標它有把握的區（標得少、但標了就準）。流出那一側我們跟「去年負」差不多 —— 誠實講，方法的價值主要在移入這一側，也就是青年局要提前準備的那一側。</p>'
         + (cityRows ? '<h4>' + M.region + '</h4><div class="tw"><table>' + head + '<tbody>' + cityRows + '</tbody></table></div>' : '')
         + '<p><b>怎麼讀</b>：2022 只有 4 個點、又含除籍事件年（只有一點，抵銷不了），抓到率低（很多區被判「方向不明」），但標出來的仍有九成準；2023 起標移入的準確率都在八成八以上、抓到率七成。點預測的 MAE 跟「沿用去年值」差不多、2022 甚至輸給「歷年平均」—— <b>這個方法的價值在方向（訊號），不在單一年的數字</b>。</p>'
         + (named ? '<h4>局長點名的區</h4><ul>' + named + '</ul>' : '');
@@ -2644,7 +2649,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       xc = '<div class="kv"><div><b>r = ' + V.r + '</b><span>Pearson 相關，' + V.n + ' 個行政區</span></div><div><b>' + V.same_sign + ' / ' + V.n + '</b><span>方向一致的區</span></div><div><b>' + num(V.city_official) + ' vs ' + num(V.city_cohort) + '</b><span>全市：官方全年齡 vs 青年 18–35</span></div></div>'
         + '<p><b>比什麼</b>：同一年（' + V.months + '）、同一批區。X＝戶政司登記的全年齡「遷入 − 遷出 ＋ 初設 − 除籍 ＋ 其他」（' + V.source + '）；Y＝我們用單一年齡兩期相減算的 18–35 歲淨遷入。兩者口徑不同（全年齡 vs 青年），所以看的是<b>跨區的相對大小是否一致</b>，不是數字相等。</p>'
         + '<code>r = Σ(x−x̄)(y−ȳ) ÷ √( Σ(x−x̄)² · Σ(y−ȳ)² )</code>'
-        + '<p>r = ' + V.r + ' 代表世代追蹤抓到的就是真實的搬遷，不是兩期相減的算法假象。各區的青年淨遷入約占官方全年齡淨遷入的兩到三成（全市層級因為少子化與跨區抵銷，占比更低），方向與排序一致。</p>'
+        + '<p>r = ' + V.r + ' 代表兩種算法（官方全年齡登記異動 vs 我們的 18–35 歲世代餘額）在各區的相對大小一致 —— 這是有限一致性的參考，不是預測準確率，也不能證明青年實際搬遷或居住（青年沒有獨立的官方登記遷徙可以直接對）。各區的青年淨遷入約占官方全年齡淨遷入的兩到三成（全市層級因為少子化與跨區抵銷，占比更低），方向與排序一致。</p>'
         + '<div class="tw"><table><thead><tr><th>區</th><th>官方全年齡淨遷入</th><th>18–35 世代淨遷入</th></tr></thead><tbody>'
         + (V.pairs || []).map(function (q) { return '<tr><td>' + q.area + '</td><td>' + (q.official > 0 ? '+' : '') + num(q.official) + '</td><td>' + (q.cohort > 0 ? '+' : '') + num(q.cohort) + '</td></tr>'; }).join('')
         + '</tbody></table></div><p>' + V.note + '</p>';
@@ -3176,7 +3181,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
   var MAP_SUB = {
     '人口數': '滑過看數字，點一下鎖定該區',
     '勞動力參與率': '滑過看數字，點一下鎖定該區',
-    '青年淨遷入率': '世代追蹤：今年 a 歲 − 去年 a−1 歲，扣掉少子化與死亡，剩下的就是青年搬進搬出 · 正＝淨移入',
+    '青年淨遷入率': '世代追蹤：今年 a 歲 − 去年 a−1 歲，扣掉少子化；死亡未扣（0.05%）· 未扣死亡的世代餘額近似 · 正＝淨移入',
     '青年人口年變化率': '過去一年這個年齡層的人口增減（含少子化）· 紅＝減少最多、綠＝增加 · 要看搬家請用「青年淨遷入率」',
     '綜合所得中位數': '全體申報戶的綜合所得中位數（財政部稅籍，非抽樣）· 不是青年、不是薪資',
     '工作機會密度': '區內從業員工（110 年普查）÷ 區內 15–64 歲人口 · 遠低於 1 的是通勤外出的住宅區',
@@ -3673,6 +3678,9 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
     else return null;
 
     var conf = (C.confidence || {})[metric] || 'medium';
+    // F11：任意區間的「中位數年薪」是各組中位數用就業人數加權的近似，不是真正合併後的中位數（要有分布資料才算得出）
+    var approxMedian = metric === '中位數年薪';
+    if (approxMedian) conf = 'low';
     var exact = metric === '人口數';
     var NL3 = String.fromCharCode(10);
     return {
@@ -3687,12 +3695,14 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       provenance: {
         source_agency: exact ? '內政部戶政司' : '內政部戶政司 / 行政院主計總處',
         source_dataset: '單一年齡曲線（unified.json 的 curves）',
-        source_age_group: exact ? (lo + '-' + hi) : '官方五歲組拆解後重組',
-        method: exact ? 'exact_match' : 'formula_b_t2',
+        source_age_group: exact ? (lo + '-' + hi) : (approxMedian ? '各組中位數以就業人數加權（近似）' : '官方五歲組拆解後重組'),
+        method: exact ? 'exact_match' : (approxMedian ? 'weighted_group_median_approx' : 'formula_b_t2'),
         weight: 1,
         confidence: conf,
         note: (exact
           ? '戶政司提供的就是單一年齡人口，' + lo + ' 到 ' + hi + ' 歲直接加總，未經任何插補。'
+          : approxMedian
+          ? '⚠ 近似值：各年齡組的中位數年薪用就業人數加權平均而成，不是合併後真正的中位數（那需要個人層級的分布資料）。只當量級參考，信心低。'
           : '官方只公布到五歲（或更粗）分組，已拆成單一年齡後重新組出 '
             + lo + '-' + hi + ' 歲。組間加總仍等於官方公布值，組內分布為推估。')
           + (cityOnly && reg !== region
@@ -4424,6 +4434,13 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       h += '<p class="scan-s">表上印的合計 <b>' + scanEscape(num(d.printed_total)) + '</b>　我們自己加的 <b>'
         + scanEscape(num(d.computed_total)) + '</b>　' + (totalOk ? '<span class="scan-ok">✓ 對得上</span>'
         : '<span class="scan-warn">✗ 對不上</span>') + '</p>';
+    } else if (d.total_check === 'not_applicable') {
+      h += '<p class="scan-s">比率型指標（' + scanEscape(d.metric) + '）不能相加 —— 合計比對不適用。</p>';
+    } else if (d.total_check === 'skipped') {
+      h += '<p class="scan-s">表上沒有印合計，<b>合計比對未做</b>（我們自己加起來是 ' + scanEscape(num(d.computed_total)) + '）。</p>';
+    }
+    if (d.missing && d.missing.length) {
+      h += '<p class="scan-s scan-warn">缺 ' + d.missing.map(function (k) { return { region: '地區', year: '年份' }[k] || k; }).join('、') + '：表已讀出，補填後才能對齊。</p>';
     }
     if (d.issues && d.issues.length) {
       h += '<ul class="scan-issues">' + d.issues.map(function (i) { return '<li>' + scanEscape(i) + '</li>'; }).join('') + '</ul>';
@@ -4435,6 +4452,9 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
     // 第三步：引擎對齊
     h += '<div class="scan-step"><span class="scan-n">3</span><div>'
       + '<p class="scan-t">引擎對齊成《青年基本法》的口徑</p>';
+    if (d.align_note && !(d.aligned && d.aligned.length)) {
+      h += '<p class="scan-s">' + scanEscape(d.align_note) + '</p>';
+    }
     if (d.aligned && d.aligned.length) {
       h += '<table class="scan-tbl"><thead><tr><th>目標分組</th><th class="r">人數</th><th>信心度</th><th>來源分組</th></tr></thead><tbody>'
         + d.aligned.map(function (a) {
@@ -4457,8 +4477,9 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
     var hit = (d.aligned || []).filter(function (a) { return a.age_group === '18-35'; })[0];
     var summary = '<span class="scan-sum-main">' + (passed ? '✓ ' : '✗ ')
       + scanEscape(d.region) + (d.year ? ' ' + scanEscape(d.year) : '') + ' ' + scanEscape(d.metric) + '　·　讀出 ' + d.rows.length + ' 列　·　'
-      + (d.printed_total != null ? ('合計' + (totalOk ? '對得上' : '對不上') + '　·　') : '')
-      + (passed ? '三道查核通過' : '查核有問題，未流入儀表板')
+      + (d.printed_total != null ? ('合計' + (totalOk ? '對得上' : '對不上') + '　·　') : (d.total_check === 'skipped' ? '無合計可比　·　' : ''))
+      + (passed ? (d.total_check === 'skipped' ? '格式與分組查核通過' : '三道查核通過') : '查核有問題，未流入儀表板')
+      + (d.kind === 'intensive' ? '　·　比率型，只呈現不對齊' : '')
       + (hit ? '　·　18–35 歲 = <b>' + scanEscape(num(hit.value * (hit.unit === '千人' ? 1000 : 1))) + ' 人</b>' : '')
       + '</span>';
     out.innerHTML = '<div class="scan-sum' + (passed ? '' : ' bad') + '">' + summary

@@ -6,12 +6,12 @@
   "input": "/Users/ayun/Documents/Project/youthscope-ray-fixes/docs/architecture/youthscope-current-20260913.architecture.json",
   "output": "/Users/ayun/Documents/Project/youthscope-ray-fixes/docs/architecture/youthscope-current-20260913.html",
   "specification": {
-    "sha256": "4818f05ab013d9f5bfb513d11f7423071a101109d9f46618e39a37d5b507b1ae",
-    "bytes": 4782
+    "sha256": "c9a3e347b93414d53b84ae453e1f5ace2f3fb7aa457dc480baf9e8b97af45013",
+    "bytes": 3654
   },
   "artifact": {
-    "sha256": "f0e5b4e8219001d027e718cacb1bcde63c76566a180dd47c1d541b2b4b99dc4f",
-    "bytes": 806344
+    "sha256": "1c9c1052a8b2e5ad67651e23bd091443f0e33ade7b46c7b7608e8799077becab",
+    "bytes": 801131
   },
   "validation": {
     "checksPassed": 9,

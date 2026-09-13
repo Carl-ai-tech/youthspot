@@ -180,11 +180,13 @@ def _fit(rows: list[dict], features: list[str], tag: str) -> dict:
     sdy = _sd(y)
     for f in features:
         c = res["coef"][f]
-        c["beta_std"] = round(c["b"] * _sd([r[f] for r in complete]) / sdy, 3)   # 標準化 β：哪個因子影響大
+        c["sd_x"] = round(_sd([r[f] for r in complete]), 3)
+        c["beta_std"] = round(c["b"] * c["sd_x"] / sdy, 3)   # 標準化 β：哪個因子影響大（β × sd(x) ÷ sd(y)）
         c["label"] = LABELS[f]
         c["per_10pct"] = round(c["b"], 3) if f.startswith("rail") else round(c["b"] * math.log(1.1), 3)   # 0/1 變數：有 vs 沒有；其餘 X 高 10% → y 差幾 pp
     res["corr"] = {f: corr(f) for f in features}
     res["features"] = features
+    res["sd_y"] = round(sdy, 3)
     res.pop("fitted"); res.pop("resid")
     return res
 

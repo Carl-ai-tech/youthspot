@@ -2677,6 +2677,14 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       var mb = D.models.base, mf = D.models.full;
       dv = '<h4>設定</h4><code>' + D.spec + '\ny = ' + D.y + '</code>'
         + '<p>全部解釋變數取 ln，係數讀成「X 高 10%，y 高 β·ln(1.1) 個百分點」。縣市固定效果吸掉六都之間的水準差，所以比較的是「同一個都會區裡」哪種區在吸青年。標準化 β = β·sd(x)/sd(y)，用來比哪個因子影響大。t 臨界值 ' + mb.t_critical + '（自由度 ' + (mb.n - mb.features.length - 6) + '）。</p>'
+        + '<h4>β 是怎麼算出來的</h4>'
+        + '<p>每一區是一筆：結果 y（近三年淨遷入率）＋幾個條件 x。β 是待找的權重。找法：試一組 β，算每區「模型算的 y − 實際 y」，158 個差平方後加總；<b>取加總最小的那一組</b>（平方是為了正負不抵銷、大錯多罰）。這組 β 有唯一解 —— 正規方程式 XᵀX·β = Xᵀy，程式用標準函式庫解聯立方程式，沒有套件、沒有隨機性、沒有人為調整。</p>'
+        + '<p><b>β 是「其他條件不變」的效果</b>：所得 β = ' + fx(mb.coef.ln_income.b, 2) + ' 的意思是「工作機會密度、青年人口、縣市都一樣的兩個區，ln 所得差 1，淨遷入率差 ' + fx(mb.coef.ln_income.b, 2) + ' pp」。單看「所得高的區移入多」會把「所得高的區剛好也工作多」混進去，聯立解會把它們拆開 —— 這是要多因子、不一個一個看的原因。</p>'
+        + '<h4>「哪個變數權重大」怎麼定義</h4>'
+        + '<p>原始 β 不能直接比：' + fx(mb.coef.ln_income.b, 2) + ' 比 ' + fx(mb.coef.ln_jobs_density.b, 2) + ' 大十倍，不代表所得重要十倍，因為「ln 所得差 1」在現實裡很少見（六都各區 ln 所得標準差只有 ' + fx(mb.coef.ln_income.sd_x, 3) + '），「ln 密度差 1」很常見（標準差 ' + fx(mb.coef.ln_jobs_density.sd_x, 3) + '）。所以用兩把尺：</p>'
+        + '<code>尺一　高 10% → 幾 pp　= β × ln(1.1) = β × 0.0953\n' + mb.features.map(function (f) { var c = mb.coef[f]; return '　' + c.label + '：' + fx(c.b, 3) + ' × 0.0953 = ' + (c.per_10pct > 0 ? '+' : '') + fx(c.per_10pct, 2) + ' pp'; }).join('\n')
+        + '\n\n尺二　標準化 β（畫面上的「影響力」）= β × sd(x) ÷ sd(y)　　sd(y) = ' + fx(mb.sd_y, 3) + ' pp\n' + mb.features.map(function (f) { var c = mb.coef[f]; return '　' + c.label + '：' + fx(c.b, 3) + ' × ' + fx(c.sd_x, 3) + ' ÷ ' + fx(mb.sd_y, 3) + ' = ' + fx(c.beta_std, 2); }).join('\n') + '</code>'
+        + '<p>尺二的讀法：這個條件「比六都平均高一個典型差距」的區，結果高幾個典型差距。<b>影響力表的條長、施政切入點的排序，用的是尺二</b>。第三個數 t = β ÷ 標準誤，不是權重、是可信度：影響力大但 t 不過門檻（' + mb.t_critical + '）的變數不拿去做建議。</p>'
         + '<h4>模型 A　不含租金　n = ' + mb.n + '　R² = ' + mb.r2 + '（能解釋 ' + Math.round(mb.r2 * 100) + '% 的跨區差異）</h4>' + coefTable(mb)
         + '<h4>模型 B　含租金　n = ' + mf.n + '（租金樣本 ≥ 30 筆的區）　R² = ' + mf.r2 + '</h4>' + coefTable(mf)
         + (D.models.burden ? '<h4>模型 C　租金負擔（租金 ÷ 所得）取代絕對租金　n = ' + D.models.burden.n + '　R² = ' + D.models.burden.r2 + '</h4><p>局長的因果鏈是「收入低＋房價高」—— 相對的負擔，不是絕對的租金。這是直接測他的假設。</p>' + coefTable(D.models.burden) : '')

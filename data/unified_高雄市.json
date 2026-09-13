@@ -9874,6 +9874,7 @@
        "se_hc3": 0.1712,
        "t_hc3": 2.28,
        "significant_hc3": true,
+       "sd_x": 0.736,
        "beta_std": 0.19,
        "label": "工作機會密度",
        "per_10pct": 0.037
@@ -9886,6 +9887,7 @@
        "se_hc3": 1.1781,
        "t_hc3": 3.53,
        "significant_hc3": true,
+       "sd_x": 0.164,
        "beta_std": 0.45,
        "label": "所得中位數",
        "per_10pct": 0.396
@@ -9898,6 +9900,7 @@
        "se_hc3": 0.1312,
        "t_hc3": 1.02,
        "significant_hc3": false,
+       "sd_x": 1.301,
        "beta_std": 0.115,
        "label": "青年人口規模",
        "per_10pct": 0.013
@@ -9961,7 +9964,8 @@
       "ln_jobs_density",
       "ln_income",
       "ln_youth"
-     ]
+     ],
+     "sd_y": 1.514
     },
     "full": {
      "coef": {
@@ -9982,6 +9986,7 @@
        "se_hc3": 0.3725,
        "t_hc3": 0.81,
        "significant_hc3": false,
+       "sd_x": 0.503,
        "beta_std": 0.109,
        "label": "工作機會密度",
        "per_10pct": 0.029
@@ -9994,7 +9999,8 @@
        "se_hc3": 1.4167,
        "t_hc3": 2.62,
        "significant_hc3": true,
-       "beta_std": 0.401,
+       "sd_x": 0.15,
+       "beta_std": 0.402,
        "label": "所得中位數",
        "per_10pct": 0.354
       },
@@ -10006,6 +10012,7 @@
        "se_hc3": 0.8928,
        "t_hc3": -0.6,
        "significant_hc3": false,
+       "sd_x": 0.372,
        "beta_std": -0.144,
        "label": "每坪月租",
        "per_10pct": -0.051
@@ -10018,6 +10025,7 @@
        "se_hc3": 0.1884,
        "t_hc3": -0.29,
        "significant_hc3": false,
+       "sd_x": 0.824,
        "beta_std": -0.033,
        "label": "青年人口規模",
        "per_10pct": -0.005
@@ -10083,7 +10091,8 @@
       "ln_income",
       "ln_rent",
       "ln_youth"
-     ]
+     ],
+     "sd_y": 1.384
     },
     "burden": {
      "coef": {
@@ -10104,6 +10113,7 @@
        "se_hc3": 0.3283,
        "t_hc3": 1.99,
        "significant_hc3": true,
+       "sd_x": 0.503,
        "beta_std": 0.237,
        "label": "工作機會密度",
        "per_10pct": 0.062
@@ -10116,6 +10126,7 @@
        "se_hc3": 0.846,
        "t_hc3": -1.18,
        "significant_hc3": false,
+       "sd_x": 0.296,
        "beta_std": -0.214,
        "label": "租金負擔（租金÷所得）",
        "per_10pct": -0.096
@@ -10128,6 +10139,7 @@
        "se_hc3": 0.1453,
        "t_hc3": 1.49,
        "significant_hc3": false,
+       "sd_x": 0.824,
        "beta_std": 0.129,
        "label": "青年人口規模",
        "per_10pct": 0.021
@@ -10191,7 +10203,8 @@
       "ln_jobs_density",
       "ln_rent_burden",
       "ln_youth"
-     ]
+     ],
+     "sd_y": 1.384
     },
     "rail": {
      "coef": {
@@ -10212,7 +10225,8 @@
        "se_hc3": 0.1766,
        "t_hc3": 2.21,
        "significant_hc3": true,
-       "beta_std": 0.19,
+       "sd_x": 0.736,
+       "beta_std": 0.189,
        "label": "工作機會密度",
        "per_10pct": 0.037
       },
@@ -10224,7 +10238,8 @@
        "se_hc3": 1.2901,
        "t_hc3": 3.01,
        "significant_hc3": true,
-       "beta_std": 0.421,
+       "sd_x": 0.164,
+       "beta_std": 0.42,
        "label": "所得中位數",
        "per_10pct": 0.37
       },
@@ -10236,6 +10251,7 @@
        "se_hc3": 0.1353,
        "t_hc3": 0.94,
        "significant_hc3": false,
+       "sd_x": 1.301,
        "beta_std": 0.109,
        "label": "青年人口規模",
        "per_10pct": 0.012
@@ -10248,6 +10264,7 @@
        "se_hc3": 0.2926,
        "t_hc3": 0.17,
        "significant_hc3": false,
+       "sd_x": 0.502,
        "beta_std": 0.016,
        "label": "有軌道站",
        "per_10pct": 0.049
@@ -10260,6 +10277,7 @@
        "se_hc3": 0.4052,
        "t_hc3": 0.86,
        "significant_hc3": false,
+       "sd_x": 0.276,
        "beta_std": 0.063,
        "label": "2010 年後才有站",
        "per_10pct": 0.348
@@ -10327,7 +10345,8 @@
       "ln_youth",
       "rail",
       "rail_recent"
-     ]
+     ],
+     "sd_y": 1.514
     }
    },
    "excluded_full": [

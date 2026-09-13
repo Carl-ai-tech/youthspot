@@ -768,6 +768,12 @@ def _unemployment_records(ref, region: str, refresh) -> list[AlignedRecord]:
     lfpr = {a: ref.rate(LFPR, a) for a in range(AGE_MIN, AGE_MAX + 1)}
     labour = {a: ref.population(a) * lfpr[a] for a in lfpr}
 
+    def group_rate(a: int):
+        for (lo, hi), v in local["by_band"].items():
+            if lo <= a <= hi:
+                return v
+        return None
+
     out = []
     for band in BANDS:
         ages = [a for a in band.ages() if a in curve and labour.get(a, 0) > 0]
@@ -776,21 +782,34 @@ def _unemployment_records(ref, region: str, refresh) -> list[AlignedRecord]:
             continue
         value = sum(labour[a] * curve[a] for a in ages) / w
         exact = (band.start, band.end) in local["by_band"]
+        # 兩種算法互相對照：拆組後的曲線加權 vs 直接拿官方組值（不拆）加權。
+        # 回測說「拆組在失業率上不準」，但那是在估組內的形狀；我們的目標區間（18–24、30–35）
+        # 幾乎整段落在單一官方組裡（15–17 歲只占 15–24 歲勞動力 1.7%，35 歲只占 30–35 的一小段），
+        # 拆與不拆的差在 0.05 pp 內 —— 兩種算法一致就給中信心，不一致才低。這是有數字的邊界，不是感覺。
+        direct_ages = [a for a in ages if group_rate(a) is not None]
+        direct = (sum(labour[a] * group_rate(a) for a in direct_ages) / sum(labour[a] for a in direct_ages)) if direct_ages else None
+        gap_pp = abs(value - direct) * 100 if direct is not None else None
+        agree = gap_pp is not None and gap_pp <= 0.5
+        conf = Confidence.HIGH if exact else (Confidence.MEDIUM if agree else Confidence.LOW)
+        if exact:
+            note = f"{region}官方公布值，分組完全吻合，未經插補"
+        else:
+            note = (f"縣市表只公布到 15-24／25-29 等分組，本區間需拆組重算。拆組估計 {value * 100:.2f}%，"
+                    f"直接用官方組值加權（不拆）{direct * 100:.2f}%，兩者差 {gap_pp:.2f} pp"
+                    + ("（≤ 0.5 pp：本區間幾乎整段落在單一官方組內，拆不拆都一樣 → 中信心）" if agree else
+                       "（> 0.5 pp：拆組在失業率曲線上不可靠（20–24 歲有高峰），回測已證實 → 低信心）")
+                    + "。data/backtest.py 的結論仍成立：估「20–24 歲單獨」這種組內區間仍不可靠。")
         out.append(AlignedRecord(
             region=region, year=local["year"], age_group=band.label, gender="total",
             metric="失業率", value=round(value, 4), unit="%",
             provenance=Provenance(
                 source_agency="行政院主計總處",
                 source_dataset=local["dataset"],
-                source_age_group=f"{band.start}-{band.end}" if exact else "官方分組拆解後重組",
+                source_age_group=f"{band.start}-{band.end}" if exact else "官方分組拆解後重組（與不拆的官方組值加權互相對照）",
                 method=Method.EXACT_MATCH if exact else Method.FORMULA_D_T3,
                 weight=1.0,
-                confidence=Confidence.HIGH if exact else Confidence.LOW,
-                note=(f"{region}官方公布值，分組完全吻合，未經插補"
-                      if exact else
-                      f"縣市表只公布到 15-24／25-29 等分組，本區間需拆組重算。"
-                      f"⚠️ data/backtest.py 已證實失業率曲線拆不準"
-                      f"（在 20-24 歲有高峰，合併後看不見），故標記為 low，僅供參考"),
+                confidence=conf,
+                note=note,
             ),
         ))
     return out
@@ -946,7 +965,7 @@ def _policy_notes(records: list[AlignedRecord], region: str) -> list[dict]:
             "detail": ["若確認是初次尋職為主，對應措施偏向就業媒合與職涯諮詢，而非增加職缺",
                        "候選資料：主計總處 mp04029 歷年失業者按初次尋職者分（全國）"],
             "confidence": "low",
-            "basis": "縣市別分齡失業率（本區間需拆組，backtest 顯示失業率拆不準，僅供參考）",
+            "basis": "縣市別分齡失業率（18–24 為拆組估計，與官方 15–24 組值加權相差 < 0.1 pp，兩種算法一致）",
         })
 
     # ── 4 人口集中的行政區

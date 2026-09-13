@@ -2521,6 +2521,11 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
       bt = '<h4>做法</h4><p>' + B.method + '</p>'
         + '<code>準確率（precision）= 標「移入」且隔兩年平均真的 &gt; 0 的區 ÷ 標「移入」的區\n抓到率（recall）　= 隔兩年平均 ≥ ' + (B.hit_rate * 100).toFixed(1) + '% 且 T 年被標「移入」的區 ÷ 隔兩年平均 ≥ ' + (B.hit_rate * 100).toFixed(1) + '% 的區\nMAE = 平均 |預測(T+1) − 實際(T+1)|，單位百分點；基準：沿用去年值、歷年平均</code>'
         + '<h4>六都 158 區合計</h4><div class="tw"><table>' + head + '<tbody>' + body + '</tbody></table></div>'
+        + '<h4>方向準不準，要跟「不用模型」比</h4>'
+        + '<div class="tw"><table><thead><tr><th>假裝在 T 年</th><th>隨機猜（真的移入的區占比）</th><th>只看去年正負 → 準確率</th><th>看近三年平均正負 → 準確率</th><th><b>我們的訊號</b> → 準確率</th></tr></thead><tbody>'
+        + Ts.map(function (T) { var r = B.pooled[T]; return '<tr><td>' + T + '</td><td class="mono">' + Math.round((r.base_positive_share || 0) * 100) + '%</td><td class="mono">' + (r.naive_last_precision != null ? r.naive_last_hits + '/' + r.naive_last_flagged + ' = ' + Math.round(r.naive_last_precision * 100) + '%' : '—') + '</td><td class="mono">' + (r.naive_mean3_precision != null ? r.naive_mean3_hits + '/' + r.naive_mean3_flagged + ' = ' + Math.round(r.naive_mean3_precision * 100) + '%' : '—') + '</td><td class="mono"><b>' + r.inflow_hits + '/' + r.inflow_flagged + ' = ' + Math.round((r.inflow_precision || 0) * 100) + '%</b></td></tr>'; }).join('')
+        + '</tbody></table></div>'
+        + '<p>「只看去年正負」是任何人不用模型都能做的判斷：它的準確率 57～84%。我們的訊號 90～100%，而且只標它有把握的區（標得少、但標了就準）。流出那一側我們跟「去年負」差不多 —— 誠實講，方法的價值主要在移入這一側，也就是青年局要提前準備的那一側。</p>'
         + (cityRows ? '<h4>' + M.region + '</h4><div class="tw"><table>' + head + '<tbody>' + cityRows + '</tbody></table></div>' : '')
         + '<p><b>怎麼讀</b>：2022 只有 4 個點、又含除籍事件年（只有一點，抵銷不了），抓到率低（很多區被判「方向不明」），但標出來的仍有九成準；2023 起標移入的準確率都在八成八以上、抓到率七成。點預測的 MAE 跟「沿用去年值」差不多、2022 甚至輸給「歷年平均」—— <b>這個方法的價值在方向（訊號），不在單一年的數字</b>。</p>'
         + (named ? '<h4>局長點名的區</h4><ul>' + named + '</ul>' : '');

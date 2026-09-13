@@ -141,6 +141,7 @@ def _hindcast_city(region: str, period: str | None) -> dict:
             rows.append({
                 "area": area, "signal": c["signal"], "forecast": c["forecast"], "actual": actual1,
                 "last": past[-1][1], "mean": sum(r for _, r in past) / len(past), "future_mean": fut_mean,
+                "mean3": sum(r for _, r in past[-3:]) / len(past[-3:]),
             })
             if area in NAMED:
                 out["named"].setdefault(area, {})[T] = {
@@ -157,6 +158,10 @@ def _hindcast_city(region: str, period: str | None) -> dict:
         truly_out = [r for r in rows if r["future_mean"] <= -HIT_RATE]
         hit_in = [r for r in flagged_in if r["future_mean"] > 0]
         hit_out = [r for r in flagged_out if r["future_mean"] < 0]
+        # 對照組：不用我們的訊號，只看「去年正負」或「近三年平均正負」會多準？方向的價值要跟這個比，不是跟 0 比
+        naive_last_in = [r for r in rows if r["last"] > 0]; naive_mean3_in = [r for r in rows if r["mean3"] > 0]
+        naive_last_out = [r for r in rows if r["last"] < 0]
+        base_pos = sum(1 for r in rows if r["future_mean"] > 0)
         out["cutoffs"][T] = {
             "n": n, "points_used": T - years[0] + 1,
             "mae_model_pp": round(mae("forecast"), 2), "mae_last_pp": round(mae("last"), 2), "mae_mean_pp": round(mae("mean"), 2),
@@ -168,6 +173,10 @@ def _hindcast_city(region: str, period: str | None) -> dict:
             "outflow_precision": round(len(hit_out) / len(flagged_out), 2) if flagged_out else None,
             "outflow_recall": round(sum(1 for r in truly_out if r["signal"] in OUTFLOW) / len(truly_out), 2) if truly_out else None,
             "truly_outflow": len(truly_out),
+            "naive_last_flagged": len(naive_last_in), "naive_last_hits": sum(1 for r in naive_last_in if r["future_mean"] > 0),
+            "naive_mean3_flagged": len(naive_mean3_in), "naive_mean3_hits": sum(1 for r in naive_mean3_in if r["future_mean"] > 0),
+            "naive_last_out_flagged": len(naive_last_out), "naive_last_out_hits": sum(1 for r in naive_last_out if r["future_mean"] < 0),
+            "base_positive": base_pos,
             "flagged_in_names": [r["area"].replace(region, "") for r in flagged_in],
             "missed_in_names": [r["area"].replace(region, "") for r in truly_in if r["signal"] not in INFLOW],
         }
@@ -190,7 +199,14 @@ def build(regions: list[str] | None = None, *, period: str | None = None) -> dic
         ti = sum(r["truly_inflow"] for r in rows); to = sum(r["truly_outflow"] for r in rows)
         ri = sum(round(r["inflow_recall"] * r["truly_inflow"]) for r in rows if r["inflow_recall"] is not None)
         ro = sum(round(r["outflow_recall"] * r["truly_outflow"]) for r in rows if r["outflow_recall"] is not None)
+        nl_f, nl_h = sum(r["naive_last_flagged"] for r in rows), sum(r["naive_last_hits"] for r in rows)
+        nm_f, nm_h = sum(r["naive_mean3_flagged"] for r in rows), sum(r["naive_mean3_hits"] for r in rows)
+        no_f, no_h = sum(r["naive_last_out_flagged"] for r in rows), sum(r["naive_last_out_hits"] for r in rows)
         pooled[T] = {"n": n, "points_used": rows[0]["points_used"],
+                     "base_positive_share": round(sum(r["base_positive"] for r in rows) / n, 2),
+                     "naive_last_precision": round(nl_h / nl_f, 2) if nl_f else None, "naive_last_flagged": nl_f, "naive_last_hits": nl_h,
+                     "naive_mean3_precision": round(nm_h / nm_f, 2) if nm_f else None, "naive_mean3_flagged": nm_f, "naive_mean3_hits": nm_h,
+                     "naive_last_out_precision": round(no_h / no_f, 2) if no_f else None,
                      "mae_model_pp": w("mae_model_pp"), "mae_last_pp": w("mae_last_pp"), "mae_mean_pp": w("mae_mean_pp"),
                      "inflow_flagged": fi, "inflow_hits": hi, "inflow_precision": round(hi / fi, 2) if fi else None,
                      "inflow_recall": round(ri / ti, 2) if ti else None, "truly_inflow": ti,

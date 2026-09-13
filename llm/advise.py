@@ -219,7 +219,7 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
                     f"**條件像但移入還沒起來**的區（{'、'.join(nxt) if nxt else '清單裡沒有，就照實說'}），"
                     f"不要回答 {ref['short']} 本身，也不要回答現在移入最多的區。"
                     + (f"{'、'.join(already)} 已經在移入，可作對照，但不能驗證因果或保證預測有效。" if already else "")
-                    + (f" 並提醒：{ref['short']} 實際移入比這四個條件解釋的高 {ref['resid']:+.1f} 個百分點，多出來的可能來自住宅供給與交通建設（模型沒有這兩個變數），所以條件像只是假說線索，不是必要或充分條件。" if ref.get("resid") is not None else ""))
+                    + (f" 並提醒：{ref['short']} 實際移入比這四個條件解釋的高 {ref['resid']:+.1f} 個百分點，多出來的差異原因未知；住宅供給與交通只是可調查方向，模型未納入這兩項，不能稱為已知或最可能原因。條件像仍需要後續資料確認。" if ref.get("resid") is not None else ""))
     return lines, hint
 
 
@@ -392,6 +392,6 @@ def _steps(question: str, payload: dict, records: list[dict], region: str, extra
         {"n": 5, "name": "權責表", "who": "程式", "what": ("碰到：" + "、".join(j["topic"] for j in jur)) if jur else "沒碰到特定議題，給青年局三件事的定義"},
         {"n": 6, "name": "規則建議", "who": "程式", "what": f"{len(notes)} 張施政建議卡（含 {len(plans)} 張三年準備清單）"},
         {"n": 7, "name": "寫成敘述", "who": "模型", "what": "只能引用上面的數字，不能算、不能編；[N] 標出處"},
-        {"n": 8, "name": "逐數字查核", "who": "程式", "what": f"{len(ok)} 個數字對到來源" + (f"，{len(bad)} 個對不上（文中標橘底）" if bad else "，全部對上")},
+        {"n": 8, "name": "逐數字查核", "who": "程式", "what": f"{len(ok)} 個數字對到來源" + (f"，{len(bad)} 個對不上（文中標橘底）" if bad else "，數值比對完成，引用與推論仍需核對")},
     ]
     return steps

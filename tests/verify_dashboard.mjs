@@ -151,7 +151,7 @@ check('教育程度交叉', '大專及以上的薪水多少？', (t) => t.indexO
   const html = el('askText').innerHTML || '';
   const rendered = html.indexOf('<b>不建議平均分配。</b>') >= 0 && html.indexOf('<br>') >= 0 && html.indexOf('<button type="button" class="citeref" data-i="1"') >= 0;
   const meta = el('askMeta').textContent;
-  const flagged = meta.indexOf('999,999') >= 0 && meta.indexOf('模型自行估算') >= 0 && html.indexOf('<mark class="unv"') >= 0 && meta.indexOf('claude') < 0;
+  const flagged = meta.indexOf('999,999') >= 0 && meta.indexOf('尚未找到資料支持') >= 0 && html.indexOf('<mark class="unv"') >= 0 && meta.indexOf('claude') < 0;
   const warned = el('askAnswer').className.indexOf('warn') >= 0;
   const citeHtml = el('askCite').innerHTML || '';
   // 來源清單：列出被引用的機關與資料集，每筆一個可點的 [N]

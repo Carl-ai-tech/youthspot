@@ -158,7 +158,7 @@ def _numbers_in(text: str) -> list[str]:
     先前用「附近有沒有出現某些字」判斷，結果「832,214 **名**青年」的
     那個「名」被當成「第 4 **名**」，整個數字就跳過不查了。
 
-    跳過的四種：年齡區間兩端、西元年份、名次（第 N）、百分點差。
+    跳過年齡区間兩端、西元年份與名次（第 N）；百分點差仍須查核。
     其餘一律要能在來源記錄裡找到。
     """
     ranges = [(m.start(), m.end()) for m in _RANGE.finditer(text)]
@@ -184,8 +184,6 @@ def _numbers_in(text: str) -> list[str]:
             continue                                  # 30 歲
         if tail.startswith("年") and 1900 <= val <= 2100:
             continue                                  # 2024 年
-        if tail.startswith("個百分點"):
-            continue                                  # 相差 7.4 個百分點
         if val in (0.0, 1.0) and "." not in raw and not _is_percent(text, raw, 0):
             continue                                  # 「0」「1」多半是語氣；0.9%、1.0% 這種要查（F03）
         # 條列編號：行首（允許前面有 markdown 記號）的「2.」「3、」「4)」。
@@ -281,6 +279,15 @@ def verify(text: str, records: list[dict], payload: dict | None = None,
                     except ValueError:
                         pass
 
+    # 百分點必須出現在有依據的文字或同單位記錄，不能借用人口等裸數字。
+    evidence_text = list(extra or [])
+    if payload:
+        for card in list(payload.get("policy_notes") or []) + list(payload.get("insights") or []):
+            evidence_text += [card.get("title", ""), card.get("body", "")] + list(card.get("detail") or [])
+    pp_pattern = re.compile(r"([+\-−]?\d[\d,]*(?:\.\d+)?)\s*(?:個)?百分點")
+    pp_pool = [float(m.group(1).replace(",", "").replace("−", "-"))
+               for bit in evidence_text for m in pp_pattern.finditer(str(bit))]
+    pp_pool += [r["value"] for r in records if r.get("unit") in ("百分點", "個百分點", "pp")]
     ok, bad = [], []
     seen: dict[str, int] = {}
     for raw in _numbers_in(text):
@@ -293,7 +300,9 @@ def verify(text: str, records: list[dict], payload: dict | None = None,
         # 帶正負號的要對號（「+5.2%」不能對上 −5.2% 的記錄）；沒帶號的兩邊都可（「流出 5.2%」）（F03）
         def _hit(p):
             return abs(val - p) <= max(TOLERANCE, abs(p) * 0.005) if signed else abs(abs(val) - abs(p)) <= max(TOLERANCE, abs(p) * 0.005)
-        if any(_hit(p) and (p_pct or not pct) for p, p_pct in pool):
+        is_pp = bool(re.search(re.escape(raw) + r"\s*(?:個)?百分點", text))
+        matched = any(_hit(p) for p in pp_pool) if is_pp else any(_hit(p) and (p_pct or not pct) for p, p_pct in pool)
+        if matched:
             ok.append(raw)
         else:
             bad.append(raw)

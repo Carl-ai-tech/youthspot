@@ -240,6 +240,8 @@ check('行政區問全國級指標要講明白', '林口區哪個行業最缺工
   const before = fetchCalls.length;
   el('askInput').value = ''; runAsk('林口區工作供需問題');
   const routed = fetchCalls.length === before + 1 && el('askMeta').textContent.indexOf('林口') >= 0;
+  // A new question is allowed only after the previous request settles.
+  await new Promise(r => setImmediate(r));
   el('askInput').value = ''; runAsk('林口區 18-24 歲的平均年薪');
   const stayed = fetchCalls.length === before + 1 && el('askText').textContent.indexOf('只統計到') >= 0;
   const ok = routed && stayed;

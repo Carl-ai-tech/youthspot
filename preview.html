@@ -1070,6 +1070,15 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   th,td{white-space:normal!important;overflow-wrap:anywhere;padding:3px!important;font-size:8pt;}
   .prompt-in,.prompt-bar,.claims,.scenarios,.strip-nav{display:none!important;}
 }
+
+/* An indeterminate wait indicator: no fabricated backend stage or percentage. */
+.answer[aria-busy="true"] { border-color: #f69b73; background: #fff8f2; }
+.answer[aria-busy="true"]::before { content: ""; display:block; width:28px; height:28px; margin:0 0 16px; border:3px solid #f5d8c8; border-top-color:#ed5424; border-radius:50%; animation:answer-spin .85s linear infinite; }
+.send[data-busy="true"] { opacity:.65; cursor:wait; }
+.send[data-busy="true"] svg { animation:answer-pulse 1.3s ease-in-out infinite; }
+@keyframes answer-spin { to { transform:rotate(360deg); } }
+@keyframes answer-pulse { 50% { opacity:.25; } }
+@media (prefers-reduced-motion:reduce) { .answer[aria-busy="true"]::before, .send[data-busy="true"] svg { animation:none; } }
 </style>
 
 <header class="topbar" id="topbar">
@@ -3927,13 +3936,21 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
 
   // 問答與統整共用一個答案槽；舊請求完成不得蓋掉新問題或新範圍。
   var answerSequence = 0, pendingAnswer = null;
+  var answerTimer = null;
   function answerBusy(busy) {
+    $('askAnswer').setAttribute('aria-busy', String(busy));
+    $('askGo').setAttribute('aria-label', busy ? '正在處理，請稍候' : '送出問題');
+    $('askGo').setAttribute('data-busy', String(busy));
+    if (!busy && answerTimer !== null) { clearInterval(answerTimer); answerTimer = null; }
     ['askGo', 'synthBtn'].forEach(function (id) { if ($(id)) $(id).disabled = busy; });
   }
   function invalidateAnswer() {
     answerSequence++;
-    if (pendingAnswer) showAnswer('', '問題或範圍已變更，請重新送出。');
-    pendingAnswer = null;
+    if (pendingAnswer) {
+      pendingAnswer.invalidated = true;
+      $('askText').textContent = '已保留你的修改，等待上一個請求結束後即可送出。';
+      return;
+    }
     answerBusy(false);
   }
   function requestAnswer(body, loading, why) {
@@ -3943,13 +3960,24 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
     pendingAnswer = ticket;
     showAnswer('', loading, why);
     answerBusy(true);
+    var started = Date.now();
+    function updateWaiting() {
+      var seconds = Math.floor((Date.now() - started) / 1000);
+      $('askMeta').textContent = (ticket.invalidated ? '上一個請求仍在處理' : (why || '正在等待 AI 回覆'))
+        + ' · 已等待 ' + seconds + ' 秒' + (seconds >= 20 ? ' · 回覆較久，請勿重複送出' : '');
+    }
+    updateWaiting();
+    if (typeof setInterval === 'function') answerTimer = setInterval(updateWaiting, 1000);
     function current() {
       return pendingAnswer === ticket && ticket.id === answerSequence
         && ticket.question === $('askInput').value
         && ticket.area === state.area && ticket.band === state.band;
     }
     function complete() {
-      if (pendingAnswer === ticket) { pendingAnswer = null; answerBusy(false); }
+      if (pendingAnswer === ticket) {
+        pendingAnswer = null; answerBusy(false);
+        if (ticket.invalidated) showAnswer('', '上一個請求已結束，可以送出修改後的問題。');
+      }
     }
     if (typeof fetch !== 'function') {
       showAnswer('no', '這個環境沒有 fetch，無法呼叫模型。'); complete(); return;
@@ -4367,6 +4395,7 @@ html{scroll-behavior:smooth;scroll-padding-top:4.5rem;}
   }
 
   function runAskInner(raw) {
+    if (pendingAnswer) return;
     var q = (raw || $('askInput').value || '').trim();
     if (!q) {
       showAnswer('no', '先在上面打一句話，或點下面的例句試試看。');

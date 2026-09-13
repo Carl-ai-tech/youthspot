@@ -53,6 +53,7 @@ function makeNode(id) {
     insertAdjacentHTML(pos, html) { this._html += html; },
     click() { (this.handlers.click || []).forEach((f) => f({})); },
     focus() {},
+    getBoundingClientRect() { return { left: 0, top: 0 }; },
   };
   return node;
 }
@@ -563,6 +564,24 @@ console.log(`${natOk ? '✅' : '❌'}　48 年全國分齡序列有畫出來`);
   const ok = noFert && popYears && chgYears;
   total++; if (!ok) fail++;
   console.log(`${ok ? '✅' : '❌'}　地圖人口數有 ${yrs.length} 個年份鈕（2018 起）、年變化率逐年 ${chgYears ? '✓' : '✗'}、生育率不在地圖鈕 ${noFert ? '✓' : '✗'}`);
+}
+
+// 實際觸發地圖 hover：新增的青年逐年序列不能誤標成全體；所得仍是全體。
+{
+  const cases = [
+    ['人口數', '18-35 歲'], ['青年人口年變化率', '18-35 歲'],
+    ['青年淨遷入率', '18-35 歲'], ['綜合所得中位數', '全體'],
+  ];
+  const ok = cases.every(([metric, scope]) => {
+    (el('mapMetric').handlers.click || []).forEach((f) => f({ target: { dataset: { m: metric } } }));
+    (el('ntpcMap').handlers.mousemove || []).forEach((f) => f({
+      target: { dataset: { name: '板橋區' } }, clientX: 10, clientY: 10,
+    }));
+    return el('mapTip').hidden === false && el('mapTip').innerHTML.includes('</b>' + scope + '　');
+  });
+  (el('mapMetric').handlers.click || []).forEach((f) => f({ target: { dataset: { m: '青年淨遷入率' } } }));
+  total++; if (!ok) fail++;
+  console.log(`${ok ? '✅' : '❌'}　地圖逐年 tooltip：人口／年變化／淨遷入標 18-35 歲，所得標全體`);
 }
 
 // 折線圖必須可以滑。先前每一張都是靜止的圖片 —— 看得到形狀，

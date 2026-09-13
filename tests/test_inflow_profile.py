@@ -15,7 +15,7 @@ from llm.advise import _drivers_block  # noqa: E402
 
 
 def _load(name):
-    return json.load(open(ROOT / "data" / name, encoding="utf-8"))
+    return json.loads((ROOT / "data" / name).read_text(encoding="utf-8"))
 
 
 class TestInflowProfile(unittest.TestCase):
@@ -32,7 +32,7 @@ class TestInflowProfile(unittest.TestCase):
         self.assertIn("淡水區", profiles["新北市"]["members"])
         self.assertFalse(profiles["新北市"]["fallback"])
         self.assertTrue(profiles["臺北市"]["fallback"])           # 臺北沒有區達 +1%，要照實標
-        self.assertIn("沒有區", profiles["臺北市"]["rule"])
+        self.assertIn("不足 2 個", profiles["臺北市"]["rule"])
         self.assertEqual(d["profiles"]["新北市"]["members"], profiles["新北市"]["members"])
 
     def test_candidate_card_and_prompt_use_the_profile_not_tamsui(self):
@@ -48,6 +48,25 @@ class TestInflowProfile(unittest.TestCase):
         # 典型的成員不能自己當候選；切入點要算在「還沒起來」的候選身上
         self.assertNotIn("施政切入點（淡水區", joined)
         self.assertNotIn("施政切入點（泰山區", joined)
+
+    def test_fallback_rule_reaches_candidate_card_and_prompt(self):
+        u = _load("unified_臺北市.json")
+        rule = _load("drivers.json")["profiles"]["臺北市"]["rule"]
+        card = next(n for n in u["policy_notes"] if "參考標準是資料選的" in n["body"])
+        self.assertIn(rule, card["body"])
+        _, hint = _drivers_block(u, "臺北市", "哪一區可能成為下一個青年聚集地？")
+        self.assertIn(rule, hint)
+
+    def test_one_qualifying_member_is_described_as_insufficient(self):
+        rows = [dict(r) for r in _load("drivers.json")["districts"] if r["city"] == "臺北市"]
+        for r in rows:
+            r["y"] = 0.0
+        rows[0]["y"] = 1.5
+        rows[0]["youth"] = 6000
+        p = inflow_profiles(rows)["臺北市"]
+        self.assertTrue(p["fallback"])
+        self.assertIn("不足 2 個", p["rule"])
+        self.assertNotIn("沒有區", p["rule"])
 
     def test_explicit_district_still_works_as_reference(self):
         u = _load("unified.json")

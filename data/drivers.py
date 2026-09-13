@@ -260,7 +260,7 @@ def inflow_profiles(rows: list[dict]) -> dict:
         out[city] = {
             "area": f"{city}移入區典型", "short": "移入區典型", "city": city,
             "members": [r["short"] for r in sorted(members, key=lambda r: -r["y"])],
-            "rule": (f"本市沒有區的近三年淨遷入率達 +{PROFILE_MIN_Y:.0f}%，改取淨遷入率最高的 {n} 區（18–35 歲 ≥ {PROFILE_MIN_YOUTH:,} 人）的平均條件" if fallback
+            "rule": (f"本市符合近三年淨遷入率 ≥ +{PROFILE_MIN_Y:.0f}% 且青年人口門檻的區不足 2 個，改取淨遷入率最高的 {n} 區（18–35 歲 ≥ {PROFILE_MIN_YOUTH:,} 人）的平均條件" if fallback
                      else f"近三年淨遷入率 ≥ +{PROFILE_MIN_Y:.0f}% 且 18–35 歲 ≥ {PROFILE_MIN_YOUTH:,} 人的區的平均條件"),
             "fallback": fallback,
             "z": z, "y": round(sum(r["y"] for r in members) / n, 2),

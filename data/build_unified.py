@@ -349,7 +349,7 @@ def _plan_notes(drivers: dict, mt: dict, region: str) -> list[dict]:
             gaps = _condition_gaps(d, ref, _betas(drivers))
             lever_lines = _lever_lines(d, ref, gaps)
             notes.append({"title": p["title"],
-                          "body": (f"參考標準是資料選的：本市近三年淨遷入率 ≥ +1% 的區（{members}）的平均條件。"
+                          "body": (f"參考標準是資料選的：{ref['rule']}（成員：{members}）。"
                                    f"{d['short']}的租金、工作機會、所得、規模四個條件跟這個典型最像，"
                                    f"但近三年淨遷入平均 {d['y']:+.1f}%，移入還沒起來。這張清單把「看什麼、誰做什麼、怎麼驗收」排成三年；"
                                    "青年局主責的只有職涯、創業、公共參與，其餘是轉請或協作。"),

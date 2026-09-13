@@ -227,7 +227,7 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
             hint = (f"這題問的是「下一個」：可供驗證的候選來自「{region}內條件最像 {ref['short']}」清單裡挑"
                     f"**條件像但移入還沒起來**的區（{'、'.join(nxt) if nxt else '清單裡沒有，就照實說'}），"
                     f"不要回答 {ref['short']} 本身，也不要回答現在移入最多的區。"
-                    + ("先用一句話講清楚參考標準：不是跟淡水比，是跟「本市近三年淨遷入 ≥ +1% 的區的平均條件」比（成員："
+                    + ("先用一句話講清楚參考標準：不是跟淡水比，是跟「" + ref["rule"] + "」比（成員："
                        + "、".join(ref["members"]) + "）。" if is_profile else "")
                     + (f"{'、'.join(already)} 已經在移入，可作對照，但不能驗證因果或保證預測有效。" if already else "")
                     + (f" 並提醒：{ref['short']} 實際移入比這四個條件解釋的高 {ref['resid']:+.1f} 個百分點，多出來的差異原因未知；住宅供給與交通只是可調查方向，模型未納入這兩項，不能稱為已知或最可能原因。條件像仍需要後續資料確認。" if ref.get("resid") is not None else

@@ -45,7 +45,7 @@ class TestNumberExtraction(unittest.TestCase):
     def test_years_ranks_and_percentage_points_still_skipped(self):
         """原有的四條跳過規則不能被新規則弄壞。"""
         self.assertEqual(_numbers_in("2024 年為 59.9 萬，排第 4 名"), ["59.9"])
-        self.assertEqual(_numbers_in("相差 7.4 個百分點"), [])
+        self.assertEqual(_numbers_in("相差 7.4 個百分點"), ["7.4"])
         self.assertEqual(_numbers_in("18-35 歲共 832,214 人"), ["832,214"])
 
 

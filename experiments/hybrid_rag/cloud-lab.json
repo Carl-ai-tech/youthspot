@@ -1,0 +1,36 @@
+{
+  "region": "us-west-2",
+  "knowledgeBaseId": "EOPWDZAJRT",
+  "dataSourceId": "ZKTEGKQGWK",
+  "bucket": "youthscope-rag-lab-629048311342-20260913",
+  "roleName": "youthscope-rag-lab-kb-20260913",
+  "knowledgeBaseConfiguration": {
+    "type": "MANAGED",
+    "managedKnowledgeBaseConfiguration": {
+      "embeddingModelType": "MANAGED"
+    }
+  },
+  "dataSourceConfiguration": {
+    "type": "MANAGED_KNOWLEDGE_BASE_CONNECTOR",
+    "managedKnowledgeBaseConnectorConfiguration": {
+      "connectorParameters": {
+        "type": "S3",
+        "version": "1",
+        "connectionConfiguration": {
+          "bucketName": "youthscope-rag-lab-629048311342-20260913",
+          "bucketOwnerAccountId": "629048311342"
+        },
+        "deletionProtectionConfiguration": {
+          "enableDeletionProtection": false
+        }
+      }
+    }
+  },
+  "vectorIngestionConfiguration": {
+    "parsingConfiguration": {
+      "parsingStrategy": "SMART_PARSING"
+    }
+  },
+  "productionConnected": false,
+  "generationCalls": 0
+}

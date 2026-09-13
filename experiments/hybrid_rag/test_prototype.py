@@ -1,4 +1,6 @@
 import unittest
+import json
+from pathlib import Path
 from prototype import statistics, documents, retrieve_aws, assemble
 
 class TestHybrid(unittest.TestCase):
@@ -35,4 +37,16 @@ class TestHybrid(unittest.TestCase):
         class Denied:
             def retrieve(self,**kwargs):raise PermissionError('denied')
         with self.assertRaises(PermissionError):retrieve_aws(Denied(),'KB12345678','q')
+    def test_live_retrieval_is_not_answer_support(self):
+        cases=json.loads((Path(__file__).parent/'live-retrieval-results.json').read_text())['cases']
+        for case in cases:
+            response=case['response']
+            allowed={h['metadata']['source_url'] for h in response['retrievalResults']}
+            x=assemble(self.rows,response,allowed,question=case['question'],region='新北市',band='25-29',year=2025,metrics=['失業率'])
+            self.assertEqual(len(x['evidence']['documents']),2)
+            self.assertEqual(x['evidence']['document_support_status'],'not_evaluated')
+            self.assertFalse(x['answer_generated'])
+        # Even the unrelated YouBike question returned a high-ranking career document.
+        self.assertEqual(cases[-1]['id'],'out_of_corpus')
+        self.assertNotIn('YouBike',cases[-1]['response']['retrievalResults'][0]['content']['text'])
 if __name__ == '__main__':unittest.main()

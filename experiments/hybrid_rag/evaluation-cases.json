@@ -1,0 +1,32 @@
+[
+  {
+    "id": "eligibility",
+    "question": "2026年在新北工作的35歲青年可以申請線上職涯諮詢嗎？可以使用幾次？",
+    "expected_source": "career-2026",
+    "expected_evidence": "18至40歲、工作於新北、三次不同階段諮詢"
+  },
+  {
+    "id": "historical_quota",
+    "question": "2024年新北青年局提供多少個職涯諮詢機會？",
+    "expected_source": "career-2024",
+    "expected_evidence": "2024年度370個"
+  },
+  {
+    "id": "resume",
+    "question": "新北線上職涯服務能幫我練習履歷與面試嗎？",
+    "expected_source": "career-2026",
+    "expected_evidence": "履歷與模擬面試"
+  },
+  {
+    "id": "current_quota",
+    "question": "2026年新北職涯諮詢現在還剩370個名額嗎？",
+    "expected_source": null,
+    "expected_evidence": "不得把2024年度370當成2026剩餘名額；目前名額未知"
+  },
+  {
+    "id": "out_of_corpus",
+    "question": "三峽明年新增幾個YouBike站？",
+    "expected_source": null,
+    "expected_evidence": "文件無資料，不可回答站數"
+  }
+]

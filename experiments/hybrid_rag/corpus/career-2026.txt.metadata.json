@@ -1,0 +1,40 @@
+{
+  "metadataAttributes": {
+    "access": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "public"
+      }
+    },
+    "title": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026新北青年線上職涯諮詢公告摘要"
+      }
+    },
+    "published_at": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-07-06"
+      }
+    },
+    "source_url": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1"
+      }
+    },
+    "region": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "新北市"
+      }
+    },
+    "corpus_kind": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "curated_official_summary"
+      }
+    }
+  }
+}

@@ -27,15 +27,15 @@ python3 experiments/hybrid_rag/prototype.py --payload data/unified.json \
 
 fixture模式沒有embedding或語意搜尋，不能用來比較召回率。這次以真實專案JSON跑CLI，得到新北25–29、2025失業率0.064，文件狀態no_approved_evidence。
 
-接到已核准的公開文件KB時，改用 `--kb-id <ID> --kb-type managed --allow-source <文件metadata中的完整source_url>`；需要boto3/botocore版本支援managedSearchConfiguration及對該KB的Retrieve權限。CLI不建資源、不匯入文件、不呼叫生成模型。尚未驗證真實AWS連線或KB SDK相容性。
+接到已核准的公開文件KB時，改用 `--kb-id <ID> --kb-type managed --allow-source <文件metadata中的完整source_url>`；需要boto3/botocore版本支援managedSearchConfiguration及對該KB的Retrieve權限。CLI不建資源、不匯入文件、不呼叫生成模型。2026-09-13已驗證真實Managed KB Retrieve及回傳metadata，詳細結果見 CLOUD-RESULTS.md。
 
 ## 實測紀錄與限制
 
 2026-09-13：7項本機測試通過，包含年份/地區/年齡隔離、缺資料不替代、來源限制、去重、guardrail介入、文件/統計分離、兩種API設定及錯誤傳遞。真實JSON的CLI整合測試通過。這是程式契約測試，不是RAG品質評分。
 
-AWS default credentials的GetCallerIdentity回覆InvalidClientTokenId，故未列舉或建立KB、Gateway、Harness，未匯入任何Obsidian私有材料。不得宣稱完成向量資料庫部署。
+早先default憑證失效；使用者補交臨時憑證後，已完成獨立Managed KB建立、兩份公開公告匯入及五次Retrieve。未呼叫生成模型或接正式站；不代表完整RAG答案品質通過。詳見 [雲端實測](CLOUD-RESULTS.md)。
 
-## 下一階段驗收
+## 完整整合驗收（前兩項已以小型公開語料實測）
 
 1. 指定一小組已核准的公開青年政策/資格文件，保存官方URL、日期、版本、頁碼、適用地區及public標籤。先確認正確文件，不將整個OB匯入。
 2. 確認有效憑證、比賽允許服務、KB費用上限與目的bucket，再建立單一測試KB並同步。

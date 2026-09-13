@@ -1,0 +1,368 @@
+{
+  "date": "2026-09-13",
+  "knowledgeBaseId": "EOPWDZAJRT",
+  "retrieve_calls": 5,
+  "generation_calls": 0,
+  "cases": [
+    {
+      "id": "eligibility",
+      "question": "2026年在新北工作的35歲青年可以申請線上職涯諮詢嗎？可以使用幾次？",
+      "expected_source": "career-2026",
+      "expected_evidence": "18至40歲、工作於新北、三次不同階段諮詢",
+      "response": {
+        "retrievalResults": [
+          {
+            "content": {
+              "text": "2026新北青年線上職涯諮詢公告摘要\n發布日期：2026-07-06\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1\n新北市青年局於2026年7月6日公告線上職涯諮詢。18至40歲、設籍、居住、就學或工作於新北市的青年可申請免費服務。每人可使用三次不同階段諮詢，包含自我理解、方向探索與行動規劃；服務可協助履歷與模擬面試。透過官方LINE申請並經資格審核、媒合諮詢師。公告未提供目前剩餘名額。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2026.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt",
+              "access": "public",
+              "_chunk_id": "op8ZaT2W-xTroqOMHFc7mwsh2ow9te6xRDIajZxKyOQ",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:27Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2026新北青年線上職涯諮詢公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2026.txt",
+              "_last_updated_at": "2026-09-13T01:26:27Z",
+              "region": "新北市",
+              "published_at": "2026-07-06"
+            },
+            "score": 0.3790492117404938
+          },
+          {
+            "content": {
+              "text": "2024新北青年職涯諮詢歷史公告摘要\n發布日期：2024-01-26\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28\n新北市青年局於2024年1月26日公告免費職涯諮詢，對象為18至40歲青年，提供一對一職涯諮詢、履歷健檢與模擬面試。2024年度公告提供370個諮詢機會，可透過新北青年職涯發展中心網站預約。370是2024年度公告數量，並非2026年度或目前剩餘名額。\n公開公告摘要，非完整原文；申請資格與可用名額以最新官方公告為準。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2024.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt",
+              "access": "public",
+              "_chunk_id": "3cnAmAxntsF0xQ3hjwDXB2RxNfapZ-upgpRJ5r3BSn0",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:30Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2024新北青年職涯諮詢歷史公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2024.txt",
+              "_last_updated_at": "2026-09-13T01:26:30Z",
+              "region": "新北市",
+              "published_at": "2024-01-26"
+            },
+            "score": 0.24333932995796204
+          }
+        ]
+      }
+    },
+    {
+      "id": "historical_quota",
+      "question": "2024年新北青年局提供多少個職涯諮詢機會？",
+      "expected_source": "career-2024",
+      "expected_evidence": "2024年度370個",
+      "response": {
+        "retrievalResults": [
+          {
+            "content": {
+              "text": "2024新北青年職涯諮詢歷史公告摘要\n發布日期：2024-01-26\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28\n新北市青年局於2024年1月26日公告免費職涯諮詢，對象為18至40歲青年，提供一對一職涯諮詢、履歷健檢與模擬面試。2024年度公告提供370個諮詢機會，可透過新北青年職涯發展中心網站預約。370是2024年度公告數量，並非2026年度或目前剩餘名額。\n公開公告摘要，非完整原文；申請資格與可用名額以最新官方公告為準。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2024.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt",
+              "access": "public",
+              "_chunk_id": "3cnAmAxntsF0xQ3hjwDXB2RxNfapZ-upgpRJ5r3BSn0",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:30Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2024新北青年職涯諮詢歷史公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2024.txt",
+              "_last_updated_at": "2026-09-13T01:26:30Z",
+              "region": "新北市",
+              "published_at": "2024-01-26"
+            },
+            "score": 0.39940786361694336
+          },
+          {
+            "content": {
+              "text": "2026新北青年線上職涯諮詢公告摘要\n發布日期：2026-07-06\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1\n新北市青年局於2026年7月6日公告線上職涯諮詢。18至40歲、設籍、居住、就學或工作於新北市的青年可申請免費服務。每人可使用三次不同階段諮詢，包含自我理解、方向探索與行動規劃；服務可協助履歷與模擬面試。透過官方LINE申請並經資格審核、媒合諮詢師。公告未提供目前剩餘名額。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2026.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt",
+              "access": "public",
+              "_chunk_id": "op8ZaT2W-xTroqOMHFc7mwsh2ow9te6xRDIajZxKyOQ",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:27Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2026新北青年線上職涯諮詢公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2026.txt",
+              "_last_updated_at": "2026-09-13T01:26:27Z",
+              "region": "新北市",
+              "published_at": "2026-07-06"
+            },
+            "score": 0.21625317633152008
+          }
+        ]
+      }
+    },
+    {
+      "id": "resume",
+      "question": "新北線上職涯服務能幫我練習履歷與面試嗎？",
+      "expected_source": "career-2026",
+      "expected_evidence": "履歷與模擬面試",
+      "response": {
+        "retrievalResults": [
+          {
+            "content": {
+              "text": "2026新北青年線上職涯諮詢公告摘要\n發布日期：2026-07-06\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1\n新北市青年局於2026年7月6日公告線上職涯諮詢。18至40歲、設籍、居住、就學或工作於新北市的青年可申請免費服務。每人可使用三次不同階段諮詢，包含自我理解、方向探索與行動規劃；服務可協助履歷與模擬面試。透過官方LINE申請並經資格審核、媒合諮詢師。公告未提供目前剩餘名額。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2026.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt",
+              "access": "public",
+              "_chunk_id": "op8ZaT2W-xTroqOMHFc7mwsh2ow9te6xRDIajZxKyOQ",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:27Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2026新北青年線上職涯諮詢公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2026.txt",
+              "_last_updated_at": "2026-09-13T01:26:27Z",
+              "region": "新北市",
+              "published_at": "2026-07-06"
+            },
+            "score": 0.3604998290538788
+          },
+          {
+            "content": {
+              "text": "2024新北青年職涯諮詢歷史公告摘要\n發布日期：2024-01-26\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28\n新北市青年局於2024年1月26日公告免費職涯諮詢，對象為18至40歲青年，提供一對一職涯諮詢、履歷健檢與模擬面試。2024年度公告提供370個諮詢機會，可透過新北青年職涯發展中心網站預約。370是2024年度公告數量，並非2026年度或目前剩餘名額。\n公開公告摘要，非完整原文；申請資格與可用名額以最新官方公告為準。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2024.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt",
+              "access": "public",
+              "_chunk_id": "3cnAmAxntsF0xQ3hjwDXB2RxNfapZ-upgpRJ5r3BSn0",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:30Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2024新北青年職涯諮詢歷史公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2024.txt",
+              "_last_updated_at": "2026-09-13T01:26:30Z",
+              "region": "新北市",
+              "published_at": "2024-01-26"
+            },
+            "score": 0.26449382305145264
+          }
+        ]
+      }
+    },
+    {
+      "id": "current_quota",
+      "question": "2026年新北職涯諮詢現在還剩370個名額嗎？",
+      "expected_source": null,
+      "expected_evidence": "不得把2024年度370當成2026剩餘名額；目前名額未知",
+      "response": {
+        "retrievalResults": [
+          {
+            "content": {
+              "text": "2024新北青年職涯諮詢歷史公告摘要\n發布日期：2024-01-26\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28\n新北市青年局於2024年1月26日公告免費職涯諮詢，對象為18至40歲青年，提供一對一職涯諮詢、履歷健檢與模擬面試。2024年度公告提供370個諮詢機會，可透過新北青年職涯發展中心網站預約。370是2024年度公告數量，並非2026年度或目前剩餘名額。\n公開公告摘要，非完整原文；申請資格與可用名額以最新官方公告為準。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2024.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt",
+              "access": "public",
+              "_chunk_id": "3cnAmAxntsF0xQ3hjwDXB2RxNfapZ-upgpRJ5r3BSn0",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:30Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2024新北青年職涯諮詢歷史公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2024.txt",
+              "_last_updated_at": "2026-09-13T01:26:30Z",
+              "region": "新北市",
+              "published_at": "2024-01-26"
+            },
+            "score": 0.3312918543815613
+          },
+          {
+            "content": {
+              "text": "2026新北青年線上職涯諮詢公告摘要\n發布日期：2026-07-06\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1\n新北市青年局於2026年7月6日公告線上職涯諮詢。18至40歲、設籍、居住、就學或工作於新北市的青年可申請免費服務。每人可使用三次不同階段諮詢，包含自我理解、方向探索與行動規劃；服務可協助履歷與模擬面試。透過官方LINE申請並經資格審核、媒合諮詢師。公告未提供目前剩餘名額。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2026.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt",
+              "access": "public",
+              "_chunk_id": "op8ZaT2W-xTroqOMHFc7mwsh2ow9te6xRDIajZxKyOQ",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:27Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2026新北青年線上職涯諮詢公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2026.txt",
+              "_last_updated_at": "2026-09-13T01:26:27Z",
+              "region": "新北市",
+              "published_at": "2026-07-06"
+            },
+            "score": 0.2966790199279785
+          }
+        ]
+      }
+    },
+    {
+      "id": "out_of_corpus",
+      "question": "三峽明年新增幾個YouBike站？",
+      "expected_source": null,
+      "expected_evidence": "文件無資料，不可回答站數",
+      "response": {
+        "retrievalResults": [
+          {
+            "content": {
+              "text": "2024新北青年職涯諮詢歷史公告摘要\n發布日期：2024-01-26\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28\n新北市青年局於2024年1月26日公告免費職涯諮詢，對象為18至40歲青年，提供一對一職涯諮詢、履歷健檢與模擬面試。2024年度公告提供370個諮詢機會，可透過新北青年職涯發展中心網站預約。370是2024年度公告數量，並非2026年度或目前剩餘名額。\n公開公告摘要，非完整原文；申請資格與可用名額以最新官方公告為準。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2024.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2024.txt",
+              "access": "public",
+              "_chunk_id": "3cnAmAxntsF0xQ3hjwDXB2RxNfapZ-upgpRJ5r3BSn0",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:30Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2024新北青年職涯諮詢歷史公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=202401260013&id=28",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2024.txt",
+              "_last_updated_at": "2026-09-13T01:26:30Z",
+              "region": "新北市",
+              "published_at": "2024-01-26"
+            },
+            "score": 0.42015552520751953
+          },
+          {
+            "content": {
+              "text": "2026新北青年線上職涯諮詢公告摘要\n發布日期：2026-07-06\n來源：https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1\n新北市青年局於2026年7月6日公告線上職涯諮詢。18至40歲、設籍、居住、就學或工作於新北市的青年可申請免費服務。每人可使用三次不同階段諮詢，包含自我理解、方向探索與行動規劃；服務可協助履歷與模擬面試。透過官方LINE申請並經資格審核、媒合諮詢師。公告未提供目前剩餘名額。",
+              "type": "TEXT"
+            },
+            "documentId": "s3://youthscope-rag-lab-629048311342-20260913/career-2026.txt",
+            "location": {
+              "s3Location": {
+                "uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt"
+              },
+              "type": "S3"
+            },
+            "metadata": {
+              "corpus_kind": "curated_official_summary",
+              "_source_uri": "https://youthscope-rag-lab-629048311342-20260913.s3.us-west-2.amazonaws.com/career-2026.txt",
+              "access": "public",
+              "_chunk_id": "op8ZaT2W-xTroqOMHFc7mwsh2ow9te6xRDIajZxKyOQ",
+              "_data_source_type": "S3",
+              "_language_code": "en",
+              "_created_at": "2026-09-13T01:26:27Z",
+              "_data_source_id": "ZKTEGKQGWK",
+              "title": "2026新北青年線上職涯諮詢公告摘要",
+              "source_url": "https://www.ntpc.gov.tw/ch/home.jsp?dataserno=64ef762ceb770991ff29f828cff2aa72&id=e8ca970cde5c00e1",
+              "_file_type": "PLAIN_TEXT",
+              "_document_title": "career-2026.txt",
+              "_last_updated_at": "2026-09-13T01:26:27Z",
+              "region": "新北市",
+              "published_at": "2026-07-06"
+            },
+            "score": 0.1641533523797989
+          }
+        ]
+      }
+    }
+  ]
+}

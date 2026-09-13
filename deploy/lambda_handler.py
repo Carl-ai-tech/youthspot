@@ -75,6 +75,10 @@ def _merge_mentioned(payload: dict, question: str, region: str) -> dict:
         return payload
     home = _city_of(region)
     extra: list[dict] = []
+    cross_mig: dict[str, dict] = {}
+    # 點名城市（沒點名區）時也要給它各區的核心數字 ——「桃園流入最高的區」需要桃園 13 區的淨遷入率
+    district_metrics_youth = {"人口數", "青年淨遷入率", "青年淨遷入人數", "青年人口年變化率", "勞動力參與率"}
+    district_metrics_all = {"綜合所得中位數", "工作機會密度", "在地工作機會", "住宅每坪月租中位數"}
     for city in SIX_CITIES:
         if city == home:
             continue
@@ -86,16 +90,27 @@ def _merge_mentioned(payload: dict, question: str, region: str) -> dict:
         named = [d for d in districts if d.replace(city, "") in q]
         if city not in q and city.replace("市", "") not in q and not named:
             continue
+        city_named = city in q or city.replace("市", "") in q
         for r in other["records"]:
             if r["region"] == city and r["age_group"] in ("18-35", "全體", "25-29"):
                 extra.append(r)
             elif r["region"] in named and r["age_group"] in ("18-35", "全體"):
                 extra.append(r)
+            elif city_named and r["region"] in districts and (
+                    (r["age_group"] == "18-35" and r["metric"] in district_metrics_youth)
+                    or (r["age_group"] == "全體" and r["metric"] in district_metrics_all)):
+                extra.append(r)
+        mig = (other.get("trends") or {}).get("migration")
+        if mig and mig.get("areas"):
+            cross_mig[city] = {"years": mig["years"],
+                               "areas": {a: {k: v for k, v in e.items() if k in ("rate", "net", "signal", "confidence", "mean")}
+                                         for a, e in mig["areas"].items()}}
     if not extra:
         return payload
     merged = dict(payload)
     merged["records"] = list(payload["records"]) + extra
-    merged["_cross_city"] = sorted({r["region"] for r in extra})
+    merged["_cross_city"] = sorted({r["region"] for r in extra if r["region"] in SIX_CITIES} | {r["region"] for r in extra if r["region"] not in SIX_CITIES and any(r["region"].replace(c, "") in q for c in SIX_CITIES)})
+    merged["_cross_migration"] = cross_mig
     return merged
 
 

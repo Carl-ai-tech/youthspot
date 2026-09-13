@@ -23,6 +23,8 @@
 
 from __future__ import annotations
 
+import re
+
 from .backend import Backend
 from .synthesize import Grounded, _fmt, retrieve, verify
 
@@ -83,7 +85,53 @@ def _jurisdiction_lines(question: str) -> list[str]:
 
 
 def _drivers_lines(payload: dict, region: str, question: str) -> list[str]:
-    return _drivers_block(payload, region, question)[0]
+    return _drivers_block(payload, region, question)[0] + _migration_lines(payload, region, question)
+
+
+def _migration_lines(payload: dict, region: str, question: str) -> list[str]:
+    """各區世代淨遷入率的逐年序列（本市＋問題點名的其他城市）。
+
+    記錄只有最新一期，問「2025 年桃園移入最高的區」模型手上根本沒有 2025 那一點；
+    序列一直在 trends.migration 裡，這裡把它寫成事實行（也進查核池）。
+    每個城市：最新一年淨遷入率最高的 8 區 ＋ 問題點名的區；小區（|淨遷入| < 100 人）不排進前幾名。
+    """
+    q = (question or "").replace("台", "臺")
+    cities = {region: (payload.get("trends") or {}).get("migration") or {}}
+    for city, mig in (payload.get("_cross_migration") or {}).items():
+        cities[city] = mig
+    out = []
+    for city, mig in cities.items():
+        areas = mig.get("areas") or {}
+        years = mig.get("years") or []
+        if not areas or not years:
+            continue
+        def _last(e):
+            return next((r for r in reversed(e.get("rate") or []) if r is not None), None)
+        ranked = sorted((a for a in areas if a != city and _last(areas[a]) is not None
+                         and abs((areas[a].get("net") or [0])[-1] or 0) >= 100),
+                        key=lambda a: -_last(areas[a]))
+        named = [a for a in areas if a != city and a.replace(city, "") in q]
+        pick = ranked[:8] + [a for a in named if a not in ranked[:8]]
+        if not pick:
+            continue
+        out.append(f"{city}各區 18–35 歲世代淨遷入率逐年（{years[0]}–{years[-1]}，每年 7 月一期；依 {years[-1]} 年由高到低，|淨遷入| < 100 人的小區不列）：")
+        asked = [int(y) for y in re.findall(r"20[12]\d", q) if int(y) in years]
+        for y in sorted(set(asked)):
+            i = years.index(y)
+            top = sorted((a for a in areas if a != city and (areas[a].get("rate") or [None] * len(years))[i] is not None
+                          and abs((areas[a].get("net") or [0] * len(years))[i] or 0) >= 100),
+                         key=lambda a: -areas[a]["rate"][i])[:3]
+            if top:
+                out.append(f"  ★ {y} 年{city}淨遷入率最高：" + "、".join(f"{a.replace(city, '')} {areas[a]['rate'][i] * 100:+.1f}%（{areas[a]['net'][i]:+,} 人）" for a in top))
+        for a in pick:
+            e = areas[a]
+            nets = e.get("net") or [None] * len(years)
+            ser = "、".join(f"{y} 年 {r * 100:+.1f}%（{n:+,} 人）" if n is not None else f"{y} 年 {r * 100:+.1f}%"
+                            for y, r, n in zip(years, e.get("rate") or [], nets) if r is not None)
+            out.append(f"  - {a.replace(city, '')}：{ser}；訊號 {e.get('signal') or '—'}")
+        if city != region:
+            out.append(f"  ※ {city}的市層級 18–35 歲總數與六都比較另列；以上是{city}自己的行政區資料，不是{region}。")
+    return out
 
 
 def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str], str]:
@@ -281,6 +329,10 @@ def build_prompt(payload: dict, records: list[dict], question: str,
     jur_text = "\n**權責表（回答「該不該做／是不是青年局的事」時用）**\n" + "\n".join(jur) + "\n"
     drv_hint = f"\n**這題怎麼答**\n{drv_hint}\n" if drv_hint else ""
     drivers_text = ("\n**六都驅動模型與條件比對（程式算好的迴歸結果，可直接引用）**\n" + "\n".join(drv) + "\n") if drv else ""
+    mig_lines = _migration_lines(payload, region, question)
+    mig_text = ("\n**各區世代淨遷入率逐年（記錄清單只有最新一期；問到某一年就用這裡該年的值，不要說沒有）**\n"
+                "問「某市流入最高的區」：就是這張表該市排第一的區（依最新年）；**問題有指定年份（例如 2025）就用該年的值重排、引用該年的數字，不要改答最新年**。有列出來的城市就是有資料，不要說缺。\n"
+                + "\n".join(mig_lines) + "\n") if mig_lines else ""
 
     def block(title: str, items: list[dict], keys: tuple[str, str]) -> str:
         if not items:
@@ -304,9 +356,44 @@ def build_prompt(payload: dict, records: list[dict], question: str,
 **可用的數字（{region}．{band} 歲為主{"；問題點名的其他城市／行政區排在最前面" if payload.get("_cross_city") else ""}）**
 {("⚠ 這是跨城市的問題：問到的地區是 " + "、".join(payload["_cross_city"]) + "，請用它們各自的數字比較，不要拿" + region + "當替身。") if payload.get("_cross_city") else ""}
 {chr(10).join(lines)}
-{bench_text}{drivers_text}{jur_text}{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
+{bench_text}{mig_text}{drivers_text}{jur_text}{block("**規則算出來的施政建議（已附依據，可直接引用）**", notes, ("title", "body"))}
 {block("**通過統計檢定的變化（已附依據，可直接引用）**", insights, ("title", "body"))}
 """
+
+
+SIX_CITIES_ALL = ("新北市", "臺北市", "桃園市", "臺中市", "臺南市", "高雄市")
+
+
+def _cross_district_records(payload: dict, question: str, region: str, have: list[dict]) -> list[dict]:
+    """問題點名了別的城市（不一定點名區）：把 lambda_handler 併進來的那個城市各區核心記錄挑出來。
+
+    「桃園流入最高的區」要桃園 13 區的淨遷入率才答得出來；先前這些記錄雖然在 payload 裡，
+    但 _mentioned_records 只挑「名字出現在問題裡」的區，桃園各區一個都沒被點名 → 沒進提示詞 → 模型說沒資料。
+    """
+    q = (question or "").replace("台", "臺")
+    named_cities = [c for c in SIX_CITIES_ALL if c != region and (c in q or c[:-1] in q)]
+    if not named_cities:
+        return []
+    youth = {"青年淨遷入率", "青年淨遷入人數", "人口數", "青年人口年變化率"}
+    whole = {"綜合所得中位數", "工作機會密度", "住宅每坪月租中位數"}
+    seen = {(r["region"], r["age_group"], r["metric"], r.get("education")) for r in have}
+    out = []
+    for r in payload.get("records", []):
+        reg = r.get("region", "")
+        city = next((c for c in named_cities if reg.startswith(c) and reg != c), None)
+        if not city or r.get("education"):
+            continue
+        if not ((r.get("age_group") == "18-35" and r.get("metric") in youth) or (r.get("age_group") == "全體" and r.get("metric") in whole)):
+            continue
+        key = (r["region"], r["age_group"], r["metric"], r.get("education"))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(r)
+    # 淨遷入率高的區排前面：模型從頭讀
+    rate = {r["region"]: r["value"] for r in out if r["metric"] == "青年淨遷入率"}
+    out.sort(key=lambda r: -(rate.get(r["region"]) or -9))
+    return out
 
 
 def _mentioned_records(payload: dict, question: str, have: list[dict]) -> list[dict]:
@@ -325,7 +412,8 @@ def _mentioned_records(payload: dict, question: str, have: list[dict]) -> list[d
         for c in ("新北市", "臺北市", "桃園市", "臺中市", "臺南市", "高雄市"):
             if reg.startswith(c) and reg != c:
                 short = reg[len(c):]
-        if reg == "全國" or not (reg in q or (short != reg and short in q)):
+        city_hit = reg in SIX_CITIES_ALL and (reg in q or reg[:-1] in q)          # 「桃園」也算點名桃園市
+        if reg == "全國" or not (city_hit or reg in q or (short != reg and short in q)):
             continue
         if r.get("age_group") not in ("18-35", "全體", "25-29") or r.get("education"):
             continue
@@ -375,6 +463,7 @@ def advise(question: str, payload: dict, backend: Backend, *,
     # 問題點名的地區（含其他城市）排到最前面：模型讀清單是從頭讀的，
     # 放在第 200 筆之後它會拿本市當替身來比（實測：問內湖 vs 林口，它拿臺南市比林口）
     records = _mentioned_records(payload, question, records) + records
+    records = _cross_district_records(payload, question, region, records) + records
     raw = backend.complete(build_prompt(payload, records, question, region, band), system=SYSTEM_PROMPT)
     text = raw.strip()
     extra = _drivers_lines(payload, region, question)

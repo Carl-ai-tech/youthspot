@@ -1,18 +1,8 @@
-"""模型說「建議補蒐集 X」時，系統自動對照資料目錄回答：X 有沒有、在哪、接了沒。
+"""把回答中的資料缺口對照專案固定目錄，提供白話說明。
 
-模型不能自己上網找資料（比賽只能用 Bedrock 的模型，而且我們不讓它碰來源），
-但它說「缺什麼」這件事本身很有價值 —— 前提是要有人接著回答「那到底有沒有」。
-先前每次模型建議補蒐集，讀的人只能自己去猜。這支把猜的工作做掉：
-
-    模型：建議補蒐集各行業的青年就業人數
-    系統：✗ 官方沒有行業 × 年齡的表（114 年報 44 張、mp04 系列 23 張逐一查過）
-
-三種狀態：
-    missing   官方沒有這種資料（我們查過，附查過什麼）
-    available 有，而且已經接進儀表板（附指標名稱，模型下次就該用）
-    external  有，但還沒接（附機關與資料集，是接下來要做的事）
-
-比對規則寫死（關鍵字），不用模型判斷 —— 這一步要可重現，而且不能再燒一次模型。
+不對整篇回答做關鍵字搜尋，也不代表已即時查證外部資料可取得。
+status/note 保留舊 API 相容；新畫面以 display_status/plain_note 區分
+已使用、替代指標、需補充、候選來源。判斷規則固定，不額外呼叫模型。
 """
 
 from __future__ import annotations
@@ -66,7 +56,7 @@ CATALOG: list[dict] = [
      "note": "已接入：各行政區 18–35 歲女性一般生育率（戶政司 ODRP056 出生數按生母單一年齡 ÷ 同區 18–35 歲女性人口，按發生）。"
              "結婚對數按年齡尚未接（戶政司 ODRP 結婚人數按年齡）。"},
     {"key": "青年租金補貼／社會住宅",
-     "pattern": r"租金補貼|社會住宅|社宅|租屋",
+     "pattern": r"租金補貼|租補|社會住宅|社宅",
      "status": "external",
      "note": "有但未接入：內政部國土管理署租金補貼統計、新北市住都中心社宅出租統計。列在「權益覆蓋」的缺口清單。"},
     {"key": "初次尋職者",
@@ -83,15 +73,76 @@ CATALOG: list[dict] = [
      "note": "官方薪資統計有「行業別」（表1，已接入）與「年齡別」（表6，已接入），沒有兩者的交叉。"},
 ]
 
-_TRIGGER = re.compile(r"建議.{0,6}(補|蒐集|收集|取得|調查|補充)|缺(少|乏|的資料|口)|需要.{0,10}(資料|數據)|資料限制|無法(取得|回答)")
+# 舊 status/note 保留給既有呼叫端；畫面使用 display_status/plain_note。
+# 這些說明來自專案固定目錄，不代表本次即時查詢或確認外部資料可取得。
+_DISPLAY = {
+    "行業 × 年齡的就業人數": ("needed", "目前沒有可直接使用的青年分行業就業資料；已用全年齡行業資料作參考，仍需補充青年資料。"),
+    "行業招聘困難度／缺工程度": ("available", "已使用各行業職缺數與趨勢，可先查看缺工與供需錯配；職缺數不等於職缺率。"),
+    "青年流出率／人口外流": ("proxy", "已有世代人口變化推估的淨遷入訊號，但不是直接記錄青年搬入、搬出的人數。"),
+    "行政區的失業率／就業人數": ("proxy", "已有各區工作機會密度與勞動力推估，可作參考；不能當成各區實測失業率。"),
+    "行政區的薪資": ("proxy", "已有各區全體申報戶的所得中位數，可比較所得情況；不等於青年薪資。"),
+    "通勤流向": ("proxy", "已有工作機會密度，但還不能回答青年住在哪一區、到哪一區上班。"),
+    "行政區的租金": ("available", "已使用各區實價登錄租金中位數；涵蓋的是登錄案件，不代表所有青年租屋情況。"),
+    "住宅供給（建照／使照）": ("candidate", "可再查建照、使照與住宅統計；是否涵蓋需要的行政區與年份，仍待確認。"),
+    "生育率／婚育": ("proxy", "已有各區青年女性生育率，但不能代替結婚情況；結婚年齡資料尚待補充。"),
+    "青年租金補貼／社會住宅": ("candidate", "可再查租金補貼與社宅統計；能否分出青年、行政區與需要的年份，仍待確認。"),
+    "初次尋職者": ("candidate", "資料目錄列有全國初次尋職者統計；能否回答這次需要的地區與年份，仍待確認。"),
+    "性別 × 年齡": ("available", "已使用各區分齡與性別人口，以及全國分齡與性別就業指標；地區範圍須分開看。"),
+    "產業別的青年薪資": ("needed", "目前已有產業別與年齡別薪資，但沒有同時分產業和青年年齡的數字，還需要補充。"),
+}
+
+for _item in CATALOG:
+    _item["display_status"], _item["plain_note"] = _DISPLAY[_item["key"]]
+
+_TRIGGER = re.compile(r"建議.{0,6}(補|蒐集|收集|取得|調查|補充)|缺(少|乏|的資料|口)|需要.{0,10}(資料|數據)|資料限制|無法(取得|回答)|尚未(取得|掌握|蒐集)|待補(充)?")
+_BULLET = re.compile(r"^\s*(?:[-*•]|\d+[.、)])\s*")
+_HEADING = re.compile(r"^\s*(?:#{1,6}\s+|\*\*)")
+_NEGATED_TRIGGER = re.compile(r"^(?:目前)?(?:並未|沒有|並不|不)(?:缺少|缺乏|需要補充)")
+_POSITIVE_ONLY = re.compile(r"^(?:目前)?(?:已使用|已接入|已有|已取得|已掌握|不缺|無須補充|不需補充)")
+
+
+def _gap_passages(text: str) -> list[str]:
+    """只比對缺口句；僅明確缺口標題下的相鄰條列繼承缺口語意。"""
+    passages = []
+    gap_list = False
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        is_bullet = bool(_BULLET.match(line))
+        clean = _BULLET.sub("", line).strip().strip("#* ")
+        # 新標題與普通敘述都會結束上一組缺口條列。
+        inherited = gap_list and is_bullet
+        if not is_bullet:
+            gap_list = False
+        sentences = re.split(
+            r"[。！？!?；;]|[，,](?=(?:但|不過|然而)?(?:目前)?(?:已使用|已接入|已有|已用|缺少|缺乏|需要|建議))",
+            clean,
+        )
+        for sentence in sentences:
+            sentence = sentence.strip()
+            if not sentence or _NEGATED_TRIGGER.match(sentence):
+                continue
+            explicit = bool(_TRIGGER.search(sentence))
+            if _POSITIVE_ONLY.match(sentence) and not explicit:
+                continue
+            if explicit or inherited:
+                passages.append(sentence)
+        # 標題本身不能靠「已用資料，仍有服務缺口」之類句子開啟繼承。
+        header = clean.rstrip("：:")
+        if not is_bullet and len(header) <= 30 and _TRIGGER.search(header):
+            if line.endswith(("：", ":")) or _HEADING.match(line):
+                gap_list = True
+    return passages
 
 
 def find_gaps(text: str) -> list[dict]:
-    """掃模型的回答，把它提到的資料缺口對照目錄。只在它真的在講「缺資料」時才掃。"""
-    if not text or not _TRIGGER.search(text):
+    """對照回答中真正談到的資料缺口，不掃描其餘證據或分析段落。"""
+    if not text:
         return []
-    out = []
-    for item in CATALOG:
-        if re.search(item["pattern"], text):
-            out.append({"key": item["key"], "status": item["status"], "note": item["note"]})
-    return out
+    passages = _gap_passages(text)
+    return [
+        {field: item[field] for field in ("key", "status", "note", "display_status", "plain_note")}
+        for item in CATALOG
+        if any(re.search(item["pattern"], passage) for passage in passages)
+    ]

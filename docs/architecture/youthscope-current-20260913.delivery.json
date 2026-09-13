@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/Users/ayun/Documents/Project/youthscope-ray-fixes/docs/architecture/youthscope-current-20260913.architecture.json",
+  "output": "/Users/ayun/Documents/Project/youthscope-ray-fixes/docs/architecture/youthscope-current-20260913.html",
+  "specification": {
+    "sha256": "4818f05ab013d9f5bfb513d11f7423071a101109d9f46618e39a37d5b507b1ae",
+    "bytes": 4782
+  },
+  "artifact": {
+    "sha256": "f0e5b4e8219001d027e718cacb1bcde63c76566a180dd47c1d541b2b4b99dc4f",
+    "bytes": 806344
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

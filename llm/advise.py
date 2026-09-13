@@ -165,14 +165,18 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
     if ref is None and mentioned:
         ref = mentioned[0]
     if ref is None and any(k in q for k in SIMILAR_CUE):
-        ref = next((d for d in D["districts"] if d["area"] == "新北市淡水區" and d.get("z")), None)
+        # 沒點名任何區：參考標準用資料選的「本市移入區典型」，不是淡水
+        ref = (D.get("profiles") or {}).get(region)
     if ref:
+        is_profile = "members" in ref                   # 參考是「移入區典型」而不是某一個區
         keys = D["similarity"]
         mig = ((payload.get("trends") or {}).get("migration") or {}).get("areas") or {}
         cands = []
         for d in D["districts"]:
             if d is ref or not d.get("z") or d.get("y") is None:
                 continue
+            if is_profile and d["city"] == region and d["short"] in ref["members"]:
+                continue                                  # 典型的成員本身不當候選
             dist = sum((d["z"][k] - ref["z"][k]) ** 2 for k in keys) ** 0.5
             cands.append((dist, d))
         cands.sort(key=lambda t: t[0])
@@ -185,6 +189,9 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
 
         head = (f"{ref['area']}（近三年淨遷入 {ref['y']:+.1f}%，租 {ref['rent']} 元/坪、工作機會密度 {ref['jobs_density']}、"
                 f"所得中位數 {ref['income']} 萬）")
+        if is_profile:
+            lines.append(f"參考標準怎麼來的：{ref['short']}＝{ref['rule']}，成員 {'、'.join(ref['members'])}。"
+                         "是資料選的，不是我們挑某一個區；下面的「像」是跟這個平均條件比。")
         local = [(dist, d) for dist, d in cands if d["city"] == region][:5]
         if local:
             lines.append(f"{region}內條件最像 {head} 的區（相對本市租金、工作機會密度、所得、青年人口規模四維標準化距離）：")
@@ -192,7 +199,9 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
         lines.append(f"六都內條件最像 {ref['area']} 的區：")
         lines += [_line(dist, d) for dist, d in cands[:6]]
         # 施政切入點：主角（或本市第一候選）跟參考區的條件缺口 × 模型影響力
-        target = subject or (local[0][1] if local else None)
+        # 問「下一個」時切入點要算在候選（條件像但還沒起來）身上，不是算在已經移入的第一名身上
+        nxt_local = [d for _, d in local if d["y"] <= 0.5]
+        target = subject or (nxt_local[0] if any(k in q for k in SIMILAR_CUE) and nxt_local else (local[0][1] if local else None))
         if target is not None and target is not ref:
             betas = {"income": mb["coef"]["ln_income"]["beta_std"], "jobs_density": mb["coef"]["ln_jobs_density"]["beta_std"],
                      "youth": mb["coef"]["ln_youth"]["beta_std"], "rent": mf["coef"]["ln_rent"]["beta_std"]}
@@ -218,8 +227,11 @@ def _drivers_block(payload: dict, region: str, question: str) -> tuple[list[str]
             hint = (f"這題問的是「下一個」：可供驗證的候選來自「{region}內條件最像 {ref['short']}」清單裡挑"
                     f"**條件像但移入還沒起來**的區（{'、'.join(nxt) if nxt else '清單裡沒有，就照實說'}），"
                     f"不要回答 {ref['short']} 本身，也不要回答現在移入最多的區。"
+                    + ("先用一句話講清楚參考標準：不是跟淡水比，是跟「本市近三年淨遷入 ≥ +1% 的區的平均條件」比（成員："
+                       + "、".join(ref["members"]) + "）。" if is_profile else "")
                     + (f"{'、'.join(already)} 已經在移入，可作對照，但不能驗證因果或保證預測有效。" if already else "")
-                    + (f" 並提醒：{ref['short']} 實際移入比這四個條件解釋的高 {ref['resid']:+.1f} 個百分點，多出來的差異原因未知；住宅供給與交通只是可調查方向，模型未納入這兩項，不能稱為已知或最可能原因。條件像仍需要後續資料確認。" if ref.get("resid") is not None else ""))
+                    + (f" 並提醒：{ref['short']} 實際移入比這四個條件解釋的高 {ref['resid']:+.1f} 個百分點，多出來的差異原因未知；住宅供給與交通只是可調查方向，模型未納入這兩項，不能稱為已知或最可能原因。條件像仍需要後續資料確認。" if ref.get("resid") is not None else
+                       " 並提醒：條件像只是假說線索，不是必要或充分條件；住宅供給與交通是模型沒納入的可調查方向，不能稱為已知原因。"))
     return lines, hint
 
 

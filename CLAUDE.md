@@ -409,7 +409,12 @@ Workshop 帳號有哪些模型、開在哪一區，賽前無法得知，一跑�
    drivers 模型 D（rail、rail_recent）：正但不顯著（recent +0.35 pp，t 0.89），其他係數不動、R² 0.408→0.412；方法頁模型 D 段照實寫。
    `sources.population_api()`：107 年 7 月以前用 ODRP005（同欄位），`fetch_migration.FIRST_PERIOD="10607"` → 序列 2018–2026 共 9 點；
    API 到 106 年 7 月為止（10507 查無資料），戶政司網站的年底單齡檔在 Incapsula＋JS 後面抓不到，要再往前只能人工下載。
-✅ 206 個 Python 測試 + 53 項儀表板驗證
+✅ 參考標準改成資料選的「移入區典型」（9/13）：`drivers.inflow_profiles()` → `drivers.json.profiles[城市]`＝本市近三年淨遷入率 ≥ +1%
+   且 18–35 歲 ≥ 5,000 人的區（新北：淡水、林口、八里、五股、汐止）四個條件的平均（z 與原值）；臺北沒有區達標，退取最高 3 區並標 `fallback`。
+   候選卡（`build_unified._plan_notes`）、問答「下一個」（`advise._drivers_block`，切入點算在候選身上）、相似區分頁預設（`#drvRef` 多一個
+   「移入區典型」選項，淡水仍可選）、預警摘要「下一個候選」全部改用它。上台被問「為什麼標準是淡水」→ 不是，標準是「已經在移入的區長什麼樣」。
+   `tests/test_inflow_profile.py` 鎖住。
+✅ 250 個 Python 測試 + 53 項儀表板驗證
 
 ⬜ 教育程度 × 薪資交叉（Spec P1-1，表32 已有教育程度欄位，就差組合）
 ⬜ 表29 縣市別分齡勞參率（可提升信心度，但表頭要小心）

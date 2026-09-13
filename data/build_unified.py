@@ -335,20 +335,22 @@ def _plan_notes(drivers: dict, mt: dict, region: str) -> list[dict]:
     # 小區（茂林、平溪）幾十個人就是好幾個百分點，「移入最多」要看得起碼有 100 人
     big = [k for k in latest if latest[k] is not None and abs((areas[k].get("net") or [0])[-1] or 0) >= 100]
     top = max(big, key=lambda k: latest[k], default=None)
-    ref_name = "新北市淡水區" if region == "新北市" else top
-    ref = next((d for d in ds if d["area"] == ref_name), None)
+    # 參考標準＝資料選的「本市移入區典型」（近三年淨遷入 ≥ +1% 的區的平均條件），不是我們挑淡水
+    ref = (drivers.get("profiles") or {}).get(region)
     notes = []
     if ref:
         keys = drivers["similarity"]
         cands = sorted(((math.sqrt(sum((d["z"][k] - ref["z"][k]) ** 2 for k in keys)), d) for d in ds
-                        if d["city"] == region and d is not ref and -1.5 < d["y"] <= 0.5), key=lambda t: t[0])
+                        if d["city"] == region and d["short"] not in ref["members"] and -1.5 < d["y"] <= 0.5), key=lambda t: t[0])
         if cands:
             d = cands[0][1]
-            p = _plan(d["area"], "candidate", {"short": d["short"], "similar_to": ref["short"], "rate": latest.get(d["area"])})
+            members = "、".join(ref["members"][:4]) + ("…" if len(ref["members"]) > 4 else "")
+            p = _plan(d["area"], "candidate", {"short": d["short"], "similar_to": "本市移入區", "rate": latest.get(d["area"])})
             gaps = _condition_gaps(d, ref, _betas(drivers))
             lever_lines = _lever_lines(d, ref, gaps)
             notes.append({"title": p["title"],
-                          "body": (f"{d['short']}的租金、工作機會、所得、規模四個條件跟{ref['short']}最像（六都相似度排序第一），"
+                          "body": (f"參考標準是資料選的：本市近三年淨遷入率 ≥ +1% 的區（{members}）的平均條件。"
+                                   f"{d['short']}的租金、工作機會、所得、規模四個條件跟這個典型最像，"
                                    f"但近三年淨遷入平均 {d['y']:+.1f}%，移入還沒起來。這張清單把「看什麼、誰做什麼、怎麼驗收」排成三年；"
                                    "青年局主責的只有職涯、創業、公共參與，其餘是轉請或協作。"),
                           "detail": lever_lines + _plan_lines(p), "confidence": "low",

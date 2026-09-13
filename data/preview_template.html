@@ -2333,11 +2333,11 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
     if (!D) { hostSim.innerHTML = '<p class="note">尚未建立驅動模型（python data/drivers.py）。</p>'; return; }
     var all = D.districts.filter(function (d) { return d.y != null; });
     var mine = all.filter(function (d) { return d.city === M.region; });
-    if (!drvState.ref || !all.some(function (d) { return d.area === drvState.ref; })) {
-      // 預設參考區：新北是淡水；其他城市取本市近三年移入最高的區
-      var pref = all.filter(function (d) { return d.area === '新北市淡水區'; })[0];
+    // 參考標準預設＝資料選的「本市移入區典型」（近三年淨遷入 ≥ +1% 的區的平均條件）；也可以在下拉選任何一區
+    var PROFILE = (D.profiles || {})[M.region] || null;
+    if (!drvState.ref || (drvState.ref !== '__profile__' && !all.some(function (d) { return d.area === drvState.ref; }))) {
       var top = mine.slice().sort(function (a, b) { return b.y - a.y; })[0];
-      drvState.ref = (M.region === '新北市' && pref) ? pref.area : (top ? top.area : all[0].area);
+      drvState.ref = PROFILE ? '__profile__' : (top ? top.area : all[0].area);
     }
     var howBody = hostModel;
     renderValidation(howBody);
@@ -2379,20 +2379,22 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
     howBody.appendChild(cf);
 
     // ③ 相似區：跟參考區條件最像的區，以及它們現在的移入狀況
-    var ref = all.filter(function (d) { return d.area === drvState.ref; })[0];
+    var ref = drvState.ref === '__profile__' ? PROFILE : all.filter(function (d) { return d.area === drvState.ref; })[0];
     var sf = document.createElement('figure'); sf.className = 'figbox'; sf.setAttribute('data-chart', 'drivers-similar');
-    var opts = all.filter(function (d) { return d.z; }).sort(function (a, b) { return a.area.localeCompare(b.area, 'zh-Hant'); })
+    var opts = (PROFILE ? '<option value="__profile__"' + (drvState.ref === '__profile__' ? ' selected' : '') + '>' + M.region + '移入區典型（' + PROFILE.members.slice(0, 4).join('、') + (PROFILE.members.length > 4 ? '…' : '') + ' 的平均）</option>' : '')
+      + all.filter(function (d) { return d.z; }).sort(function (a, b) { return a.area.localeCompare(b.area, 'zh-Hant'); })
       .map(function (d) { return '<option value="' + d.area + '"' + (d.area === drvState.ref ? ' selected' : '') + '>' + d.area + '</option>'; }).join('');
     sf.innerHTML = '<p class="fig-title">條件最像 <select id="drvRef" class="sel" style="font:inherit;font-size:.9rem">' + opts + '</select> 的區<span class="scopetag">條件相似度 · 4 個維度</span></p>'
-      + '<p class="fig-sub">用四個條件比：相對本市的租金、工作機會密度、所得中位數、青年人口規模，各換算成「比六都平均高幾格」再算距離（越小越像）。'
-      + '<b>條件像、但移入還沒起來的區，是「下一個」的候選</b>；條件像、已經在移入的區，可用來比較，但不能證明青年是因為這些條件才搬來。換參考區看別的組合。</p><div class="sim"></div>';
+      + '<p class="fig-sub">' + (drvState.ref === '__profile__' && PROFILE ? '<b>參考標準是資料選的</b>：' + PROFILE.rule + '（' + PROFILE.members.join('、') + '）—— 不是跟某一個區比，是跟「已經在移入的區長什麼樣」比。' : '')
+      + '用四個條件比：相對本市的租金、工作機會密度、所得中位數、青年人口規模，各換算成「比六都平均高幾格」再算距離（越小越像）。'
+      + '<b>條件像、但移入還沒起來的區，是「下一個」的候選</b>；條件像、已經在移入的區，可用來比較，但不能證明青年是因為這些條件才搬來。下拉可換成任何一區當參考。</p><div class="sim"></div>';
     hostSim.appendChild(sf);
     sf.querySelector('#drvRef').addEventListener('change', function (e) { drvState.ref = e.target.value; renderDrivers(); });
     var simHost = sf.querySelector('.sim');
     if (!ref || !ref.z) { simHost.innerHTML = '<p class="cap">這個區缺租金樣本，算不了相似度。</p>'; }
     else {
       var keys = D.similarity, kl = { rel_rent: '相對租金', ln_jobs_density: '工作機會', ln_income: '所得', ln_youth: '規模' };
-      var sims = all.filter(function (d) { return d.z && d.area !== ref.area; }).map(function (d) {
+      var sims = all.filter(function (d) { return d.z && d.area !== ref.area && !(ref.members && d.city === M.region && ref.members.indexOf(d.short) >= 0); }).map(function (d) {
         var s2 = 0; keys.forEach(function (k) { s2 += Math.pow(d.z[k] - ref.z[k], 2); });
         return { d: d, dist: Math.sqrt(s2) };
       }).sort(function (a, b) { return a.dist - b.dist; }).slice(0, 8);
@@ -2412,10 +2414,11 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
           + '<polyline style="fill:none;stroke:var(--accent);stroke-width:1.5" points="' + pts.join(' ') + '"/></svg>';
       }
       function row(d, dist, isRef) {
-        var sig = drvSignal(d) || (d.y > 0 ? '近三年淨移入' : '近三年淨流出');
+        var isProfile = !!d.members;
+        var sig = isProfile ? (d.members.length + ' 區的平均') : (drvSignal(d) || (d.y > 0 ? '近三年淨移入' : '近三年淨流出'));
         return '<div class="sim-row' + (isRef ? ' ref' : '') + '"><span class="nm">' + d.area
-          + '<small>' + (isRef ? '參考區' : '距離 ' + dist.toFixed(2)) + ' · 租 ' + (d.rent ? d.rent : '—') + ' 元/坪 · 密度 ' + d.jobs_density + '<br>所得 ' + d.income + ' 萬 · 青年 ' + num(d.youth || 0) + ' 人</small></span>'
-          + prof(d) + spark(d) + '<span class="sg ' + (d.y > 0 ? 'in' : 'out') + '">' + (d.y > 0 ? '+' : '') + d.y.toFixed(1) + '%<br><small>' + sig + '</small></span></div>';
+          + '<small>' + (isRef ? (isProfile ? '參考標準（' + d.members.join('、') + '）' : '參考區') : '距離 ' + dist.toFixed(2)) + ' · 租 ' + (d.rent ? Math.round(d.rent) : '—') + ' 元/坪 · 密度 ' + Number(d.jobs_density).toFixed(2) + '<br>所得 ' + Number(d.income).toFixed(1) + ' 萬 · 青年 ' + num(d.youth || 0) + ' 人</small></span>'
+          + prof(d) + (isProfile ? '<span></span>' : spark(d)) + '<span class="sg ' + (d.y > 0 ? 'in' : 'out') + '">' + (d.y > 0 ? '+' : '') + d.y.toFixed(1) + '%<br><small>' + sig + '</small></span></div>';
       }
       simHost.innerHTML = row(ref, 0, true) + sims.map(function (s) { return row(s.d, s.dist, false); }).join('');
       simHost.insertAdjacentHTML('beforeend', '<p class="cap">每列：四維條件（中線＝六都平均）、' + D.years[0] + '–' + D.years[D.years.length - 1] + ' 淨遷入率走勢（灰線＝0）、近三年平均與訊號。</p>');
@@ -2468,10 +2471,10 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
         plain: '用上面的權重，拿每一區的條件算出「照理該有的移入」，再跟實際比。<b>多出來的</b>是模型看不到的拉力（新市鎮、社宅、捷運通車）；<b>少掉的</b>是條件好但青年沒來，值得去問為什麼。淡水多出 3.5 個百分點 —— 這正是「住宅供給資料還沒接」的證據。',
         code: '差距 = 實際淨遷入率 − 條件解釋的淨遷入率',
         limit: '差距大不代表哪裡出錯，代表有變數不在模型裡。' },
-      { t: '條件相似度', s: '哪些區的條件像淡水', where: '「條件最像 X 的區」、預警摘要「下一個候選」',
+      { t: '條件相似度', s: '哪些區的條件像「已經在移入的區」', where: '「條件最像 X 的區」、預警摘要「下一個候選」',
         plain: '四個條件先各自換算成「比六都平均高幾格」（減平均、除以標準差），這樣租金的「元」和人口的「人」才能放在同一把尺上；再算兩個區在四維空間裡的直線距離，<b>越小越像</b>。租金用的是「相對本市」的租金，因為便宜是相對同一個都會區講的。',
         code: 'z = (x − 六都平均) ÷ 六都標準差　　距離 = √Σ (z_甲 − z_乙)²',
-        limit: '像只是必要條件：淡水的移入有一部分來自住宅供給與輕軌，模型裡沒有。' },
+        limit: '參考標準是資料選的「移入區典型」（本市近三年淨遷入 ≥ +1% 的區的平均條件），不是我們挑淡水；淡水只是成員之一，也可以在下拉單獨選它。像只是必要條件：淡水的移入有一部分來自住宅供給與輕軌，模型裡沒有。' },
       { t: '工作機會密度', s: '這一區的工作夠不夠在地青年做', where: '地圖指標、影響力表',
         plain: '區內有多少個工作（普查的從業員工，工作地在該區）除以區內 15–64 歲的人。<b>遠低於 1</b> 的是通勤外出的住宅區。',
         code: '工作機會密度 = 區內從業員工人數 ÷ 區內 15–64 歲人口',
@@ -3105,14 +3108,14 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       .map(function (k) { var a = mig.areas[k]; return { area: k, short: k.replace(M.region, ''), v: a.rate[a.rate.length - 1], signal: (a.signal || '') + (a.edge ? '·邊緣' : ''), forecast: a.forecast, fy: a.forecast_year }; });
     var inflow = rows.filter(function (r) { return /移入/.test(r.signal); }).sort(function (a, b) { return b.v - a.v; }).slice(0, 3);
     var outflow = rows.filter(function (r) { return /流出/.test(r.signal); }).sort(function (a, b) { return a.v - b.v; }).slice(0, 3);
-    // 下一個候選：本市內條件最像「移入最多的區」（新北＝淡水）、但近三年移入還沒起來的區
+    // 下一個候選：本市內條件最像「移入區典型」（資料選的：近三年淨遷入 ≥ +1% 的區的平均）、但移入還沒起來的區
     var next = [], refName = null;
     if (D && D.districts) {
       var all = D.districts.filter(function (d) { return d.z && d.y != null; });
-      var ref = all.filter(function (d) { return d.area === (M.region === '新北市' ? '新北市淡水區' : WATCH_TOP); })[0];
+      var ref = (D.profiles || {})[M.region];
       if (ref) {
-        refName = ref.short;
-        next = all.filter(function (d) { return d.city === M.region && d.area !== ref.area; }).map(function (d) {
+        refName = '本市移入區';
+        next = all.filter(function (d) { return d.city === M.region && ref.members.indexOf(d.short) < 0; }).map(function (d) {
           var s2 = 0; D.similarity.forEach(function (k) { s2 += Math.pow(d.z[k] - ref.z[k], 2); });
           return { area: d.area, short: d.short, v: d.y / 100, dist: Math.sqrt(s2), y: d.y };
         }).sort(function (a, b) { return a.dist - b.dist; }).filter(function (d) { return d.y <= 0.5 && d.y > -1.5; }).slice(0, 3);
@@ -3135,7 +3138,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
     }
     group('正在移入', 'in', inflow, '近一年淨遷入率', function (r) { return r.short + '的青年持續移入，青年局要提前準備什麼？'; },
       function (r) { return r.signal + (r.forecast != null ? '，' + r.fy + ' 預估 ' + (r.forecast * 100).toFixed(1) + '%' : ''); });
-    group('下一個候選', 'next', next, refName ? '條件像' + refName + '、但還沒起來' : '', function (r) { return r.short + '的條件像' + refName + '但青年還沒移入，怎麼判斷會不會起來、要提前做什麼？'; },
+    group('下一個候選', 'next', next, refName ? '條件像' + refName + '（' + ((D.profiles || {})[M.region] || { members: [] }).members.slice(0, 3).join('、') + '…）、但還沒起來' : '', function (r) { return r.short + '的條件像本市正在移入的區但青年還沒移入，怎麼判斷會不會起來、要提前做什麼？'; },
       function (r) { return '條件相似度 ' + (1 / (1 + r.dist) * 100).toFixed(0) + '%（近三年平均）'; });
     group('持續流出', 'out', outflow, '近一年淨遷入率', function (r) { return r.short + '的青年持續流出，青年局能做什麼？'; });
     if (!host.children.length) host.innerHTML = '<p class="watch-empty">訊號都是「方向不明」—— 看下面的走勢圖。</p>';

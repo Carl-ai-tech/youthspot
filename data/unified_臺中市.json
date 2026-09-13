@@ -1399,6 +1399,1001 @@
    "partial": 4,
    "gap": 11,
    "total": 17
+  },
+  "alignment_walkthrough": {
+   "ages": {
+    "lo": 15,
+    "hi": 64
+   },
+   "population_source": "內政部戶政司 ODRP014 村里戶數、單一年齡人口（單一年齡實數）",
+   "lfpr": {
+    "local_dataset": "行政院主計總處 人力資源調查－表29 年齡組別勞動力參與率",
+    "local_year": 2025,
+    "local_bands": {
+     "15-24": 0.39,
+     "25-29": 0.924,
+     "30-34": 0.928,
+     "35-39": 0.923,
+     "40-44": 0.88,
+     "45-49": 0.843,
+     "50-54": 0.782,
+     "55-59": 0.64,
+     "60-64": 0.427
+    },
+    "national_dataset": "行政院主計總處 人力資源調查－歷年年齡組別勞動力參與率",
+    "national_bands": {
+     "15-19": 0.0968,
+     "20-24": 0.6275,
+     "25-29": 0.9271,
+     "30-34": 0.9223,
+     "35-39": 0.9269,
+     "40-44": 0.888,
+     "45-49": 0.8497,
+     "50-54": 0.7961,
+     "55-59": 0.6336,
+     "60-64": 0.432
+    },
+    "borrowed": [
+     "15-19",
+     "20-24"
+    ],
+    "calibrate_to": "15-24",
+    "calibrate_target": 0.39,
+    "k": 1.0314,
+    "weight": "人口 P(a)（戶政司單一年齡）",
+    "bands": [
+     {
+      "band": "15-19",
+      "official": 0.0998,
+      "origin": "借全國形狀，校準到本市合計",
+      "recomposed": 0.0998,
+      "ok": true
+     },
+     {
+      "band": "20-24",
+      "official": 0.6472,
+      "origin": "借全國形狀，校準到本市合計",
+      "recomposed": 0.6472,
+      "ok": true
+     },
+     {
+      "band": "25-29",
+      "official": 0.924,
+      "origin": "本市自有",
+      "recomposed": 0.924,
+      "ok": true
+     },
+     {
+      "band": "30-34",
+      "official": 0.928,
+      "origin": "本市自有",
+      "recomposed": 0.928,
+      "ok": true
+     },
+     {
+      "band": "35-39",
+      "official": 0.923,
+      "origin": "本市自有",
+      "recomposed": 0.923,
+      "ok": true
+     },
+     {
+      "band": "40-44",
+      "official": 0.88,
+      "origin": "本市自有",
+      "recomposed": 0.88,
+      "ok": true
+     },
+     {
+      "band": "45-49",
+      "official": 0.843,
+      "origin": "本市自有",
+      "recomposed": 0.843,
+      "ok": true
+     },
+     {
+      "band": "50-54",
+      "official": 0.782,
+      "origin": "本市自有",
+      "recomposed": 0.782,
+      "ok": true
+     },
+     {
+      "band": "55-59",
+      "official": 0.64,
+      "origin": "本市自有",
+      "recomposed": 0.64,
+      "ok": true
+     },
+     {
+      "band": "60-64",
+      "official": 0.427,
+      "origin": "本市自有",
+      "recomposed": 0.427,
+      "ok": true
+     }
+    ],
+    "curve": [
+     {
+      "age": 15,
+      "pop": 24763,
+      "rate": 0.0
+     },
+     {
+      "age": 16,
+      "pop": 24179,
+      "rate": 0.0
+     },
+     {
+      "age": 17,
+      "pop": 25629,
+      "rate": 0.0697
+     },
+     {
+      "age": 18,
+      "pop": 27181,
+      "rate": 0.1623
+     },
+     {
+      "age": 19,
+      "pop": 26659,
+      "rate": 0.2484
+     },
+     {
+      "age": 20,
+      "pop": 26655,
+      "rate": 0.4671
+     },
+     {
+      "age": 21,
+      "pop": 27649,
+      "rate": 0.565
+     },
+     {
+      "age": 22,
+      "pop": 28181,
+      "rate": 0.6471
+     },
+     {
+      "age": 23,
+      "pop": 30340,
+      "rate": 0.7227
+     },
+     {
+      "age": 24,
+      "pop": 32036,
+      "rate": 0.7967
+     },
+     {
+      "age": 25,
+      "pop": 37054,
+      "rate": 0.8748
+     },
+     {
+      "age": 26,
+      "pop": 37188,
+      "rate": 0.9208
+     },
+     {
+      "age": 27,
+      "pop": 36229,
+      "rate": 0.9391
+     },
+     {
+      "age": 28,
+      "pop": 38908,
+      "rate": 0.9405
+     },
+     {
+      "age": 29,
+      "pop": 42677,
+      "rate": 0.9417
+     },
+     {
+      "age": 30,
+      "pop": 42608,
+      "rate": 0.9277
+     },
+     {
+      "age": 31,
+      "pop": 42323,
+      "rate": 0.9282
+     },
+     {
+      "age": 32,
+      "pop": 42120,
+      "rate": 0.9284
+     },
+     {
+      "age": 33,
+      "pop": 42578,
+      "rate": 0.9282
+     },
+     {
+      "age": 34,
+      "pop": 41804,
+      "rate": 0.9275
+     },
+     {
+      "age": 35,
+      "pop": 42331,
+      "rate": 0.9284
+     },
+     {
+      "age": 36,
+      "pop": 42995,
+      "rate": 0.927
+     },
+     {
+      "age": 37,
+      "pop": 42381,
+      "rate": 0.9253
+     },
+     {
+      "age": 38,
+      "pop": 41761,
+      "rate": 0.921
+     },
+     {
+      "age": 39,
+      "pop": 40431,
+      "rate": 0.9127
+     }
+    ],
+    "targets": [
+     {
+      "band": "18-24",
+      "value": 0.5274,
+      "direct": 0.39,
+      "gap_pp": 13.74,
+      "weight_label": "人口",
+      "weight_sum": 198701.0,
+      "ages": [
+       {
+        "age": 18,
+        "weight": 27181.0,
+        "rate": 0.1623,
+        "product": 4412.0
+       },
+       {
+        "age": 19,
+        "weight": 26659.0,
+        "rate": 0.2484,
+        "product": 6621.0
+       },
+       {
+        "age": 20,
+        "weight": 26655.0,
+        "rate": 0.4671,
+        "product": 12449.0
+       },
+       {
+        "age": 21,
+        "weight": 27649.0,
+        "rate": 0.565,
+        "product": 15621.0
+       },
+       {
+        "age": 22,
+        "weight": 28181.0,
+        "rate": 0.6471,
+        "product": 18236.0
+       },
+       {
+        "age": 23,
+        "weight": 30340.0,
+        "rate": 0.7227,
+        "product": 21926.0
+       },
+       {
+        "age": 24,
+        "weight": 32036.0,
+        "rate": 0.7967,
+        "product": 25523.0
+       }
+      ]
+     },
+     {
+      "band": "25-29",
+      "value": 0.924,
+      "direct": 0.924,
+      "gap_pp": 0.0,
+      "weight_label": "人口",
+      "weight_sum": 192056.0,
+      "ages": [
+       {
+        "age": 25,
+        "weight": 37054.0,
+        "rate": 0.8748,
+        "product": 32414.0
+       },
+       {
+        "age": 26,
+        "weight": 37188.0,
+        "rate": 0.9208,
+        "product": 34241.0
+       },
+       {
+        "age": 27,
+        "weight": 36229.0,
+        "rate": 0.9391,
+        "product": 34022.0
+       },
+       {
+        "age": 28,
+        "weight": 38908.0,
+        "rate": 0.9405,
+        "product": 36594.0
+       },
+       {
+        "age": 29,
+        "weight": 42677.0,
+        "rate": 0.9417,
+        "product": 40188.0
+       }
+      ]
+     },
+     {
+      "band": "30-35",
+      "value": 0.9281,
+      "direct": 0.9272,
+      "gap_pp": 0.09,
+      "weight_label": "人口",
+      "weight_sum": 253764.0,
+      "ages": [
+       {
+        "age": 30,
+        "weight": 42608.0,
+        "rate": 0.9277,
+        "product": 39529.0
+       },
+       {
+        "age": 31,
+        "weight": 42323.0,
+        "rate": 0.9282,
+        "product": 39285.0
+       },
+       {
+        "age": 32,
+        "weight": 42120.0,
+        "rate": 0.9284,
+        "product": 39104.0
+       },
+       {
+        "age": 33,
+        "weight": 42578.0,
+        "rate": 0.9282,
+        "product": 39519.0
+       },
+       {
+        "age": 34,
+        "weight": 41804.0,
+        "rate": 0.9275,
+        "product": 38773.0
+       },
+       {
+        "age": 35,
+        "weight": 42331.0,
+        "rate": 0.9284,
+        "product": 39300.0
+       }
+      ]
+     },
+     {
+      "band": "18-35",
+      "value": 0.8033,
+      "direct": 0.7606,
+      "gap_pp": 4.27,
+      "weight_label": "人口",
+      "weight_sum": 644521.0,
+      "ages": [
+       {
+        "age": 18,
+        "weight": 27181.0,
+        "rate": 0.1623,
+        "product": 4412.0
+       },
+       {
+        "age": 19,
+        "weight": 26659.0,
+        "rate": 0.2484,
+        "product": 6621.0
+       },
+       {
+        "age": 20,
+        "weight": 26655.0,
+        "rate": 0.4671,
+        "product": 12449.0
+       },
+       {
+        "age": 21,
+        "weight": 27649.0,
+        "rate": 0.565,
+        "product": 15621.0
+       },
+       {
+        "age": 22,
+        "weight": 28181.0,
+        "rate": 0.6471,
+        "product": 18236.0
+       },
+       {
+        "age": 23,
+        "weight": 30340.0,
+        "rate": 0.7227,
+        "product": 21926.0
+       },
+       {
+        "age": 24,
+        "weight": 32036.0,
+        "rate": 0.7967,
+        "product": 25523.0
+       },
+       {
+        "age": 25,
+        "weight": 37054.0,
+        "rate": 0.8748,
+        "product": 32414.0
+       },
+       {
+        "age": 26,
+        "weight": 37188.0,
+        "rate": 0.9208,
+        "product": 34241.0
+       },
+       {
+        "age": 27,
+        "weight": 36229.0,
+        "rate": 0.9391,
+        "product": 34022.0
+       },
+       {
+        "age": 28,
+        "weight": 38908.0,
+        "rate": 0.9405,
+        "product": 36594.0
+       },
+       {
+        "age": 29,
+        "weight": 42677.0,
+        "rate": 0.9417,
+        "product": 40188.0
+       },
+       {
+        "age": 30,
+        "weight": 42608.0,
+        "rate": 0.9277,
+        "product": 39529.0
+       },
+       {
+        "age": 31,
+        "weight": 42323.0,
+        "rate": 0.9282,
+        "product": 39285.0
+       },
+       {
+        "age": 32,
+        "weight": 42120.0,
+        "rate": 0.9284,
+        "product": 39104.0
+       },
+       {
+        "age": 33,
+        "weight": 42578.0,
+        "rate": 0.9282,
+        "product": 39519.0
+       },
+       {
+        "age": 34,
+        "weight": 41804.0,
+        "rate": 0.9275,
+        "product": 38773.0
+       },
+       {
+        "age": 35,
+        "weight": 42331.0,
+        "rate": 0.9284,
+        "product": 39300.0
+       }
+      ]
+     }
+    ],
+    "confidence_rule": "人口是實數、勞參率是拆過的曲線 → 一律 medium（全國形狀套到本市有偏差）"
+   },
+   "unemployment": {
+    "local_dataset": "行政院主計總處 人力資源調查－表37 年齡組別失業率",
+    "local_year": 2025,
+    "local_bands": {
+     "15-24": 0.12,
+     "25-29": 0.046,
+     "30-34": 0.038,
+     "35-39": 0.026,
+     "40-44": 0.032,
+     "45-49": 0.02,
+     "50-54": 0.018,
+     "55-59": 0.024,
+     "60-64": 0.012
+    },
+    "national_dataset": "行政院主計總處 人力資源調查－歷年年齡組別失業率",
+    "national_bands": {
+     "15-19": 0.0921,
+     "20-24": 0.116,
+     "25-29": 0.0577,
+     "30-34": 0.0337,
+     "35-39": 0.0253,
+     "40-44": 0.0233,
+     "45-49": 0.0248,
+     "50-54": 0.0223,
+     "55-59": 0.0201,
+     "60-64": 0.018
+    },
+    "borrowed": [
+     "15-19",
+     "20-24"
+    ],
+    "calibrate_to": "15-24",
+    "calibrate_target": 0.12,
+    "k": 1.0608,
+    "weight": "勞動力 P(a)×勞參率(a)（失業率的分母是勞動力，不是人口）",
+    "bands": [
+     {
+      "band": "15-19",
+      "official": 0.0977,
+      "origin": "借全國形狀，校準到本市合計",
+      "recomposed": 0.0977,
+      "ok": true
+     },
+     {
+      "band": "20-24",
+      "official": 0.123,
+      "origin": "借全國形狀，校準到本市合計",
+      "recomposed": 0.123,
+      "ok": true
+     },
+     {
+      "band": "25-29",
+      "official": 0.046,
+      "origin": "本市自有",
+      "recomposed": 0.046,
+      "ok": true
+     },
+     {
+      "band": "30-34",
+      "official": 0.038,
+      "origin": "本市自有",
+      "recomposed": 0.038,
+      "ok": true
+     },
+     {
+      "band": "35-39",
+      "official": 0.026,
+      "origin": "本市自有",
+      "recomposed": 0.026,
+      "ok": true
+     },
+     {
+      "band": "40-44",
+      "official": 0.032,
+      "origin": "本市自有",
+      "recomposed": 0.032,
+      "ok": true
+     },
+     {
+      "band": "45-49",
+      "official": 0.02,
+      "origin": "本市自有",
+      "recomposed": 0.02,
+      "ok": true
+     },
+     {
+      "band": "50-54",
+      "official": 0.018,
+      "origin": "本市自有",
+      "recomposed": 0.018,
+      "ok": true
+     },
+     {
+      "band": "55-59",
+      "official": 0.024,
+      "origin": "本市自有",
+      "recomposed": 0.024,
+      "ok": true
+     },
+     {
+      "band": "60-64",
+      "official": 0.012,
+      "origin": "本市自有",
+      "recomposed": 0.012,
+      "ok": true
+     }
+    ],
+    "curve": [
+     {
+      "age": 15,
+      "labour": 0,
+      "rate": 0.0977
+     },
+     {
+      "age": 16,
+      "labour": 0,
+      "rate": 0.0977
+     },
+     {
+      "age": 17,
+      "labour": 1787,
+      "rate": 0.0851
+     },
+     {
+      "age": 18,
+      "labour": 4412,
+      "rate": 0.0958
+     },
+     {
+      "age": 19,
+      "labour": 6621,
+      "rate": 0.1024
+     },
+     {
+      "age": 20,
+      "labour": 12449,
+      "rate": 0.131
+     },
+     {
+      "age": 21,
+      "labour": 15621,
+      "rate": 0.1326
+     },
+     {
+      "age": 22,
+      "labour": 18236,
+      "rate": 0.1328
+     },
+     {
+      "age": 23,
+      "labour": 21926,
+      "rate": 0.1246
+     },
+     {
+      "age": 24,
+      "labour": 25523,
+      "rate": 0.105
+     },
+     {
+      "age": 25,
+      "labour": 32414,
+      "rate": 0.0667
+     },
+     {
+      "age": 26,
+      "labour": 34241,
+      "rate": 0.0496
+     },
+     {
+      "age": 27,
+      "labour": 34022,
+      "rate": 0.0408
+     },
+     {
+      "age": 28,
+      "labour": 36594,
+      "rate": 0.0387
+     },
+     {
+      "age": 29,
+      "labour": 40188,
+      "rate": 0.0373
+     },
+     {
+      "age": 30,
+      "labour": 39529,
+      "rate": 0.0416
+     },
+     {
+      "age": 31,
+      "labour": 39285,
+      "rate": 0.0404
+     },
+     {
+      "age": 32,
+      "labour": 39104,
+      "rate": 0.0387
+     },
+     {
+      "age": 33,
+      "labour": 39519,
+      "rate": 0.0362
+     },
+     {
+      "age": 34,
+      "labour": 38773,
+      "rate": 0.033
+     },
+     {
+      "age": 35,
+      "labour": 39300,
+      "rate": 0.0278
+     },
+     {
+      "age": 36,
+      "labour": 39857,
+      "rate": 0.0256
+     },
+     {
+      "age": 37,
+      "labour": 39217,
+      "rate": 0.0247
+     },
+     {
+      "age": 38,
+      "labour": 38461,
+      "rate": 0.0253
+     },
+     {
+      "age": 39,
+      "labour": 36901,
+      "rate": 0.0267
+     }
+    ],
+    "targets": [
+     {
+      "band": "18-24",
+      "value": 0.1206,
+      "direct": 0.12,
+      "gap_pp": 0.06,
+      "weight_label": "勞動力",
+      "weight_sum": 104789.0,
+      "ages": [
+       {
+        "age": 18,
+        "weight": 4412.0,
+        "rate": 0.0958,
+        "product": 423.0
+       },
+       {
+        "age": 19,
+        "weight": 6621.0,
+        "rate": 0.1024,
+        "product": 678.0
+       },
+       {
+        "age": 20,
+        "weight": 12449.0,
+        "rate": 0.131,
+        "product": 1631.0
+       },
+       {
+        "age": 21,
+        "weight": 15621.0,
+        "rate": 0.1326,
+        "product": 2071.0
+       },
+       {
+        "age": 22,
+        "weight": 18236.0,
+        "rate": 0.1328,
+        "product": 2421.0
+       },
+       {
+        "age": 23,
+        "weight": 21926.0,
+        "rate": 0.1246,
+        "product": 2733.0
+       },
+       {
+        "age": 24,
+        "weight": 25523.0,
+        "rate": 0.105,
+        "product": 2680.0
+       }
+      ]
+     },
+     {
+      "band": "25-29",
+      "value": 0.046,
+      "direct": 0.046,
+      "gap_pp": 0.0,
+      "weight_label": "勞動力",
+      "weight_sum": 177460.0,
+      "ages": [
+       {
+        "age": 25,
+        "weight": 32414.0,
+        "rate": 0.0667,
+        "product": 2163.0
+       },
+       {
+        "age": 26,
+        "weight": 34241.0,
+        "rate": 0.0496,
+        "product": 1697.0
+       },
+       {
+        "age": 27,
+        "weight": 34022.0,
+        "rate": 0.0408,
+        "product": 1389.0
+       },
+       {
+        "age": 28,
+        "weight": 36594.0,
+        "rate": 0.0387,
+        "product": 1416.0
+       },
+       {
+        "age": 29,
+        "weight": 40188.0,
+        "rate": 0.0373,
+        "product": 1498.0
+       }
+      ]
+     },
+     {
+      "band": "30-35",
+      "value": 0.0363,
+      "direct": 0.036,
+      "gap_pp": 0.03,
+      "weight_label": "勞動力",
+      "weight_sum": 235510.0,
+      "ages": [
+       {
+        "age": 30,
+        "weight": 39529.0,
+        "rate": 0.0416,
+        "product": 1644.0
+       },
+       {
+        "age": 31,
+        "weight": 39285.0,
+        "rate": 0.0404,
+        "product": 1586.0
+       },
+       {
+        "age": 32,
+        "weight": 39104.0,
+        "rate": 0.0387,
+        "product": 1515.0
+       },
+       {
+        "age": 33,
+        "weight": 39519.0,
+        "rate": 0.0362,
+        "product": 1431.0
+       },
+       {
+        "age": 34,
+        "weight": 38773.0,
+        "rate": 0.033,
+        "product": 1280.0
+       },
+       {
+        "age": 35,
+        "weight": 39300.0,
+        "rate": 0.0278,
+        "product": 1093.0
+       }
+      ]
+     },
+     {
+      "band": "18-35",
+      "value": 0.0567,
+      "direct": 0.0564,
+      "gap_pp": 0.03,
+      "weight_label": "勞動力",
+      "weight_sum": 517758.0,
+      "ages": [
+       {
+        "age": 18,
+        "weight": 4412.0,
+        "rate": 0.0958,
+        "product": 423.0
+       },
+       {
+        "age": 19,
+        "weight": 6621.0,
+        "rate": 0.1024,
+        "product": 678.0
+       },
+       {
+        "age": 20,
+        "weight": 12449.0,
+        "rate": 0.131,
+        "product": 1631.0
+       },
+       {
+        "age": 21,
+        "weight": 15621.0,
+        "rate": 0.1326,
+        "product": 2071.0
+       },
+       {
+        "age": 22,
+        "weight": 18236.0,
+        "rate": 0.1328,
+        "product": 2421.0
+       },
+       {
+        "age": 23,
+        "weight": 21926.0,
+        "rate": 0.1246,
+        "product": 2733.0
+       },
+       {
+        "age": 24,
+        "weight": 25523.0,
+        "rate": 0.105,
+        "product": 2680.0
+       },
+       {
+        "age": 25,
+        "weight": 32414.0,
+        "rate": 0.0667,
+        "product": 2163.0
+       },
+       {
+        "age": 26,
+        "weight": 34241.0,
+        "rate": 0.0496,
+        "product": 1697.0
+       },
+       {
+        "age": 27,
+        "weight": 34022.0,
+        "rate": 0.0408,
+        "product": 1389.0
+       },
+       {
+        "age": 28,
+        "weight": 36594.0,
+        "rate": 0.0387,
+        "product": 1416.0
+       },
+       {
+        "age": 29,
+        "weight": 40188.0,
+        "rate": 0.0373,
+        "product": 1498.0
+       },
+       {
+        "age": 30,
+        "weight": 39529.0,
+        "rate": 0.0416,
+        "product": 1644.0
+       },
+       {
+        "age": 31,
+        "weight": 39285.0,
+        "rate": 0.0404,
+        "product": 1586.0
+       },
+       {
+        "age": 32,
+        "weight": 39104.0,
+        "rate": 0.0387,
+        "product": 1515.0
+       },
+       {
+        "age": 33,
+        "weight": 39519.0,
+        "rate": 0.0362,
+        "product": 1431.0
+       },
+       {
+        "age": 34,
+        "weight": 38773.0,
+        "rate": 0.033,
+        "product": 1280.0
+       },
+       {
+        "age": 35,
+        "weight": 39300.0,
+        "rate": 0.0278,
+        "product": 1093.0
+       }
+      ]
+     }
+    ],
+    "confidence_rule": "區間跟官方組完全一樣 → high；拆 vs 不拆差 ≤ 0.5 pp → medium；> 0.5 pp → low（回測：失業率 20–24 歲有高峰，組內形狀拆不準）"
+   }
   }
  },
  "benchmark": {

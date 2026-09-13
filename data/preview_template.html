@@ -785,6 +785,8 @@ mark.unv{background:var(--second-soft);color:#8a5200;border-bottom:2px solid var
 .mcol p{margin:0;line-height:1.6;}
 .mcol ul{margin:.4rem 0 0;padding-left:1.1rem;}
 .mcol li{margin:.15rem 0;}
+.mdet{margin:.4rem 0 .8rem;}
+.mdet summary{cursor:pointer;font-size:.8rem;color:var(--accent);}
 .dl{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem;}
 .dl .more{display:inline-block;margin:0;font:inherit;font-size:.8rem;font-weight:600;color:var(--accent);background:var(--card);border:1px solid var(--rule-soft);border-radius:999px;padding:.35rem .9rem;cursor:pointer;}
 .dl .more.ghost{color:var(--ink-3);}
@@ -1505,7 +1507,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       <div class="row" data-row="backtest"><button type="button" class="row-h" aria-expanded="false" data-tab="backtest"><span class="n">03</span><span class="t"><b>回測（歷史驗證）</b><small>假裝在 2022／2023／2024 年，訊號的準確率、抓到率、預測誤差 vs 基準</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="backtest" hidden><div id="mBacktest"></div></div></div>
       <div class="row" data-row="xcheck"><button type="button" class="row-h" aria-expanded="false" data-tab="xcheck"><span class="n">04</span><span class="t"><b>交叉驗證（官方遷徙）</b><small>世代淨遷入 vs 戶政司登記的遷入−遷出：跨區 Pearson 相關</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="xcheck" hidden><div id="mXcheck"></div></div></div>
       <div class="row" data-row="drivers"><button type="button" class="row-h" aria-expanded="false" data-tab="drivers"><span class="n">05</span><span class="t"><b>因子模型（多元迴歸）</b><small>OLS 設定、係數與標準誤、t 值、R²、假設與不能講的話</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="drivers" hidden><div id="mDrivers"></div></div></div>
-      <div class="row" data-row="align"><button type="button" class="row-h" aria-expanded="false" data-tab="align"><span class="n">06</span><span class="t"><b>資料對齊的信心度與回測</b><small>五歲組拆成單一年齡的誤差實測；高／中／低信心怎麼判</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="align" hidden><div id="mAlign"></div></div></div>
+      <div class="row" data-row="align"><button type="button" class="row-h" aria-expanded="false" data-tab="align"><span class="n">06</span><span class="t"><b>口徑對齊：勞參率、失業率到底怎麼切</b><small>本市每一步的真實數字（官方組值 → 借形狀校準 → 單一年齡 → 重組 → 拆 vs 不拆）；回測與信心度規則</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="align" hidden><div id="mAlign"></div></div></div>
       <div class="row" data-row="limits"><button type="button" class="row-h" aria-expanded="false" data-tab="limits"><span class="n">07</span><span class="t"><b>AI 查核與已知限制</b><small>逐數字比對規則；戶籍≠居住、事件年、租金樣本、普查年份、點數</small></span><span class="pm" aria-hidden="true"></span></button><div class="tabpane" data-pane="limits" hidden><div id="mLimits"></div></div></div>
     </div>
   </section>
@@ -2693,8 +2695,71 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
     var bt2 = (M.backtest || []).map(function (b) {
       return '<tr><td>' + b.curve + '</td><td>' + fx(b.ours_pp) + '</td><td>' + fx(b.naive_pp) + '</td><td>' + Math.round(b.ratio * 100) + '%</td><td>' + b.verdict + '</td></tr>';
     }).join('');
-    $('mAlign').innerHTML = '<div class="mth">'
-      + '<h4>問題</h4><p>官方的比率型指標（勞參率、失業率）只有五歲組；要切成 18–35 歲得先拆成單一年齡。拆得對不對，用<b>回測</b>量：把官方五歲組併成十歲組、再拆回五歲組，跟真值比。</p>'
+    // 逐步數字：這一段是「被問到我們到底怎麼切」的答案，每個數字都是引擎真的算出來的中間值
+    var W = M.alignment_walkthrough, walk = '';
+    function bandTable(obj) {
+      return '<div class="tw"><table><thead><tr><th>官方分組</th><th>組值</th><th>來源</th><th>拆完再加權平均</th><th>等於官方值？</th></tr></thead><tbody>'
+        + obj.bands.filter(function (r) { return parseInt(r.band, 10) < 40; }).map(function (r) {
+          return '<tr><td>' + r.band + '</td><td>' + pct(r.official, 2).replace('+', '') + '</td><td>' + r.origin + '</td><td>' + pct(r.recomposed, 2).replace('+', '') + '</td><td>' + (r.ok ? '<span class="ok">是</span>' : '否') + '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    function curveTable(obj, wkey, wlabel) {
+      return '<div class="tw"><table><thead><tr><th>歲</th>' + obj.curve.map(function (c) { return '<th>' + c.age + '</th>'; }).join('') + '</tr></thead><tbody>'
+        + '<tr><td>' + wlabel + '</td>' + obj.curve.map(function (c) { return '<td>' + num(c[wkey]) + '</td>'; }).join('') + '</tr>'
+        + '<tr><td>單一年齡值</td>' + obj.curve.map(function (c) { return '<td>' + (c.rate * 100).toFixed(1) + '%</td>'; }).join('') + '</tr>'
+        + '</tbody></table></div>';
+    }
+    function targetTable(obj, ratio) {
+      return '<div class="tw"><table><thead><tr><th>目標區間</th><th>Σ 權重 × 單一年齡值</th><th>Σ 權重</th><th>＝ 拆組結果</th><th>不拆（直接用官方組值加權）</th><th>差</th><th>信心</th></tr></thead><tbody>'
+        + obj.targets.map(function (t) {
+          var prod = t.ages.reduce(function (acc, x) { return acc + x.product; }, 0);
+          // 失業率：跟官方分組一樣（25–29）→ 高；拆 vs 不拆 ≤ 0.5 pp → 中；否則低。勞參率一律中。
+          var conf = !ratio ? 'medium' : (t.band === '25-29' ? 'high' : (t.gap_pp != null && t.gap_pp <= 0.5 ? 'medium' : 'low'));
+          return '<tr><td>' + t.band + '</td><td>' + num(prod) + '</td><td>' + num(t.weight_sum) + '</td><td><b>' + (t.value * 100).toFixed(2) + '%</b></td>'
+            + '<td>' + (t.direct == null ? '—' : (t.direct * 100).toFixed(2) + '%') + '</td><td>' + (t.gap_pp == null ? '—' : t.gap_pp.toFixed(2) + ' pp') + '</td><td>' + confLabel(conf) + '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    function ageDetail(obj, band, wlabel) {
+      var t = obj.targets.filter(function (x) { return x.band === band; })[0]; if (!t) return '';
+      return '<details class="mdet"><summary>展開 ' + band + ' 歲逐歲算式</summary><div class="tw"><table><thead><tr><th>歲</th><th>' + wlabel + '（權重）</th><th>單一年齡值</th><th>權重 × 值</th></tr></thead><tbody>'
+        + t.ages.map(function (x) { return '<tr><td>' + x.age + '</td><td>' + num(x.weight) + '</td><td>' + (x.rate * 100).toFixed(2) + '%</td><td>' + num(x.product) + '</td></tr>'; }).join('')
+        + '<tr><td><b>合計</b></td><td><b>' + num(t.weight_sum) + '</b></td><td></td><td><b>' + num(t.ages.reduce(function (a2, x) { return a2 + x.product; }, 0)) + '</b></td></tr>'
+        + '</tbody></table></div><p>' + band + ' 歲 = ' + num(t.ages.reduce(function (a2, x) { return a2 + x.product; }, 0)) + ' ÷ ' + num(t.weight_sum) + ' = <b>' + (t.value * 100).toFixed(2) + '%</b></p></details>';
+    }
+    if (W && W.lfpr && W.unemployment) {
+      var L = W.lfpr, U = W.unemployment;
+      var t1824L = L.targets.filter(function (t) { return t.band === '18-24'; })[0];
+      var maxGapU = Math.max.apply(null, U.targets.map(function (t) { return t.gap_pp || 0; }));
+      var lab = function (lo, hi) { return U.curve.filter(function (c) { return c.age >= lo && c.age <= hi; }).reduce(function (a2, c) { return a2 + c.labour; }, 0); };
+      var share1517 = lab(15, 24) ? lab(15, 17) / lab(15, 24) * 100 : 0;
+      var lb = Object.keys(L.local_bands).filter(function (k) { return parseInt(k, 10) < 40; }).map(function (k) { return k + ' 歲 ' + (L.local_bands[k] * 100).toFixed(1) + '%'; }).join('、');
+      var nb = L.borrowed.map(function (k) { return k + ' 歲 ' + (L.national_bands[k] * 100).toFixed(1) + '%'; }).join('、');
+      var ub = Object.keys(U.local_bands).filter(function (k) { return parseInt(k, 10) < 40; }).map(function (k) { return k + ' 歲 ' + (U.local_bands[k] * 100).toFixed(1) + '%'; }).join('、');
+      var unb = U.borrowed.map(function (k) { return k + ' 歲 ' + (U.national_bands[k] * 100).toFixed(1) + '%'; }).join('、');
+      walk = '<h4>' + M.region + '的勞參率是怎麼切的（每一步都是真實數字）</h4>'
+        + '<p><b>為什麼要切</b>：《青年基本法》是 18–35 歲，官方勞參率是五歲組（15–19、20–24…），18 歲卡在 15–19 那一組的肚子裡。切法只有一個原則：<b>只在組內重新分配，每一組加總永遠等於官方數字</b>。</p>'
+        + '<p><b>第 1 步 · 拿官方組值</b>：' + M.region + '自有（' + L.local_dataset.replace('行政院主計總處 ', '') + '，' + L.local_year + '）：' + lb + '。'
+        + '縣市表 15–24 歲沒有再細分，所以 <b>' + L.borrowed.join('、') + ' 歲借全國的形狀</b>（' + nb + '），乘一個校準係數 <b>k = ' + fx(L.k, 4) + '</b>，讓這兩組按人口加權後剛好等於本市自己的 15–24 歲 ' + (L.calibrate_target * 100).toFixed(1) + '%。借的是「形狀」（18 歲那道坎），水準仍是本市的。</p>'
+        + '<p><b>第 2 步 · 五歲組拆成單一年齡</b>：組中點連一條不會亂衝的曲線（PCHIP），再把每一組內部等比例縮放，讓「Σ 人口 × 單一年齡值 ÷ Σ 人口」精確等於該組的官方值。權重＝' + L.weight + '。下表右兩欄就是這個檢查：</p>'
+        + bandTable(L)
+        + '<p>拆出來的單一年齡曲線（人口是戶政司實數，勞參率是拆出來的）：</p>' + curveTable(L, 'pop', '人口')
+        + '<p><b>第 3 步 · 重組成我們的區間</b>：勞參率 = Σ(人口 × 單一年齡勞參率) ÷ Σ 人口。「不拆」那一欄是把 18–24 直接當 15–24 用（' + (L.calibrate_target * 100).toFixed(1) + '%）—— 差 ' + (t1824L ? t1824L.gap_pp.toFixed(1) : '—') + ' 個百分點，因為 15–17 歲幾乎不工作，這就是為什麼一定要拆。</p>'
+        + targetTable(L, false) + ageDetail(L, '18-24', '人口') + ageDetail(L, '30-35', '人口')
+        + '<p><b>信心度</b>：' + L.confidence_rule + '。</p>'
+        + '<h4>' + M.region + '的失業率是怎麼切的</h4>'
+        + '<p><b>跟勞參率的差別只有一個：權重不是人口，是勞動力</b>（' + U.weight + '）。失業率的定義是失業人數 ÷ 勞動力，用人口當權重會校不回官方值。</p>'
+        + '<p><b>第 1 步 · 拿官方組值</b>：' + M.region + '自有（' + U.local_dataset.replace('行政院主計總處 ', '') + '，' + U.local_year + '）：' + ub + '。'
+        + U.borrowed.join('、') + ' 歲借全國形狀（' + unb + '），校準係數 <b>k = ' + fx(U.k, 4) + '</b>，讓兩組按勞動力加權後等於本市 15–24 歲 ' + (U.calibrate_target * 100).toFixed(1) + '%。</p>'
+        + '<p><b>第 2 步 · 拆成單一年齡</b>（同一套 PCHIP ＋ 組內校準，權重換成勞動力）：</p>' + bandTable(U)
+        + curveTable(U, 'labour', '勞動力')
+        + '<p><b>第 3 步 · 重組</b>：失業率 = Σ(勞動力 × 單一年齡失業率) ÷ Σ 勞動力。這裡「拆 vs 不拆」幾乎一樣（最大差 ' + maxGapU.toFixed(2) + ' pp），因為 18–24 幾乎整段落在 15–24 組內（15–17 歲只占該組勞動力 ' + share1517.toFixed(1) + '%）、30–35 幾乎整段在 30–34 組內。<b>兩種算法一致才給中信心</b>；25–29 跟官方分組一模一樣，直接抄、高信心。</p>'
+        + targetTable(U, true) + ageDetail(U, '18-24', '勞動力')
+        + '<p><b>信心度</b>：' + U.confidence_rule + '。回測（下表）說失業率曲線<b>組內</b>拆不準（20–24 歲有高峰），所以像「20–24 歲單獨」這種區間我們不給；但 18–24、30–35 這種幾乎等於整組的區間，拆不拆結果一樣，可以用。</p>'
+        + '<h4>被問「口徑怎麼對齊」的一句話版本</h4>'
+        + '<p>「人口是戶政司單一年齡的實數，不用切。比率型的勞參率、失業率官方只有五歲組，我們把每一組在組內拆成單一年齡、加總永遠等於官方值，再按 18–35 重組；能對得上官方分組的直接抄（高信心），拆過的標中信心，回測證明拆不準的組內區間不給。每一筆點開都看得到用哪一種。」</p>';
+    }
+    $('mAlign').innerHTML = '<div class="mth">' + walk
+      + '<h4>拆得對不對：回測</h4><p>官方的比率型指標（勞參率、失業率）只有五歲組；要切成 18–35 歲得先拆成單一年齡。拆得對不對，用<b>回測</b>量：把官方五歲組併成十歲組、再拆回五歲組，跟真值比。</p>'
       + '<div class="tw"><table><thead><tr><th>曲線</th><th>拆組誤差 pp</th><th>不拆（直接用大組）pp</th><th>比例</th><th>結論</th></tr></thead><tbody>' + bt2 + '</tbody></table></div>'
       + '<h4>信心度規則（從回測來）</h4><ul>'
       + '<li><b>高</b>：官方分組剛好對上（25–29 歲薪資、單一年齡人口）。</li>'

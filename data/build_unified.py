@@ -764,6 +764,124 @@ def _unemployment_curve(ref, region: str, refresh) -> tuple[dict[int, float], di
     return ungroup(bands, labour), local
 
 
+def _alignment_walkthrough(ref, region: str, refresh) -> dict:
+    """勞參率與失業率「怎麼切」的逐步數字，給白皮書用。跟正式記錄走同一條路（同一個 ref、同一條曲線），
+    只是把中間值留下來：官方組值 → 借全國形狀校準到本市合計（k）→ 拆單一年齡（PCHIP＋組內校準，
+    每組加權平均仍等於官方值）→ 按目標區間重組 → 跟「不拆」對照 → 信心度。"""
+    from data.fetch_lfpr_local import fetch_local_lfpr
+    ages = list(range(AGE_MIN, AGE_MAX + 1))
+    pop = {a: ref.population(a) for a in ages}
+    lfpr = {a: ref.rate(LFPR, a) for a in ages}
+    labour = {a: pop[a] * lfpr[a] for a in ages}
+    ages_show = [a for a in ages if a <= 39]          # 白皮書只要看到 39 歲，夠涵蓋所有目標區間
+
+    def _band_rows(bands_local: dict, bands_final: dict, weight: dict, curve: dict, borrowed: list):
+        rows = []
+        for (lo, hi), v in sorted(bands_final.items()):
+            ws = [a for a in range(lo, hi + 1) if a in weight and weight[a] > 0]
+            if not ws:
+                continue
+            back = sum(weight[a] * curve[a] for a in ws) / sum(weight[a] for a in ws)   # 拆完再加權平均，應等於組值
+            rows.append({"band": f"{lo}-{hi}", "official": round(v, 4),
+                         "origin": "本市自有" if (lo, hi) in bands_local else "借全國形狀，校準到本市合計",
+                         "recomposed": round(back, 4), "ok": abs(back - v) < 1e-6})
+        return rows
+
+    def _target_rows(weight: dict, curve: dict, group_rate, weight_label: str):
+        out = []
+        for band in BANDS:
+            ws = [a for a in band.ages() if a in weight and weight[a] > 0]
+            w = sum(weight[a] for a in ws)
+            if not w:
+                continue
+            value = sum(weight[a] * curve[a] for a in ws) / w
+            direct_ages = [a for a in ws if group_rate(a) is not None]
+            direct = (sum(weight[a] * group_rate(a) for a in direct_ages) / sum(weight[a] for a in direct_ages)) if direct_ages else None
+            out.append({"band": band.label, "value": round(value, 4), "direct": round(direct, 4) if direct is not None else None,
+                        "gap_pp": round(abs(value - direct) * 100, 2) if direct is not None else None,
+                        "weight_label": weight_label, "weight_sum": round(w, 0),
+                        "ages": [{"age": a, "weight": round(weight[a], 0), "rate": round(curve[a], 4),
+                                  "product": round(weight[a] * curve[a], 0)} for a in ws]})
+        return out
+
+    # ── 勞參率：權重 = 人口 P(a)；官方組值 = 表29 縣市（25 歲以上）＋ 全國 15-19／20-24 形狀校準到本市 15-24 ──
+    lf_local = fetch_local_lfpr(region, refresh=refresh)
+    lf_bands = {b: v for b, v in ref.official_bands(LFPR)}
+    lf_bands = {(b.start, b.end): v for b, v in lf_bands.items()}
+    lf_borrowed = [b for b in lf_bands if b not in lf_local["by_band"]]
+    lf_target = lf_local["by_band"].get((15, 24))
+    _, nat_lf = latest(labour_force_participation(refresh=refresh))
+    lf_k = None
+    if lf_target and lf_borrowed:
+        w = sum(pop[a] for b in lf_borrowed for a in range(b[0], b[1] + 1) if a in pop)
+        got = sum(pop[a] * nat_lf[b] for b in lf_borrowed for a in range(b[0], b[1] + 1) if a in pop and b in nat_lf)
+        lf_k = round(lf_target * w / got, 4) if got else None
+
+    def lf_group(a):
+        for (lo, hi), v in lf_local["by_band"].items():
+            if lo <= a <= hi:
+                return v
+        return None
+
+    # ── 失業率：權重 = 勞動力 P(a)·LFPR(a)；官方組值 = 表37 縣市（15-24、25-29、30-34…）＋ 全國 15-19／20-24 形狀 ──
+    curve, un_local = _unemployment_curve(ref, region, refresh)
+    _, nat_un = latest(unemployment(refresh=refresh))
+    nat_un = {b: v for b, v in nat_un.items() if AGE_MIN <= b[0] and b[1] <= AGE_MAX}
+    un_borrowed = [b for b in nat_un if b not in un_local["by_band"]]
+    un_target = un_local["by_band"].get((15, 24))
+    un_k = None
+    if un_target and un_borrowed:
+        w = sum(labour[a] for b in un_borrowed for a in range(b[0], b[1] + 1) if a in labour)
+        got = sum(labour[a] * nat_un[b] for b in un_borrowed for a in range(b[0], b[1] + 1) if a in labour)
+        un_k = (un_target * w / got) if got else None
+    un_final = dict(nat_un)
+    if un_k:
+        for b in un_borrowed:
+            un_final[b] = nat_un[b] * un_k
+    for b, v in un_local["by_band"].items():
+        if b in un_final:
+            un_final[b] = v
+
+    def un_group(a):
+        for (lo, hi), v in un_local["by_band"].items():
+            if lo <= a <= hi:
+                return v
+        return None
+
+    return {
+        "ages": {"lo": AGE_MIN, "hi": AGE_MAX},
+        "population_source": f"{sources.POPULATION_DATASET}（單一年齡實數）",
+        "lfpr": {
+            "local_dataset": lf_local["dataset"], "local_year": lf_local["year"],
+            "local_bands": {f"{lo}-{hi}": round(v, 4) for (lo, hi), v in sorted(lf_local["by_band"].items()) if hi <= AGE_MAX + 5},
+            "national_dataset": sources.LFPR_DATASET,
+            "national_bands": {f"{lo}-{hi}": round(v, 4) for (lo, hi), v in sorted(nat_lf.items()) if b_ok(lo, hi)},
+            "borrowed": [f"{lo}-{hi}" for lo, hi in lf_borrowed], "calibrate_to": "15-24", "calibrate_target": round(lf_target, 4) if lf_target else None, "k": lf_k,
+            "weight": "人口 P(a)（戶政司單一年齡）",
+            "bands": _band_rows(lf_local["by_band"], lf_bands, pop, lfpr, lf_borrowed),
+            "curve": [{"age": a, "pop": round(pop[a]), "rate": round(lfpr[a], 4)} for a in ages_show],
+            "targets": _target_rows(pop, lfpr, lf_group, "人口"),
+            "confidence_rule": "人口是實數、勞參率是拆過的曲線 → 一律 medium（全國形狀套到本市有偏差）",
+        },
+        "unemployment": {
+            "local_dataset": un_local["dataset"], "local_year": un_local["year"],
+            "local_bands": {f"{lo}-{hi}": round(v, 4) for (lo, hi), v in sorted(un_local["by_band"].items()) if hi <= AGE_MAX + 5},
+            "national_dataset": sources.UNEMPLOYMENT_DATASET,
+            "national_bands": {f"{lo}-{hi}": round(v, 4) for (lo, hi), v in sorted(nat_un.items())},
+            "borrowed": [f"{lo}-{hi}" for lo, hi in un_borrowed], "calibrate_to": "15-24", "calibrate_target": round(un_target, 4) if un_target else None, "k": round(un_k, 4) if un_k else None,
+            "weight": "勞動力 P(a)×勞參率(a)（失業率的分母是勞動力，不是人口）",
+            "bands": _band_rows(un_local["by_band"], un_final, labour, curve, un_borrowed),
+            "curve": [{"age": a, "labour": round(labour[a]), "rate": round(curve[a], 4)} for a in ages_show],
+            "targets": _target_rows(labour, curve, un_group, "勞動力"),
+            "confidence_rule": "區間跟官方組完全一樣 → high；拆 vs 不拆差 ≤ 0.5 pp → medium；> 0.5 pp → low（回測：失業率 20–24 歲有高峰，組內形狀拆不準）",
+        },
+    }
+
+
+def b_ok(lo: int, hi: int) -> bool:
+    return lo >= AGE_MIN and hi <= AGE_MAX
+
+
 def _unemployment_records(ref, region: str, refresh) -> list[AlignedRecord]:
     """失業率：比率型，以勞動力為權重重新聚合到我們的四個標準分組。"""
     curve, local = _unemployment_curve(ref, region, refresh)
@@ -1916,6 +2034,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
             "backtest_migration": backtest_mig,
             "sensitivity_migration": meta_sensitivity if migration else None,
             "rights": _rights_coverage(records, trends),
+            "alignment_walkthrough": _alignment_walkthrough(ref, region, refresh),
         },
         "benchmark": bench,
         "trends": trends,

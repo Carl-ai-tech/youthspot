@@ -628,6 +628,18 @@ const legendOk = /class="ramp"/.test(legendHtml) && /分位數分級/.test(legen
 total++;
 if (!legendOk) fail++;
 console.log(`${legendOk ? '✅' : '❌'}　地圖圖例有色階與分級說明`);
+
+// 白皮書 06：勞參率／失業率「怎麼切」要有本市真實數字（k、每組拆完等於官方值、逐歲算式、拆 vs 不拆）
+{
+  const ah = el('mAlign').innerHTML || '';
+  const hasK = /k = \d\.\d{4}/.test(ah);
+  const hasBands = (ah.match(/借全國形狀，校準到本市合計/g) || []).length >= 4;   // 勞參率 2 組 + 失業率 2 組
+  const hasAges = /展開 18-24 歲逐歲算式/.test(ah) && /18-24 歲 = /.test(ah);
+  const hasGap = /不拆（直接用官方組值加權）/.test(ah) && / pp<\/td>/.test(ah);
+  const ok = hasK && hasBands && hasAges && hasGap;
+  total++; if (!ok) fail++;
+  console.log(`${ok ? '✅' : '❌'}　白皮書口徑對齊：校準係數 ${hasK ? '✓' : '✗'}、每組加總＝官方值 ${hasBands ? '✓' : '✗'}、逐歲算式 ${hasAges ? '✓' : '✗'}、拆 vs 不拆 ${hasGap ? '✓' : '✗'}`);
+}
 console.log();
 
 // 下一個淡水：散佈圖、係數、相似區、殘差四張圖都要畫出來；參考區預設淡水；散佈圖上色要走 style

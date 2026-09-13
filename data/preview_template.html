@@ -3176,7 +3176,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
 
   // ── 地圖 ───────────────────────────────────────────────
   // 界線是 build 時在 Python 端解好的 SVG 路徑，這裡不需要任何地圖函式庫。
-  var MAP_METRICS = ['人口數', '青年淨遷入率', '青年人口年變化率', '勞動力參與率', '綜合所得中位數', '工作機會密度', '住宅每坪月租中位數', '青年女性一般生育率'];
+  var MAP_METRICS = ['人口數', '青年淨遷入率', '青年人口年變化率', '勞動力參與率', '綜合所得中位數', '工作機會密度', '住宅每坪月租中位數'];   // 生育率不放地圖，問答與權益覆蓋仍有
   // 全體層級的指標（財政部所得、普查工作機會）沒有分齡：先照年齡層找，找不到退到「全體」
   function findMap(area, metric) {
     return find(area, state.band, metric) || find(area, '全體', metric);
@@ -3193,9 +3193,20 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
   };
   var MAP_INVERT = ['青年淨遷入率', '青年人口年變化率'];   // 值越低越紅（流出／減少是壞事）
   var mapYear = null;   // null＝最新一年（記錄本身）；選了年份就從 trends 的年序列取值
-  // 有逐年序列的指標：從 trends 拿；其餘只有一年（人口＝最新期別、密度＝110 年普查）
+  // 有逐年序列的指標：從 trends 拿；其餘只有一年（密度＝110 年普查、勞參率＝最新一期）
   function mapSeries(metric) {
     var T2 = DATA.trends || {};
+    var mg = T2.migration;
+    var hasPop = mg && mg.areas && Object.keys(mg.areas).some(function (a) { return mg.areas[a].pop; });
+    if (metric === '人口數' && hasPop) {
+      // 18–35 歲人口逐年：跟世代淨遷入用同一批 ODRP014 快照（每年 7 月），所以有 2018 起每一年
+      return { years: mg.years, get: function (a, y) { var e = mg.areas[a]; var i = mg.years.indexOf(y); return e && e.pop ? e.pop[i] : undefined; },
+               note: '戶政司 ODRP014，每年 7 月一期（18–35 歲）' };
+    }
+    if (metric === '青年人口年變化率' && hasPop) {
+      return { years: mg.years.slice(1), get: function (a, y) { var e = mg.areas[a]; var i = mg.years.indexOf(y); return (e && e.pop && e.pop[i] != null && e.pop[i - 1]) ? +(e.pop[i] / e.pop[i - 1] - 1).toFixed(4) : undefined; },
+               note: '18–35 歲人口比前一年多幾 %（含世代縮小，不是遷徙）' };
+    }
     if (metric === '青年淨遷入率' && T2.migration && T2.migration.areas) {
       return { years: T2.migration.years, get: function (a, y) { var e = T2.migration.areas[a]; var i = T2.migration.years.indexOf(y); return e && e.rate ? e.rate[i] : undefined; },
                note: '世代追蹤，每年 7 月一期' };

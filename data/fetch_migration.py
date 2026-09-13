@@ -62,7 +62,8 @@ def fetch_migration(region: str = "新北市", *, refresh: bool = False, period:
     """回傳 {"years": [...], "areas": {區: {"net": [...], "rate": [...], "base": [...]}}, "city": {...}}。
 
     years[i] 是「t 期」的西元年；net[i] 是 t−1 → t 這一年的淨遷入人數；
-    rate[i] = net / 一年前的同世代人口（17–34 歲）。
+    rate[i] = net / 一年前的同世代人口（17–34 歲）；pop[i] = t 期的 18–35 歲人口（同一份 ODRP014 快照，
+    給地圖的逐年人口與年變化率用 —— 這份資料每年都有，不是只有最新一期）。
     """
     latest = period or latest_period(refresh=refresh)
     periods = _periods(latest)
@@ -81,9 +82,10 @@ def fetch_migration(region: str = "新北市", *, refresh: bool = False, period:
     areas: dict[str, dict] = {}
     names = sorted(set().union(*[set(s) for s in snaps.values()]))
     for name in names:
-        net, rate, base, naive = [], [], [], []
+        net, rate, base, naive, pop = [], [], [], [], []
         for prev_p, cur_p in zip(periods, periods[1:]):
             cur, prev = snaps[cur_p].get(name), snaps[prev_p].get(name)
+            pop.append(sum(cur[a] for a in range(AGE_LO, AGE_HI + 1)) if cur else None)
             if not cur or not prev:
                 net.append(None); rate.append(None); base.append(None); naive.append(None)
                 continue
@@ -91,7 +93,7 @@ def fetch_migration(region: str = "新北市", *, refresh: bool = False, period:
             b = sum(prev[a - 1] for a in range(AGE_LO, AGE_HI + 1))
             net.append(n); base.append(b); rate.append(round(n / b, 4) if b else None)
             naive.append(sum(cur[a] for a in range(AGE_LO, AGE_HI + 1)) - sum(prev[a] for a in range(AGE_LO, AGE_HI + 1)))
-        areas[name] = {"net": net, "rate": rate, "base": base, "naive": naive}
+        areas[name] = {"net": net, "rate": rate, "base": base, "naive": naive, "pop": pop}
 
     # 檢查：各區淨遷入加總 = 全市
     for i, y in enumerate(years):

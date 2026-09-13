@@ -172,7 +172,7 @@ def _migration_trend(mig: dict, region: str) -> dict:
     for area, a in mig["areas"].items():
         pts = [(y, r) for y, r in zip(years, a["rate"]) if r is not None]
         c = _classify_migration(pts)          # 跟回測（backtest_migration.py）同一個判定
-        entry = {"net": a["net"], "rate": a["rate"], "naive": a["naive"]}
+        entry = {"net": a["net"], "rate": a["rate"], "naive": a["naive"], "pop": a.get("pop")}
         if c is not None:
             tr = c["trend"]
             entry.update({

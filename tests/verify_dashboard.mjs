@@ -550,6 +550,20 @@ console.log(`${natOk ? '✅' : '❌'}　48 年全國分齡序列有畫出來`);
   total++; if (!ok) fail++;
   console.log(`${ok ? '✅' : '❌'}　地圖四個指標鈕（含行政區所得與工作機會密度）`);
 }
+// 人口數與年變化率要有逐年（ODRP014 每年都有，不是只有最新一期）；生育率不放地圖鈕
+{
+  const mmh = el('mapMetric').innerHTML || '';
+  const noFert = mmh.indexOf('青年女性一般生育率') < 0;
+  (el('mapMetric').handlers.click || []).forEach((f) => f({ target: { dataset: { m: '人口數' } } }));
+  const yrs = (el('mapYears').innerHTML || '').match(/data-y="(\d{4})"/g) || [];
+  const popYears = yrs.length >= 9 && yrs[0].indexOf('2018') >= 0;
+  (el('mapMetric').handlers.click || []).forEach((f) => f({ target: { dataset: { m: '青年人口年變化率' } } }));
+  const chgYears = ((el('mapYears').innerHTML || '').match(/data-y="(\d{4})"/g) || []).length >= 8;
+  (el('mapMetric').handlers.click || []).forEach((f) => f({ target: { dataset: { m: '青年淨遷入率' } } }));
+  const ok = noFert && popYears && chgYears;
+  total++; if (!ok) fail++;
+  console.log(`${ok ? '✅' : '❌'}　地圖人口數有 ${yrs.length} 個年份鈕（2018 起）、年變化率逐年 ${chgYears ? '✓' : '✗'}、生育率不在地圖鈕 ${noFert ? '✓' : '✗'}`);
+}
 
 // 折線圖必須可以滑。先前每一張都是靜止的圖片 —— 看得到形狀，
 // 卻讀不出任何一年的值，圖表等於只剩裝飾功能。

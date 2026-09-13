@@ -150,6 +150,69 @@ def _run_pipeline() -> dict:
     }
 
 
+def _finish_scan(table, *, inferred: dict | None) -> dict:
+    """掃描（圖片／文字）共用的收尾：三道查核的狀態要分開講，對齊只在該對齊的時候做。
+
+    F08：比率型（失業率、勞參率、平均薪資）不能相加也不能用人數公式對齊 —— computed_total 給 None、
+         total_check 給 not_applicable、aligned 給空並說明要分子分母。
+    F14：地區／年份缺一個，仍回讀到的表與缺漏欄位（missing），待補填後再對齊；不再丟 ValueError。
+    """
+    from engine.schema import MetricKind
+    inferred = inferred or {}
+    is_rate = table.kind is not MetricKind.EXTENSIVE
+    computed = None if is_rate else (sum(r.value for r in table.rows) if table.rows else None)
+    printed = getattr(table, "printed_total", None)
+    if is_rate:
+        total_check = "not_applicable"
+    elif printed is None or computed is None:
+        total_check = "skipped"                      # 表上沒印合計：沒做比對，不能說「合計通過」
+    else:
+        total_check = "fail" if any("合計對不上" in i for i in table.issues) else "pass"
+    missing = [k for k in ("region", "year") if not getattr(table, k, None)]
+
+    aligned, align_note = [], ""
+    if is_rate:
+        align_note = ("比率型指標（" + table.metric + "）不能相加、也不能用人數公式對齊；"
+                      "要對齊成 18–35 歲需要各組的分子與分母（例如失業人數與勞動力），這張表沒有，所以只呈現解析結果。")
+    elif missing:
+        align_note = "缺 " + "、".join({"region": "地區", "year": "年份"}[k] for k in missing) + "，補填後才能建立可追溯的對齊記錄。"
+    elif not table.usable_rows:
+        align_note = "沒有任何一列的年齡分組解析得出來，無法對齊。"
+    elif not table.trustworthy:
+        align_note = "查核有待確認項目，先不對齊；確認後再對齊。"
+    else:
+        from engine import ReferenceData, TARGET_BANDS, YOUTH_BAND, align_extensive
+        from llm.scan_table import to_source_records
+        ref = ReferenceData.load()
+        pool = to_source_records(table)
+        for band in list(TARGET_BANDS) + [YOUTH_BAND]:
+            rec = align_extensive(ref, pool, band)
+            if rec is not None:
+                d = rec.to_dict()
+                if inferred:
+                    d["provenance"]["note"] = (d["provenance"].get("note") or "") + "；含模型語意判讀的分組（推定）"
+                aligned.append(d)
+
+    return {
+        "ok": True,
+        "metric": table.metric, "unit": table.unit, "kind": table.kind.value,
+        "region": getattr(table, "region", None), "year": getattr(table, "year", None),
+        "missing": missing,
+        "summary": table.summary(),
+        "trustworthy": table.trustworthy,
+        "total_check": total_check,
+        "issues": table.issues, "unreadable": table.unreadable,
+        "rows": [{"age_label": r.age_label, "value": r.value,
+                  "band": r.band.label if r.band else None,
+                  "inferred": bool(r.band) and any(v.get("applied_label") == r.band.label for v in inferred.values())}
+                 for r in table.rows],
+        "printed_total": printed,
+        "computed_total": computed,
+        "aligned": aligned,
+        "align_note": align_note,
+    }
+
+
 def _ai(action: str, body: dict, backend=None) -> dict:
     """四種 AI 工作。數字一律來自引擎，模型只負責看懂與表達。
 
@@ -185,48 +248,36 @@ def _ai(action: str, body: dict, backend=None) -> dict:
 
     if action == "scan":
         import base64
+        import os
         import tempfile
-        from llm.scan_table import read_table, to_source_records
+        from llm.scan_table import read_table
         raw = base64.b64decode(body.get("image_base64", ""))
         suffix = body.get("suffix", ".png")
-        with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as fh:
-            fh.write(raw)
-            path = fh.name
-        table = read_table(path, backend)
-
-        # 對齊也在這裡做完，畫面才能演完整的故事：AI 讀表 → 三道查核 → 引擎對齊。
-        # 只回「讀到幾列」的話，使用者看不到掃描檔怎麼變成 18–35 歲的數字。
-        aligned = []
-        if table.usable_rows and table.trustworthy:
-            from engine import ReferenceData, TARGET_BANDS, YOUTH_BAND, align_extensive
-            ref = ReferenceData.load()
-            pool = to_source_records(table)
-            for band in list(TARGET_BANDS) + [YOUTH_BAND]:
-                rec = align_extensive(ref, pool, band)
-                if rec is not None:
-                    aligned.append(rec.to_dict())
-
-        return {
-            "ok": True,
-            "metric": table.metric, "unit": table.unit,
-            "region": getattr(table, "region", None), "year": getattr(table, "year", None),
-            "summary": table.summary(),
-            "trustworthy": table.trustworthy,
-            "issues": table.issues,
-            "unreadable": table.unreadable,
-            "rows": [{"age_label": r.age_label, "value": r.value,
-                      "band": r.band.label if r.band else None} for r in table.rows],
-            "printed_total": getattr(table, "printed_total", None),
-            "computed_total": sum(r.value for r in table.rows) if table.rows else None,
-            "aligned": aligned,
-            "model": getattr(backend, "model", backend.name),
-        }
+        path = None
+        try:
+            with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as fh:
+                fh.write(raw)
+                path = fh.name
+            table = read_table(path, backend)
+        finally:
+            # F14：成功或失敗都清掉暫存圖，不留原始影像
+            if path:
+                try:
+                    os.unlink(path)
+                except OSError:
+                    pass
+        if body.get("region"):
+            table.region = body["region"]
+        if body.get("year"):
+            table.year = int(body["year"])
+        out = _finish_scan(table, inferred=None)
+        out["model"] = getattr(backend, "model", backend.name)
+        return out
 
     if action == "scan_text":
         # CSV／貼上的表格文字。規則解析（不用模型）→ 解析不了的年齡標籤才交模型判讀（§5.6）
         # → 同一套三道查核 → 同一個引擎對齊。回傳格式跟 scan 一樣，前端共用同一個畫面。
         from llm.table_text import read_table_text
-        from llm.scan_table import to_source_records
         text = body.get("text", "")
         if not text.strip():
             raise ValueError("沒有表格文字")
@@ -235,35 +286,11 @@ def _ai(action: str, body: dict, backend=None) -> dict:
             table.region = body["region"]
         if body.get("year"):
             table.year = int(body["year"])
-        aligned = []
-        if table.usable_rows and table.trustworthy and table.region and table.year:
-            from engine import ReferenceData, TARGET_BANDS, YOUTH_BAND, align_extensive
-            ref = ReferenceData.load()
-            pool = to_source_records(table)
-            for band in list(TARGET_BANDS) + [YOUTH_BAND]:
-                rec = align_extensive(ref, pool, band)
-                if rec is not None:
-                    d = rec.to_dict()
-                    if inferred:
-                        d["provenance"]["note"] = (d["provenance"].get("note") or "") + "；含模型語意判讀的分組（推定）"
-                    aligned.append(d)
-        return {
-            "ok": True, "source": "text",
-            "metric": table.metric, "unit": table.unit,
-            "region": table.region, "year": table.year,
-            "summary": table.summary(),
-            "trustworthy": table.trustworthy,
-            "issues": table.issues, "unreadable": table.unreadable,
-            "rows": [{"age_label": r.age_label, "value": r.value,
-                      "band": r.band.label if r.band else None,
-                      "inferred": bool(r.band) and any(v.get("applied_label") == r.band.label for v in inferred.values())}
-                     for r in table.rows],
-            "inferred": inferred,
-            "printed_total": table.printed_total,
-            "computed_total": sum(r.value for r in table.rows) if table.rows else None,
-            "aligned": aligned,
-            "model": getattr(backend, "model", backend.name) if inferred else "規則解析，未呼叫模型",
-        }
+        out = _finish_scan(table, inferred=inferred)
+        out["source"] = "text"
+        out["inferred"] = inferred
+        out["model"] = getattr(backend, "model", backend.name) if inferred else "規則解析，未呼叫模型"
+        return out
 
     if action == "advise":
         # 政策問答：規則先產生可稽核的發現，模型在那上面做推理，每個數字再驗一次。

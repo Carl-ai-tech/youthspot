@@ -25,9 +25,10 @@ from .backend import Backend
 # 容許小數點後的四捨五入差異（模型常把 59.9 寫成 59.90）。
 TOLERANCE = 0.05
 
-_NUMBER = re.compile(r"\d[\d,]*(?:\.\d+)?")
+_NUMBER = re.compile(r"(?<![\d.])[+\-−]?\d[\d,]*(?:\.\d+)?")   # 帶正負號一起抓（F03）
 # 年齡區間（18-35、25～29）：兩邊都是標籤不是數據
-_RANGE = re.compile(r"\d+\s*[-–~～]\s*\d+")
+# 年齡區間才跳過：兩端都 ≤ 3 位數而且後面接「歲」。「8888–9999 人」這種資料範圍要查（F03）
+_RANGE = re.compile(r"\d{1,3}\s*[-–~～]\s*\d{1,3}(?=\s*歲)")
 
 
 @dataclass
@@ -63,8 +64,7 @@ def _fmt(rec: dict) -> str:
     if unit == "%":
         return f"{v * 100:.1f}%"
     if unit == "‰":
-        # 26.2‰ 常被寫成「26‰」：整數寫法也算對上（千分率不會跟別的池值撞）
-        return [(v, False), (round(v, 1), False), (float(round(v)), False)]
+        return f"{v:.1f}‰"
     if unit.startswith("萬"):
         return f"{v:.1f} {unit}"
     if unit == "倍":
@@ -168,9 +168,14 @@ def _numbers_in(text: str) -> list[str]:
             continue                                  # 18-35 歲
         raw = m.group()
         try:
-            val = float(raw.replace(",", ""))
+            val = float(raw.replace(",", "").replace("−", "-"))
         except ValueError:
             continue
+        # 「-」也可能是範圍符號（8888–9999 的第二個數）或連字：只有前面是空白／標點／行首才當負號
+        if raw[0] in "+-−":
+            prev = text[:m.start()]
+            if prev and not prev[-1].isspace() and prev[-1] not in "（(：:，,、；;「」『』\"'":
+                raw = raw[1:]; val = abs(val)
         head = text[:m.start()].rstrip()
         tail = text[m.end():].lstrip()
         if head.endswith("第"):
@@ -181,8 +186,8 @@ def _numbers_in(text: str) -> list[str]:
             continue                                  # 2024 年
         if tail.startswith("個百分點"):
             continue                                  # 相差 7.4 個百分點
-        if val <= 1:
-            continue                                  # 0／1 多半是語氣
+        if val in (0.0, 1.0) and "." not in raw and not _is_percent(text, raw, 0):
+            continue                                  # 「0」「1」多半是語氣；0.9%、1.0% 這種要查（F03）
         # 條列編號：行首（允許前面有 markdown 記號）的「2.」「3、」「4)」。
         # 不擋的話，模型只要用編號清單回答，每個編號都會被報成「編造的數字」——
         # 誤報跟漏報一樣傷：讀的人一旦發現查核會冤枉正確的數字，
@@ -227,19 +232,19 @@ def _spellings(v: float, unit: str) -> list[tuple[float, bool]]:
     if unit == "%":
         # 負的變化率（-0.04 = -4.0%）：模型寫「-4.0%」，數字擷取器抓到的是「4.0」（不含負號），
         # 所以正負兩種寫法都放進池子，不然年變化率永遠被報成編造
-        out = [(round(v * 100, 1), True), (round(v * 100, 2), True), (v, False)]
-        if v < 0:
-            out += [(round(-v * 100, 1), True), (round(-v * 100, 2), True)]
-        return out
+        # 負的變化率只放帶號的值：verify 對沒帶號的寫法用絕對值比、帶號的照號比（F03），
+        # 所以「流出 5.2%」對得上 −5.2%，「+5.2%」對不上
+        return [(round(v * 100, 1), True), (round(v * 100, 2), True), (v, False)]
+    if unit == "‰":
+        # 26.2‰ 常被寫成「26‰」：整數寫法也算對上。千分率的值不會跟百分比的值撞：
+        # 26.2‰ 的池值是 26.2，寫成「26.2%」的數字擷取器會判成百分比 → 只准對比率型（pct=True）→ 對不上，正確。
+        return [(v, False), (round(v, 1), False), (float(round(v)), False)]
     if unit.startswith("萬"):
         return [(v, False), (round(v, 1), False), (round(v * 10000), False)]   # 59.9 萬 → 599,000 元
     if unit == "倍":
         return [(v, False), (round(v, 1), False), (round(v, 2), False)]
     if unit in ("人", "個"):
-        out = [(v, False), (round(v / 10000, 1), False)]           # 832,214 人 → 83.2 萬人
-        if v < 0:                                                   # 淨遷入 −48 人：擷取器抓到的是 48
-            out += [(-v, False), (round(-v / 10000, 1), False)]
-        return out
+        return [(v, False), (round(v / 10000, 1), False)]           # 832,214 人 → 83.2 萬人；負值靠 verify 的絕對值比對
     return [(v, False), (round(v, 1), False)]
 
 
@@ -279,13 +284,16 @@ def verify(text: str, records: list[dict], payload: dict | None = None,
     ok, bad = [], []
     seen: dict[str, int] = {}
     for raw in _numbers_in(text):
-        val = float(raw.replace(",", ""))
+        signed = raw[0] in "+-−"
+        val = float(raw.replace(",", "").replace("−", "-"))
         nth = seen.get(raw, 0)
         seen[raw] = nth + 1
         pct = _is_percent(text, raw, nth)
-        # 寫成百分比的數字只能對上比率型的值；其餘寫法維持寬鬆
-        if any(abs(val - p) <= max(TOLERANCE, abs(p) * 0.005) and (p_pct or not pct)
-               for p, p_pct in pool):
+        # 寫成百分比的數字只能對上比率型的值；其餘寫法維持寬鬆。
+        # 帶正負號的要對號（「+5.2%」不能對上 −5.2% 的記錄）；沒帶號的兩邊都可（「流出 5.2%」）（F03）
+        def _hit(p):
+            return abs(val - p) <= max(TOLERANCE, abs(p) * 0.005) if signed else abs(abs(val) - abs(p)) <= max(TOLERANCE, abs(p) * 0.005)
+        if any(_hit(p) and (p_pct or not pct) for p, p_pct in pool):
             ok.append(raw)
         else:
             bad.append(raw)

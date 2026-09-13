@@ -155,7 +155,7 @@ def _migration_records(mig: dict, region: str) -> list[AlignedRecord]:
             source_age_group="18-35（世代追蹤：今年 a 歲 − 去年 a−1 歲）",
             method=Method.EXACT_MATCH, weight=1.0, confidence=Confidence.HIGH,
             note=(f"一年前 17–34 歲 {base:,} 人，今年 18–35 歲扣掉同世代後淨增 {net:+,} 人。"
-                  "扣掉了世代縮小與可忽略的死亡（18–35 歲年死亡率約 0.05%），剩下的是淨遷徙。"
+                  "扣掉了世代縮小；死亡（18–35 歲年死亡率約 0.05%）與戶籍登記異動未另外校正，是世代餘額的近似淨遷徙。"
                   "戶籍資料：量的是把戶籍遷來的青年，未遷籍的就學就業者看不到。"),
         )
         out.append(AlignedRecord(region=area, year=y, age_group="18-35", gender="total",
@@ -184,7 +184,7 @@ def _migration_trend(mig: dict, region: str) -> dict:
                 "level_t": round(c["level_t"], 2) if c["level_t"] not in (float("inf"), float("-inf")) else None,
                 "level_significant": c["level_significant"], "edge": c["edge"],
                 "level_t_crit": None,
-                "forecast_year": years[-1] + 1, "forecast": round(c["forecast"], 4), "margin": round(c["margin"], 4),
+                "forecast_year": c["forecast_year"], "forecast": round(c["forecast"], 4), "margin": round(c["margin"], 4),
                 "confidence": c["confidence"], "positive_years": sum(1 for _, r in pts if r > 0), "n": c["n"],
             })
         out_areas[area] = entry
@@ -225,7 +225,7 @@ def _fertility_records(births: dict, women: dict, region: str) -> list[AlignedRe
 
 
 def _migration_origins(off: dict, region: str) -> dict:
-    """各區遷入者從哪裡來（全年齡、近 12 個月）。支持「臺北青年外溢到新北」的故事。"""
+    """各區遷入者從哪裡來（全年齡、近 12 個月）。全年齡的登記遷入來源，不是青年 —— 只能當「移入區承接臺北居住需求」的參考。"""
     areas = {}
     for area, a in off["areas"].items():
         o = a.get("origins") or {}
@@ -234,7 +234,7 @@ def _migration_origins(off: dict, region: str) -> dict:
             areas[area] = {"total": tot, **{ORIGIN_LABELS[k]: o[k] for k in ORIGIN_FIELDS + ("rest",)}}
     return {"source": off["source"], "url": off["url"], "months": f"{off['months'][0]}–{off['months'][-1]}",
             "labels": [ORIGIN_LABELS[k] for k in ORIGIN_FIELDS + ("rest",)], "areas": areas,
-            "note": "官方登記的遷入人數按原戶籍所在地分（全年齡）；同市其他區＝市內搬家。"}
+            "note": "官方登記的遷入人數按原戶籍所在地分（全年齡，含所有登記異動）；同市其他區＝市內搬家。不是青年的數字。"}
 
 
 def _migration_sensitivity(mig: dict, region: str) -> dict:
@@ -287,8 +287,9 @@ def _validate_migration(mig: dict, off: dict, region: str) -> dict:
         "n": n, "r": round(r, 3) if r is not None else None, "same_sign": same,
         "city_official": off["areas"][region]["net"], "city_cohort": mig["areas"][region]["net"][-1],
         "pairs": pairs[:6] + pairs[-4:],
-        "note": ("官方遷入遷出是全年齡的登記數，我們的是 18–35 歲用單一年齡兩期相減算的；"
-                 "同一年、同一批區，兩者跨區相關 r 越接近 1，代表世代追蹤抓到的就是真實的搬遷。"),
+        "note": ("官方遷入遷出是全年齡的登記異動數（含初設、除籍），我們的是 18–35 歲用單一年齡兩期相減算的世代餘額；"
+                 "同一年、同一批區，兩者跨區相關 r 高＝兩種算法的相對大小一致（有限一致性參考）。"
+                 "r 不是預測準確率，也不能證明青年搬遷或實際居住；青年沒有獨立的官方登記遷徙可以直接對。"),
     }
 
 
@@ -1721,7 +1722,7 @@ def build(*, refresh: bool = False, region: str = "新北市") -> dict:
     except Exception as exc:  # noqa: BLE001
         print(f"  ⚠ 生育率未載入：{exc}")
 
-    # 世代淨遷徙：人口差扣掉少子化與死亡，剩下的才是青年搬進搬出。2019– 每年一點，
+    # 世代淨遷徙：人口差扣掉少子化（世代縮小）；死亡未扣（0.05%，近似）。2018– 每年一點，
     # 每區一條序列 → 線性外推 + t 檢定 → 移入／流出訊號。局長要的「預測」就是這條。
     migration = None
     try:

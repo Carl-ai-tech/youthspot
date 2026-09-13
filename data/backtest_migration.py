@@ -58,6 +58,7 @@ def classify(pts: list[tuple[int, float]]) -> dict | None:
     2022／2023 事件年先互相抵銷（neutralize_shock），再做所有判定。"""
     if len(pts) < 3:
         return None
+    last_year = max(x for x, _ in pts)          # 原始序列的最後一年；合併事件年後最後一個 x 可能是 2022.5
     pts = neutralize_shock(pts)
     tr = fit(pts)
     if tr is None:
@@ -75,7 +76,9 @@ def classify(pts: list[tuple[int, float]]) -> dict | None:
         signal = "轉為流出"
     else:
         signal = "方向不明"
-    yhat, margin = tr.predict(pts[-1][0] + 1)
+    # F06：預測時點一律是「原始最後一年 + 1」。cutoff 2023 合併後最後 x 是 2022.5，
+    # 之前用 pts[-1][0] + 1 = 2023.5 去對 2024 的實際值，提前了半年。
+    yhat, margin = tr.predict(last_year + 1)
     # 水準檢定：這個區「平均起來」是不是真的在淨移入／流出（單樣本 t，H0：平均 = 0）。
     # 跟斜率檢定是兩件事：淡水每年都 +2～4%，斜率 ≈ 0（不顯著）但水準非常顯著 ——
     # 「持續移入」靠的是水準，訊號的信心度也要看水準，不然穩定的區反而被標成低信心。
@@ -112,7 +115,7 @@ def classify(pts: list[tuple[int, float]]) -> dict | None:
     return {"signal": signal, "forecast": yhat, "margin": margin, "slope": tr.slope,
             "significant": tr.significant, "confidence": confidence, "n": n, "trend": tr,
             "mean": mean, "sd": sd, "level_t": level_t, "level_significant": level_sig, "mean_ci": ci,
-            "edge": edge, "points": pts}
+            "edge": edge, "points": pts, "forecast_year": last_year + 1}
 
 
 def _hindcast_city(region: str, period: str | None) -> dict:

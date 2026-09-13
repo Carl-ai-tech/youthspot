@@ -2726,6 +2726,17 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
         + '<tr><td><b>合計</b></td><td><b>' + num(t.weight_sum) + '</b></td><td></td><td><b>' + num(t.ages.reduce(function (a2, x) { return a2 + x.product; }, 0)) + '</b></td></tr>'
         + '</tbody></table></div><p>' + band + ' 歲 = ' + num(t.ages.reduce(function (a2, x) { return a2 + x.product; }, 0)) + ' ÷ ' + num(t.weight_sum) + ' = <b>' + (t.value * 100).toFixed(2) + '%</b></p></details>';
     }
+    function kBox(obj, wlabel) {
+      var d = obj.k_detail; if (!d) return '';
+      var lines = d.parts.map(function (x) { return x.band + ' 歲：' + wlabel + ' ' + num(x.weight) + ' × 全國 ' + (x.national * 100).toFixed(2) + '% = ' + num(x.product); });
+      return '<div class="mcol"><b>k 是怎麼算出來的（不是調出來的）</b>'
+        + '<p>問題：全國的 15–19、20–24 兩組值，套在本市自己的' + wlabel + '上，15–24 歲會是幾 %？</p>'
+        + '<code>' + lines.join('\n') + '\n合計 ' + num(d.product_sum) + ' ÷ ' + num(d.weight_sum) + ' = ' + (d.implied * 100).toFixed(2) + '%　← 全國形狀在本市會是這個數\n'
+        + '本市官方公布的 15–24 歲是 ' + (d.target * 100).toFixed(2) + '%\n'
+        + 'k = ' + (d.target * 100).toFixed(2) + '% ÷ ' + (d.implied * 100).toFixed(2) + '% = <b>' + fx(d.k, 4) + '</b></code>'
+        + '<p>然後兩組都乘 k：' + d.parts.map(function (x) { return x.band + ' 歲 ' + (x.national * 100).toFixed(2) + '% × ' + fx(d.k, 4) + ' = ' + (x.national * d.k * 100).toFixed(2) + '%'; }).join('；')
+        + '。這樣兩組按本市' + wlabel + '加權回去剛好是 ' + (d.target * 100).toFixed(2) + '%。k ' + (d.k > 1 ? '大於 1，代表本市這個年齡層比全國高' : '小於 1，代表本市這個年齡層比全國低') + '；兩組之間的「形狀」（比例）是全國的，「水準」是本市的。</p></div>';
+    }
     if (W && W.lfpr && W.unemployment) {
       var L = W.lfpr, U = W.unemployment;
       var t1824L = L.targets.filter(function (t) { return t.band === '18-24'; })[0];
@@ -2740,6 +2751,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
         + '<p><b>為什麼要切</b>：《青年基本法》是 18–35 歲，官方勞參率是五歲組（15–19、20–24…），18 歲卡在 15–19 那一組的肚子裡。切法只有一個原則：<b>只在組內重新分配，每一組加總永遠等於官方數字</b>。</p>'
         + '<p><b>第 1 步 · 拿官方組值</b>：' + M.region + '自有（' + L.local_dataset.replace('行政院主計總處 ', '') + '，' + L.local_year + '）：' + lb + '。'
         + '縣市表 15–24 歲沒有再細分，所以 <b>' + L.borrowed.join('、') + ' 歲借全國的形狀</b>（' + nb + '），乘一個校準係數 <b>k = ' + fx(L.k, 4) + '</b>，讓這兩組按人口加權後剛好等於本市自己的 15–24 歲 ' + (L.calibrate_target * 100).toFixed(1) + '%。借的是「形狀」（18 歲那道坎），水準仍是本市的。</p>'
+        + kBox(L, '人口')
         + '<p><b>第 2 步 · 五歲組拆成單一年齡</b>：組中點連一條不會亂衝的曲線（PCHIP），再把每一組內部等比例縮放，讓「Σ 人口 × 單一年齡值 ÷ Σ 人口」精確等於該組的官方值。權重＝' + L.weight + '。下表右兩欄就是這個檢查：</p>'
         + bandTable(L)
         + '<p>拆出來的單一年齡曲線（人口是戶政司實數，勞參率是拆出來的）：</p>' + curveTable(L, 'pop', '人口')
@@ -2750,6 +2762,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
         + '<p><b>跟勞參率的差別只有一個：權重不是人口，是勞動力</b>（' + U.weight + '）。失業率的定義是失業人數 ÷ 勞動力，用人口當權重會校不回官方值。</p>'
         + '<p><b>第 1 步 · 拿官方組值</b>：' + M.region + '自有（' + U.local_dataset.replace('行政院主計總處 ', '') + '，' + U.local_year + '）：' + ub + '。'
         + U.borrowed.join('、') + ' 歲借全國形狀（' + unb + '），校準係數 <b>k = ' + fx(U.k, 4) + '</b>，讓兩組按勞動力加權後等於本市 15–24 歲 ' + (U.calibrate_target * 100).toFixed(1) + '%。</p>'
+        + kBox(U, '勞動力')
         + '<p><b>第 2 步 · 拆成單一年齡</b>（同一套 PCHIP ＋ 組內校準，權重換成勞動力）：</p>' + bandTable(U)
         + curveTable(U, 'labour', '勞動力')
         + '<p><b>第 3 步 · 重組</b>：失業率 = Σ(勞動力 × 單一年齡失業率) ÷ Σ 勞動力。這裡「拆 vs 不拆」幾乎一樣（最大差 ' + maxGapU.toFixed(2) + ' pp），因為 18–24 幾乎整段落在 15–24 組內（15–17 歲只占該組勞動力 ' + share1517.toFixed(1) + '%）、30–35 幾乎整段在 30–34 組內。<b>兩種算法一致才給中信心</b>；25–29 跟官方分組一模一樣，直接抄、高信心。</p>'

@@ -817,6 +817,20 @@ def _alignment_walkthrough(ref, region: str, refresh) -> dict:
         got = sum(pop[a] * nat_lf[b] for b in lf_borrowed for a in range(b[0], b[1] + 1) if a in pop and b in nat_lf)
         lf_k = round(lf_target * w / got, 4) if got else None
 
+    def _k_detail(weight: dict, nat: dict, borrowed: list, target):
+        """k 是怎麼算的：把全國兩組的值套在本市自己的權重上，得到「全國形狀在本市會是幾 %」，
+        本市官方值 ÷ 這個數 = k。每個中間數都留下來，白皮書照著念。"""
+        if not (target and borrowed):
+            return None
+        parts = []
+        for lo, hi in sorted(borrowed):
+            w = sum(weight[a] for a in range(lo, hi + 1) if a in weight)
+            parts.append({"band": f"{lo}-{hi}", "weight": round(w), "national": round(nat[(lo, hi)], 4), "product": round(w * nat[(lo, hi)])})
+        w_all = sum(x["weight"] for x in parts); got = sum(x["product"] for x in parts)
+        implied = got / w_all if w_all else None
+        return {"parts": parts, "weight_sum": w_all, "product_sum": got, "implied": round(implied, 4) if implied else None,
+                "target": round(target, 4), "k": round(target / implied, 4) if implied else None}
+
     def lf_group(a):
         for (lo, hi), v in lf_local["by_band"].items():
             if lo <= a <= hi:
@@ -857,6 +871,7 @@ def _alignment_walkthrough(ref, region: str, refresh) -> dict:
             "national_dataset": sources.LFPR_DATASET,
             "national_bands": {f"{lo}-{hi}": round(v, 4) for (lo, hi), v in sorted(nat_lf.items()) if b_ok(lo, hi)},
             "borrowed": [f"{lo}-{hi}" for lo, hi in lf_borrowed], "calibrate_to": "15-24", "calibrate_target": round(lf_target, 4) if lf_target else None, "k": lf_k,
+            "k_detail": _k_detail(pop, nat_lf, lf_borrowed, lf_target),
             "weight": "人口 P(a)（戶政司單一年齡）",
             "bands": _band_rows(lf_local["by_band"], lf_bands, pop, lfpr, lf_borrowed),
             "curve": [{"age": a, "pop": round(pop[a]), "rate": round(lfpr[a], 4)} for a in ages_show],
@@ -869,6 +884,7 @@ def _alignment_walkthrough(ref, region: str, refresh) -> dict:
             "national_dataset": sources.UNEMPLOYMENT_DATASET,
             "national_bands": {f"{lo}-{hi}": round(v, 4) for (lo, hi), v in sorted(nat_un.items())},
             "borrowed": [f"{lo}-{hi}" for lo, hi in un_borrowed], "calibrate_to": "15-24", "calibrate_target": round(un_target, 4) if un_target else None, "k": round(un_k, 4) if un_k else None,
+            "k_detail": _k_detail(labour, nat_un, un_borrowed, un_target),
             "weight": "勞動力 P(a)×勞參率(a)（失業率的分母是勞動力，不是人口）",
             "bands": _band_rows(un_local["by_band"], un_final, labour, curve, un_borrowed),
             "curve": [{"age": a, "labour": round(labour[a]), "rate": round(curve[a], 4)} for a in ages_show],

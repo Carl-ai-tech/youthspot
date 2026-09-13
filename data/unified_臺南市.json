@@ -1500,6 +1500,27 @@
     "calibrate_to": "15-24",
     "calibrate_target": 0.385,
     "k": 1.0168,
+    "k_detail": {
+     "parts": [
+      {
+       "band": "15-19",
+       "weight": 73972,
+       "national": 0.0968,
+       "product": 7160
+      },
+      {
+       "band": "20-24",
+       "weight": 83780,
+       "national": 0.6275,
+       "product": 52572
+      }
+     ],
+     "weight_sum": 157752,
+     "product_sum": 59732,
+     "implied": 0.3786,
+     "target": 0.385,
+     "k": 1.0168
+    },
     "weight": "人口 P(a)（戶政司單一年齡）",
     "bands": [
      {
@@ -1994,6 +2015,27 @@
     "calibrate_to": "15-24",
     "calibrate_target": 0.108,
     "k": 0.9546,
+    "k_detail": {
+     "parts": [
+      {
+       "band": "15-19",
+       "weight": 7281,
+       "national": 0.0921,
+       "product": 671
+      },
+      {
+       "band": "20-24",
+       "weight": 53454,
+       "national": 0.116,
+       "product": 6201
+      }
+     ],
+     "weight_sum": 60735,
+     "product_sum": 6872,
+     "implied": 0.1131,
+     "target": 0.108,
+     "k": 0.9545
+    },
     "weight": "勞動力 P(a)×勞參率(a)（失業率的分母是勞動力，不是人口）",
     "bands": [
      {

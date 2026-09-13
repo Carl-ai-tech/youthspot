@@ -3405,7 +3405,7 @@ body.whitepaper-view #sec-hero,body.whitepaper-view #ch-next,body.whitepaper-vie
       if (!n || !tip) { if (tip) tip.hidden = true; return; }
       var v = mapValue(M.region + n, mapMetric);
       tip.hidden = false;
-      var who = v && v.rec ? (v.rec.age_group === '全體' ? '全體' : v.rec.age_group + ' 歲') : (v && v.series ? (mapMetric === '青年淨遷入率' ? '18-35 歲' : '全體') : state.band + ' 歲');
+      var who = v && v.rec ? (v.rec.age_group === '全體' ? '全體' : v.rec.age_group + ' 歲') : (v && v.series ? (['人口數', '青年淨遷入率', '青年人口年變化率'].indexOf(mapMetric) >= 0 ? '18-35 歲' : '全體') : state.band + ' 歲');
       tip.innerHTML = '<b>' + n + '</b>' + who + '　' + (v ? v.year + ' 年　' : '')
         + (v ? show({ value: v.value, unit: v.unit }) + (v.unit && v.unit !== '%' ? ' ' + v.unit : '') : '無資料')
         + (v && v.rec ? '<span class="conf">' + confLabel(v.rec.provenance.confidence) + '　' + v.rec.provenance.method + '</span>' : '');

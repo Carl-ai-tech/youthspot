@@ -1,5 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" data-theme="light" viewBox="0 0 1380 660" role="img" lang="en" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
-<style><![CDATA[
+<svg viewBox="0 0 1380 430" role="img" lang="en" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase" data-view-scale="1" style="transform: translate(0px, 0px) scale(1);" xmlns="http://www.w3.org/2000/svg"><style>
 /*
 JetBrains Mono variable WOFF2 subsets from Google Fonts service revision v24.
 These fixed bytes are shared by the viewer and its SVG/raster exports.
@@ -60,7 +59,7 @@ new environment.
 "Author" refers to any designer, engineer, programmer, technical
 writer or other person who contributed to the Font Software.
 
-PERMISSION & CONDITIONS
+PERMISSION &amp; CONDITIONS
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of the Font Software, to use, study, copy, merge, embed, modify,
 redistribute, and sell modified and unmodified copies of the Font
@@ -135,7 +134,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   
 
     /* ==========================================================
-       THEME VARIABLES — switch by toggling [data-theme] on <html>
+       THEME VARIABLES — switch by toggling [data-theme] on &lt;html&gt;
        ========================================================== */
     :root,
     [data-theme="dark"] {
@@ -682,7 +681,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       padding: 0.75rem;
       padding-bottom: calc(0.75rem + var(--archify-nav-reserve));
     }
-    html[data-present="true"]:not([data-embed="true"]) .diagram-container > svg {
+    html[data-present="true"]:not([data-embed="true"]) .diagram-container &gt; svg {
       flex: 1 1 auto;
       height: 100%;
       min-height: 0;
@@ -1303,7 +1302,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       touch-action: none;
     }
     html[data-preset="blueprint"] .overview-map-surface { border-radius: 0.1rem; }
-    .overview-map-surface > svg {
+    .overview-map-surface &gt; svg {
       width: 100%;
       height: 100%;
       min-width: 0;
@@ -2357,7 +2356,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
     }
     html[data-preset="blueprint"] .node-finder-search { border-radius: 0.18rem; }
-    .node-finder-search > span { color: var(--frontend-stroke); font-size: 0.875rem; }
+    .node-finder-search &gt; span { color: var(--frontend-stroke); font-size: 0.875rem; }
     .node-finder-search:focus-within {
       border-color: var(--frontend-stroke);
       box-shadow: 0 0 0 2px color-mix(in srgb, var(--frontend-stroke) 20%, transparent);
@@ -2504,8 +2503,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       border-radius: 0.55rem;
       font-size: 0.75rem;
     }
-    .guided-views > #guided-view-prev,
-    .guided-views > #guided-view-next { min-width: 2.75rem; min-height: 2.75rem; }
+    .guided-views &gt; #guided-view-prev,
+    .guided-views &gt; #guided-view-next { min-width: 2.75rem; min-height: 2.75rem; }
     .guided-views button:disabled { opacity: 0.3; cursor: default; }
     .guided-view-copy {
       min-width: 0;
@@ -2641,8 +2640,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     }
     .guided-story-caption-next strong { color: var(--text-muted); font-weight: 700; }
     html[data-preset="blueprint"] .guided-story-caption { border-radius: 0.2rem; }
-    .guided-views[data-story-beat] .guided-view-copy > #guided-view-label,
-    .guided-views[data-story-beat] .guided-view-copy > #guided-view-note { display: none; }
+    .guided-views[data-story-beat] .guided-view-copy &gt; #guided-view-label,
+    .guided-views[data-story-beat] .guided-view-copy &gt; #guided-view-note { display: none; }
     @keyframes archify-story-caption-in {
       from { opacity: 0; transform: translateY(3px); }
       to { opacity: 1; transform: translateY(0); }
@@ -2784,8 +2783,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       html[data-present="true"]:not([data-embed="true"]) .guided-views[data-playing="true"] .guided-view-beat-link,
       html[data-present="true"]:not([data-embed="true"]) .guided-views[data-playing="true"] .guided-view-all,
       html[data-present="true"]:not([data-embed="true"]) .guided-views[data-playing="true"] .guided-view-trail,
-      html[data-present="true"]:not([data-embed="true"]) .guided-views[data-playing="true"] .guided-view-copy > #guided-view-label,
-      html[data-present="true"]:not([data-embed="true"]) .guided-views[data-playing="true"] .guided-view-copy > #guided-view-note { display: none; }
+      html[data-present="true"]:not([data-embed="true"]) .guided-views[data-playing="true"] .guided-view-copy &gt; #guided-view-label,
+      html[data-present="true"]:not([data-embed="true"]) .guided-views[data-playing="true"] .guided-view-copy &gt; #guided-view-note { display: none; }
       html[data-present="true"]:not([data-embed="true"]) .guided-views[data-playing="true"] .guided-story-caption { margin-top: 0.08rem; }
     }
     .guided-view-chapters {
@@ -2914,8 +2913,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       align-items: center;
       padding: 0.28rem 0.35rem;
     }
-    .guided-views[data-active-view="all"] > #guided-view-prev,
-    .guided-views[data-active-view="all"] > #guided-view-next,
+    .guided-views[data-active-view="all"] &gt; #guided-view-prev,
+    .guided-views[data-active-view="all"] &gt; #guided-view-next,
     .guided-views[data-active-view="all"] .guided-view-beat-link,
     .guided-views[data-active-view="all"] .guided-view-all { display: none; }
     .guided-views[data-active-view="all"] .guided-view-copy {
@@ -2923,7 +2922,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       grid-row: 1;
       padding: 0.1rem 0.55rem;
     }
-    .guided-views[data-active-view="all"] .guided-view-copy > #guided-view-note { display: none; }
+    .guided-views[data-active-view="all"] .guided-view-copy &gt; #guided-view-note { display: none; }
     .guided-views[data-active-view="all"] .guided-view-actions {
       display: block;
       grid-column: 2;
@@ -3224,7 +3223,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       height: 0.65rem;
       transition: transform 0.15s ease;
     }
-    [aria-expanded="true"] > .toolbar-chevron { transform: rotate(180deg); }
+    [aria-expanded="true"] &gt; .toolbar-chevron { transform: rotate(180deg); }
     [data-theme="light"] #theme-icon {
       -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round'%3E%3Ccircle cx='10' cy='10' r='3.1'/%3E%3Cpath d='M10 2.2v1.4M10 16.4v1.4M2.2 10h1.4M16.4 10h1.4M4.5 4.5l1 1M14.5 14.5l1 1M15.5 4.5l-1 1M5.5 14.5l-1 1'/%3E%3C/g%3E%3C/svg%3E");
       mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round'%3E%3Ccircle cx='10' cy='10' r='3.1'/%3E%3Cpath d='M10 2.2v1.4M10 16.4v1.4M2.2 10h1.4M16.4 10h1.4M4.5 4.5l1 1M14.5 14.5l1 1M15.5 4.5l-1 1M5.5 14.5l-1 1'/%3E%3C/g%3E%3C/svg%3E");
@@ -3727,7 +3726,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         scrollbar-width: thin;
         scroll-behavior: smooth;
       }
-      html:not([data-embed="true"]) .diagram-container[data-wide-diagram="true"] > svg {
+      html:not([data-embed="true"]) .diagram-container[data-wide-diagram="true"] &gt; svg {
         min-width: 720px;
       }
       html:not([data-embed="true"]) .diagram-container[data-wide-diagram="true"] .diagram-nav,
@@ -3869,8 +3868,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      .guided-views > #guided-view-prev,
-      .guided-views > #guided-view-next {
+      .guided-views &gt; #guided-view-prev,
+      .guided-views &gt; #guided-view-next {
         align-self: center;
         height: 2.75rem;
       }
@@ -3996,7 +3995,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       html[data-present="true"]:not([data-embed="true"]) .guided-view-copy small { display: none; }
       html[data-present="true"]:not([data-embed="true"]) .guided-story-caption small { display: block; }
       html[data-present="true"]:not([data-embed="true"]) .diagram-container { padding: 0.5rem 0.5rem 3.75rem; }
-      html[data-present="true"]:not([data-embed="true"]) .diagram-container[data-wide-diagram="true"] > svg {
+      html[data-present="true"]:not([data-embed="true"]) .diagram-container[data-wide-diagram="true"] &gt; svg {
         width: 720px;
         height: auto;
         min-width: 720px;
@@ -4064,7 +4063,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       opacity: 0.76;
       pointer-events: none;
     }
-    svg .semantic-sigil > * { vector-effect: non-scaling-stroke; }
+    svg .semantic-sigil &gt; * { vector-effect: non-scaling-stroke; }
     svg .semantic-sigil .sigil-fill { fill: currentColor; stroke: none; }
     svg .s-frontend   { color: var(--frontend-stroke); }
     svg .s-backend    { color: var(--backend-stroke); }
@@ -4940,24 +4939,22 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       .source-evidence-beacon,
       svg [data-node-id], svg [data-edge-from], svg [data-detail], svg [data-detail-anchor], svg [data-legend-hit], svg { transition: none !important; }
     }
-  
-svg {background:var(--bg);font-family: monospace;}]]></style>
-<rect width="100%" height="100%" fill="var(--bg)"/>
-        <title id="archify-diagram-title">YouthScope｜目前架構與 RAG 實驗</title>
-        <desc id="archify-diagram-description">2026-09-13 · 正式部署紀錄／本機新問答／隔離實驗，三者分開呈現</desc>
+  </style>
+        <title id="archify-diagram-title">YouthScope｜正式展示架構</title>
+        <desc id="archify-diagram-description">已部署版本 e564f1e · 2026-09-13 · 統計證據 → AI 解釋 → 來源與限制</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" class="m-default" />
+            <polygon points="0 0, 10 3.5, 0 7" class="m-default"/>
           </marker>
           <marker id="arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" />
+            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis"/>
           </marker>
           <marker id="arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" class="m-security" />
+            <polygon points="0 0, 10 3.5, 0 7" class="m-security"/>
           </marker>
           <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" />
+            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed"/>
           </marker>
           <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
             <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5"/>
@@ -4965,10 +4962,10 @@ svg {background:var(--bg);font-family: monospace;}]]></style>
         </defs>
 
         <!-- Background Grid -->
-        <rect width="100%" height="100%" fill="url(#grid)" />
+        <rect width="100%" height="100%" fill="url(#grid)"/>
 
         <!-- Boundaries (behind everything) -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="security-group" data-composition-frame-id="0" data-composition-frame-label="隔離 RAG 實驗｜已檢索，未接本機／正式問答生成" x="30" y="471" width="957" height="144" rx="8" class="c-security-group" stroke-width="1"/>
+
 
         <!-- Connection paths (before components for correct z-order) -->
         <path data-edge-from="data" data-edge-to="ret" data-edge-key="0" data-edge-id="data-ret" data-composition-points="312,115;378,115" d="M 312 115 L 378 115" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
@@ -4976,19 +4973,17 @@ svg {background:var(--bg);font-family: monospace;}]]></style>
         <path data-edge-from="prompt" data-edge-to="model" data-edge-key="2" data-edge-id="prompt-model" data-composition-points="965,115;1032,115" d="M 965 115 L 1032 115" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="model" data-edge-to="check" data-edge-key="3" data-edge-id="model-check" data-composition-points="1162,165;1162,280" d="M 1162 165 L 1162 280" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="check" data-edge-to="answer" data-edge-key="4" data-edge-id="check-answer" data-composition-points="1032,330;965,330" d="M 1032 330 L 965 330" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="source" data-edge-to="kb" data-edge-key="5" data-edge-id="source-kb" data-composition-points="312,545;378,545" d="M 312 545 L 378 545" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="kb" data-edge-to="lab" data-edge-key="6" data-edge-id="kb-lab" data-composition-points="638,545;705,545" d="M 638 545 L 705 545" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
-        <g id="node-publish" data-node-id="publish" data-node-label="正式 AWS 發布" tabindex="0" role="button" aria-label="Focus 正式 AWS 發布, CloudFront ＋ S3 ＋ Lambda, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="CloudFront ＋ S3 ＋ Lambda" data-node-context="Architecture component">
-          <title>正式 AWS 發布 · CloudFront ＋ S3 ＋ Lambda · Architecture component</title>
+        <g class="relationship-hit-overlay" data-relationship-hit-overlay="" role="group" aria-label="Direct relationship explorer"><desc id="archify-relationship-help">Use arrow keys to explore relationships. Press Enter or Space to pin details; Escape clears.</desc><g class="relationship-hit-target" data-relationship-hit-key="0" data-relationship-key="0" data-relationship-from="data" data-relationship-to="ret" data-relationship-id="data-ret" role="button" tabindex="0" aria-pressed="false" aria-describedby="archify-relationship-help" aria-label="Inspect relationship 1 of 5: 公開統計資料 to 統計規則檢索, connects to. Press Enter for details."><title>公開統計資料 → 統計規則檢索 · connects to</title><path data-composition-points="312,115;378,115" d="M 312 115 L 378 115" stroke-width="1.5" class="relationship-hit-rail"/><path data-composition-points="312,115;378,115" d="M 312 115 L 378 115" stroke-width="1.5" class="relationship-focus-rail"/></g><g class="relationship-hit-target" data-relationship-hit-key="1" data-relationship-key="1" data-relationship-from="ret" data-relationship-to="prompt" data-relationship-id="ret-prompt" role="button" tabindex="-1" aria-pressed="false" aria-describedby="archify-relationship-help" aria-label="Inspect relationship 2 of 5: 統計規則檢索 to System ＋問題＋證據, connects to. Press Enter for details."><title>統計規則檢索 → System ＋問題＋證據 · connects to</title><path data-composition-points="638,115;705,115" d="M 638 115 L 705 115" stroke-width="1.5" class="relationship-hit-rail"/><path data-composition-points="638,115;705,115" d="M 638 115 L 705 115" stroke-width="1.5" class="relationship-focus-rail"/></g><g class="relationship-hit-target" data-relationship-hit-key="2" data-relationship-key="2" data-relationship-from="prompt" data-relationship-to="model" data-relationship-id="prompt-model" role="button" tabindex="-1" aria-pressed="false" aria-describedby="archify-relationship-help" aria-label="Inspect relationship 3 of 5: System ＋問題＋證據 to Amazon Bedrock, connects to. Press Enter for details."><title>System ＋問題＋證據 → Amazon Bedrock · connects to</title><path data-composition-points="965,115;1032,115" d="M 965 115 L 1032 115" stroke-width="1.5" class="relationship-hit-rail"/><path data-composition-points="965,115;1032,115" d="M 965 115 L 1032 115" stroke-width="1.5" class="relationship-focus-rail"/></g><g class="relationship-hit-target" data-relationship-hit-key="3" data-relationship-key="3" data-relationship-from="model" data-relationship-to="check" data-relationship-id="model-check" role="button" tabindex="-1" aria-pressed="false" aria-describedby="archify-relationship-help" aria-label="Inspect relationship 4 of 5: Amazon Bedrock to 數值與百分點比對, connects to. Press Enter for details."><title>Amazon Bedrock → 數值與百分點比對 · connects to</title><path data-composition-points="1162,165;1162,280" d="M 1162 165 L 1162 280" stroke-width="1.5" class="relationship-hit-rail"/><path data-composition-points="1162,165;1162,280" d="M 1162 165 L 1162 280" stroke-width="1.5" class="relationship-focus-rail"/></g><g class="relationship-hit-target" data-relationship-hit-key="4" data-relationship-key="4" data-relationship-from="check" data-relationship-to="answer" data-relationship-id="check-answer" role="button" tabindex="-1" aria-pressed="false" aria-describedby="archify-relationship-help" aria-label="Inspect relationship 5 of 5: 數值與百分點比對 to 回覆與來源展示, connects to. Press Enter for details."><title>數值與百分點比對 → 回覆與來源展示 · connects to</title><path data-composition-points="1032,330;965,330" d="M 1032 330 L 965 330" stroke-width="1.5" class="relationship-hit-rail"/><path data-composition-points="1032,330;965,330" d="M 1032 330 L 965 330" stroke-width="1.5" class="relationship-focus-rail"/></g></g><g id="node-publish" data-node-id="publish" data-node-label="正式 AWS 發布" tabindex="0" role="button" aria-label="Focus 正式 AWS 發布, CloudFront／私有 S3／Lambda, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="CloudFront／私有 S3／Lambda" data-node-context="Architecture component">
+          <title>正式 AWS 發布 · CloudFront／私有 S3／Lambda · Architecture component</title>
           <rect x="52" y="280" width="260" height="100" rx="6" class="c-mask"/>
           <rect x="52" y="280" width="260" height="100" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(58 286) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="182" y="328" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">正式 AWS 發布</text>
-        <text data-detail="context" x="182" y="344" class="t-muted" font-size="9" text-anchor="middle">CloudFront ＋ S3 ＋ Lambda</text>
+        <text data-detail="context" x="182" y="344" class="t-muted" font-size="9" text-anchor="middle">CloudFront／私有 S3／Lambda</text>
         </g>
 
         <g id="node-data" data-node-id="data" data-node-label="公開統計資料" tabindex="0" role="button" aria-label="Focus 公開統計資料, ETL／模型計算 → unified JSON, Architecture component" aria-pressed="false" data-node-kind="database" data-node-sublabel="ETL／模型計算 → unified JSON" data-node-context="Architecture component">
@@ -5036,19 +5031,19 @@ svg {background:var(--bg);font-family: monospace;}]]></style>
         <text data-detail="context" x="1162" y="129" class="t-muted" font-size="9" text-anchor="middle">Sonnet 4.6 · Converse</text>
         </g>
 
-        <g id="node-check" data-node-id="check" data-node-label="數值池比對" tabindex="0" role="button" aria-label="Focus 數值池比對, 未驗證引用期間與比較方向, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="未驗證引用期間與比較方向" data-node-context="Architecture component">
-          <title>數值池比對 · 未驗證引用期間與比較方向 · Architecture component</title>
+        <g id="node-check" data-node-id="check" data-node-label="數值與百分點比對" tabindex="0" role="button" aria-label="Focus 數值與百分點比對, 引用期間與比較意思仍需人工核對, Architecture component" aria-pressed="false" data-node-kind="backend" data-node-sublabel="引用期間與比較意思仍需人工核對" data-node-context="Architecture component">
+          <title>數值與百分點比對 · 引用期間與比較意思仍需人工核對 · Architecture component</title>
           <rect x="1032" y="280" width="260" height="100" rx="6" class="c-mask"/>
           <rect x="1032" y="280" width="260" height="100" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1038 286) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1162" y="328" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">數值池比對</text>
-        <text data-detail="context" x="1162" y="344" class="t-muted" font-size="9" text-anchor="middle">未驗證引用期間與比較方向</text>
+          <text data-node-label="" data-detail-anchor="" x="1162" y="328" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">數值與百分點比對</text>
+        <text data-detail="context" x="1162" y="344" class="t-muted" font-size="9" text-anchor="middle">引用期間與比較意思仍需人工核對</text>
         </g>
 
-        <g id="node-answer" data-node-id="answer" data-node-label="回覆與來源展示" tabindex="0" role="button" aria-label="Focus 回覆與來源展示, 摘要／完整分析；保留查核限制, Architecture component" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="摘要／完整分析；保留查核限制" data-node-context="Architecture component">
-          <title>回覆與來源展示 · 摘要／完整分析；保留查核限制 · Architecture component</title>
+        <g id="node-answer" data-node-id="answer" data-node-label="回覆與來源展示" tabindex="0" role="button" aria-label="Focus 回覆與來源展示, 白話摘要／資料履歷／方法白皮書, Architecture component" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="白話摘要／資料履歷／方法白皮書" data-node-context="Architecture component">
+          <title>回覆與來源展示 · 白話摘要／資料履歷／方法白皮書 · Architecture component</title>
           <rect x="705" y="280" width="260" height="100" rx="6" class="c-mask"/>
           <rect x="705" y="280" width="260" height="100" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(711 286) scale(0.6875)">
@@ -5058,41 +5053,7 @@ svg {background:var(--bg);font-family: monospace;}]]></style>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="835" y="328" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">回覆與來源展示</text>
-        <text data-detail="context" x="835" y="344" class="t-muted" font-size="9" text-anchor="middle">摘要／完整分析；保留查核限制</text>
-        </g>
-
-        <g id="node-source" data-node-id="source" data-node-label="公開公告摘要" tabindex="0" role="button" aria-label="Focus 公開公告摘要, 私有 S3 · 2 份文件, 隔離 RAG 實驗｜已檢索，未接本機／正式問答生成" aria-pressed="false" data-node-kind="database" data-node-sublabel="私有 S3 · 2 份文件" data-node-context="隔離 RAG 實驗｜已檢索，未接本機／正式問答生成">
-          <title>公開公告摘要 · 私有 S3 · 2 份文件 · 隔離 RAG 實驗｜已檢索，未接本機／正式問答生成</title>
-          <rect x="52" y="495" width="260" height="100" rx="6" class="c-mask"/>
-          <rect x="52" y="495" width="260" height="100" rx="6" class="c-database" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(58 501) scale(0.6875)">
-            <ellipse cx="8" cy="4" rx="5" ry="2"/>
-            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="182" y="543" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">公開公告摘要</text>
-        <text data-detail="context" x="182" y="559" class="t-muted" font-size="9" text-anchor="middle">私有 S3 · 2 份文件</text>
-        </g>
-
-        <g id="node-kb" data-node-id="kb" data-node-label="Managed Knowledge Base" tabindex="0" role="button" aria-label="Focus Managed Knowledge Base, EOPWDZAJRT · 5 次 Retrieve, 隔離 RAG 實驗｜已檢索，未接本機／正式問答生成" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="EOPWDZAJRT · 5 次 Retrieve" data-node-context="隔離 RAG 實驗｜已檢索，未接本機／正式問答生成">
-          <title>Managed Knowledge Base · EOPWDZAJRT · 5 次 Retrieve · 隔離 RAG 實驗｜已檢索，未接本機／正式問答生成</title>
-          <rect x="378" y="495" width="260" height="100" rx="6" class="c-mask"/>
-          <rect x="378" y="495" width="260" height="100" rx="6" class="c-cloud" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(384 501) scale(0.6875)">
-            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="508" y="543" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Managed Knowledge Base</text>
-        <text data-detail="context" x="508" y="559" class="t-muted" font-size="9" text-anchor="middle">EOPWDZAJRT · 5 次 Retrieve</text>
-        </g>
-
-        <g id="node-lab" data-node-id="lab" data-node-label="雙路 RAG 原型" tabindex="0" role="button" aria-label="Focus 雙路 RAG 原型, 精確統計 scope ＋文件來源, 隔離 RAG 實驗｜已檢索，未接本機／正式問答生成" aria-pressed="false" data-node-kind="backend" data-node-sublabel="精確統計 scope ＋文件來源" data-node-context="隔離 RAG 實驗｜已檢索，未接本機／正式問答生成">
-          <title>雙路 RAG 原型 · 精確統計 scope ＋文件來源 · 隔離 RAG 實驗｜已檢索，未接本機／正式問答生成</title>
-          <rect x="705" y="495" width="260" height="100" rx="6" class="c-mask"/>
-          <rect x="705" y="495" width="260" height="100" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(711 501) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="835" y="543" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">雙路 RAG 原型</text>
-        <text data-detail="context" x="835" y="559" class="t-muted" font-size="9" text-anchor="middle">精確統計 scope ＋文件來源</text>
+        <text data-detail="context" x="835" y="344" class="t-muted" font-size="9" text-anchor="middle">白話摘要／資料履歷／方法白皮書</text>
         </g>
 
         <!-- Connection labels -->
@@ -5102,13 +5063,8 @@ svg {background:var(--bg);font-family: monospace;}]]></style>
 
 
 
-
-
         <!-- Boundary labels (foreground masks keep routes out of titles) -->
-        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="security-group" data-composition-frame-label="隔離 RAG 實驗｜已檢索，未接本機／正式問答生成">
-          <rect data-graph-role="structural-frame-label-mask" x="34" y="475" width="253" height="16" rx="3" class="c-mask"/>
-          <text data-boundary-label="" x="38" y="488" class="t-security" font-size="9" font-weight="600">隔離 RAG 實驗｜已檢索，未接本機／正式問答生成</text>
-        </g>
+
 
         <!-- Legend -->
 
